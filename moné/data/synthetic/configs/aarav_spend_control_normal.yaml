@@ -1,0 +1,111 @@
+persona:
+  id: aarav
+  name: Aarav Sharma
+  age: 27
+  occupation: Software Developer
+  city: Bangalore
+  pan: ABCPD1234F
+  email: aarav.sharma@example.com
+  mobile: "9876543210"
+  address: "42, HSR Layout, Sector 2, Bangalore 560102"
+  dob: "1999-03-15"
+
+seed: mone-aarav-normal-v1
+
+period:
+  start: "2025-06-01"
+  end: "2026-05-31"
+
+accounts:
+  deposit:
+    bank: HDFC
+    ifsc: HDFC0001234
+    branch: HSR Layout
+    type: SAVINGS
+    opening_balance: 45000
+
+income:
+  salary:
+    amount: 165000
+    day: 28
+    employer: TECHCORP INDIA PVT LTD
+    mode: FT
+  freelance:
+    min: 8000
+    max: 24000
+    monthly_probability: 0.25
+
+obligations:
+  rent:
+    amount: 42000
+    day: 5
+    payee: Ramesh Kumar
+    mode: UPI
+  sip:
+    - amount: 10000
+      day: 6
+      fund: HDFC Bluechip Fund
+    - amount: 5000
+      day: 10
+      fund: Axis Midcap Fund
+  broadband:
+    amount: 999
+    day: 15
+    provider: ACT Fibernet
+  mobile:
+    amount: 599
+    day: 18
+    provider: Jio
+  electricity:
+    amount_min: 800
+    amount_max: 2200
+    day: 12
+  subscriptions:
+    - name: Netflix
+      amount: 649
+      day: 12
+    - name: Spotify
+      amount: 119
+      day: 14
+    - name: iCloud
+      amount: 75
+      day: 14
+    - name: Amazon Prime
+      amount: 179
+      day: 20
+  credit_card_due_day: 23
+
+goals:
+  - id: emergency_fund
+    name: Emergency Fund
+    target: 300000
+    current: 180000
+    monthly_allocation: 10000
+    allocation_day: 29
+  - id: vacation_bali
+    name: Bali Vacation
+    target: 150000
+    current: 37500
+    monthly_allocation: 8000
+    allocation_day: 29
+  - id: laptop
+    name: New Laptop
+    target: 120000
+    current: 42000
+    monthly_allocation: 6000
+    allocation_day: 30
+
+life_events: []
+
+behavioral_defaults:
+  weekday_food_delivery_prob: 0.6
+  weekend_dining_out_prob: 0.7
+  friday_social_prob: 0.8
+  coffee_daily_prob: 0.7
+  cab_vs_metro: 0.4
+  impulse_shopping_weekend_prob: 0.3
+  late_night_food_prob: 0.15
+  atm_withdrawal_monthly_min: 1
+  atm_withdrawal_monthly_max: 2
+  grocery_weekend_prob: 0.85
+  weekday_cab_prob: 0.4
