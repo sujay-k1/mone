@@ -8,6 +8,7 @@ struct DashboardView: View {
     @State private var summary: DashboardSummary?
     @State private var errorMessage: String?
     @State private var showSignUp = false
+    @State private var isRestoringFinancialData = false
 
     private static let signUpDismissedKey = "mone.signUpDismissed"
 
@@ -54,6 +55,8 @@ struct DashboardView: View {
 
                         DashboardSectionTitle("Next best actions")
                         NextBestActionsCard(summary: summary)
+                    } else if isRestoringFinancialData {
+                        restoringFinancialDataView
                     } else if let errorMessage {
                         dashboardError(errorMessage)
                     } else {
@@ -65,7 +68,7 @@ struct DashboardView: View {
             }
         }
         .task {
-            loadDashboard()
+            await loadDashboard()
         }
         .onAppear {
             let alreadyDismissed = UserDefaults.standard.bool(forKey: Self.signUpDismissedKey)
@@ -144,6 +147,22 @@ struct DashboardView: View {
             )
         }
     }
+    
+    private var restoringFinancialDataView: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ProgressView()
+                .tint(Color.monePrimary)
+
+            Text("Restoring your money map")
+                .font(.moneHLMd)
+                .foregroundStyle(Color.monePrimary)
+
+            Text("We found your saved financial profile. Rebuilding it on this device.")
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneSecondary)
+        }
+        .dashboardCard()
+    }
 
     private func dashboardError(_ message: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -159,16 +178,46 @@ struct DashboardView: View {
     }
 
     @MainActor
-    private func loadDashboard() {
+    private func loadDashboard() async {
         do {
             let loader = DashboardDataLoader(modelContext: modelContext)
-            summary = try loader.loadLatestSummary()
+
+            if let localSummary = try loader.loadLatestSummary() {
+                summary = localSummary
+                appVM.dashboardHealthState = localSummary.healthState
+                errorMessage = nil
+                return
+            }
+
+            guard supabase.auth.currentSession != nil else {
+                summary = nil
+                errorMessage = "No processed financial data found. Complete Account Aggregator setup first."
+                return
+            }
+
+            isRestoringFinancialData = true
+            errorMessage = nil
+
+            let restored = try await FinancialDataCloudService()
+                .restoreLatestCloudData(modelContext: modelContext)
+
+            isRestoringFinancialData = false
+
+            guard restored else {
+                summary = nil
+                errorMessage = "No saved financial data found for this account."
+                return
+            }
+
+            let reloadLoader = DashboardDataLoader(modelContext: modelContext)
+            summary = try reloadLoader.loadLatestSummary()
 
             if summary == nil {
-                errorMessage = "No processed financial data found. Complete Account Aggregator setup first."
+                errorMessage = "We restored your data, but could not rebuild the dashboard."
             }
         } catch {
-            errorMessage = String(describing: error)
+            isRestoringFinancialData = false
+            errorMessage = "Could not restore your financial data. \(String(describing: error))"
         }
     }
 }

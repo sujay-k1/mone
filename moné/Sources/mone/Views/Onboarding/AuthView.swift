@@ -117,7 +117,10 @@ final class AuthViewModel {
                 }
             }
 
-            try await supabase.auth.signInWithOTP(email: trimmedEmail)
+            try await supabase.auth.signInWithOTP(
+                email: trimmedEmail,
+                shouldCreateUser: authIntent == .signup
+            )
             screen = .emailOTP(email: trimmedEmail)
             otp = ""
         } catch {
@@ -186,7 +189,10 @@ final class AuthViewModel {
             let formatted = e164Phone
             print("[Auth] Sending phone OTP to +91****\(phoneDigits.suffix(4))")
 
-            try await supabase.auth.signInWithOTP(phone: formatted)
+            try await supabase.auth.signInWithOTP(
+                phone: formatted,
+                shouldCreateUser: authIntent == .signup
+            )
 
             print("[Auth] signInWithOTP(phone:) returned successfully")
             screen = .phoneOTP(phone: formatted)
@@ -343,9 +349,22 @@ final class AuthViewModel {
 struct AuthView: View {
     @Environment(AppViewModel.self) private var appVM
     @State private var vm = AuthViewModel()
+    @State private var didCompleteAuth = false
 
     var onAuthComplete: (() -> Void)?
     var showBackButton: Bool = true
+    
+    private func completeAuthOnce() {
+        guard !didCompleteAuth else { return }
+
+        didCompleteAuth = true
+
+        if let onAuthComplete {
+            onAuthComplete()
+        } else {
+            appVM.advance()
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -362,19 +381,24 @@ struct AuthView: View {
                 case .phoneOTP(let phone):
                     OTPScreen(vm: vm, destination: phone)
                 case .signedIn(let identifier):
-                    SignedInScreen(vm: vm, identifier: identifier, onContinue: {
-                        if let onAuthComplete {
-                            onAuthComplete()
-                        } else {
-                            appVM.advance()
-                        }
-                    })
+                    ProgressView()
+                            .tint(Color.monePrimary)
+                            .onAppear {
+                                completeAuthOnce()
+                            }
                 }
             }
             .transition(.opacity)
         }
         .animation(.easeInOut(duration: 0.25), value: vm.screen)
-        .onAppear { vm.checkExistingSession() }
+        .onAppear {
+            vm.checkExistingSession()
+        }
+        .onChange(of: vm.screen) { _, screen in
+            if case .signedIn = screen {
+                completeAuthOnce()
+            }
+        }
     }
 }
 
@@ -477,7 +501,7 @@ struct PhoneEntryScreen: View {
 
 // MARK: - Email Entry Screen
 
-private struct EmailEntryScreen: View {
+struct EmailEntryScreen: View {
     @Bindable var vm: AuthViewModel
     var onBack: () -> Void
     @FocusState private var isEmailFocused: Bool

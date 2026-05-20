@@ -1,5 +1,6 @@
 import SwiftUI
 import Supabase
+import SwiftData
 
 // MARK: - Sign-Up Sheet
 
@@ -17,6 +18,7 @@ struct SignUpSheet: View {
     var onComplete: () -> Void    // called when sign-up or restore is done
 
     @Environment(SessionViewModel.self) private var sessionVM
+    @Environment(\.modelContext) private var modelContext
     @State private var step: Step = .prompt
     @State private var authVM = AuthViewModel()
     @State private var name = ""
@@ -43,12 +45,16 @@ struct SignUpSheet: View {
                 case .prompt:
                     promptContent
                 case .phoneEntry:
-                    PhoneEntryScreen(
-                        vm: authVM,
-                        onBack: { step = .prompt },
-                        title: "Sign up securely",
-                        subtitle: "Your data stays encrypted. Only you can read it — on device and in the cloud."
-                    )
+                    if case .emailEntry = authVM.screen {
+                        EmailEntryScreen(vm: authVM, onBack: { authVM.switchToPhone() })
+                    } else {
+                        PhoneEntryScreen(
+                            vm: authVM,
+                            onBack: { step = .prompt },
+                            title: "Sign up securely",
+                            subtitle: "Your data stays encrypted. Only you can read it — on device and in the cloud."
+                        )
+                    }
                 case .otp(let phone):
                     OTPScreen(vm: authVM, destination: phone)
                 case .nameEntry:
@@ -75,6 +81,8 @@ struct SignUpSheet: View {
                 switch screen {
                 case .phoneOTP(let phone):
                     step = .otp(phone: phone)
+                case .emailOTP(let email):
+                    step = .otp(phone: email)
                 case .signedIn:
                     Task { await handleSignedIn() }
                 default:
@@ -84,6 +92,12 @@ struct SignUpSheet: View {
             
             .onAppear {
                 authVM.authIntent = .signup
+
+                if supabase.auth.currentSession != nil {
+                    Task {
+                        do { try await supabase.auth.signOut(scope: .local) } catch {}
+                    }
+                }
             }
             
         }
@@ -222,9 +236,11 @@ struct SignUpSheet: View {
             if let profile = profiles.first,
                let fullName = profile.fullName,
                !fullName.trimmingCharacters(in: .whitespaces).isEmpty {
-                // Existing user — update session state and show restoring UI
-                sessionVM.profile = profile
-                step = .restoring
+                // This is signup flow. Existing users should not be signed up again.
+                sessionVM.profile = nil
+                authVM.errorMessage = "This account already exists. Please log in instead."
+                do { try await supabase.auth.signOut(scope: .local) } catch {}
+                step = .prompt
             } else {
                 step = .nameEntry
             }
@@ -242,10 +258,15 @@ struct SignUpSheet: View {
         isSavingName = true
         nameError = nil
         do {
+            try await FinancialDataCloudService()
+                .backupLatestLocalData(modelContext: modelContext)
+
             try await sessionVM.completeSignUp(name: trimmed)
             onComplete()
+        } catch FinancialDataCloudError.noLocalFinancialData {
+            nameError = "We could not find financial data on this device. Please complete Account Aggregator setup again."
         } catch {
-            nameError = "Failed to save. Please try again."
+            nameError = "Failed to save your financial profile. Please try again."
         }
         isSavingName = false
     }

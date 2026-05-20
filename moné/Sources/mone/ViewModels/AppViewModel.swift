@@ -10,6 +10,9 @@ class AppViewModel {
     var hasCompletedOnboarding: Bool = false
     var onboardingStep: OnboardingStep = .agendaEducation
 
+    // MARK: Dashboard State
+    var dashboardHealthState: DashboardHealthState? = nil
+
     // MARK: User Choices
     var primaryAgenda:  AgendaType?  = nil
     var secondaryAgenda: AgendaType? = nil

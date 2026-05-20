@@ -25,6 +25,10 @@ final class SessionViewModel {
         guard let full = profile?.fullName, !full.isEmpty else { return "there" }
         return full.components(separatedBy: " ").first ?? full
     }
+    
+    var isSignedIn: Bool {
+        supabase.auth.currentSession != nil
+    }
 
     private let recentlyDeletedUserIDsKey = "mone.recentlyDeletedUserIDs"
     private let recentlyDeletedIdentifiersKey = "mone.recentlyDeletedIdentifiers"
@@ -119,11 +123,16 @@ final class SessionViewModel {
                     route = .onboarding
                 }
             } else {
-                route = .nameOnboarding
+                profile = nil
+                error = "We found your login session, but could not find your Moné profile. Please sign up again or contact support."
+                do { try await supabase.auth.signOut(scope: .local) } catch {}
+                route = .onboarding
             }
         } catch {
             profile = nil
-            route = .nameOnboarding
+            self.error = "Could not load your Moné profile. Please try logging in again."
+            do { try await supabase.auth.signOut(scope: .local) } catch {}
+            route = .onboarding
         }
 
         isLoading = false
@@ -193,6 +202,12 @@ final class SessionViewModel {
         onboardingResetToken = UUID()
         route = .onboarding
         isLoading = false
+    }
+    
+    func startAuthenticationFromProfile() {
+        error = nil
+        shouldForceWelcomeOnboarding = false
+        route = .auth
     }
 
     /// Saves name for a newly signed-up user without changing the route.

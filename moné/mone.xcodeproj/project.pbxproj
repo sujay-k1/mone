@@ -39,6 +39,8 @@
 		66BC26802FBE1E2A000D4FF7 /* AuthRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */; };
 		66BC26822FBE2BA5000D4FF7 /* ProfileAvatarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26812FBE2BA3000D4FF7 /* ProfileAvatarButton.swift */; };
 		66BC26842FBE2BB5000D4FF7 /* ProfileSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26832FBE2BB5000D4FF7 /* ProfileSpaceView.swift */; };
+		66BC268E2FBE3B17000D4FF7 /* FinancialDataCloudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC268D2FBE3B15000D4FF7 /* FinancialDataCloudService.swift */; };
+		66BC268F2FBE3D27000D4FF7 /* FinancialDataBackupModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC268A2FBE3AC4000D4FF7 /* FinancialDataBackupModels.swift */; };
 		67A7E21DC1115C6FD43EA155 /* MoneTaxonomy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8116131A5B5E619673058A3B /* MoneTaxonomy.swift */; };
 		684A1F39C70D0CD6779A5B6B /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CF48BC6C2D2D2F7A7455E2 /* TransactionsView.swift */; };
 		787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F8BD84AFCFC35206849E91D /* SignUpSheet.swift */; };
@@ -134,6 +136,8 @@
 		66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRegistrationService.swift; sourceTree = "<group>"; };
 		66BC26812FBE2BA3000D4FF7 /* ProfileAvatarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAvatarButton.swift; sourceTree = "<group>"; };
 		66BC26832FBE2BB5000D4FF7 /* ProfileSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSpaceView.swift; sourceTree = "<group>"; };
+		66BC268A2FBE3AC4000D4FF7 /* FinancialDataBackupModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialDataBackupModels.swift; sourceTree = "<group>"; };
+		66BC268D2FBE3B15000D4FF7 /* FinancialDataCloudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialDataCloudService.swift; sourceTree = "<group>"; };
 		67B2F63CC66F34DAF96D56B0 /* KnownEntityRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownEntityRegistry.swift; sourceTree = "<group>"; };
 		68AEC708AA320B08933BD1F4 /* GoalProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProjectionCalculator.swift; sourceTree = "<group>"; };
 		696A2C6010A91A3F6A9C4BCD /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 		4644D18D0AB3EF66504C9F07 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				66BC268D2FBE3B15000D4FF7 /* FinancialDataCloudService.swift */,
+				66BC268A2FBE3AC4000D4FF7 /* FinancialDataBackupModels.swift */,
 				66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */,
 				923DF0C9C714F33B64A571D2 /* AADataTransformer.swift */,
 				84C77B8713EB43ED7A7A6A45 /* AAIntelligencePipeline.swift */,
@@ -576,6 +582,7 @@
 				E1A95077F8D564727861D688 /* AADataTransformer.swift in Sources */,
 				A57FAA8E9BB34D9115020F12 /* AAIntelligencePipeline.swift in Sources */,
 				A84E96BE25AF0624CBF095CB /* AIClassificationModels.swift in Sources */,
+				66BC268F2FBE3D27000D4FF7 /* FinancialDataBackupModels.swift in Sources */,
 				21CB0102C392D1C07E2C4B61 /* AIClassificationSuggestionModels.swift in Sources */,
 				02B0179C2385E26E923AFF51 /* AIReviewClassificationClient.swift in Sources */,
 				C26DB4D8751AB7F089BABA6E /* Agenda.swift in Sources */,
@@ -636,6 +643,7 @@
 				DFE57410A905437D8115B251 /* RemoteAAPayloadService.swift in Sources */,
 				BF523D345052460B5B3EACA9 /* RemoteAAPipelineDebugView.swift in Sources */,
 				99AA08551F325847C892D476 /* ReviewQueueDebugView.swift in Sources */,
+				66BC268E2FBE3B17000D4FF7 /* FinancialDataCloudService.swift in Sources */,
 				9EA6FBA087FAF33359EA85AF /* SafeToSpendCalculator.swift in Sources */,
 				3FFE814C28E575C4E9D64443 /* SecondaryAgendaView.swift in Sources */,
 				F745747D509A937CEDC7BBB4 /* SessionViewModel.swift in Sources */,
@@ -729,7 +737,7 @@
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -821,7 +829,7 @@
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

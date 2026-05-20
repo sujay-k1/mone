@@ -438,8 +438,10 @@ private struct LoginRestoreSheet: View {
         NavigationStack {
             AuthView(
                 onAuthComplete: {
-                    dismiss()
-                    Task { await sessionVM.handleAuthSuccess() }
+                    Task {
+                        await sessionVM.handleAuthSuccess()
+                        dismiss()
+                    }
                 },
                 showBackButton: false
             )

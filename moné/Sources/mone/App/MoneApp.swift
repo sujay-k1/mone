@@ -131,38 +131,51 @@ struct RootView: View {
     }
 }
 
-// MARK: - Main Tab View (native iOS tab bar)
+// MARK: - Main Tab View (iOS 18 Tab API)
 
 struct MainTabView: View {
+    @Environment(AppViewModel.self) private var appVM
+    @State private var selectedTab: TabSelection = .dashboard
     @State private var showProfileSpace = false
+    @State private var searchText = ""
+
+    enum TabSelection: Hashable {
+        case dashboard, moneyMap, pay, goals, transactions
+    }
+
+    private var dashboardIcon: String {
+        switch appVM.dashboardHealthState {
+        case .healthy:  return "chart.line.uptrend.xyaxis"
+        case .watch:    return "chart.line.flattrend.xyaxis"
+        case .risk:     return "chart.line.downtrend.xyaxis"
+        case nil:       return "chart.line.flattrend.xyaxis"
+        }
+    }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            TabView {
-                DashboardView()
-                    .tabItem {
-                        Label("Dashboard", systemImage: "square.grid.2x2")
-                    }
+            TabView(selection: $selectedTab) {
+                Tab("Dashboard", systemImage: dashboardIcon, value: .dashboard) {
+                    DashboardView()
+                }
 
-                MoneyMapView()
-                    .tabItem {
-                        Label("Money Map", systemImage: "map")
-                    }
+                Tab("Money Map", systemImage: "lightbulb.max", value: .moneyMap) {
+                    MoneyMapView()
+                }
 
-                PayView()
-                    .tabItem {
-                        Label("Pay", systemImage: "indianrupeesign.circle")
-                    }
+                Tab("Goals", systemImage: "dot.scope", value: .goals) {
+                    GoalsView()
+                }
 
-                GoalsView()
-                    .tabItem {
-                        Label("Goals", systemImage: "target")
-                    }
+                Tab("Transactions", systemImage: "arrow.up.arrow.down", value: .transactions) {
+                    TransactionsView()
+                }
 
-                TransactionsView()
-                    .tabItem {
-                        Label("Transactions", systemImage: "list.bullet.rectangle")
-                    }
+                Tab(value: .pay, role: .search) {
+                    PayView()
+                } label: {
+                    Label("Pay", systemImage: "qrcode")
+                }
             }
 
             ProfileAvatarButton {
