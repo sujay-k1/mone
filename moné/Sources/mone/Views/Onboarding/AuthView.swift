@@ -11,6 +11,11 @@ enum AuthScreen: Equatable {
     case signedIn(identifier: String)
 }
 
+enum AuthIntent {
+    case login
+    case signup
+}
+
 // MARK: - Auth View Model
 
 @MainActor @Observable
@@ -22,6 +27,10 @@ final class AuthViewModel {
     var isLoading = false
     var errorMessage: String?
     var resendMessage: String?
+    
+    var authIntent: AuthIntent = .login
+
+    private let registrationService = AuthRegistrationService()
 
     var isEmailValid: Bool {
         let trimmed = email.trimmingCharacters(in: .whitespaces)
@@ -85,11 +94,31 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
 
+        let trimmedEmail = email
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
         do {
-            try await supabase.auth.signInWithOTP(
-                email: email.trimmingCharacters(in: .whitespaces)
-            )
-            screen = .emailOTP(email: email.trimmingCharacters(in: .whitespaces))
+            let status = try await registrationService.checkEmail(trimmedEmail)
+
+            switch authIntent {
+            case .login:
+                guard status.registered else {
+                    errorMessage = "No account found for this email. Please sign up first."
+                    isLoading = false
+                    return
+                }
+
+            case .signup:
+                guard !status.registered else {
+                    errorMessage = "This email already has an account. Please log in instead."
+                    isLoading = false
+                    return
+                }
+            }
+
+            try await supabase.auth.signInWithOTP(email: trimmedEmail)
+            screen = .emailOTP(email: trimmedEmail)
             otp = ""
         } catch {
             errorMessage = friendlyError(error)
@@ -135,10 +164,30 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
 
-        let formatted = e164Phone
-        print("[Auth] Sending phone OTP to +91****\(phoneDigits.suffix(4))")
         do {
+            let status = try await registrationService.checkPhone(phoneDigits)
+
+            switch authIntent {
+            case .login:
+                guard status.registered else {
+                    errorMessage = "No account found for this number. Please sign up first."
+                    isLoading = false
+                    return
+                }
+
+            case .signup:
+                guard !status.registered else {
+                    errorMessage = "This number already has an account. Please log in instead."
+                    isLoading = false
+                    return
+                }
+            }
+
+            let formatted = e164Phone
+            print("[Auth] Sending phone OTP to +91****\(phoneDigits.suffix(4))")
+
             try await supabase.auth.signInWithOTP(phone: formatted)
+
             print("[Auth] signInWithOTP(phone:) returned successfully")
             screen = .phoneOTP(phone: formatted)
             otp = ""
@@ -232,13 +281,20 @@ final class AuthViewModel {
     }
 
     private func friendlyError(_ error: Error) -> String {
+        if case AuthRegistrationError.serverError(let message) = error {
+            return "Registration check failed: \(message)"
+        }
+
         let message = error.localizedDescription.lowercased()
+
         if message.contains("rate") || message.contains("too many") {
             return "Too many attempts. Please wait a moment and try again."
         }
+
         if message.contains("not found") || message.contains("invalid") {
             return "Could not send verification code. Please check and try again."
         }
+
         return "Something went wrong. Please try again."
     }
 

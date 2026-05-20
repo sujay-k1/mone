@@ -46,6 +46,25 @@ final class SessionViewModel {
             UserDefaults.standard.set(Array(newValue), forKey: recentlyDeletedIdentifiersKey)
         }
     }
+    
+    private func normalizedCurrentPhone() -> String? {
+        guard let phone = supabase.auth.currentSession?.user.phone else {
+            return nil
+        }
+
+        let digits = phone.filter(\.isNumber)
+        guard digits.count >= 10 else {
+            return nil
+        }
+
+        return String(digits.suffix(10))
+    }
+    
+    private func normalizedCurrentEmail() -> String? {
+        supabase.auth.currentSession?.user.email?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+    }
 
     func initialize() async {
         route = .loading
@@ -128,6 +147,8 @@ final class SessionViewModel {
         do {
             let data = ProfileUpsert(
                 id: userId,
+                phone: normalizedCurrentPhone(),
+                email: normalizedCurrentEmail(),
                 fullName: trimmed,
                 onboardingStep: "agendaEducation",
                 onboardingCompleted: false
@@ -139,6 +160,8 @@ final class SessionViewModel {
 
             profile = Profile(
                 id: userId,
+                phone: normalizedCurrentPhone(),
+                email: normalizedCurrentEmail(),
                 fullName: trimmed,
                 onboardingStep: "agendaEducation",
                 onboardingCompleted: false
@@ -181,12 +204,21 @@ final class SessionViewModel {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         let data = ProfileUpsert(
             id: userId,
+            phone: normalizedCurrentPhone(),
+            email: normalizedCurrentEmail(),
             fullName: trimmed,
             onboardingStep: "dashboard",
             onboardingCompleted: true
         )
         _ = try await supabase.from("profiles").upsert(data).execute()
-        profile = Profile(id: userId, fullName: trimmed, onboardingStep: "dashboard", onboardingCompleted: true)
+        profile = Profile(
+            id: userId,
+            phone: normalizedCurrentPhone(),
+            email: normalizedCurrentEmail(),
+            fullName: trimmed,
+            onboardingStep: "dashboard",
+            onboardingCompleted: true
+        )
         isReturningUser = false
     }
 
@@ -200,6 +232,8 @@ final class SessionViewModel {
         do {
             let data = ProfileUpsert(
                 id: userId,
+                phone: profile?.phone ?? normalizedCurrentPhone(),
+                email: profile?.email ?? normalizedCurrentEmail(),
                 fullName: fullName,
                 onboardingStep: "dashboard",
                 onboardingCompleted: true
@@ -211,6 +245,8 @@ final class SessionViewModel {
 
             profile = Profile(
                 id: userId,
+                phone: profile?.phone ?? normalizedCurrentPhone(),
+                email: profile?.email ?? normalizedCurrentEmail(),
                 fullName: fullName,
                 onboardingStep: "dashboard",
                 onboardingCompleted: true
@@ -234,6 +270,8 @@ final class SessionViewModel {
         do {
             let data = ProfileUpsert(
                 id: userId,
+                phone: profile?.phone ?? normalizedCurrentPhone(),
+                email: profile?.email ?? normalizedCurrentEmail(),
                 fullName: fullName,
                 onboardingStep: stepName,
                 onboardingCompleted: false
@@ -245,6 +283,8 @@ final class SessionViewModel {
 
             profile = Profile(
                 id: userId,
+                phone: profile?.phone ?? normalizedCurrentPhone(),
+                email: profile?.email ?? normalizedCurrentEmail(),
                 fullName: fullName,
                 onboardingStep: stepName,
                 onboardingCompleted: false
@@ -331,6 +371,8 @@ final class SessionViewModel {
     private func resetStaleProfileAfterDeletion(userId: UUID) async {
         let reset = ProfileReset(
             id: userId,
+            phone: normalizedCurrentPhone(),
+            email: normalizedCurrentEmail(),
             fullName: nil,
             onboardingStep: "name",
             onboardingCompleted: false
@@ -345,6 +387,8 @@ final class SessionViewModel {
 
         profile = Profile(
             id: userId,
+            phone: normalizedCurrentPhone(),
+            email: normalizedCurrentEmail(),
             fullName: nil,
             onboardingStep: "name",
             onboardingCompleted: false

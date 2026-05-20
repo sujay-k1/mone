@@ -81,6 +81,11 @@ struct SignUpSheet: View {
                     break
                 }
             }
+            
+            .onAppear {
+                authVM.authIntent = .signup
+            }
+            
         }
     }
 

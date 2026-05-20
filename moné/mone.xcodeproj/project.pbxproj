@@ -36,6 +36,7 @@
 		66BC267A2FBE1061000D4FF7 /* MoneyMapDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26792FBE1059000D4FF7 /* MoneyMapDataLoader.swift */; };
 		66BC267C2FBE106B000D4FF7 /* MoneyMapModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267B2FBE106B000D4FF7 /* MoneyMapModels.swift */; };
 		66BC267E2FBE1073000D4FF7 /* MoneyMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267D2FBE1073000D4FF7 /* MoneyMapView.swift */; };
+		66BC26802FBE1E2A000D4FF7 /* AuthRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */; };
 		67A7E21DC1115C6FD43EA155 /* MoneTaxonomy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8116131A5B5E619673058A3B /* MoneTaxonomy.swift */; };
 		684A1F39C70D0CD6779A5B6B /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CF48BC6C2D2D2F7A7455E2 /* TransactionsView.swift */; };
 		787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F8BD84AFCFC35206849E91D /* SignUpSheet.swift */; };
@@ -128,6 +129,7 @@
 		66BC26792FBE1059000D4FF7 /* MoneyMapDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyMapDataLoader.swift; sourceTree = "<group>"; };
 		66BC267B2FBE106B000D4FF7 /* MoneyMapModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyMapModels.swift; sourceTree = "<group>"; };
 		66BC267D2FBE1073000D4FF7 /* MoneyMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyMapView.swift; sourceTree = "<group>"; };
+		66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRegistrationService.swift; sourceTree = "<group>"; };
 		67B2F63CC66F34DAF96D56B0 /* KnownEntityRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownEntityRegistry.swift; sourceTree = "<group>"; };
 		68AEC708AA320B08933BD1F4 /* GoalProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProjectionCalculator.swift; sourceTree = "<group>"; };
 		696A2C6010A91A3F6A9C4BCD /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 		4644D18D0AB3EF66504C9F07 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */,
 				923DF0C9C714F33B64A571D2 /* AADataTransformer.swift */,
 				84C77B8713EB43ED7A7A6A45 /* AAIntelligencePipeline.swift */,
 				F221DBD8877250D3B0F370F3 /* AIReviewClassificationClient.swift */,
@@ -622,6 +625,7 @@
 				787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */,
 				7EA6EB6993CA457B2204BB8C /* SpendingDashboardView.swift in Sources */,
 				864C0135780B012BF4A93725 /* StorageChoiceView.swift in Sources */,
+				66BC26802FBE1E2A000D4FF7 /* AuthRegistrationService.swift in Sources */,
 				5E9FA6AB6777477B9B12402F /* SupabaseClient.swift in Sources */,
 				01452073EB27A1D1F0F4F260 /* Theme.swift in Sources */,
 				79C5AC202175070E59372893 /* Transaction.swift in Sources */,
