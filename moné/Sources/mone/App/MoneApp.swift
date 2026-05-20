@@ -134,41 +134,49 @@ struct RootView: View {
 // MARK: - Main Tab View (native iOS tab bar)
 
 struct MainTabView: View {
-    @State private var selectedTab: AppTab = .dashboard
+    @State private var showProfileSpace = false
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            DashboardView()
-                .tabItem { Label("Dashboard", systemImage: "square.grid.2x2") }
-                .tag(AppTab.dashboard)
+        ZStack(alignment: .topTrailing) {
+            TabView {
+                DashboardView()
+                    .tabItem {
+                        Label("Dashboard", systemImage: "square.grid.2x2")
+                    }
 
-            MoneyMapView()
-                .tabItem { Label("Money Map", systemImage: "slider.horizontal.3") }
-                .tag(AppTab.setup)
+                MoneyMapView()
+                    .tabItem {
+                        Label("Money Map", systemImage: "map")
+                    }
 
-            PayView()
-                .tabItem { Label("Pay", systemImage: "qrcode.viewfinder") }
-                .tag(AppTab.pay)
+                PayView()
+                    .tabItem {
+                        Label("Pay", systemImage: "indianrupeesign.circle")
+                    }
 
-            GoalsView()
-                .tabItem { Label("Goals", systemImage: "flag") }
-                .tag(AppTab.goals)
+                GoalsView()
+                    .tabItem {
+                        Label("Goals", systemImage: "target")
+                    }
 
-            TransactionsView()
-                .tabItem { Label("Transactions", systemImage: "list.bullet") }
-                .tag(AppTab.transactions)
+                TransactionsView()
+                    .tabItem {
+                        Label("Transactions", systemImage: "list.bullet.rectangle")
+                    }
+            }
+
+            ProfileAvatarButton {
+                showProfileSpace = true
+            }
+            .padding(.top, 12)
+            .padding(.trailing, 20)
         }
-        // Tint drives the selected-state icon/text colour set in UITabBarAppearance
-        .tint(Color.monePrimary)
-        .toolbarBackground(.visible, for: .tabBar)
+        .sheet(isPresented: $showProfileSpace) {
+            ProfileSpaceView()
+        }
     }
 }
 
-// MARK: - Tab Enum
-
-enum AppTab: Int, CaseIterable {
-    case dashboard, transactions, pay, goals, setup
-}
 
 // MARK: - Onboarding Flow
 

@@ -37,6 +37,8 @@
 		66BC267C2FBE106B000D4FF7 /* MoneyMapModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267B2FBE106B000D4FF7 /* MoneyMapModels.swift */; };
 		66BC267E2FBE1073000D4FF7 /* MoneyMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267D2FBE1073000D4FF7 /* MoneyMapView.swift */; };
 		66BC26802FBE1E2A000D4FF7 /* AuthRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */; };
+		66BC26822FBE2BA5000D4FF7 /* ProfileAvatarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26812FBE2BA3000D4FF7 /* ProfileAvatarButton.swift */; };
+		66BC26842FBE2BB5000D4FF7 /* ProfileSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26832FBE2BB5000D4FF7 /* ProfileSpaceView.swift */; };
 		67A7E21DC1115C6FD43EA155 /* MoneTaxonomy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8116131A5B5E619673058A3B /* MoneTaxonomy.swift */; };
 		684A1F39C70D0CD6779A5B6B /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CF48BC6C2D2D2F7A7455E2 /* TransactionsView.swift */; };
 		787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F8BD84AFCFC35206849E91D /* SignUpSheet.swift */; };
@@ -130,6 +132,8 @@
 		66BC267B2FBE106B000D4FF7 /* MoneyMapModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyMapModels.swift; sourceTree = "<group>"; };
 		66BC267D2FBE1073000D4FF7 /* MoneyMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyMapView.swift; sourceTree = "<group>"; };
 		66BC267F2FBE1E28000D4FF7 /* AuthRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRegistrationService.swift; sourceTree = "<group>"; };
+		66BC26812FBE2BA3000D4FF7 /* ProfileAvatarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAvatarButton.swift; sourceTree = "<group>"; };
+		66BC26832FBE2BB5000D4FF7 /* ProfileSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSpaceView.swift; sourceTree = "<group>"; };
 		67B2F63CC66F34DAF96D56B0 /* KnownEntityRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownEntityRegistry.swift; sourceTree = "<group>"; };
 		68AEC708AA320B08933BD1F4 /* GoalProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProjectionCalculator.swift; sourceTree = "<group>"; };
 		696A2C6010A91A3F6A9C4BCD /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -180,6 +184,14 @@
 		F73F3BC298AF0EAA489D1F00 /* raw_payload_aarav.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = raw_payload_aarav.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		66BC26862FBE2BE9000D4FF7 /* Setup */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Setup;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		560302D10FA0910055E3E57C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -211,6 +223,7 @@
 		0B48A3D24A4C21F4EA4DF6AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				66BC26862FBE2BE9000D4FF7 /* Setup */,
 				9C0CF4DC9B88C209717816B0 /* Dashboard */,
 				7FDBD6F4C040D8987D762573 /* Goals */,
 				790E8C6407731411D621EB81 /* Onboarding */,
@@ -240,6 +253,8 @@
 		3F75E1C3BC0E54BD2C872F68 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				66BC26812FBE2BA3000D4FF7 /* ProfileAvatarButton.swift */,
+				66BC26832FBE2BB5000D4FF7 /* ProfileSpaceView.swift */,
 				4BC97DC7A8061AFA30502D95 /* AppViewModel.swift */,
 				AEF932A238A7EDAE0E492BE0 /* DataProcessingViewModel.swift */,
 				D63C7D076CF3A5B104D746A2 /* SessionViewModel.swift */,
@@ -497,6 +512,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				66BC26862FBE2BE9000D4FF7 /* Setup */,
+			);
 			name = mone;
 			packageProductDependencies = (
 				7DAD08EF5C3B38E94262F683 /* Supabase */,
@@ -613,6 +631,7 @@
 				2E1B499CF9BFFD1A9EB85086 /* PhoneOTPSheet.swift in Sources */,
 				93974EECE2A7A8E034591926 /* PhoneVerificationView.swift in Sources */,
 				50F8EF37DA816A1FDB675741 /* Profile.swift in Sources */,
+				66BC26822FBE2BA5000D4FF7 /* ProfileAvatarButton.swift in Sources */,
 				D4EBBC65AF9E37CF2DC68D59 /* RawPayloadImporter.swift in Sources */,
 				DFE57410A905437D8115B251 /* RemoteAAPayloadService.swift in Sources */,
 				BF523D345052460B5B3EACA9 /* RemoteAAPipelineDebugView.swift in Sources */,
@@ -628,6 +647,7 @@
 				66BC26802FBE1E2A000D4FF7 /* AuthRegistrationService.swift in Sources */,
 				5E9FA6AB6777477B9B12402F /* SupabaseClient.swift in Sources */,
 				01452073EB27A1D1F0F4F260 /* Theme.swift in Sources */,
+				66BC26842FBE2BB5000D4FF7 /* ProfileSpaceView.swift in Sources */,
 				79C5AC202175070E59372893 /* Transaction.swift in Sources */,
 				EE40591738E0EC432FA81EBA /* TransactionClassifier.swift in Sources */,
 				CCD37B49BEF75A9996CB485C /* TransactionFeatureExtractor.swift in Sources */,
