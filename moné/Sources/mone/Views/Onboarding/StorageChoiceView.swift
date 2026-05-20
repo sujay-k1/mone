@@ -10,7 +10,7 @@ struct StorageChoiceView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: MoneSpacing.section) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Your Money Map\nis ready.")
+                        Text("Your MoneyMap\nis ready.")
                             .font(.moneDisplayMd)
                             .foregroundStyle(Color.monePrimary)
                         Text("Choose how mon\u{00E9} should keep this analysis. Account creation stays optional.")
@@ -23,7 +23,7 @@ struct StorageChoiceView: View {
                         StorageOptionCard(
                             icon: "lock.shield",
                             title: "Create account and store encrypted data",
-                            detail: "Use the existing encrypted backup path so you can restore your Money Map later.",
+                            detail: "Use the existing encrypted backup path so you can restore your MoneyMap later.",
                             badge: "Optional"
                         ) {
                             appVM.storageMode = .encryptedBackup
@@ -37,7 +37,7 @@ struct StorageChoiceView: View {
                         StorageOptionCard(
                             icon: "iphone",
                             title: "Continue locally",
-                            detail: "Keep this demo Money Map on this device. Deleting the app or changing phones may lose it.",
+                            detail: "Keep this demo MoneyMap on this device. Deleting the app or changing phones may lose it.",
                             badge: nil
                         ) {
                             appVM.storageMode = .local

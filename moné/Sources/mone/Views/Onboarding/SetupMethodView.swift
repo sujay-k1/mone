@@ -52,7 +52,7 @@ struct SetupMethodView: View {
                 .padding(.top, 8)
 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Build your\nMoney Map.")
+                    Text("Build your\nMoneyMap.")
                         .font(.moneDisplayMd)
                         .foregroundStyle(Color.monePrimary)
                     Text("Choose how moné learns about your finances.")
@@ -92,7 +92,7 @@ struct SetupMethodView: View {
                             Image(systemName: "lock.fill")
                                 .font(.system(size: 12))
                                 .foregroundStyle(Color.moneSecondary)
-                            Text("moné stores only the final Money Map on your device. Raw data is never stored.")
+                            Text("moné stores only the final MoneyMap on your device. Raw data is never stored.")
                                 .font(.moneBodySm)
                                 .foregroundStyle(Color.moneSecondary)
                         }

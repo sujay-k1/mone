@@ -6,24 +6,74 @@ import Observation
 @Observable
 class AppViewModel {
 
+    // MARK: - Local Onboarding Persistence
+
+    @ObservationIgnored
+    private let localStateKey = "mone.localOnboardingState.v1"
+
+    @ObservationIgnored
+    private var isRestoringLocalState = false
+
+    private struct LocalOnboardingState: Codable {
+        var hasCompletedOnboarding: Bool
+        var onboardingStepRawValue: Int
+        var primaryAgenda: String?
+        var secondaryAgenda: String?
+        var storageMode: String?
+        var setupMethod: String?
+        var verifiedPhone: String?
+        var enteredPAN: String?
+        var aaConsentId: String?
+    }
+
+    init() {
+        restoreLocalState()
+    }
+
     // MARK: Onboarding State
-    var hasCompletedOnboarding: Bool = false
-    var onboardingStep: OnboardingStep = .agendaEducation
+    var hasCompletedOnboarding: Bool = false {
+        didSet { persistLocalState() }
+    }
+
+    var onboardingStep: OnboardingStep = .agendaEducation {
+        didSet { persistLocalState() }
+    }
 
     // MARK: Dashboard State
     var dashboardHealthState: DashboardHealthState? = nil
 
     // MARK: User Choices
-    var primaryAgenda:  AgendaType?  = nil
-    var secondaryAgenda: AgendaType? = nil
-    var storageMode:    StorageMode?  = nil
-    var setupMethod:    SetupMethod? = nil
+    var primaryAgenda: AgendaType? = nil {
+        didSet { persistLocalState() }
+    }
+
+    var secondaryAgenda: AgendaType? = nil {
+        didSet { persistLocalState() }
+    }
+
+    var storageMode: StorageMode? = nil {
+        didSet { persistLocalState() }
+    }
+
+    var setupMethod: SetupMethod? = nil {
+        didSet { persistLocalState() }
+    }
+
     var nudgeIntensity: NudgeIntensity = .balanced
 
     // MARK: AA Flow State
-    var verifiedPhone: String? = nil
-    var enteredPAN: String? = nil
-    var aaConsentId: String? = nil
+    var verifiedPhone: String? = nil {
+        didSet { persistLocalState() }
+    }
+
+    var enteredPAN: String? = nil {
+        didSet { persistLocalState() }
+    }
+
+    var aaConsentId: String? = nil {
+        didSet { persistLocalState() }
+    }
+
     var aaResponse: SyntheticAAResponse? = nil
     var aaFetchError: String? = nil
 
@@ -209,11 +259,151 @@ class AppViewModel {
         setupMethod = nil
         nudgeIntensity = .balanced
         verifiedPhone = nil
+        enteredPAN = nil
+        aaConsentId = nil
         aaResponse = nil
         aaFetchError = nil
+
+        persistLocalState()
     }
 
     func startAuthenticatedOnboarding(at step: OnboardingStep = .agendaEducation) {
         resetOnboarding(to: step)
+    }
+    
+    func clearLocalGuestProgress() {
+        UserDefaults.standard.removeObject(forKey: localStateKey)
+        resetOnboarding(to: .agendaEducation)
+    }
+    
+    // MARK: - Local State Persistence
+
+    private func persistLocalState() {
+        guard !isRestoringLocalState else { return }
+
+        let state = LocalOnboardingState(
+            hasCompletedOnboarding: hasCompletedOnboarding,
+            onboardingStepRawValue: onboardingStep.rawValue,
+            primaryAgenda: encodeAgenda(primaryAgenda),
+            secondaryAgenda: encodeAgenda(secondaryAgenda),
+            storageMode: encodeStorageMode(storageMode),
+            setupMethod: encodeSetupMethod(setupMethod),
+            verifiedPhone: verifiedPhone,
+            enteredPAN: enteredPAN,
+            aaConsentId: aaConsentId
+        )
+
+        do {
+            let data = try JSONEncoder().encode(state)
+            UserDefaults.standard.set(data, forKey: localStateKey)
+        } catch {
+            print("[AppViewModel] Failed to persist local onboarding state:", error)
+        }
+    }
+
+    private func restoreLocalState() {
+        guard let data = UserDefaults.standard.data(forKey: localStateKey) else {
+            return
+        }
+
+        do {
+            isRestoringLocalState = true
+
+            let state = try JSONDecoder().decode(LocalOnboardingState.self, from: data)
+
+            hasCompletedOnboarding = state.hasCompletedOnboarding
+            onboardingStep = OnboardingStep(rawValue: state.onboardingStepRawValue) ?? .agendaEducation
+            primaryAgenda = decodeAgenda(state.primaryAgenda)
+            secondaryAgenda = decodeAgenda(state.secondaryAgenda)
+            storageMode = decodeStorageMode(state.storageMode)
+            setupMethod = decodeSetupMethod(state.setupMethod)
+            verifiedPhone = state.verifiedPhone
+            enteredPAN = state.enteredPAN
+            aaConsentId = state.aaConsentId
+
+            if let agenda = primaryAgenda {
+                nudgeIntensity = agenda.defaultNudgeIntensity
+            }
+
+            isRestoringLocalState = false
+        } catch {
+            isRestoringLocalState = false
+            UserDefaults.standard.removeObject(forKey: localStateKey)
+            print("[AppViewModel] Failed to restore local onboarding state:", error)
+        }
+    }
+
+    private func encodeAgenda(_ value: AgendaType?) -> String? {
+        guard let value else { return nil }
+
+        switch value {
+        case .controlSpending:
+            return "controlSpending"
+        case .planGoals:
+            return "planGoals"
+        case .understandPicture:
+            return "understandPicture"
+        }
+    }
+
+    private func decodeAgenda(_ value: String?) -> AgendaType? {
+        switch value {
+        case "controlSpending":
+            return .controlSpending
+        case "planGoals":
+            return .planGoals
+        case "understandPicture":
+            return .understandPicture
+        default:
+            return nil
+        }
+    }
+
+    private func encodeStorageMode(_ value: StorageMode?) -> String? {
+        guard let value else { return nil }
+
+        switch value {
+        case .encryptedBackup:
+            return "encryptedBackup"
+        case .local:
+            return "local"
+        }
+    }
+
+    private func decodeStorageMode(_ value: String?) -> StorageMode? {
+        switch value {
+        case "encryptedBackup":
+            return .encryptedBackup
+        case "local":
+            return .local
+        default:
+            return nil
+        }
+    }
+
+    private func encodeSetupMethod(_ value: SetupMethod?) -> String? {
+        guard let value else { return nil }
+
+        switch value {
+        case .accountAggregator:
+            return "accountAggregator"
+        case .email:
+            return "email"
+        case .manual:
+            return "manual"
+        }
+    }
+
+    private func decodeSetupMethod(_ value: String?) -> SetupMethod? {
+        switch value {
+        case "accountAggregator":
+            return .accountAggregator
+        case "email":
+            return .email
+        case "manual":
+            return .manual
+        default:
+            return nil
+        }
     }
 }

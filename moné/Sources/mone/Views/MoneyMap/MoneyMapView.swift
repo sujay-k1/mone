@@ -47,7 +47,7 @@ struct MoneyMapView: View {
                     .tracking(1.5)
                     .foregroundStyle(Color.moneTertiary)
 
-                Text("Money Map")
+                Text("MoneyMap")
                     .font(.moneHLMd)
                     .foregroundStyle(Color.monePrimary)
 
@@ -320,7 +320,7 @@ struct MoneyMapView: View {
             ProgressView()
                 .tint(Color.monePrimary)
 
-            Text("Loading Money Map")
+            Text("Loading MoneyMap")
                 .font(.moneBodyMd)
                 .foregroundStyle(Color.moneSecondary)
         }
@@ -329,7 +329,7 @@ struct MoneyMapView: View {
 
     private func errorState(_ message: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Money Map not ready")
+            Text("MoneyMap not ready")
                 .font(.moneHLMd)
                 .foregroundStyle(Color.monePrimary)
 

@@ -89,7 +89,13 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.35), value: sessionVM.route)
         .task {
             await sessionVM.initialize()
-            syncOnboardingState(for: sessionVM.route)
+
+            if supabase.auth.currentSession == nil,
+               appVM.hasCompletedOnboarding {
+                sessionVM.route = .dashboard
+            } else {
+                syncOnboardingState(for: sessionVM.route)
+            }
         }
         .onChange(of: sessionVM.route) { _, route in
             syncOnboardingState(for: route)
@@ -123,11 +129,18 @@ struct RootView: View {
     private func syncOnboardingState(for route: SessionViewModel.Route) {
         guard route == .onboarding else { return }
 
-        if sessionVM.shouldForceWelcomeOnboarding || supabase.auth.currentSession == nil {
+        if sessionVM.shouldForceWelcomeOnboarding {
             appVM.resetOnboarding(to: .agendaEducation)
-        } else {
-            appVM.startAuthenticatedOnboarding(at: sessionVM.nextOnboardingStep)
+            return
         }
+
+        if supabase.auth.currentSession == nil {
+            // Anonymous/local user.
+            // Do NOT reset here; AppViewModel may have restored local onboarding progress.
+            return
+        }
+
+        appVM.startAuthenticatedOnboarding(at: sessionVM.nextOnboardingStep)
     }
 }
 
@@ -137,10 +150,13 @@ struct MainTabView: View {
     @Environment(AppViewModel.self) private var appVM
     @State private var selectedTab: TabSelection = .dashboard
     @State private var showProfileSpace = false
+    @State private var showSignUp = false
     @State private var searchText = ""
 
+    private static let signUpDismissedKey = "mone.signUpDismissed"
+
     enum TabSelection: Hashable {
-        case dashboard, moneyMap, pay, goals, transactions
+        case dashboard, moneyMap, pay, goals
     }
 
     private var dashboardIcon: String {
@@ -155,20 +171,16 @@ struct MainTabView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             TabView(selection: $selectedTab) {
-                Tab("Dashboard", systemImage: dashboardIcon, value: .dashboard) {
+                Tab("Trends", systemImage: dashboardIcon, value: .dashboard) {
                     DashboardView()
                 }
 
-                Tab("Money Map", systemImage: "lightbulb.max", value: .moneyMap) {
+                Tab("MoneyMap", systemImage: "binoculars", value: .moneyMap) {
                     MoneyMapView()
                 }
 
                 Tab("Goals", systemImage: "dot.scope", value: .goals) {
                     GoalsView()
-                }
-
-                Tab("Transactions", systemImage: "arrow.up.arrow.down", value: .transactions) {
-                    TransactionsView()
                 }
 
                 Tab(value: .pay, role: .search) {
@@ -185,7 +197,23 @@ struct MainTabView: View {
             .padding(.trailing, 20)
         }
         .sheet(isPresented: $showProfileSpace) {
-            ProfileSpaceView()
+            ProfileSpaceView(onSignUpRequested: {
+                showSignUp = true
+            })
+        }
+        .sheet(isPresented: $showSignUp) {
+            SignUpSheet(
+                aaPhone: appVM.verifiedPhone ?? "",
+                onDismissed: {
+                    UserDefaults.standard.set(true, forKey: Self.signUpDismissedKey)
+                    showSignUp = false
+                },
+                onComplete: {
+                    showSignUp = false
+                }
+            )
+            .presentationDetents([PresentationDetent.large])
+            .presentationDragIndicator(.visible)
         }
     }
 }

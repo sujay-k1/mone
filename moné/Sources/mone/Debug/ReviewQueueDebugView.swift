@@ -204,7 +204,7 @@ struct ReviewQueueDebugView: View {
                 }
             }
 
-            Text("These are transactions that Moné could not classify confidently enough to safely use in the Money Map.")
+            Text("These are transactions that Moné could not classify confidently enough to safely use in the MoneyMap.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

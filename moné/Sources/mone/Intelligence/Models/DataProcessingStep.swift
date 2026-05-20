@@ -24,7 +24,7 @@ enum DataProcessingStep: String, CaseIterable, Identifiable {
         case .resolvingUnclearItems:
             return "Checking ambiguous transactions for better accuracy."
         case .buildingInsights:
-            return "Preparing your dashboard, trends, and Money Map."
+            return "Preparing your dashboard, trends, and MoneyMap."
         case .savingResults:
             return "Saving your processed insights on this device."
         }

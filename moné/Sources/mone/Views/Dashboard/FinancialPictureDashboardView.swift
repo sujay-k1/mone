@@ -11,7 +11,7 @@ struct FinancialPictureDashboardView: View {
         ScrollView(showsIndicators: false) {
             LazyVStack(alignment: .leading, spacing: MoneSpacing.gutter) {
 
-                DashboardHeader(title: "Dashboard")
+                DashboardHeader(title: "Trends")
                     .padding(.top, 16)
 
                 // Hero: Financial health

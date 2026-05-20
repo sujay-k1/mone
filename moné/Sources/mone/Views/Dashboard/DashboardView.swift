@@ -795,7 +795,7 @@ private struct ForecastConfidenceCard: View {
             return "No high-impact review items remain for this month."
         }
 
-        return "\(summary.reviewCount) transaction(s) may need review to stabilise this month’s Money Map."
+        return "\(summary.reviewCount) transaction(s) may need review to stabilise this month’s MoneyMap."
     }
 }
 
@@ -903,7 +903,7 @@ private struct NextBestActionsCard: View {
             (
                 "Priority: Low",
                 "Maintain current rhythm",
-                "Your Money Map is stable for this month.",
+                "Your MoneyMap is stable for this month.",
                 Color.moneHealthy
             ),
             (

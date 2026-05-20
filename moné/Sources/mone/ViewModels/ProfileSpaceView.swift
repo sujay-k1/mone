@@ -5,9 +5,10 @@ struct ProfileSpaceView: View {
     @Environment(SessionViewModel.self) private var sessionVM
     @Environment(AppViewModel.self) private var appVM
 
+    var onSignUpRequested: (() -> Void)? = nil
+
     @State private var showDeleteConfirmation = false
-    @State private var showSignUpSheet = false
-    
+
     private static let signUpDismissedKey = "mone.signUpDismissed"
     
     private var signUpPhone: String {
@@ -53,26 +54,6 @@ struct ProfileSpaceView: View {
                 Text("This will delete your account and return you to onboarding.")
             }
             
-            .sheet(isPresented: $showSignUpSheet) {
-                SignUpSheet(
-                    aaPhone: signUpPhone,
-                    onDismissed: {
-                        print("SIGNUP SHEET DISMISSED FROM PROFILE")
-                        showSignUpSheet = false
-                    },
-                    onComplete: {
-                        print("SIGNUP SHEET COMPLETED FROM PROFILE")
-                        showSignUpSheet = false
-
-                        Task {
-                            await sessionVM.handleAuthSuccess()
-                        }
-                    }
-                )
-                .onAppear {
-                    print("SIGNUP SHEET APPEARED FROM PROFILE with phone:", signUpPhone)
-                }
-            }
         }
     }
 
@@ -122,8 +103,10 @@ struct ProfileSpaceView: View {
 
             VStack(spacing: 14) {
                 Button {
-                    showSignUpSheet = true
                     dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        onSignUpRequested?()
+                    }
                 } label: {
                     HStack {
                         VStack(alignment: .leading, spacing: 6) {

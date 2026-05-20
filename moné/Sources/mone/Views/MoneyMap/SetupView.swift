@@ -39,8 +39,8 @@ struct SetupView: View {
                         SetupRow(label: "Nudge style", value: appVM.nudgeIntensity.rawValue)
                     }
 
-                    // Money Map summary
-                    SetupSection(title: "Money Map") {
+                    // MoneyMap summary
+                    SetupSection(title: "MoneyMap") {
                         SetupRow(label: "Monthly income",
                                  value: appVM.formatted(map.totalMonthlyIncome))
                         Divider().background(Color.moneStroke)
@@ -112,14 +112,14 @@ struct SetupView: View {
                         Divider().background(Color.moneStroke)
                         SetupRow(label: "Raw data stored", value: "Never")
                         Divider().background(Color.moneStroke)
-                        SetupRow(label: "Money Map on device", value: "Yes")
+                        SetupRow(label: "MoneyMap on device", value: "Yes")
 
                         Divider().background(Color.moneStroke)
 
                         Button {
                             showDeleteAlert = true
                         } label: {
-                            Text("Delete Money Map")
+                            Text("Delete MoneyMap")
                                 .font(.moneBodyMd)
                                 .foregroundStyle(Color.moneRisk)
                         }
@@ -177,7 +177,7 @@ struct SetupView: View {
         .sheet(isPresented: $showHealthDetail) {
             FinancialHealthDetailView()
         }
-        .alert("Delete Money Map?", isPresented: $showDeleteAlert) {
+        .alert("Delete MoneyMap?", isPresented: $showDeleteAlert) {
             Button("Delete", role: .destructive) {
                 appVM.moneyMap = MoneyMap()
             }

@@ -104,7 +104,7 @@ struct ConfirmFindingsView: View {
                     .padding(MoneSpacing.cardSm)
                     .moneCard()
 
-                    MonePrimaryButton(title: "Confirm Money Map") {
+                    MonePrimaryButton(title: "Confirm MoneyMap") {
                         appVM.advance()
                     }
                     .padding(.bottom, 40)

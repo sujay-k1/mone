@@ -128,7 +128,7 @@ struct AAConsentView: View {
                             Text("Raw data is transient")
                                 .font(.moneHLSm)
                                 .foregroundStyle(Color.monePrimary)
-                            Text("moné reads your data once, derives your Money Map, then discards the raw data. Only the Money Map is stored on your device.")
+                            Text("moné reads your data once, derives your MoneyMap, then discards the raw data. Only the MoneyMap is stored on your device.")
                                 .font(.moneBodySm)
                                 .foregroundStyle(Color.moneSecondary)
                         }

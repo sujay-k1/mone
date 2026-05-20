@@ -16,7 +16,7 @@ struct DataPrivacyView: View {
                             Text("Your money data,\nyour choice.")
                                 .font(.moneDisplayMd)
                                 .foregroundStyle(Color.monePrimary)
-                            Text("Choose how moné stores your Money Map.")
+                            Text("Choose how moné stores your MoneyMap.")
                                 .font(.moneBodyLg)
                                 .foregroundStyle(Color.moneSecondary)
                         }
@@ -48,7 +48,7 @@ struct DataPrivacyView: View {
                                 isRecommended: false,
                                 isSelected: appVM.storageMode == .local,
                                 warning: appVM.storageMode == .local
-                                    ? "Deleting the app or switching phones will remove your Money Map."
+                                    ? "Deleting the app or switching phones will remove your MoneyMap."
                                     : nil
                             ) {
                                 appVM.storageMode = .local

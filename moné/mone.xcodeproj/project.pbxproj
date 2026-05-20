@@ -42,7 +42,6 @@
 		66BC268E2FBE3B17000D4FF7 /* FinancialDataCloudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC268D2FBE3B15000D4FF7 /* FinancialDataCloudService.swift */; };
 		66BC268F2FBE3D27000D4FF7 /* FinancialDataBackupModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC268A2FBE3AC4000D4FF7 /* FinancialDataBackupModels.swift */; };
 		67A7E21DC1115C6FD43EA155 /* MoneTaxonomy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8116131A5B5E619673058A3B /* MoneTaxonomy.swift */; };
-		684A1F39C70D0CD6779A5B6B /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CF48BC6C2D2D2F7A7455E2 /* TransactionsView.swift */; };
 		787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F8BD84AFCFC35206849E91D /* SignUpSheet.swift */; };
 		78A595B2D422922DC0198789 /* BuildingMoneyMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAFCE495917736DBE9F3D7D /* BuildingMoneyMapView.swift */; };
 		7908F0AAA3DA1E5517E977AD /* AAConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC5BF034B15C973FF55DFBB /* AAConsentView.swift */; };
@@ -183,7 +182,6 @@
 		E952EA0CDD3AFEF1801E705A /* Agenda.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agenda.swift; sourceTree = "<group>"; };
 		EFB80F5709DCDA8BDB239442 /* PayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayView.swift; sourceTree = "<group>"; };
 		F0E0E23DA322442A137EF02E /* DataProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProcessingView.swift; sourceTree = "<group>"; };
-		F1CF48BC6C2D2D2F7A7455E2 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
 		F221DBD8877250D3B0F370F3 /* AIReviewClassificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIReviewClassificationClient.swift; sourceTree = "<group>"; };
 		F73F3BC298AF0EAA489D1F00 /* raw_payload_aarav.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = raw_payload_aarav.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,7 +209,6 @@
 		01D4108A576F26295264834F /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				F1CF48BC6C2D2D2F7A7455E2 /* TransactionsView.swift */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -660,7 +657,6 @@
 				EE40591738E0EC432FA81EBA /* TransactionClassifier.swift in Sources */,
 				CCD37B49BEF75A9996CB485C /* TransactionFeatureExtractor.swift in Sources */,
 				5151C170322F29D149C5E8DF /* TransactionFeatureModels.swift in Sources */,
-				684A1F39C70D0CD6779A5B6B /* TransactionsView.swift in Sources */,
 				083D592271B541346C2EA5CE /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
