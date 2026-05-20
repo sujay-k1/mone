@@ -2,8 +2,10 @@ import SwiftUI
 
 struct SetupView: View {
     @Environment(AppViewModel.self) private var appVM
+    @Environment(SessionViewModel.self) private var sessionVM
     @State private var showHealthDetail = false
     @State private var showDeleteAlert  = false
+    @State private var showDeleteAccountAlert = false
 
     var map: MoneyMap { appVM.moneyMap }
 
@@ -134,6 +136,30 @@ struct SetupView: View {
                         MoneSecondaryButton(title: "Create backup", fullWidth: false) { }
                     }
 
+                    SetupSection(title: "Account") {
+                        Button {
+                            Task { await sessionVM.signOut() }
+                        } label: {
+                            SetupRow(label: "Log out", value: sessionVM.isLoading ? "Working..." : "")
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(sessionVM.isLoading || sessionVM.isDeletingAccount)
+
+                        Divider().background(Color.moneStroke)
+
+                        Button {
+                            showDeleteAccountAlert = true
+                        } label: {
+                            Text(sessionVM.isDeletingAccount ? "Deleting account..." : "Delete account")
+                                .font(.moneBodyMd)
+                                .foregroundStyle(Color.moneRisk)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 8)
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(sessionVM.isLoading || sessionVM.isDeletingAccount)
+                    }
+
                     // App info
                     HStack {
                         Text("moné v1.0 · Local-first · Privacy-first")
@@ -158,6 +184,14 @@ struct SetupView: View {
             Button("Cancel", role: .cancel) { }
         } message: {
             Text("This will remove all your income, obligations, goals, and health data from this device. This cannot be undone.")
+        }
+        .alert("Delete account?", isPresented: $showDeleteAccountAlert) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete account", role: .destructive) {
+                Task { await sessionVM.deleteAccount() }
+            }
+        } message: {
+            Text("This will permanently delete your Moné account and profile data. This cannot be undone.")
         }
     }
 }

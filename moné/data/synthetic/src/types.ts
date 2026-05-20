@@ -267,6 +267,22 @@ export interface GroundTruthLabels {
   confidence_expected: "high" | "medium" | "low";
   reimbursement_linked_txn_ids: string[] | null;
   is_reimbursement_credit: boolean;
+  is_extreme_purchase?: boolean;
+  is_investment_redemption?: boolean;
+  is_liquidity_rescue?: boolean;
+  is_premature_withdrawal?: boolean;
+  is_goal_protective?: boolean;
+  is_credit_card_interest?: boolean;
+  is_late_fee?: boolean;
+  is_term_deposit?: boolean;
+  sip_status?: "scheduled" | "paid" | "skipped" | "failed" | "delayed" | "reduced";
+  credit_card_payment_status?: "full" | "partial" | "missed" | "late";
+  linked_asset_account_id?: string | null;
+  linked_cashflow_transaction_id?: string | null;
+  financial_health_impact?: string | null;
+  nudge_priority?: "low" | "medium" | "high";
+  surface_mode?: "interrupt" | "dashboard_insight" | "weekly_summary" | "silent_signal";
+  should_interrupt?: boolean;
 }
 
 export type TimeOfDay = "morning" | "afternoon" | "evening" | "night" | "late_night";
@@ -283,12 +299,15 @@ export interface AADataItem {
     type: string;
     account: AAAccount;
   };
+  linkRefNumber: string;
+  maskedAccNumber: string;
 }
 
 export interface AAAccount {
   type: string;
   version: string;
   linkedAccRef: string;
+  maskedAccNumber: string;
   profile: {
     holders: {
       type: string;

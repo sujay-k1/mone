@@ -324,9 +324,11 @@ struct AuthView: View {
 
 // MARK: - Phone Entry Screen
 
-private struct PhoneEntryScreen: View {
+struct PhoneEntryScreen: View {
     @Bindable var vm: AuthViewModel
     var onBack: (() -> Void)?
+    var title: String = "Access your \nsecure vault"
+    var subtitle: String = "We are sending a 6-digit code to your mobile number."
     @FocusState private var isPhoneFocused: Bool
 
     var body: some View {
@@ -334,14 +336,14 @@ private struct PhoneEntryScreen: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: MoneSpacing.section) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Secure your\nvault")
+                        Text(title)
                             .font(.moneDisplayMd)
                             .foregroundStyle(Color.monePrimary)
-                        Text("We\u{2019}ll send a 6-digit code to verify.")
+                        Text(subtitle)
                             .font(.moneBodyLg)
                             .foregroundStyle(Color.moneSecondary)
                     }
-                    .padding(.top, 60)
+                    .padding(.top, 28)
 
                     VStack(alignment: .leading, spacing: 12) {
                         Text("MOBILE NUMBER")
@@ -400,11 +402,7 @@ private struct PhoneEntryScreen: View {
                 }
 
                 HStack(spacing: MoneSpacing.gutter) {
-                    if let onBack {
-                        MoneIconButton(icon: "chevron.left") {
-                            onBack()
-                        }
-                    }
+                    
                     MonePrimaryButton(title: vm.isLoading ? "Sending..." : "Get OTP") {
                         Task { await vm.sendPhoneOTP() }
                     }
@@ -433,38 +431,21 @@ private struct EmailEntryScreen: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: MoneSpacing.section) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Secure your\nvault")
+                        Text("Access your \nsecure vault")
                             .font(.moneDisplayMd)
                             .foregroundStyle(Color.monePrimary)
-                        Text("Access your private vault.")
+                        Text("We are sending an OTP code to your email address.")
                             .font(.moneBodyLg)
                             .foregroundStyle(Color.moneSecondary)
                     }
-                    .padding(.top, 60)
+                    .padding(.top, 28)
 
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("EMAIL ADDRESS")
-                            .font(.moneLabelCaps)
-                            .tracking(2)
-                            .foregroundStyle(Color.moneTertiary)
-
-                        TextField("", text: $vm.email, prompt: Text("name@example.com").foregroundColor(.moneTertiary))
+                    MoneField(label: "EMAIL ADDRESS") {
+                        TextField("", text: $vm.email, prompt: .monePlaceholder("name@example.com"))
                             .focused($isEmailFocused)
                             .textContentType(.emailAddress)
                             .keyboardType(.emailAddress)
-                            .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                            .font(.moneBodyLg)
-                            .foregroundStyle(Color.monePrimary)
-                            .tint(Color.monePrimary)
-                            .padding(.horizontal, 16)
-                            .frame(height: 56)
-                            .background(Color.moneSurface)
-                            .clipShape(RoundedRectangle(cornerRadius: MoneRadius.md))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: MoneRadius.md)
-                                    .strokeBorder(Color.moneStrokeMid, lineWidth: 1)
-                            )
+                            .moneFieldStyle()
                             .onChange(of: vm.email) { oldValue, _ in
                                 if oldValue.count < 6 && vm.isEmailValid && vm.hasKnownEmailDomain && !vm.isLoading {
                                     Task { await vm.sendEmailOTP() }
@@ -489,10 +470,8 @@ private struct EmailEntryScreen: View {
                 }
 
                 HStack(spacing: MoneSpacing.gutter) {
-                    MoneIconButton(icon: "chevron.left") {
-                        onBack()
-                    }
-                    MonePrimaryButton(title: vm.isLoading ? "Sending..." : "Continue") {
+                    
+                    MonePrimaryButton(title: vm.isLoading ? "Sending..." : "Get OTP") {
                         Task { await vm.sendEmailOTP() }
                     }
                     .opacity(vm.isLoading || !vm.isEmailValid ? 0.4 : 1)
@@ -510,7 +489,7 @@ private struct EmailEntryScreen: View {
 
 // MARK: - OTP Screen
 
-private struct OTPScreen: View {
+struct OTPScreen: View {
     @Bindable var vm: AuthViewModel
     let destination: String
     @State private var resendCountdown: Int = 30
@@ -531,7 +510,7 @@ private struct OTPScreen: View {
                             .foregroundStyle(Color.monePrimary))
                             .font(.moneBodyLg)
                     }
-                    .padding(.top, 60)
+                    .padding(.top, 28)
 
                     VStack(alignment: .leading, spacing: 10) {
                         Text("VERIFICATION CODE")
@@ -577,6 +556,7 @@ private struct OTPScreen: View {
                 }
                 .disabled(vm.isLoading || resendCountdown > 0)
                 .buttonStyle(.plain)
+                .padding(.vertical, 12)
 
                 HStack(spacing: MoneSpacing.gutter) {
                     MoneIconButton(icon: "chevron.left") {
@@ -611,7 +591,7 @@ private struct OTPScreen: View {
 
 // MARK: - OTP Field
 
-private struct OTPField: View {
+struct OTPField: View {
     @Binding var otp: String
     @FocusState private var isFocused: Bool
 
@@ -647,7 +627,7 @@ private struct OTPField: View {
     }
 }
 
-private struct OTPDigitBox: View {
+struct OTPDigitBox: View {
     let digit: String
     var isActive: Bool = false
 

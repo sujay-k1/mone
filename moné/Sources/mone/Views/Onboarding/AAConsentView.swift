@@ -349,7 +349,7 @@ struct AAConsentView: View {
                         }
 
                         MoneSecondaryButton(title: "Choose another method") {
-                            appVM.onboardingStep = .setupMethod
+                            appVM.onboardingStep = .methodSelection
                         }
                     }
                     .padding(.bottom, 40)

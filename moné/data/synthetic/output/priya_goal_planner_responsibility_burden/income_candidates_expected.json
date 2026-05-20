@@ -1,0 +1,121 @@
+[
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20250628_0001",
+    "date": "2025-06-28",
+    "amount": 265957.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20250629_0002",
+    "date": "2025-06-29",
+    "amount": 3244.0,
+    "type": "interest_dividend",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20250728_0044",
+    "date": "2025-07-28",
+    "amount": 261126.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20250828_0089",
+    "date": "2025-08-28",
+    "amount": 260615.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20250928_0134",
+    "date": "2025-09-28",
+    "amount": 253845.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20250930_0136",
+    "date": "2025-09-30",
+    "amount": 3988.0,
+    "type": "interest_dividend",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20251028_0177",
+    "date": "2025-10-28",
+    "amount": 255440.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20251128_0222",
+    "date": "2025-11-28",
+    "amount": 265157.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20251228_0272",
+    "date": "2025-12-28",
+    "amount": 262055.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20251230_0273",
+    "date": "2025-12-30",
+    "amount": 3612.0,
+    "type": "interest_dividend",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260128_0324",
+    "date": "2026-01-28",
+    "amount": 259735.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260228_0373",
+    "date": "2026-02-28",
+    "amount": 262978.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260320_0423",
+    "date": "2026-03-20",
+    "amount": 300000.0,
+    "type": "bonus",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260328_0422",
+    "date": "2026-03-28",
+    "amount": 262899.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260330_0424",
+    "date": "2026-03-30",
+    "amount": 3690.0,
+    "type": "interest_dividend",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260428_0472",
+    "date": "2026-04-28",
+    "amount": 267789.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_PRIYA_SRC_DEPOSIT_20260528_0514",
+    "date": "2026-05-28",
+    "amount": 261700.0,
+    "type": "salary",
+    "confidence_expected": "high"
+  }
+]

@@ -1,0 +1,2 @@
+account_id,fi_type,bank,account_type,status,currency,opening_balance,closing_balance,total_credits,total_debits,transaction_count
+e69326fa-f75f-53d1-915f-cd743d715fa5,deposit,HDFC,SAVINGS,ACTIVE,INR,150000.00,355056.85,2036969.00,1831912.15,1348

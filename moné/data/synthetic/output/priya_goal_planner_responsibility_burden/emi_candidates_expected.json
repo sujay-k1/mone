@@ -1,0 +1,36 @@
+[
+  {
+    "candidate_id": "emi_education_loan_hdfc_credila",
+    "emi_type": "education_loan_emi",
+    "lender": "HDFC Credila",
+    "monthly_amount": 24500,
+    "tenure_months_remaining": 36,
+    "first_due_date": "2025-06-08",
+    "last_due_date": "2028-05-08",
+    "payment_status_pattern": "regular",
+    "confidence_expected": "high",
+    "obligation_type": "debt_commitment",
+    "safe_to_spend_impact": "high",
+    "financial_health_impact": "debt_pressure",
+    "is_responsibility_debt": true
+  },
+  {
+    "candidate_id": "emi_home_appliance_202601",
+    "emi_type": "card_emi",
+    "merchant": "Croma",
+    "lender": "HDFC Bank",
+    "monthly_amount": 10500,
+    "tenure_months": 6,
+    "remaining_months": 2,
+    "first_due_date": "2026-02-23",
+    "last_due_date": "2026-07-23",
+    "payment_status_pattern": [
+      "paid",
+      "scheduled"
+    ],
+    "confidence_expected": "high",
+    "obligation_type": "household_responsibility_debt",
+    "safe_to_spend_impact": -10500,
+    "financial_health_impact": "debt_pressure_watch"
+  }
+]

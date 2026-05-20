@@ -124,10 +124,10 @@ export class SeededRandom {
 
 // Formatting helpers
 
-export function formatTimestamp(date: string, hour: number, minute: number): string {
+export function formatTimestamp(date: string, hour: number, minute: number, second = 0): string {
   const h = String(hour).padStart(2, "0");
   const m = String(minute).padStart(2, "0");
-  const s = String(Math.floor(Math.random() * 60)).padStart(2, "0");
+  const s = String(second).padStart(2, "0");
   return `${date}T${h}:${m}:${s}+05:30`;
 }
 

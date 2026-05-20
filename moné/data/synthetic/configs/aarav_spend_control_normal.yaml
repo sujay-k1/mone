@@ -1,14 +1,14 @@
 persona:
   id: aarav
-  name: Aarav Sharma
+  name: Synthetic Aarav
   age: 27
   occupation: Software Developer
   city: Bangalore
-  pan: ABCPD1234F
-  email: aarav.sharma@example.com
-  mobile: "9876543210"
-  address: "42, HSR Layout, Sector 2, Bangalore 560102"
-  dob: "1999-03-15"
+  pan: SYNTH0000X
+  email: aarav.synthetic@example.invalid
+  mobile: "9000000000"
+  address: "Synthetic HSR Layout address, Bangalore"
+  dob: "1999-01-01"
 
 seed: mone-aarav-normal-v1
 
@@ -22,7 +22,7 @@ accounts:
     ifsc: HDFC0001234
     branch: HSR Layout
     type: SAVINGS
-    opening_balance: 45000
+    opening_balance: 150000
 
 income:
   salary:

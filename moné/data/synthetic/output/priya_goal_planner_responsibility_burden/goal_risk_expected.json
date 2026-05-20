@@ -1,0 +1,95 @@
+{
+  "dataset_id": "priya_goal_planner_responsibility_burden",
+  "goals": [
+    {
+      "goal_id": "emergency_fund",
+      "goal_name": "Emergency fund",
+      "target_amount": 800000,
+      "deadline": "2026-12-31",
+      "monthly_allocation_needed": 30000,
+      "actual_allocations": 9,
+      "skipped_or_reduced_months": [
+        "2025-10",
+        "2026-01",
+        "2026-03"
+      ],
+      "projected_delay_days": 45,
+      "status": "Watch",
+      "reason": "Family support and healthcare events reduced allocation capacity."
+    },
+    {
+      "goal_id": "parents_healthcare_buffer",
+      "goal_name": "Parents healthcare buffer",
+      "target_amount": 500000,
+      "deadline": "2026-09-30",
+      "monthly_allocation_needed": 25000,
+      "actual_allocations": 6,
+      "skipped_or_reduced_months": [
+        "2025-08",
+        "2025-10",
+        "2026-02"
+      ],
+      "projected_delay_days": 75,
+      "status": "Risk",
+      "reason": "Parent healthcare support and insurance premiums raised near-term pressure."
+    },
+    {
+      "goal_id": "family_trip",
+      "goal_name": "Japan family trip",
+      "target_amount": 420000,
+      "deadline": "2027-03-31",
+      "monthly_allocation_needed": 18000,
+      "actual_allocations": 7,
+      "skipped_or_reduced_months": [
+        "2025-12",
+        "2026-01"
+      ],
+      "projected_delay_days": 55,
+      "status": "Watch",
+      "reason": "Planned travel booking pulled forward cash needs."
+    },
+    {
+      "goal_id": "home_upgrade",
+      "goal_name": "Home upgrade fund",
+      "target_amount": 300000,
+      "deadline": "2026-11-30",
+      "monthly_allocation_needed": 16000,
+      "actual_allocations": 8,
+      "skipped_or_reduced_months": [
+        "2026-01",
+        "2026-02"
+      ],
+      "projected_delay_days": 40,
+      "status": "Watch",
+      "reason": "Household appliance and repair expenses temporarily reduced headroom."
+    },
+    {
+      "goal_id": "long_term_investment",
+      "goal_name": "Long-term investment target",
+      "target_amount": 2500000,
+      "deadline": "2030-12-31",
+      "monthly_allocation_needed": 40000,
+      "actual_allocations": 12,
+      "skipped_or_reduced_months": [],
+      "projected_delay_days": 0,
+      "status": "Healthy",
+      "reason": "SIP discipline remains intact despite responsibility load."
+    },
+    {
+      "goal_id": "education_loan_payoff",
+      "goal_name": "Education-loan payoff acceleration",
+      "target_amount": 250000,
+      "deadline": "2027-05-31",
+      "monthly_allocation_needed": 12000,
+      "actual_allocations": 5,
+      "skipped_or_reduced_months": [
+        "2025-10",
+        "2026-01",
+        "2026-03"
+      ],
+      "projected_delay_days": 60,
+      "status": "Watch",
+      "reason": "Monthly EMI is regular, but acceleration capacity is constrained by family and healthcare commitments."
+    }
+  ]
+}

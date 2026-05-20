@@ -1,0 +1,24 @@
+{
+  "demo_identities": [
+    {
+      "phone": "8828290489",
+      "personaId": "aarav",
+      "displayName": "Aarav",
+      "dataset_id": "aarav_spend_control_rash_decisions",
+      "sourceHolderProfile": "masked",
+      "status": "wired"
+    },
+    {
+      "phone": "7304893952",
+      "personaId": "priya",
+      "displayName": "Priya",
+      "dataset_id": "priya_goal_planner_responsibility_burden",
+      "sourceHolderProfile": "masked",
+      "status": "wired"
+    }
+  ],
+  "unsupported_number_behavior": {
+    "status": "unsupported_demo_number",
+    "message": "This demo number is not supported yet. Try Aarav or Priya's demo number."
+  }
+}

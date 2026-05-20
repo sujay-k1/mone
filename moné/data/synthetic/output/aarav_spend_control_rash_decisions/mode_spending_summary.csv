@@ -1,0 +1,6 @@
+mode,total_amount,transaction_count,avg_amount,percentage_of_total
+UPI,1193317.00,1211,985.40,41.77
+CARD,715159.00,284,2518.17,25.04
+FT,611150.00,13,47011.54,21.39
+NACH,255000.00,34,7500.00,8.93
+ATM,82000.00,8,10250.00,2.87

@@ -15,7 +15,7 @@ import type {
   BehavioralState,
   TimeOfDay,
 } from "./types.ts";
-import { SeededRandom, formatTimestamp, formatAmount, timeOfDayFromHour } from "./random.ts";
+import { SeededRandom, formatTimestamp, formatAmount, timeOfDayFromHour, dayOfWeekName, daysInMonth } from "./random.ts";
 
 interface TransactionBuilder {
   date: string;
@@ -150,7 +150,9 @@ export function generateDailyTransactions(
       balance = Math.round(balance * 100) / 100;
 
       const dayInfo = calMonth.days.find((d) => d.date === txn.date)!;
-      const tod = timeOfDayFromHour(txn.hour);
+      const derivedDayOfWeek = dayOfWeekName(txn.date);
+      const derivedTimeOfDay = timeOfDayFromHour(txn.hour);
+      const derivedSalaryCyclePhase = salaryCyclePhaseFromLastSalary(txn.date, config.income.salary.day);
 
       const fullGT: GroundTruthLabels = {
         category: txn.ground_truth.category ?? "unknown",
@@ -191,9 +193,9 @@ export function generateDailyTransactions(
         expected_goal_drift_days: txn.ground_truth.expected_goal_drift_days ?? null,
         life_event: dayInfo.active_life_events.length > 0 ? dayInfo.active_life_events[0].type : null,
         behavioral_state: dayInfo.behavioral_state,
-        day_of_week: dayInfo.day_of_week,
-        time_of_day: tod,
-        salary_cycle_phase: dayInfo.salary_cycle_phase,
+        day_of_week: derivedDayOfWeek,
+        time_of_day: derivedTimeOfDay,
+        salary_cycle_phase: derivedSalaryCyclePhase,
         confidence_expected: txn.ground_truth.confidence_expected ?? "high",
         reimbursement_linked_txn_ids: txn.ground_truth.reimbursement_linked_txn_ids ?? null,
         is_reimbursement_credit: txn.ground_truth.is_reimbursement_credit ?? false,
@@ -902,6 +904,31 @@ function adjustProbability(baseProbability: number, state: BehavioralState, type
     job_switch_phase: 0.7,
   };
   return Math.min(1, baseProbability * (multiplier[state] ?? 1.0));
+}
+
+function salaryCyclePhaseFromLastSalary(dateStr: string, salaryDay: number): SalaryCyclePhase {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const currentSalaryDay = Math.min(salaryDay, daysInMonth(year, month));
+  let salaryYear = year;
+  let salaryMonth = month;
+
+  if (day < currentSalaryDay) {
+    salaryMonth -= 1;
+    if (salaryMonth === 0) {
+      salaryMonth = 12;
+      salaryYear -= 1;
+    }
+  }
+
+  const actualSalaryDay = Math.min(salaryDay, daysInMonth(salaryYear, salaryMonth));
+  const txnDate = new Date(year, month - 1, day);
+  const lastSalaryDate = new Date(salaryYear, salaryMonth - 1, actualSalaryDay);
+  const daysAfterSalary = Math.floor((txnDate.getTime() - lastSalaryDate.getTime()) / 86_400_000);
+
+  if (daysAfterSalary <= 7) return "week_1";
+  if (daysAfterSalary <= 14) return "week_2";
+  if (daysAfterSalary <= 21) return "week_3";
+  return "week_4";
 }
 
 function formatMonthLabel(dateStr: string): string {

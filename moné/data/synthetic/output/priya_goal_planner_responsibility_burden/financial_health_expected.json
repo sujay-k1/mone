@@ -1,0 +1,21 @@
+{
+  "dataset_id": "priya_goal_planner_responsibility_burden",
+  "overall_status": "Watch",
+  "dimensions": {
+    "cashflow_stability": "Watch",
+    "obligation_load": "Risk",
+    "safe_to_spend": "Watch",
+    "goal_progress": "Watch",
+    "emergency_readiness": "Watch",
+    "debt_pressure": "Watch",
+    "spending_drift": "Watch",
+    "credit_card_discipline": "Watch",
+    "liquidity_stress": "Watch",
+    "investment_discipline": "Healthy",
+    "family_responsibility_load": "Risk",
+    "insurance_readiness": "Healthy",
+    "net_worth": "Watch",
+    "liquid_net_worth": "Watch"
+  },
+  "reason": "Priya is responsibility-heavy: fixed commitments and education debt leave limited flexible room."
+}

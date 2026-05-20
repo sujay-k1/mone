@@ -1,0 +1,28 @@
+{
+  "dataset_id": "aarav_spend_control_rash_decisions",
+  "source_type": "synthetic_device_finance_source",
+  "source_purchase_id": "device_purchase_20251105",
+  "merchant": "Croma Koramangala Synthetic",
+  "lender": "Bajaj Finance",
+  "purchase_date": "2025-11-05",
+  "purchase_amount": 72000.0,
+  "financed_amount": 72000.0,
+  "down_payment_amount": 0.0,
+  "tenure_months": 8,
+  "monthly_emi": 9000.0,
+  "first_due_date": "2025-12-05",
+  "last_due_date": "2026-07-05",
+  "linked_deposit_payment_txn_ids": [
+    "TXN_AARAV_SRC_DEPOSIT_20251205_1602_DEVICE_EMI",
+    "TXN_AARAV_SRC_DEPOSIT_20260105_1603_DEVICE_EMI",
+    "TXN_AARAV_SRC_DEPOSIT_20260205_1604_DEVICE_EMI",
+    "TXN_AARAV_SRC_DEPOSIT_20260305_1605_DEVICE_EMI",
+    "TXN_AARAV_SRC_DEPOSIT_20260405_1606_DEVICE_EMI",
+    "TXN_AARAV_SRC_DEPOSIT_20260505_1607_DEVICE_EMI"
+  ],
+  "status": "active",
+  "remaining_installments_after_period": 2,
+  "generator_metadata": {
+    "source_reconciliation_policy": "deposit EMI debit rows represent paid installments through 2026-05; remaining installments are scheduled after extraction end date"
+  }
+}

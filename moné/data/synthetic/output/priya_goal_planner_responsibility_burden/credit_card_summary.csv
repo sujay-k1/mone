@@ -1,0 +1,15 @@
+statement_cycle_id,card_name,masked_card_number,credit_limit,available_credit,statement_cycle_start,statement_cycle_end,due_date,total_amount_due,minimum_amount_due,previous_outstanding,payments_received,payment_status,interest_charged,late_fee,emi_outstanding,utilization_ratio,statement_status,is_over_limit,over_limit_amount,over_limit_reason,over_limit_fee
+cc_2025_06,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2025-06-01,2025-06-30,2025-07-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,0.0,0.0,historical,False,0.0,,0.0
+cc_2025_07,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2025-07-01,2025-07-31,2025-08-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,0.0,0.0,historical,False,0.0,,0.0
+cc_2025_08,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,193000,2025-08-01,2025-08-31,2025-09-23,42000.0,2100.0,0.0,42000.0,full,0.0,0.0,0.0,0.18,historical,False,0.0,,0.0
+cc_2025_09,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2025-09-01,2025-09-30,2025-10-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,0.0,0.0,historical,False,0.0,,0.0
+cc_2025_10,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,179000,2025-10-01,2025-10-31,2025-11-23,56000.0,2800.0,0.0,56000.0,full,0.0,0.0,0.0,0.24,historical,False,0.0,,0.0
+cc_2025_11,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2025-11-01,2025-11-30,2025-12-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,0.0,0.0,historical,False,0.0,,0.0
+cc_2025_12,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,101000,2025-12-01,2025-12-31,2026-01-23,134000.0,6700.0,0.0,84000.0,partial,0.0,0.0,0.0,0.57,historical,False,0.0,,0.0
+cc_2026_01,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,157000,2026-01-01,2026-01-31,2026-02-23,78000.0,3900.0,0.0,38000.0,partial,1200.0,0.0,42000.0,0.34,historical,False,0.0,,0.0
+cc_2026_02,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2026-02-01,2026-02-28,2026-03-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,42000.0,0.0,historical,False,0.0,,0.0
+cc_2026_03,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,187000,2026-03-01,2026-03-31,2026-04-23,48000.0,2400.0,0.0,48000.0,full,0.0,0.0,42000.0,0.2,historical,False,0.0,,0.0
+cc_2026_04,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,197000,2026-04-01,2026-04-30,2026-05-23,38000.0,1900.0,0.0,0.0,scheduled,0.0,0.0,42000.0,0.16,historical,False,0.0,,0.0
+cc_2026_05,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,181000,2026-05-01,2026-05-31,2026-06-23,54000.0,2700.0,0.0,0.0,scheduled,0.0,0.0,42000.0,0.23,historical,False,0.0,,0.0
+cc_2026_06,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2026-06-01,2026-06-30,2026-07-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,42000.0,0.0,historical,False,0.0,,0.0
+cc_2026_07,HDFC Diners Synthetic,XXXX-XXXX-XXXX-7788,235000.0,235000,2026-07-01,2026-07-31,2026-08-23,0.0,0.0,0.0,0.0,no_activity,0.0,0.0,42000.0,0.0,historical,False,0.0,,0.0

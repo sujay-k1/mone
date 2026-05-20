@@ -1,0 +1,131 @@
+persona:
+  id: aarav
+  name: Synthetic Aarav
+  age: 27
+  occupation: Software Developer
+  city: Bangalore
+  pan: SYNTH0000X
+  email: aarav.synthetic@example.invalid
+  mobile: "9000000000"
+  address: "Synthetic HSR Layout address, Bangalore"
+  dob: "1999-01-01"
+
+dataset_id: aarav_spend_control_rash_decisions
+seed: mone-aarav-rash-decisions-final-v4
+
+period:
+  start: "2025-06-01"
+  end: "2026-05-31"
+
+accounts:
+  deposit:
+    bank: HDFC
+    ifsc: HDFC0001234
+    branch: HSR Layout
+    type: SAVINGS
+    facility: NONE
+    opening_balance: 390000
+  mutual_funds:
+    amc: HDFC Mutual Fund
+    planned_sips:
+      - fund: HDFC Bluechip Fund
+        amount: 10000
+        day: 6
+      - fund: Axis Midcap Fund
+        amount: 5000
+        day: 10
+  recurring_deposit:
+    bank: HDFC
+    goal_id: emergency_fund
+    monthly_amount: 7000
+    day: 8
+  term_deposit:
+    bank: HDFC
+    principal: 120000
+    start_date: "2025-06-01"
+    interest_rate: 0.067
+
+income:
+  salary:
+    amount: 165000
+    day: 28
+    employer: ACME TECH INDIA PVT LTD
+    mode: FT
+  freelance:
+    min: 10000
+    max: 24000
+    months: ["2025-08", "2025-12", "2026-04"]
+
+obligations:
+  rent:
+    amount: 42000
+    day: 5
+    payee: Synthetic Landlord
+    mode: UPI
+  broadband:
+    amount: 999
+    day: 15
+    provider: ACT Fibernet
+  mobile:
+    amount: 599
+    day: 18
+    provider: Jio
+  subscriptions:
+    - name: Netflix
+      amount: 649
+      day: 12
+    - name: Spotify
+      amount: 119
+      day: 14
+    - name: iCloud
+      amount: 75
+      day: 14
+    - name: Amazon Prime
+      amount: 179
+      day: 20
+  credit_card_due_day: 23
+
+goals:
+  - id: emergency_fund
+    name: Emergency Fund
+    target: 300000
+    current: 180000
+    monthly_allocation: 10000
+    allocation_day: 29
+  - id: vacation_bali
+    name: Bali Vacation
+    target: 150000
+    current: 37500
+    monthly_allocation: 8000
+    allocation_day: 29
+  - id: laptop
+    name: Laptop / Gadget Fund
+    target: 120000
+    current: 42000
+    monthly_allocation: 6000
+    allocation_day: 30
+
+rash_decision_events:
+  - month: "2025-08"
+    type: extreme_gadget_purchase
+    amount: 145000
+  - month: "2025-10"
+    type: luxury_fashion_spike
+    amount: 62000
+  - month: "2025-12"
+    type: spontaneous_trip
+    amount: 82000
+  - month: "2026-02"
+    type: extreme_gadget_purchase
+    amount: 98000
+  - month: "2026-03"
+    type: liquidity_rescue
+    mutual_fund_redemption: 72000
+    recurring_deposit_break: 54000
+  - month: "2026-04"
+    type: term_deposit_premature_withdrawal
+    amount: 112000
+
+expected_financial_health:
+  overall_status: Risk
+  reason: High income is offset by rash discretionary spikes, missed SIPs, asset withdrawals, credit-card stress, and goal drift.

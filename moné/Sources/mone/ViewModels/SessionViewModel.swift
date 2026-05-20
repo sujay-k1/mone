@@ -17,7 +17,7 @@ final class SessionViewModel {
     var isDeletingAccount = false
     var error: String?
     var isReturningUser = false
-    var nextOnboardingStep: AppViewModel.OnboardingStep = .welcome
+    var nextOnboardingStep: AppViewModel.OnboardingStep = .agendaEducation
     var shouldForceWelcomeOnboarding = false
     var onboardingResetToken = UUID()
 
@@ -53,7 +53,7 @@ final class SessionViewModel {
         if supabase.auth.currentSession != nil {
             await handleAuthSuccess()
         } else {
-            nextOnboardingStep = .welcome
+            nextOnboardingStep = .agendaEducation
             route = .onboarding
         }
     }
@@ -129,7 +129,7 @@ final class SessionViewModel {
             let data = ProfileUpsert(
                 id: userId,
                 fullName: trimmed,
-                onboardingStep: "primaryAgenda",
+                onboardingStep: "agendaEducation",
                 onboardingCompleted: false
             )
             _ = try await supabase
@@ -140,13 +140,13 @@ final class SessionViewModel {
             profile = Profile(
                 id: userId,
                 fullName: trimmed,
-                onboardingStep: "primaryAgenda",
+                onboardingStep: "agendaEducation",
                 onboardingCompleted: false
             )
             clearRecentlyDeletedUserID(userId.uuidString)
             clearRecentlyDeletedIdentifiers()
             isReturningUser = false
-            nextOnboardingStep = .primaryAgenda
+            nextOnboardingStep = .agendaEducation
             route = .onboarding
         } catch {
             self.error = "Failed to save. Please try again."
@@ -165,11 +165,29 @@ final class SessionViewModel {
         profile = nil
         error = nil
         isReturningUser = false
-        nextOnboardingStep = .welcome
+        nextOnboardingStep = .agendaEducation
         shouldForceWelcomeOnboarding = true
         onboardingResetToken = UUID()
         route = .onboarding
         isLoading = false
+    }
+
+    /// Saves name for a newly signed-up user without changing the route.
+    /// Called from SignUpSheet after OTP verification when no profile exists.
+    func completeSignUp(name: String) async throws {
+        guard let userId = supabase.auth.currentSession?.user.id else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        let data = ProfileUpsert(
+            id: userId,
+            fullName: trimmed,
+            onboardingStep: "dashboard",
+            onboardingCompleted: true
+        )
+        _ = try await supabase.from("profiles").upsert(data).execute()
+        profile = Profile(id: userId, fullName: trimmed, onboardingStep: "dashboard", onboardingCompleted: true)
+        isReturningUser = false
     }
 
     func completeOnboarding() async {
@@ -203,9 +221,7 @@ final class SessionViewModel {
     }
 
     func updateOnboardingProgress(to step: AppViewModel.OnboardingStep) async {
-        guard step != .welcome,
-              step != .auth,
-              step != .complete,
+        guard step != .complete,
               let userId = supabase.auth.currentSession?.user.id,
               let fullName = profile?.fullName,
               !fullName.trimmingCharacters(in: .whitespaces).isEmpty else {
@@ -271,7 +287,7 @@ final class SessionViewModel {
 
             profile = nil
             isReturningUser = false
-            nextOnboardingStep = .welcome
+            nextOnboardingStep = .agendaEducation
             shouldForceWelcomeOnboarding = true
             markRecentlyDeletedUserID(session.user.id.uuidString)
             markRecentlyDeletedIdentifiers(currentSessionIdentifiers(session))
@@ -338,32 +354,31 @@ final class SessionViewModel {
 
     private func onboardingStep(from value: String?) -> AppViewModel.OnboardingStep {
         switch value {
-        case "dataPrivacy": return .dataPrivacy
-        case "auth": return .auth
-        case "primaryAgenda": return .primaryAgenda
-        case "secondaryAgenda": return .secondaryAgenda
-        case "setupMethod": return .setupMethod
+        case "agendaEducation", "primaryAgenda", "secondaryAgenda", "welcome", "dataPrivacy", "auth":
+            return .agendaEducation
+        case "methodSelection", "setupMethod":
+            return .methodSelection
         case "aaConsent": return .aaConsent
-        case "buildingMoneyMap": return .buildingMoneyMap
-        case "confirmFindings": return .confirmFindings
-        case "goalSetup": return .goalSetup
+        case "phoneOtp": return .phoneOtp
+        case "aaFetching", "buildingMoneyMap": return .aaFetching
+        case "processing", "confirmFindings", "goalSetup": return .processing
+        case "storageChoice": return .storageChoice
+        case "dashboardTour": return .dashboardTour
         case "dashboard": return .complete
-        default: return .primaryAgenda
+        default: return .agendaEducation
         }
     }
 
     private func onboardingStepName(for step: AppViewModel.OnboardingStep) -> String {
         switch step {
-        case .welcome: return "welcome"
-        case .dataPrivacy: return "dataPrivacy"
-        case .auth: return "auth"
-        case .primaryAgenda: return "primaryAgenda"
-        case .secondaryAgenda: return "secondaryAgenda"
-        case .setupMethod: return "setupMethod"
+        case .agendaEducation: return "agendaEducation"
+        case .methodSelection: return "methodSelection"
         case .aaConsent: return "aaConsent"
-        case .buildingMoneyMap: return "buildingMoneyMap"
-        case .confirmFindings: return "confirmFindings"
-        case .goalSetup: return "goalSetup"
+        case .phoneOtp: return "phoneOtp"
+        case .aaFetching: return "aaFetching"
+        case .processing: return "processing"
+        case .storageChoice: return "storageChoice"
+        case .dashboardTour: return "dashboardTour"
         case .complete: return "dashboard"
         }
     }

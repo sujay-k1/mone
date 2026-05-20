@@ -1,0 +1,7 @@
+{
+  "dataset_id": "priya_goal_planner_responsibility_burden",
+  "source_type": "synthetic_device_finance_source",
+  "status": "not_applicable",
+  "reason": "Priya has education loan and card EMI obligations; no separate device-finance lender source is modeled for this fixture.",
+  "sources": []
+}

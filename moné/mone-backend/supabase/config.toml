@@ -485,3 +485,25 @@ enabled = true
 verify_jwt = true
 import_map = "./functions/parse-setu-fi-artifact/deno.json"
 entrypoint = "./functions/parse-setu-fi-artifact/index.ts"
+
+[functions.classify-review-items]
+enabled = true
+verify_jwt = true
+import_map = "./functions/classify-review-items/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/classify-review-items/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/classify-review-items/*.html" ]
+
+[functions.fetch-aa-payload]
+enabled = true
+verify_jwt = true
+import_map = "./functions/fetch-aa-payload/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/fetch-aa-payload/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/fetch-aa-payload/*.html" ]

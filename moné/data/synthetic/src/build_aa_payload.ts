@@ -45,17 +45,18 @@ export function buildAAPayload(
             type: "deposit",
             version: "2.0.0",
             linkedAccRef,
+            maskedAccNumber,
             profile: {
               holders: {
                 type: "SINGLE",
                 holder: [
                   {
-                    dob: config.persona.dob,
-                    pan: config.persona.pan,
-                    name: config.persona.name,
-                    email: config.persona.email,
-                    mobile: config.persona.mobile,
-                    address: config.persona.address,
+                    dob: "1999-01-01",
+                    pan: "SYNTH0000X",
+                    name: "Synthetic Holder AARAV",
+                    email: "aarav.synthetic@example.invalid",
+                    mobile: "9000000000",
+                    address: "Synthetic HSR Layout address, Bangalore",
                     nominee: "REGISTERED",
                     ckycCompliance: "true",
                   },
@@ -81,6 +82,8 @@ export function buildAAPayload(
             },
           },
         },
+        linkRefNumber: linkedAccRef,
+        maskedAccNumber,
       },
     ],
   };

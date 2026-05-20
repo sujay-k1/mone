@@ -15,9 +15,16 @@ struct SetupMethodView: View {
             Color.moneBackground.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                if isLoggedIn {
-                    HStack {
-                        Spacer()
+                HStack {
+                    if isLoggedIn {
+                        Color.clear.frame(width: 48, height: 48)
+                    }
+                    Spacer()
+                    Text("mon\u{00E9}")
+                        .font(.system(size: 20, weight: .bold, design: .serif))
+                        .foregroundStyle(Color.monePrimary)
+                    Spacer()
+                    if isLoggedIn {
                         Menu {
                             Button("Log out", systemImage: "rectangle.portrait.and.arrow.right") {
                                 Task { await sessionVM.signOut() }
@@ -40,39 +47,44 @@ struct SetupMethodView: View {
                         }
                         .buttonStyle(.plain)
                     }
-                    .padding(.horizontal, MoneSpacing.page)
-                    .padding(.top, 8)
                 }
+                .padding(.horizontal, MoneSpacing.page)
+                .padding(.top, 8)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Build your\nMoney Map.")
+                        .font(.moneDisplayMd)
+                        .foregroundStyle(Color.monePrimary)
+                    Text("Choose how moné learns about your finances.")
+                        .font(.moneBodyLg)
+                        .foregroundStyle(Color.moneSecondary)
+
+                    if let error = sessionVM.error {
+                        Text(error)
+                            .font(.moneBodySm)
+                            .foregroundStyle(Color.moneRisk)
+                            .padding(.top, 4)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, MoneSpacing.page)
+                .padding(.top, 24)
 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: MoneSpacing.section) {
-
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Build your\nMoney Map.")
-                                .font(.moneDisplayMd)
-                                .foregroundStyle(Color.monePrimary)
-                            Text("Choose how moné learns about your finances.")
-                                .font(.moneBodyLg)
-                                .foregroundStyle(Color.moneSecondary)
-
-                            if let error = sessionVM.error {
-                                Text(error)
-                                    .font(.moneBodySm)
-                                    .foregroundStyle(Color.moneRisk)
-                                    .padding(.top, 4)
-                            }
-                        }
-                        .padding(.top, isLoggedIn ? 20 : 60)
-
                         VStack(spacing: MoneSpacing.gutter) {
                             ForEach([SetupMethod.accountAggregator, .email, .manual], id: \.rawValue) { method in
+                                let isAvailable = method == .accountAggregator
                                 SetupOptionCard(
                                     method: method,
                                     isSelected: appVM.setupMethod == method,
-                                    tag: appVM.setupMethod == method ? "Selected" : nil
+                                    tag: appVM.setupMethod == method ? "Selected" : (isAvailable ? nil : "Coming soon")
                                 ) {
-                                    appVM.setupMethod = method
+                                    if isAvailable {
+                                        appVM.setupMethod = method
+                                    }
                                 }
+                                .opacity(isAvailable ? 1 : 0.45)
                             }
                         }
 
@@ -86,6 +98,7 @@ struct SetupMethodView: View {
                         }
                     }
                     .padding(.horizontal, MoneSpacing.page)
+                    .padding(.top, MoneSpacing.section)
                 }
 
                 HStack(spacing: MoneSpacing.gutter) {
@@ -95,8 +108,8 @@ struct SetupMethodView: View {
                     MonePrimaryButton(title: "Continue") {
                         appVM.advance()
                     }
-                    .opacity(appVM.setupMethod == nil ? 0.4 : 1)
-                    .disabled(appVM.setupMethod == nil)
+                    .opacity(appVM.setupMethod == .accountAggregator ? 1 : 0.4)
+                    .disabled(appVM.setupMethod != .accountAggregator)
                 }
                 .padding(.horizontal, MoneSpacing.page)
                 .padding(.top, MoneSpacing.gutter)
@@ -119,4 +132,5 @@ struct SetupMethodView: View {
 #Preview {
     SetupMethodView()
         .environment(AppViewModel())
+        .environment(SessionViewModel())
 }

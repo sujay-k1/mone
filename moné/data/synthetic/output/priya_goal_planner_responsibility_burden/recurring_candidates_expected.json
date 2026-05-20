@@ -1,0 +1,60 @@
+{
+  "dataset_id": "priya_goal_planner_responsibility_burden",
+  "fixed_commitment": [
+    {
+      "name": "Rent",
+      "monthly_amount": 68000,
+      "normalized_bucket": "fixed_commitment",
+      "commitment_strength": "must_pay"
+    },
+    {
+      "name": "Parents support",
+      "monthly_amount": 35000,
+      "normalized_bucket": "family_obligation",
+      "commitment_strength": "must_pay"
+    },
+    {
+      "name": "Domestic help",
+      "monthly_amount": 8500,
+      "normalized_bucket": "household_commitment",
+      "commitment_strength": "must_pay"
+    }
+  ],
+  "debt_commitment": [
+    {
+      "name": "HDFC Credila education loan",
+      "monthly_amount": 24500,
+      "normalized_bucket": "debt_commitment",
+      "commitment_strength": "must_pay",
+      "obligation_type": "education_loan"
+    },
+    {
+      "name": "Household appliance card EMI",
+      "monthly_amount": 10500,
+      "normalized_bucket": "debt_commitment",
+      "commitment_strength": "must_pay",
+      "obligation_type": "household_emi"
+    }
+  ],
+  "protected_goal_transfer": [
+    {
+      "name": "ICICI Prudential SIP",
+      "monthly_amount": 28000,
+      "normalized_bucket": "protected_goal_transfer",
+      "goal_protective": true
+    },
+    {
+      "name": "Emergency RD",
+      "monthly_amount": 18000,
+      "normalized_bucket": "protected_goal_transfer",
+      "goal_protective": true
+    }
+  ],
+  "insurance_commitment": [
+    {
+      "name": "Family health and term protection",
+      "normalized_bucket": "protection_commitment",
+      "commitment_strength": "must_pay"
+    }
+  ]
+}

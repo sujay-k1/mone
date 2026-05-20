@@ -1,0 +1,19 @@
+{
+  "dataset_id": "aarav_spend_control_rash_decisions",
+  "overall_status": "Risk",
+  "dimensions": {
+    "cashflow_stability": "Watch",
+    "obligation_load": "Watch",
+    "safe_to_spend": "Risk",
+    "goal_progress": "Risk",
+    "emergency_readiness": "Risk",
+    "debt_pressure": "Risk",
+    "subscription_leakage": "Watch",
+    "spending_drift": "Risk",
+    "upcoming_risk": "Risk",
+    "credit_card_discipline": "Risk",
+    "liquidity_stress": "Risk",
+    "investment_discipline": "Risk",
+    "net_worth": "Risk"
+  }
+}

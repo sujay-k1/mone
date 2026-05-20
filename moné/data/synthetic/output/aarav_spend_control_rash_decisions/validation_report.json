@@ -1,0 +1,2074 @@
+{
+  "dataset_id": "aarav_spend_control_rash_decisions",
+  "status": "pass",
+  "seed": "mone-aarav-rash-decisions-final-v4",
+  "generated_at": "2026-05-19T07:45:00+05:30",
+  "checks": [
+    {
+      "name": "output_folder_regenerated_atomically",
+      "expected": "output folder exists and contains only generated files",
+      "actual": [
+        "accounts.csv",
+        "credit_card_statement.json",
+        "credit_card_summary.csv",
+        "credit_card_transactions.csv",
+        "dataset_registry.json",
+        "demo_identity_map.json",
+        "device_finance_source.json",
+        "emi_candidates_expected.json",
+        "financial_health_expected.json",
+        "goal_risk_expected.json",
+        "ground_truth.json",
+        "income_candidates_expected.json",
+        "mode_spending_summary.csv",
+        "monthly_cashflow.csv",
+        "net_worth_expected.json",
+        "nudge_expected.json",
+        "output_manifest.json",
+        "raw_payload.json",
+        "recurring_candidates_expected.json",
+        "safe_to_spend_expected.json",
+        "transactions.csv",
+        "validation_report.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_present",
+      "expected": "output_manifest.json present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_covers_all_files",
+      "expected": "manifest file list equals output folder files",
+      "actual": [
+        "accounts.csv",
+        "credit_card_statement.json",
+        "credit_card_summary.csv",
+        "credit_card_transactions.csv",
+        "dataset_registry.json",
+        "demo_identity_map.json",
+        "device_finance_source.json",
+        "emi_candidates_expected.json",
+        "financial_health_expected.json",
+        "goal_risk_expected.json",
+        "ground_truth.json",
+        "income_candidates_expected.json",
+        "mode_spending_summary.csv",
+        "monthly_cashflow.csv",
+        "net_worth_expected.json",
+        "nudge_expected.json",
+        "output_manifest.json",
+        "raw_payload.json",
+        "recurring_candidates_expected.json",
+        "safe_to_spend_expected.json",
+        "transactions.csv",
+        "validation_report.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_covers_identity_registry_files",
+      "expected": "manifest lists identity and registry files",
+      "actual": {
+        "demo": [
+          "demo_identity_map.json"
+        ],
+        "registry": [
+          "dataset_registry.json"
+        ]
+      },
+      "result": "pass"
+    },
+    {
+      "name": "manifest_includes_demo_identity_files",
+      "expected": "manifest includes self-contained identity and registry files",
+      "actual": {
+        "demo": true,
+        "registry": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "output_hashes_reproducible",
+      "expected": "manifest hashes match current files except documented self hash",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "validation_summary_counts_match_files",
+      "expected": "summary counts match files",
+      "actual": {
+        "tx": 1607,
+        "raw": 1607,
+        "gt": 1607
+      },
+      "result": "pass"
+    },
+    {
+      "name": "no_stale_files_from_previous_generation",
+      "expected": "no unexpected files present",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "output_package_self_contained",
+      "expected": "dataset folder contains source, expected, identity, registry, and manifest files",
+      "actual": [
+        "accounts.csv",
+        "credit_card_statement.json",
+        "credit_card_summary.csv",
+        "credit_card_transactions.csv",
+        "dataset_registry.json",
+        "demo_identity_map.json",
+        "device_finance_source.json",
+        "emi_candidates_expected.json",
+        "financial_health_expected.json",
+        "goal_risk_expected.json",
+        "ground_truth.json",
+        "income_candidates_expected.json",
+        "mode_spending_summary.csv",
+        "monthly_cashflow.csv",
+        "net_worth_expected.json",
+        "nudge_expected.json",
+        "output_manifest.json",
+        "raw_payload.json",
+        "recurring_candidates_expected.json",
+        "safe_to_spend_expected.json",
+        "transactions.csv",
+        "validation_report.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "no_external_required_files_missing",
+      "expected": "no required package files live only outside the dataset folder",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_files_have_no_mone_taxonomy",
+      "expected": "source files exclude Mon\u00e9 taxonomy",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_metadata_is_namespaced",
+      "expected": "synthetic source metadata is namespaced",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "raw_payload_has_no_expected_intelligence_fields",
+      "expected": "raw payload excludes expected fields",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "canonical_source_csvs_have_no_hidden_ground_truth",
+      "expected": "source CSV headers exclude hidden ground truth",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_source_has_no_mone_taxonomy",
+      "expected": "credit-card source excludes Mon\u00e9 taxonomy",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "ground_truth_contains_taxonomy",
+      "expected": "ground truth contains taxonomy labels",
+      "actual": 1607,
+      "result": "pass"
+    },
+    {
+      "name": "expected_outputs_contain_intelligence",
+      "expected": "expected outputs and nudge file present",
+      "actual": [
+        "ground_truth.json",
+        "income_candidates_expected.json",
+        "recurring_candidates_expected.json",
+        "emi_candidates_expected.json",
+        "safe_to_spend_expected.json",
+        "goal_risk_expected.json",
+        "financial_health_expected.json",
+        "nudge_expected.json",
+        "net_worth_expected.json",
+        "validation_report.json",
+        "output_manifest.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "app_input_files_are_reality_grounded",
+      "expected": "source files are taxonomy-free and required",
+      "actual": 0,
+      "result": "pass"
+    },
+    {
+      "name": "nudge_copy_not_in_source_files",
+      "expected": "nudge copy absent from source files",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_narrations_have_no_mone_taxonomy_leakage",
+      "expected": "source narration text excludes behavioral taxonomy",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_narrations_are_bank_like",
+      "expected": "source narrations are bank-like merchant/payment rails",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "rash_behavior_present_only_in_ground_truth_or_expected",
+      "expected": "rash labels absent from source but present in truth",
+      "actual": {
+        "source_leaks": [],
+        "truth_events": 9
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_variety_present",
+      "expected": "local micro UPI contains diverse categories and merchants",
+      "actual": {
+        "count": 481,
+        "monthly_counts": {
+          "2025-06": 36,
+          "2025-07": 38,
+          "2025-08": 29,
+          "2025-09": 38,
+          "2025-10": 36,
+          "2025-11": 55,
+          "2025-12": 27,
+          "2026-01": 48,
+          "2026-02": 44,
+          "2026-03": 47,
+          "2026-04": 48,
+          "2026-05": 35
+        },
+        "category_count": 40,
+        "merchant_count": 56,
+        "confidence_counts": {
+          "medium": 226,
+          "high": 190,
+          "low": 65
+        },
+        "total_amount": 274567.0,
+        "max_amount": 3420.0,
+        "share_under_700": 0.832,
+        "truncated_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/PRINT XEROX",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/RAJU VEG",
+          "UPI/DE/PRINT XEROX"
+        ],
+        "qr_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/BHARATPE*OM SAI"
+        ],
+        "ambiguous_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/SURESH",
+          "UPI/DE/NEHA",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/SURESH",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/ROHAN"
+        ],
+        "ambiguous_count": 70,
+        "nudge_candidates": 481,
+        "interrupts": 5,
+        "interrupt_examples": [
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251001_0527",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251210_0797",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260204_1056",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260312_1190",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260529_1466",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          }
+        ],
+        "upi_small_share": 0.886
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_monthly_frequency_in_target_range",
+      "expected": "25-55 local micro UPI spends per month",
+      "actual": {
+        "2025-06": 36,
+        "2025-07": 38,
+        "2025-08": 29,
+        "2025-09": 38,
+        "2025-10": 36,
+        "2025-11": 55,
+        "2025-12": 27,
+        "2026-01": 48,
+        "2026-02": 44,
+        "2026-03": 47,
+        "2026-04": 48,
+        "2026-05": 35
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_amount_distribution_realistic",
+      "expected": "local UPI amounts are small with most below 700",
+      "actual": {
+        "count": 481,
+        "monthly_counts": {
+          "2025-06": 36,
+          "2025-07": 38,
+          "2025-08": 29,
+          "2025-09": 38,
+          "2025-10": 36,
+          "2025-11": 55,
+          "2025-12": 27,
+          "2026-01": 48,
+          "2026-02": 44,
+          "2026-03": 47,
+          "2026-04": 48,
+          "2026-05": 35
+        },
+        "category_count": 40,
+        "merchant_count": 56,
+        "confidence_counts": {
+          "medium": 226,
+          "high": 190,
+          "low": 65
+        },
+        "total_amount": 274567.0,
+        "max_amount": 3420.0,
+        "share_under_700": 0.832,
+        "truncated_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/PRINT XEROX",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/RAJU VEG",
+          "UPI/DE/PRINT XEROX"
+        ],
+        "qr_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/BHARATPE*OM SAI"
+        ],
+        "ambiguous_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/SURESH",
+          "UPI/DE/NEHA",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/SURESH",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/ROHAN"
+        ],
+        "ambiguous_count": 70,
+        "nudge_candidates": 481,
+        "interrupts": 5,
+        "interrupt_examples": [
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251001_0527",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251210_0797",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260204_1056",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260312_1190",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260529_1466",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          }
+        ],
+        "upi_small_share": 0.886
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_truncated_merchants",
+      "expected": "local UPI includes truncated merchant/source names",
+      "actual": [
+        "UPI/DE/PHONEPEQR4381",
+        "UPI/DE/PRINT XEROX",
+        "UPI/DE/PHONEPEQR4381",
+        "UPI/DE/FRESH VEG QR",
+        "UPI/DE/FRESH VEG QR",
+        "UPI/DE/XEROX SHOP",
+        "UPI/DE/XEROX SHOP",
+        "UPI/DE/XEROX SHOP",
+        "UPI/DE/RAJU VEG",
+        "UPI/DE/PRINT XEROX"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_qr_aggregator_narrations",
+      "expected": "local UPI includes QR aggregator strings",
+      "actual": [
+        "UPI/DE/PHONEPEQR4381",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/BHARATPE9071",
+        "UPI/DE/PHONEPEQR4381",
+        "UPI/DE/FRESH VEG QR",
+        "UPI/DE/FRESH VEG QR",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/BHARATPE9071",
+        "UPI/DE/BHARATPE*OM SAI"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_ambiguous_payees",
+      "expected": "local UPI includes person-name or ambiguous payees",
+      "actual": [
+        "UPI/DE/PHONEPEQR4381",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/BHARATPE9071",
+        "UPI/DE/PHONEPEQR4381",
+        "UPI/DE/SURESH",
+        "UPI/DE/NEHA",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/SURESH",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/ROHAN"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_ground_truth_categories",
+      "expected": "local UPI rows have hidden ground-truth categories",
+      "actual": 40,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_not_all_high_confidence",
+      "expected": "local UPI contains medium/low confidence cases",
+      "actual": {
+        "medium": 226,
+        "high": 190,
+        "low": 65
+      },
+      "result": "pass"
+    },
+    {
+      "name": "tagging_ambiguity_cases_present",
+      "expected": "ambiguous local UPI cases exist",
+      "actual": 70,
+      "result": "pass"
+    },
+    {
+      "name": "source_narrations_do_not_leak_local_upi_taxonomy",
+      "expected": "local UPI source text excludes local taxonomy labels",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_upi_micro_spend_density_high",
+      "expected": "Aarav has high UPI micro-spend density",
+      "actual": 481,
+      "result": "pass"
+    },
+    {
+      "name": "upi_dominates_small_transaction_count",
+      "expected": "UPI dominates small transaction count",
+      "actual": {
+        "count": 481,
+        "monthly_counts": {
+          "2025-06": 36,
+          "2025-07": 38,
+          "2025-08": 29,
+          "2025-09": 38,
+          "2025-10": 36,
+          "2025-11": 55,
+          "2025-12": 27,
+          "2026-01": 48,
+          "2026-02": 44,
+          "2026-03": 47,
+          "2026-04": 48,
+          "2026-05": 35
+        },
+        "category_count": 40,
+        "merchant_count": 56,
+        "confidence_counts": {
+          "medium": 226,
+          "high": 190,
+          "low": 65
+        },
+        "total_amount": 274567.0,
+        "max_amount": 3420.0,
+        "share_under_700": 0.832,
+        "truncated_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/PRINT XEROX",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/RAJU VEG",
+          "UPI/DE/PRINT XEROX"
+        ],
+        "qr_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/BHARATPE*OM SAI"
+        ],
+        "ambiguous_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/SURESH",
+          "UPI/DE/NEHA",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/SURESH",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/ROHAN"
+        ],
+        "ambiguous_count": 70,
+        "nudge_candidates": 481,
+        "interrupts": 5,
+        "interrupt_examples": [
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251001_0527",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251210_0797",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260204_1056",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260312_1190",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260529_1466",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          }
+        ],
+        "upi_small_share": 0.886
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_upi_contributes_to_spend_drift",
+      "expected": "local UPI total materially contributes to spend drift",
+      "actual": 274567.0,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_nudge_candidates_present",
+      "expected": "local UPI nudge candidates present",
+      "actual": 481,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_interrupts_limited",
+      "expected": "local UPI interrupts are limited below 5%",
+      "actual": {
+        "count": 481,
+        "monthly_counts": {
+          "2025-06": 36,
+          "2025-07": 38,
+          "2025-08": 29,
+          "2025-09": 38,
+          "2025-10": 36,
+          "2025-11": 55,
+          "2025-12": 27,
+          "2026-01": 48,
+          "2026-02": 44,
+          "2026-03": 47,
+          "2026-04": 48,
+          "2026-05": 35
+        },
+        "category_count": 40,
+        "merchant_count": 56,
+        "confidence_counts": {
+          "medium": 226,
+          "high": 190,
+          "low": 65
+        },
+        "total_amount": 274567.0,
+        "max_amount": 3420.0,
+        "share_under_700": 0.832,
+        "truncated_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/PRINT XEROX",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/XEROX SHOP",
+          "UPI/DE/RAJU VEG",
+          "UPI/DE/PRINT XEROX"
+        ],
+        "qr_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/FRESH VEG QR",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/BHARATPE*OM SAI"
+        ],
+        "ambiguous_examples": [
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/BHARATPE9071",
+          "UPI/DE/PHONEPEQR4381",
+          "UPI/DE/SURESH",
+          "UPI/DE/NEHA",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/SURESH",
+          "UPI/DE/BHARATPE*OM SAI",
+          "UPI/DE/ROHAN"
+        ],
+        "ambiguous_count": 70,
+        "nudge_candidates": 481,
+        "interrupts": 5,
+        "interrupt_examples": [
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251001_0527",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251210_0797",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260204_1056",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260312_1190",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          },
+          {
+            "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260529_1466",
+            "expected_nudge_type": "safe_to_spend_upi_interrupt",
+            "surface_mode": "interrupt"
+          }
+        ],
+        "upi_small_share": 0.886
+      },
+      "result": "pass"
+    },
+    {
+      "name": "micro_upi_interrupts_contextual",
+      "expected": "local UPI interrupts occur in risk context",
+      "actual": [
+        {
+          "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251001_0527",
+          "expected_nudge_type": "safe_to_spend_upi_interrupt",
+          "surface_mode": "interrupt"
+        },
+        {
+          "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251210_0797",
+          "expected_nudge_type": "safe_to_spend_upi_interrupt",
+          "surface_mode": "interrupt"
+        },
+        {
+          "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260204_1056",
+          "expected_nudge_type": "safe_to_spend_upi_interrupt",
+          "surface_mode": "interrupt"
+        },
+        {
+          "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260312_1190",
+          "expected_nudge_type": "safe_to_spend_upi_interrupt",
+          "surface_mode": "interrupt"
+        },
+        {
+          "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260529_1466",
+          "expected_nudge_type": "safe_to_spend_upi_interrupt",
+          "surface_mode": "interrupt"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "raw_balance_chronology_reconciles",
+      "expected": "raw/csv running balances reconcile",
+      "actual": {
+        "opening_balance": 360000.0,
+        "first_transaction_balance": 359602.0,
+        "final_transaction_balance": 175374.0,
+        "summary_current_balance": "175374.00",
+        "mismatch_count": 0,
+        "mismatches": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "currentBalance_matches_latest_transaction_balance",
+      "expected": "raw currentBalance matches latest transaction",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "raw_payload_schema_valid",
+      "expected": "raw payload has FIP/account/transaction structure",
+      "actual": {
+        "fi_types": [
+          "deposit",
+          "mutual_funds",
+          "recurring_deposit",
+          "term_deposit"
+        ],
+        "transactions": 1607
+      },
+      "result": "pass"
+    },
+    {
+      "name": "canonical_csvs_match_raw_payload",
+      "expected": "canonical CSV ids match raw payload ids",
+      "actual": {
+        "raw": 1607,
+        "csv": 1607
+      },
+      "result": "pass"
+    },
+    {
+      "name": "no_mone_taxonomy_in_raw",
+      "expected": "raw/source files have no Mon\u00e9 taxonomy",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "no_dashboard_terms_in_raw_narrations",
+      "expected": "raw narrations have no dashboard/intelligence terms",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "no_risk_impulse_reckless_labels_in_raw",
+      "expected": "raw narrations have no risk/impulse/reckless labels",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "lpg_transactions_present",
+      "expected": "LPG/gas payments present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250621_0006",
+        "TXN_AARAV_SRC_DEPOSIT_20250821_0257",
+        "TXN_AARAV_SRC_DEPOSIT_20251021_0502",
+        "TXN_AARAV_SRC_DEPOSIT_20251221_0772",
+        "TXN_AARAV_SRC_DEPOSIT_20260221_1028",
+        "TXN_AARAV_SRC_DEPOSIT_20260421_1300",
+        "TXN_AARAV_SRC_DEPOSIT_20260521_1440"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "rent_component_transactions_present",
+      "expected": "rent component payments present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250706_0128",
+        "TXN_AARAV_SRC_DEPOSIT_20250707_0129",
+        "TXN_AARAV_SRC_DEPOSIT_20251006_0500",
+        "TXN_AARAV_SRC_DEPOSIT_20251007_0501",
+        "TXN_AARAV_SRC_DEPOSIT_20260106_0889",
+        "TXN_AARAV_SRC_DEPOSIT_20260107_0890",
+        "TXN_AARAV_SRC_DEPOSIT_20260506_1438",
+        "TXN_AARAV_SRC_DEPOSIT_20260507_1439"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "variable_electricity_present",
+      "expected": "electricity payments vary by month",
+      "actual": [
+        1360.0,
+        2180.0,
+        1960.0,
+        1280.0,
+        2420.0,
+        1740.0,
+        1510.0,
+        2080.0,
+        2360.0,
+        3180.0,
+        4560.0,
+        3920.0
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "internet_mobile_topup_present",
+      "expected": "internet/mobile topups present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250622_0007",
+        "TXN_AARAV_SRC_DEPOSIT_20250623_0008",
+        "TXN_AARAV_SRC_DEPOSIT_20250822_0258",
+        "TXN_AARAV_SRC_DEPOSIT_20250823_0259",
+        "TXN_AARAV_SRC_DEPOSIT_20251022_0503",
+        "TXN_AARAV_SRC_DEPOSIT_20251023_0504",
+        "TXN_AARAV_SRC_DEPOSIT_20251222_0773",
+        "TXN_AARAV_SRC_DEPOSIT_20251223_0774",
+        "TXN_AARAV_SRC_DEPOSIT_20260222_1029",
+        "TXN_AARAV_SRC_DEPOSIT_20260223_1030",
+        "TXN_AARAV_SRC_DEPOSIT_20260422_1301",
+        "TXN_AARAV_SRC_DEPOSIT_20260423_1302",
+        "TXN_AARAV_SRC_DEPOSIT_20260522_1441",
+        "TXN_AARAV_SRC_DEPOSIT_20260523_1442"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "domestic_help_advance_present",
+      "expected": "domestic help advance evidence present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20251022_1578"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "emi_extra_payment_present",
+      "expected": "EMI extra payment evidence present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20260220_1579"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "sip_or_rd_lumpsum_present",
+      "expected": "SIP/RD/MF topup evidence present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20260304_1580",
+        "TXN_AARAV_SRC_DEPOSIT_20260305_1582",
+        "TXN_AARAV_SRC_DEPOSIT_20260306_1584"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "vehicle_service_center_cost_present",
+      "expected": "vehicle service/repair evidence present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250719_1574",
+        "TXN_AARAV_SRC_DEPOSIT_20251116_1575",
+        "TXN_AARAV_SRC_DEPOSIT_20260328_1576",
+        "TXN_AARAV_SRC_DEPOSIT_20260418_1577"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "annual_subscription_due_present",
+      "expected": "annual subscription due in final month present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20260512_1460",
+        "TXN_AARAV_SRC_DEPOSIT_20260517_1461"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "needs_review_raw_signals_present",
+      "expected": "ambiguous raw review signals present",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250615_0044",
+        "TXN_AARAV_SRC_DEPOSIT_20250617_0054",
+        "TXN_AARAV_SRC_DEPOSIT_20250703_0159",
+        "TXN_AARAV_SRC_DEPOSIT_20250703_0170",
+        "TXN_AARAV_SRC_DEPOSIT_20250712_0184",
+        "TXN_AARAV_SRC_DEPOSIT_20250802_0288",
+        "TXN_AARAV_SRC_DEPOSIT_20250821_0304",
+        "TXN_AARAV_SRC_DEPOSIT_20250830_1593",
+        "TXN_AARAV_SRC_DEPOSIT_20250906_0414",
+        "TXN_AARAV_SRC_DEPOSIT_20250910_0396",
+        "TXN_AARAV_SRC_DEPOSIT_20250921_0398",
+        "TXN_AARAV_SRC_DEPOSIT_20251005_0547",
+        "TXN_AARAV_SRC_DEPOSIT_20251016_0539",
+        "TXN_AARAV_SRC_DEPOSIT_20251025_1594",
+        "TXN_AARAV_SRC_DEPOSIT_20251103_0658",
+        "TXN_AARAV_SRC_DEPOSIT_20251105_0671",
+        "TXN_AARAV_SRC_DEPOSIT_20251108_1595",
+        "TXN_AARAV_SRC_DEPOSIT_20251108_0655",
+        "TXN_AARAV_SRC_DEPOSIT_20251110_0675",
+        "TXN_AARAV_SRC_DEPOSIT_20251112_0666",
+        "TXN_AARAV_SRC_DEPOSIT_20251114_0659",
+        "TXN_AARAV_SRC_DEPOSIT_20251117_0706",
+        "TXN_AARAV_SRC_DEPOSIT_20251130_0677",
+        "TXN_AARAV_SRC_DEPOSIT_20251205_1596",
+        "TXN_AARAV_SRC_DEPOSIT_20251208_0798",
+        "TXN_AARAV_SRC_DEPOSIT_20251214_0823",
+        "TXN_AARAV_SRC_DEPOSIT_20251220_0808",
+        "TXN_AARAV_SRC_DEPOSIT_20251221_0800",
+        "TXN_AARAV_SRC_DEPOSIT_20260107_0949",
+        "TXN_AARAV_SRC_DEPOSIT_20260109_0918",
+        "TXN_AARAV_SRC_DEPOSIT_20260115_0930",
+        "TXN_AARAV_SRC_DEPOSIT_20260116_1597",
+        "TXN_AARAV_SRC_DEPOSIT_20260121_0946",
+        "TXN_AARAV_SRC_DEPOSIT_20260127_0938",
+        "TXN_AARAV_SRC_DEPOSIT_20260130_0916",
+        "TXN_AARAV_SRC_DEPOSIT_20260202_1091",
+        "TXN_AARAV_SRC_DEPOSIT_20260211_1085",
+        "TXN_AARAV_SRC_DEPOSIT_20260214_1590",
+        "TXN_AARAV_SRC_DEPOSIT_20260215_1598",
+        "TXN_AARAV_SRC_DEPOSIT_20260218_1068",
+        "TXN_AARAV_SRC_DEPOSIT_20260219_1078",
+        "TXN_AARAV_SRC_DEPOSIT_20260225_1077",
+        "TXN_AARAV_SRC_DEPOSIT_20260303_1205",
+        "TXN_AARAV_SRC_DEPOSIT_20260311_1236",
+        "TXN_AARAV_SRC_DEPOSIT_20260311_1219",
+        "TXN_AARAV_SRC_DEPOSIT_20260317_1229",
+        "TXN_AARAV_SRC_DEPOSIT_20260325_1233",
+        "TXN_AARAV_SRC_DEPOSIT_20260326_1599",
+        "TXN_AARAV_SRC_DEPOSIT_20260327_1197",
+        "TXN_AARAV_SRC_DEPOSIT_20260327_1225",
+        "TXN_AARAV_SRC_DEPOSIT_20260328_1195",
+        "TXN_AARAV_SRC_DEPOSIT_20260330_1222",
+        "TXN_AARAV_SRC_DEPOSIT_20260402_1333",
+        "TXN_AARAV_SRC_DEPOSIT_20260407_1366",
+        "TXN_AARAV_SRC_DEPOSIT_20260409_1344",
+        "TXN_AARAV_SRC_DEPOSIT_20260412_1349",
+        "TXN_AARAV_SRC_DEPOSIT_20260422_1363",
+        "TXN_AARAV_SRC_DEPOSIT_20260425_1340",
+        "TXN_AARAV_SRC_DEPOSIT_20260428_1347",
+        "TXN_AARAV_SRC_DEPOSIT_20260429_1334",
+        "TXN_AARAV_SRC_DEPOSIT_20260430_1336",
+        "TXN_AARAV_SRC_DEPOSIT_20260503_1495",
+        "TXN_AARAV_SRC_DEPOSIT_20260515_1491",
+        "TXN_AARAV_SRC_DEPOSIT_20260519_1484",
+        "TXN_AARAV_SRC_DEPOSIT_20260520_1468",
+        "TXN_AARAV_SRC_DEPOSIT_20260524_1600"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_subscription_load_high",
+      "expected": "Aarav has high realistic subscription load",
+      "actual": [
+        "ADOBE",
+        "AUDIBLE",
+        "CANVA PRO",
+        "CLAUDE",
+        "DISTRICT PASS",
+        "FIGMA",
+        "GOOGLE CLOUD",
+        "HOTSTAR",
+        "ICLOUD",
+        "NETFLIX",
+        "NOTION",
+        "OPENAI",
+        "PLAYSTATION PLUS",
+        "PRIME MEMBERSHIP",
+        "SPOTIFY",
+        "SWIGGY ONE",
+        "TRUECALLER PREMIUM",
+        "YOUTUBE PREMIUM",
+        "ZEPTO PASS",
+        "ZOMATO GOLD"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_rich_local_upi_variety_present",
+      "expected": "Aarav local UPI includes requested messy merchant variety",
+      "actual": [
+        "AC REPAIR",
+        "BAKERY",
+        "BHARATPE",
+        "BIKE",
+        "BREWERY",
+        "CHAAT",
+        "CIGARETTE",
+        "ELECTRICIAN",
+        "HARDWARE",
+        "HOOKAH",
+        "JUICE",
+        "KIRANA",
+        "LIQUOR",
+        "MOMO",
+        "NEHA",
+        "PAAN",
+        "PANI PURI",
+        "PARKING",
+        "PAYTMQR",
+        "PETROL",
+        "PHARMACY",
+        "PHONEPEQR",
+        "PLUMBER",
+        "PUB",
+        "ROHAN",
+        "ROLLS",
+        "SURESH",
+        "TEA STALL",
+        "WINE SHOP",
+        "XEROX"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_local_upi_density_high",
+      "expected": "Aarav local UPI density remains high",
+      "actual": 481,
+      "result": "pass"
+    },
+    {
+      "name": "aarav_device_emi_extra_payment_present",
+      "expected": "Aarav has device EMI extra payment",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20260220_1579"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_vehicle_repair_outlier_present",
+      "expected": "Aarav has a large vehicle repair/service outlier",
+      "actual": [
+        3200.0,
+        14500.0,
+        9200.0,
+        21500.0
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_sip_rd_irregularity_present",
+      "expected": "Aarav has SIP/RD topup plus redemption/closure irregularity",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20260305_1582",
+        "TXN_AARAV_SRC_DEPOSIT_20260306_1584",
+        "TXN_AARAV_SRC_DEPOSIT_20260319_1587",
+        "TXN_AARAV_SRC_DEPOSIT_20260322_1589",
+        "TXN_AARAV_SRC_DEPOSIT_20260411_1592"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_cash_blindspots_present",
+      "expected": "Aarav has multiple ATM blindspots",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250830_1593",
+        "TXN_AARAV_SRC_DEPOSIT_20251025_1594",
+        "TXN_AARAV_SRC_DEPOSIT_20251108_1595",
+        "TXN_AARAV_SRC_DEPOSIT_20251205_1596",
+        "TXN_AARAV_SRC_DEPOSIT_20260116_1597",
+        "TXN_AARAV_SRC_DEPOSIT_20260215_1598",
+        "TXN_AARAV_SRC_DEPOSIT_20260326_1599",
+        "TXN_AARAV_SRC_DEPOSIT_20260524_1600"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "aarav_remains_spend_control_risky",
+      "expected": "Aarav remains spend-control risky",
+      "actual": {
+        "health": "Risk",
+        "cash": [
+          "TXN_AARAV_SRC_DEPOSIT_20250830_1593",
+          "TXN_AARAV_SRC_DEPOSIT_20251025_1594",
+          "TXN_AARAV_SRC_DEPOSIT_20251108_1595",
+          "TXN_AARAV_SRC_DEPOSIT_20251205_1596",
+          "TXN_AARAV_SRC_DEPOSIT_20260116_1597",
+          "TXN_AARAV_SRC_DEPOSIT_20260215_1598",
+          "TXN_AARAV_SRC_DEPOSIT_20260326_1599",
+          "TXN_AARAV_SRC_DEPOSIT_20260524_1600"
+        ]
+      },
+      "result": "pass"
+    },
+    {
+      "name": "required_source_files_present",
+      "expected": "all source files present",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "required_expected_files_present",
+      "expected": "all expected files present",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "raw_payload_has_required_fi_types",
+      "expected": "deposit, MF, RD, TD present",
+      "actual": [
+        "deposit",
+        "mutual_funds",
+        "recurring_deposit",
+        "term_deposit"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_statement_present_or_documented",
+      "expected": "credit-card statement source present",
+      "actual": [
+        "credit_card_statement.json",
+        "credit_card_transactions.csv",
+        "credit_card_summary.csv"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "device_finance_source_present",
+      "expected": "device finance source present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "demo_identity_map_present",
+      "expected": "demo identity map present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "demo_identity_map_present_inside_package",
+      "expected": "demo identity map present inside dataset folder",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "aarav_phone_maps_to_aarav_dataset",
+      "expected": "8828290489 maps to Aarav dataset",
+      "actual": {
+        "phone": "8828290489",
+        "personaId": "aarav",
+        "displayName": "Aarav",
+        "dataset_id": "aarav_spend_control_rash_decisions",
+        "sourceHolderProfile": "masked",
+        "status": "wired"
+      },
+      "result": "pass"
+    },
+    {
+      "name": "priya_phone_not_mapped_to_aarav_dataset",
+      "expected": "7304893952 is not mapped to Aarav",
+      "actual": {
+        "phone": "7304893952",
+        "personaId": "priya",
+        "displayName": "Priya",
+        "dataset_id": null,
+        "sourceHolderProfile": "masked",
+        "status": "not_wired_yet",
+        "message": "Priya dataset is not wired yet."
+      },
+      "result": "pass"
+    },
+    {
+      "name": "raw_holder_profile_not_used_as_demo_identity",
+      "expected": "demo identity differs from raw holder profile",
+      "actual": {
+        "phone": "8828290489",
+        "personaId": "aarav",
+        "displayName": "Aarav",
+        "dataset_id": "aarav_spend_control_rash_decisions",
+        "sourceHolderProfile": "masked",
+        "status": "wired"
+      },
+      "result": "pass"
+    },
+    {
+      "name": "unsupported_numbers_have_explicit_state",
+      "expected": "unsupported behavior present",
+      "actual": {
+        "status": "unsupported_demo_number",
+        "message": "This demo number is not supported yet. Try Aarav's demo number."
+      },
+      "result": "pass"
+    },
+    {
+      "name": "dataset_registry_present",
+      "expected": "dataset registry present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "dataset_registry_present_inside_package",
+      "expected": "dataset registry present inside dataset folder",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "only_ready_datasets_are_wired",
+      "expected": "only ready datasets have status ready",
+      "actual": [
+        {
+          "dataset_id": "aarav_spend_control_rash_decisions",
+          "persona_id": "aarav",
+          "status": "ready"
+        },
+        {
+          "dataset_id": "priya_goal_planner",
+          "persona_id": "priya",
+          "status": "not_wired_yet"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "priya_not_falsely_available",
+      "expected": "Priya is not ready",
+      "actual": [
+        {
+          "dataset_id": "aarav_spend_control_rash_decisions",
+          "persona_id": "aarav",
+          "status": "ready"
+        },
+        {
+          "dataset_id": "priya_goal_planner",
+          "persona_id": "priya",
+          "status": "not_wired_yet"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "raw_payload_transactions_match_transactions_csv",
+      "expected": "raw payload tx ids equal transactions.csv ids",
+      "actual": {
+        "raw_only": [],
+        "csv_only": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "monthly_cashflow_reconciliation",
+      "expected": "monthly cashflow reconciles",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "mode_summary_reconciliation",
+      "expected": "mode summary reconciles",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "accounts_reconcile_with_raw_payload",
+      "expected": "accounts.csv reconciles with raw",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "no_unintentional_negative_balance",
+      "expected": "deposit facility NONE and no negative balance",
+      "actual": 25078.0,
+      "result": "pass"
+    },
+    {
+      "name": "pii_policy_holder_profile",
+      "expected": "holder profile uses synthetic placeholders",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "deposit_running_balance_chronological_reconciliation",
+      "expected": "deposit balance_after is chronological running ledger",
+      "actual": {
+        "opening_balance": 360000.0,
+        "first_transaction_balance": 359602.0,
+        "final_transaction_balance": 175374.0,
+        "summary_current_balance": "175374.00",
+        "mismatch_count": 0,
+        "mismatches": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "raw_payload_current_balance_matches_transactions_csv",
+      "expected": "raw currentBalance equals transactions.csv balance_after",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "deposit_summary_balance_matches_final_transaction",
+      "expected": "deposit summary currentBalance equals final transaction balance",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "no_substream_balance_artifacts",
+      "expected": "no chronological deposit balance artifacts after merge",
+      "actual": {
+        "opening_balance": 360000.0,
+        "first_transaction_balance": 359602.0,
+        "final_transaction_balance": 175374.0,
+        "summary_current_balance": "175374.00",
+        "mismatch_count": 0,
+        "mismatches": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "ground_truth_one_to_one",
+      "expected": "every source tx has exactly one ground truth",
+      "actual": "1607 tx, 1607 gt",
+      "result": "pass"
+    },
+    {
+      "name": "ground_truth_day_of_week_matches_date",
+      "expected": "day_of_week matches date",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "ground_truth_time_of_day_matches_timestamp",
+      "expected": "time_of_day matches timestamp",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "salary_cycle_phase_matches_salary_calendar",
+      "expected": "salary phase populated from salary dates",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "category_time_window_coherence",
+      "expected": "category/subcategory timestamps match allowed windows",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "income_candidates_exclude_reimbursements_refunds_redemptions",
+      "expected": "income candidates exclude rescue/refund",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "recurring_taxonomy_semantics_correct",
+      "expected": "recurring taxonomy normalized",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "recurring_candidates_reconcile_with_source_transactions",
+      "expected": "recurring candidates correspond to source rhythms",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "linked_cash_and_asset_events_match",
+      "expected": "asset/cash linked events reconcile",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "investments_not_counted_as_lifestyle_spend",
+      "expected": "investment events not lifestyle",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "investment_redemptions_not_counted_as_income",
+      "expected": "redemptions not income",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "mutual_fund_redemption_present",
+      "expected": "MF redemption exists",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "deposit_premature_withdrawal_present",
+      "expected": "RD/TD premature closure exists",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "asset_account_summary_reconciles_accounts_csv",
+      "expected": "asset account summaries match accounts.csv",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "asset_transaction_running_balance_reconciliation",
+      "expected": "asset final balances match summary",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "asset_account_balance_role_present",
+      "expected": "liquidity_class and balance_role present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "no_asset_double_counting",
+      "expected": "no ambiguous TD opening credit",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "term_deposit_closed_balance_semantics_clear",
+      "expected": "closed TD current value zero with details",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "td_premature_closure_payout_reconciles",
+      "expected": "TD payout matches deposit credit",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "td_penalty_or_residual_documented",
+      "expected": "TD penalty/residual documented",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "card_statement_payments_reconcile_with_deposit",
+      "expected": "card payments/charges exist in deposit",
+      "actual": [
+        "TXN_AARAV_SRC_DEPOSIT_20250923_1570",
+        "TXN_AARAV_SRC_DEPOSIT_20250924_1571",
+        "TXN_AARAV_SRC_DEPOSIT_20260227_1572",
+        "TXN_AARAV_SRC_DEPOSIT_20260228_1573"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "card_interest_and_late_fee_present",
+      "expected": "interest and late fee present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "card_partial_payment_present",
+      "expected": "partial payment present",
+      "actual": [
+        "partial",
+        "missed",
+        "missed",
+        "paid_emi_cycle",
+        "missed",
+        "paid_emi_cycle",
+        "partial",
+        "missed",
+        "paid_emi_cycle",
+        "partial",
+        "scheduled",
+        "scheduled",
+        "scheduled"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "card_utilization_risk_present",
+      "expected": "utilization > 60%",
+      "actual": [
+        0.48,
+        0.45,
+        0.74,
+        0.08,
+        1.07,
+        0.08,
+        1.49,
+        1.45,
+        0.06,
+        0.58,
+        0.06,
+        0.06,
+        0.06
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "card_overlimit_explained",
+      "expected": "overlimit cycles explained",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "card_statement_metadata_namespaced",
+      "expected": "card metadata namespaced",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_modeling_limitations_documented",
+      "expected": "credit card source documents scenario-grade limits",
+      "actual": [
+        "Hybrid compatibility convention with deposit CARD-mode rows",
+        "Statement cycles are designed for scenario testing, not full issuer-grade accounting",
+        "Previous outstanding and utilization are synthetic stress indicators"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_not_marked_production_grade",
+      "expected": "credit card source is not production-grade",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "card_payment_dates_match_due_or_late_window",
+      "expected": "payments are on due/late window",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "all_emi_schedule_statement_cycles_exist",
+      "expected": "all EMI statement cycles exist",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "card_purchases_not_double_counted",
+      "expected": "card purchase rows linked and not additional cashflow",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "card_emi_paid_cycles_have_cash_link_or_explicit_statement_only_status",
+      "expected": "paid card EMI rows have cash link or explicit statement-only status",
+      "actual": {
+        "checked": 9,
+        "issues": [],
+        "scenario_grade_statement_only_paid": 9
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_emi_payment_source_semantics_clear",
+      "expected": "card EMI payment source semantics are explicit",
+      "actual": {
+        "checked": 9,
+        "issues": [],
+        "scenario_grade_statement_only_paid": 9
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_statement_payments_reconcile_or_are_explicitly_scenario_grade",
+      "expected": "card statement payments reconcile or are scenario-grade explicit",
+      "actual": "scenario_grade",
+      "result": "pass"
+    },
+    {
+      "name": "no_blank_paid_emi_cash_links_without_explanation",
+      "expected": "no blank paid EMI cash links without explanation",
+      "actual": {
+        "checked": 9,
+        "issues": [],
+        "scenario_grade_statement_only_paid": 9
+      },
+      "result": "pass"
+    },
+    {
+      "name": "emi_candidates_present",
+      "expected": "card and device EMI candidates exist",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_original_purchase_source_exists",
+      "expected": "device purchase source exists",
+      "actual": "device_purchase_20251105",
+      "result": "pass"
+    },
+    {
+      "name": "emi_schedule_reconciles",
+      "expected": "EMI schedule reconciles",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_schedule_dates_and_amounts_reconcile",
+      "expected": "EMI dates and amounts reconcile",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_schedule_statement_cycles_exist",
+      "expected": "EMI cycles/source exist",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_payments_affect_safe_to_spend",
+      "expected": "safe-to-spend includes debt pressure",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_not_treated_as_discretionary_spend_after_conversion",
+      "expected": "EMI tx are obligations not discretionary",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_linked_to_original_purchase",
+      "expected": "EMI candidates link to purchase",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "emi_source_not_taxonomy_polluted",
+      "expected": "device finance source taxonomy-free",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_excludes_liquidity_rescue_from_income",
+      "expected": "rescue excluded from income",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_includes_emi_pressure",
+      "expected": "safe includes EMI pressure",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_negative_while_balance_positive_present",
+      "expected": "negative safe-to-spend with positive bank balance",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "aarav_cash_pressure_intentional",
+      "expected": "Aarav is buffered but visibly cash pressured",
+      "actual": {
+        "minimum_deposit_balance": 25078.0,
+        "closing_deposit_balance": 175374.0,
+        "target_min": [
+          20000.0,
+          75000.0
+        ],
+        "target_close": [
+          75000.0,
+          200000.0
+        ]
+      },
+      "result": "pass"
+    },
+    {
+      "name": "minimum_balance_within_configured_risky_range",
+      "expected": "minimum balance is positive but meaningfully low",
+      "actual": 25078.0,
+      "result": "pass"
+    },
+    {
+      "name": "closing_balance_within_configured_risky_range",
+      "expected": "closing balance remains buffered but not excessive",
+      "actual": 175374.0,
+      "result": "pass"
+    },
+    {
+      "name": "positive_bank_balance_negative_safe_to_spend_present",
+      "expected": "positive bank balance with negative safe-to-spend exists",
+      "actual": {
+        "minimum_deposit_balance": 25078.0,
+        "negative_safe_to_spend": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_risk_months_present",
+      "expected": "at least 3 risk/watch months and one negative safe-to-spend",
+      "actual": {
+        "risk_months": 6,
+        "negative": 5
+      },
+      "result": "pass"
+    },
+    {
+      "name": "goal_drift_present",
+      "expected": "at least one goal risk",
+      "actual": [
+        {
+          "goal_id": "emergency_fund",
+          "goal_name": "Emergency fund",
+          "target_amount": 500000,
+          "expected_monthly_allocation": 22000,
+          "actual_allocations": 8,
+          "skipped_months": [
+            "2026-03",
+            "2026-04"
+          ],
+          "projected_delay_days": 75,
+          "status": "risk",
+          "reason": "RD break and TD closure weakened emergency buffer"
+        },
+        {
+          "goal_id": "vacation",
+          "goal_name": "Japan vacation",
+          "target_amount": 250000,
+          "expected_monthly_allocation": 12000,
+          "actual_allocations": 7,
+          "skipped_months": [
+            "2025-10",
+            "2025-12",
+            "2026-02"
+          ],
+          "projected_delay_days": 60,
+          "status": "risk",
+          "reason": "luxury and spontaneous trip spending displaced allocation"
+        },
+        {
+          "goal_id": "laptop",
+          "goal_name": "Laptop/gadget",
+          "target_amount": 180000,
+          "expected_monthly_allocation": 10000,
+          "actual_allocations": 6,
+          "skipped_months": [
+            "2025-08",
+            "2026-02"
+          ],
+          "projected_delay_days": 45,
+          "status": "watch",
+          "reason": "rash purchase converted into EMI pressure"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "financial_health_not_healthy",
+      "expected": "overall status Risk/Watch",
+      "actual": "Risk",
+      "result": "pass"
+    },
+    {
+      "name": "net_worth_expected_file_present",
+      "expected": "net worth expected file exists",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "final_net_worth_low_or_risk",
+      "expected": "final net worth is low/risk",
+      "actual": {
+        "month": "2026-05",
+        "liquid_cash": 175374.0,
+        "mutual_fund_value": 207000.0,
+        "rd_value": 0.0,
+        "td_value": 0.0,
+        "other_assets_if_any": 0.0,
+        "credit_card_outstanding": 157700.0,
+        "emi_outstanding": 90000.0,
+        "other_liabilities_if_any": 0.0,
+        "net_worth": 134674.0,
+        "liquid_net_worth": -72326.0,
+        "status": "risk",
+        "reason": "Low liquid cash, reduced investments, broken deposits, card outstanding, and EMI commitments keep net worth at risk."
+      },
+      "result": "pass"
+    },
+    {
+      "name": "net_worth_reconciles_with_source_accounts_and_liabilities",
+      "expected": "net worth reconciles with source accounts and card/EMI liabilities",
+      "actual": {
+        "expected": {
+          "liquid_cash": 175374.0,
+          "mutual_fund_value": 207000.0,
+          "rd_value": 0.0,
+          "td_value": 0.0,
+          "credit_card_outstanding": 157700.0,
+          "emi_outstanding": 90000.0,
+          "net_worth": 134674.0,
+          "liquid_net_worth": -72326.0
+        },
+        "actual": {
+          "month": "2026-05",
+          "liquid_cash": 175374.0,
+          "mutual_fund_value": 207000.0,
+          "rd_value": 0.0,
+          "td_value": 0.0,
+          "other_assets_if_any": 0.0,
+          "credit_card_outstanding": 157700.0,
+          "emi_outstanding": 90000.0,
+          "other_liabilities_if_any": 0.0,
+          "net_worth": 134674.0,
+          "liquid_net_worth": -72326.0,
+          "status": "risk",
+          "reason": "Low liquid cash, reduced investments, broken deposits, card outstanding, and EMI commitments keep net worth at risk."
+        },
+        "issues": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "liquid_net_worth_low_or_risk",
+      "expected": "liquid net worth is low/risk",
+      "actual": -72326.0,
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_and_emi_liabilities_included_in_net_worth",
+      "expected": "card and EMI liabilities included",
+      "actual": {
+        "month": "2026-05",
+        "liquid_cash": 175374.0,
+        "mutual_fund_value": 207000.0,
+        "rd_value": 0.0,
+        "td_value": 0.0,
+        "other_assets_if_any": 0.0,
+        "credit_card_outstanding": 157700.0,
+        "emi_outstanding": 90000.0,
+        "other_liabilities_if_any": 0.0,
+        "net_worth": 134674.0,
+        "liquid_net_worth": -72326.0,
+        "status": "risk",
+        "reason": "Low liquid cash, reduced investments, broken deposits, card outstanding, and EMI commitments keep net worth at risk."
+      },
+      "result": "pass"
+    },
+    {
+      "name": "redemptions_and_deposit_closures_do_not_artificially_inflate_net_worth",
+      "expected": "rescue proceeds do not make net worth healthy",
+      "actual": {
+        "month": "2026-05",
+        "liquid_cash": 175374.0,
+        "mutual_fund_value": 207000.0,
+        "rd_value": 0.0,
+        "td_value": 0.0,
+        "other_assets_if_any": 0.0,
+        "credit_card_outstanding": 157700.0,
+        "emi_outstanding": 90000.0,
+        "other_liabilities_if_any": 0.0,
+        "net_worth": 134674.0,
+        "liquid_net_worth": -72326.0,
+        "status": "risk",
+        "reason": "Low liquid cash, reduced investments, broken deposits, card outstanding, and EMI commitments keep net worth at risk."
+      },
+      "result": "pass"
+    },
+    {
+      "name": "financial_health_reflects_low_net_worth",
+      "expected": "financial health includes net worth risk",
+      "actual": "Risk",
+      "result": "pass"
+    },
+    {
+      "name": "rash_purchase_events_present",
+      "expected": "rash purchases present",
+      "actual": 6,
+      "result": "pass"
+    },
+    {
+      "name": "irregular_sip_behavior_present",
+      "expected": "SIP skipped/delayed/reduced/failed present",
+      "actual": [
+        "delayed",
+        "failed",
+        "paid",
+        "reduced"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_stress_present",
+      "expected": "card stress present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "nudge_expected_file_present",
+      "expected": "nudge expected present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "nudge_expected_marked_as_test_scaffold",
+      "expected": "nudge expected marked as scaffold",
+      "actual": {
+        "source_type": "expected_intelligence_test_oracle",
+        "copy_maturity": "testing_scaffold"
+      },
+      "result": "pass"
+    },
+    {
+      "name": "non_interrupt_copy_not_required_to_be_final",
+      "expected": "non-interrupt copy review not required",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "nudge_candidate_not_equal_interrupt",
+      "expected": "most nudges not interrupts",
+      "actual": {
+        "candidates": 1273,
+        "interrupts": 22
+      },
+      "result": "pass"
+    },
+    {
+      "name": "nudge_interrupt_count_reasonable",
+      "expected": "interrupts between 15 and 25",
+      "actual": 22,
+      "result": "pass"
+    },
+    {
+      "name": "interrupts_are_high_severity_only",
+      "expected": "interrupts high severity",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "interrupts_have_user_facing_reason",
+      "expected": "interrupts have copy/reason",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "interrupt_copy_specific_if_present",
+      "expected": "interrupt copy is specific",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "copy_review_required_true_for_interrupts",
+      "expected": "interrupt entries require copy review",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "micro_spends_not_interrupting",
+      "expected": "micro spends do not interrupt",
+      "actual": [],
+      "result": "pass"
+    }
+  ],
+  "summary": {
+    "dataset_id": "aarav_spend_control_rash_decisions",
+    "status": "pass",
+    "seed": "mone-aarav-rash-decisions-final-v4",
+    "generated_at": "2026-05-19T07:45:00+05:30",
+    "total_files": 22,
+    "total_transactions": 1607,
+    "source_transactions": 1607,
+    "raw_payload_transactions": 1607,
+    "source_transactions_csv_rows": 1607,
+    "ground_truth_records": 1607,
+    "deposit_transactions": 1569,
+    "asset_transactions": 38,
+    "credit_card_transactions": 9,
+    "card_statement_cycles": 13,
+    "emi_count": 3,
+    "device_finance_sources": 1,
+    "fi_types": [
+      "deposit",
+      "mutual_funds",
+      "recurring_deposit",
+      "term_deposit"
+    ],
+    "account_count_by_fi_type": {
+      "deposit": 1,
+      "mutual_funds": 1,
+      "recurring_deposit": 1,
+      "term_deposit": 1
+    },
+    "minimum_deposit_balance": 25078.0,
+    "closing_deposit_balance": 175374.0,
+    "financial_health_overall_status": "Risk",
+    "final_net_worth": 134674.0,
+    "final_liquid_net_worth": -72326.0,
+    "risk_months": 6,
+    "negative_safe_to_spend_months": 5,
+    "nudge_candidates": 1273,
+    "interrupt_nudges": 22,
+    "demo_identity_files_present": true,
+    "dataset_registry_present": true,
+    "paid_card_emi_link_status": {
+      "checked": 9,
+      "issues": [],
+      "scenario_grade_statement_only_paid": 9
+    },
+    "source_taxonomy_violations": 0,
+    "source_narration_leakage_count": 0,
+    "manifest_mismatches": 0,
+    "broken_link_count": 0,
+    "stale_file_count": 0,
+    "validation_check_count": 162,
+    "failed_check_count": 0
+  }
+}

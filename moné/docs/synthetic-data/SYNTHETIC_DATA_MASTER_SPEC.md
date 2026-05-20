@@ -87,15 +87,16 @@ See `PERSONA_BEHAVIOR_SPEC.md` for full details.
 | # | Dataset ID | Persona | Focus |
 |---|-----------|---------|-------|
 | 1 | aarav_spend_control_normal | Aarav | Baseline daily expense pattern |
-| 2 | aarav_job_switch | Aarav | Salary gap + new employer |
-| 3 | aarav_lifestyle_creep | Aarav | Gradual spending inflation |
-| 4 | aarav_wedding_travel_spike | Aarav | Social event spending burst |
-| 5 | priya_goal_planner_normal | Priya | Baseline goal-oriented pattern |
-| 6 | priya_healthcare_shock | Priya | Medical emergency impact |
-| 7 | priya_family_provider | Priya | High family obligation load |
-| 8 | priya_bonus_goal_acceleration | Priya | Bonus accelerates goals |
-| 9 | priya_travel_goal_drift | Priya | Travel causes goal drift |
-| 10 | priya_investor_heavy_low_liquidity | Priya | Heavy investments, low liquid cash |
+| 2 | aarav_spend_control_rash_decisions | Aarav | High-income, weak-control demo fixture with asset withdrawals and goal drift |
+| 3 | aarav_job_switch | Aarav | Salary gap + new employer |
+| 4 | aarav_lifestyle_creep | Aarav | Gradual spending inflation |
+| 5 | aarav_wedding_travel_spike | Aarav | Social event spending burst |
+| 6 | priya_goal_planner_normal | Priya | Baseline goal-oriented pattern |
+| 7 | priya_healthcare_shock | Priya | Medical emergency impact |
+| 8 | priya_family_provider | Priya | High family obligation load |
+| 9 | priya_bonus_goal_acceleration | Priya | Bonus accelerates goals |
+| 10 | priya_travel_goal_drift | Priya | Travel causes goal drift |
+| 11 | priya_investor_heavy_low_liquidity | Priya | Heavy investments, low liquid cash |
 
 ## Output Structure
 
@@ -111,6 +112,9 @@ Per dataset:
 ├── mode_spending_summary.csv     ← Spend by mode (UPI, CARD, CASH, etc.)
 ├── income_candidates_expected.json
 ├── recurring_candidates_expected.json
+├── financial_health_expected.json
+├── safe_to_spend_expected.json
+├── goal_risk_expected.json
 └── validation_report.json
 ```
 
@@ -123,6 +127,7 @@ TypeScript (Deno), matching the existing backend.
 Each dataset uses a deterministic seed for reproducibility:
 
 - `mone-aarav-normal-v1`
+- `mone-aarav-rash-decisions-v1`
 - `mone-aarav-job-switch-v1`
 - `mone-aarav-lifestyle-creep-v1`
 - `mone-aarav-wedding-v1`
@@ -147,6 +152,10 @@ Each dataset uses a deterministic seed for reproducibility:
 9. Raw AA-style payload export
 10. Canonical CSV export
 11. Validation report
+
+### Aarav Rash Decisions Variant
+
+`aarav_spend_control_rash_decisions` is a fixture-quality demo dataset for Aarav's spend-control problem. It keeps Aarav's high salary and normal daily leakage, then adds rash purchases, irregular SIP behavior, mutual-fund redemption, recurring-deposit breakage, term-deposit premature closure, credit-card stress, goal drift, safe-to-spend risk, and non-healthy financial health. It includes `deposit`, `mutual_funds`, `recurring_deposit`, and `term_deposit` FI payloads. Investment purchases, redemptions, RD closure proceeds, and FD closure proceeds must not be counted as lifestyle spending or income.
 
 ### Pass 2
 1. Priya normal

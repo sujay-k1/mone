@@ -29,6 +29,8 @@ targets:
       - path: SupabaseClient.swift
     resources:
       - path: Resources/Assets.xcassets
+      - path: data/synthetic/output/aarav_spend_control_rash_decisions
+        type: folder
     dependencies:
       - package: Supabase
     settings:

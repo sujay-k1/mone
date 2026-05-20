@@ -1,0 +1,1396 @@
+{
+  "protected_obligation": [
+    {
+      "candidate_type": "protected_obligation",
+      "category": "rent",
+      "sub_category": "monthly_rent",
+      "merchant": "RAMESH KUMAR",
+      "occurrence_count": 12,
+      "avg_amount": 42000.0,
+      "min_amount": 42000.0,
+      "max_amount": 42000.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-05",
+        "2025-07-05",
+        "2025-08-05",
+        "2025-09-05",
+        "2025-10-05"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "sip",
+      "sub_category": "mutual_fund_sip",
+      "merchant": "AXIS MIDCAP FUND",
+      "occurrence_count": 12,
+      "avg_amount": 5000.0,
+      "min_amount": 5000.0,
+      "max_amount": 5000.0,
+      "modes": [
+        "FT"
+      ],
+      "sample_dates": [
+        "2025-06-10",
+        "2025-07-10",
+        "2025-08-10",
+        "2025-09-10",
+        "2025-10-10"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "sip",
+      "sub_category": "mutual_fund_sip",
+      "merchant": "HDFC BLUECHIP FUND",
+      "occurrence_count": 12,
+      "avg_amount": 10000.0,
+      "min_amount": 10000.0,
+      "max_amount": 10000.0,
+      "modes": [
+        "FT"
+      ],
+      "sample_dates": [
+        "2025-06-06",
+        "2025-07-06",
+        "2025-08-06",
+        "2025-09-06",
+        "2025-10-06"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "subscription",
+      "sub_category": "amazon_prime",
+      "merchant": "Amazon Prime",
+      "occurrence_count": 12,
+      "avg_amount": 179.0,
+      "min_amount": 179.0,
+      "max_amount": 179.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-20",
+        "2025-07-20",
+        "2025-08-20",
+        "2025-09-20",
+        "2025-10-20"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "subscription",
+      "sub_category": "icloud",
+      "merchant": "iCloud",
+      "occurrence_count": 12,
+      "avg_amount": 75.0,
+      "min_amount": 75.0,
+      "max_amount": 75.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-14",
+        "2025-07-14",
+        "2025-08-14",
+        "2025-09-14",
+        "2025-10-14"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "subscription",
+      "sub_category": "netflix",
+      "merchant": "Netflix",
+      "occurrence_count": 12,
+      "avg_amount": 649.0,
+      "min_amount": 649.0,
+      "max_amount": 649.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-12",
+        "2025-07-12",
+        "2025-08-12",
+        "2025-09-12",
+        "2025-10-12"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "subscription",
+      "sub_category": "spotify",
+      "merchant": "Spotify",
+      "occurrence_count": 12,
+      "avg_amount": 119.0,
+      "min_amount": 119.0,
+      "max_amount": 119.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-14",
+        "2025-07-14",
+        "2025-08-14",
+        "2025-09-14",
+        "2025-10-14"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "utility",
+      "sub_category": "broadband",
+      "merchant": "ACT Fibernet",
+      "occurrence_count": 12,
+      "avg_amount": 999.0,
+      "min_amount": 999.0,
+      "max_amount": 999.0,
+      "modes": [
+        "FT"
+      ],
+      "sample_dates": [
+        "2025-06-15",
+        "2025-07-15",
+        "2025-08-15",
+        "2025-09-15",
+        "2025-10-15"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "utility",
+      "sub_category": "electricity",
+      "merchant": "BESCOM",
+      "occurrence_count": 12,
+      "avg_amount": 1544.92,
+      "min_amount": 1005.0,
+      "max_amount": 2125.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-12",
+        "2025-07-12",
+        "2025-08-12",
+        "2025-09-12",
+        "2025-10-12"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_obligation",
+      "category": "utility",
+      "sub_category": "mobile",
+      "merchant": "Jio",
+      "occurrence_count": 12,
+      "avg_amount": 599.0,
+      "min_amount": 599.0,
+      "max_amount": 599.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-18",
+        "2025-07-18",
+        "2025-08-18",
+        "2025-09-18",
+        "2025-10-18"
+      ],
+      "expected_nudge_types": []
+    }
+  ],
+  "recurring_spending_rhythm": [
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "grocery_topup",
+      "merchant": "BigBasket",
+      "occurrence_count": 11,
+      "avg_amount": 855.25,
+      "min_amount": 336.0,
+      "max_amount": 1470.3,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-08-03",
+        "2025-12-07",
+        "2026-01-04",
+        "2026-01-18",
+        "2026-02-22"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "grocery_topup",
+      "merchant": "Blinkit",
+      "occurrence_count": 8,
+      "avg_amount": 1050.21,
+      "min_amount": 451.0,
+      "max_amount": 1388.4,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-07-20",
+        "2025-07-27",
+        "2025-08-17",
+        "2025-09-07",
+        "2025-10-26"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "grocery_topup",
+      "merchant": "DMart",
+      "occurrence_count": 10,
+      "avg_amount": 974.1,
+      "min_amount": 326.9,
+      "max_amount": 1530.1,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-15",
+        "2025-08-24",
+        "2025-10-05",
+        "2025-11-16",
+        "2025-11-23"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "grocery_topup",
+      "merchant": "More Supermarket",
+      "occurrence_count": 8,
+      "avg_amount": 1003.25,
+      "min_amount": 588.9,
+      "max_amount": 1557.4,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-01",
+        "2025-07-06",
+        "2025-08-10",
+        "2025-09-28",
+        "2025-12-21"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "grocery_topup",
+      "merchant": "Zepto",
+      "occurrence_count": 7,
+      "avg_amount": 768.66,
+      "min_amount": 486.0,
+      "max_amount": 1017.9,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-09-21",
+        "2025-10-12",
+        "2025-10-19",
+        "2025-11-02",
+        "2025-12-14"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "weekly_grocery",
+      "merchant": "BigBasket",
+      "occurrence_count": 12,
+      "avg_amount": 2913.63,
+      "min_amount": 1937.0,
+      "max_amount": 4110.6,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-07",
+        "2025-07-26",
+        "2025-08-02",
+        "2025-10-04",
+        "2025-10-18"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "weekly_grocery",
+      "merchant": "Blinkit",
+      "occurrence_count": 9,
+      "avg_amount": 2561.79,
+      "min_amount": 1436.35,
+      "max_amount": 3967.6,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-21",
+        "2025-07-12",
+        "2025-11-15",
+        "2025-11-29",
+        "2025-12-13"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "weekly_grocery",
+      "merchant": "DMart",
+      "occurrence_count": 10,
+      "avg_amount": 2619.35,
+      "min_amount": 1039.5,
+      "max_amount": 4401.8,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-08-09",
+        "2025-08-16",
+        "2025-08-30",
+        "2025-10-11",
+        "2025-10-25"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "weekly_grocery",
+      "merchant": "More Supermarket",
+      "occurrence_count": 4,
+      "avg_amount": 2799.38,
+      "min_amount": 1484.0,
+      "max_amount": 4461.6,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-08-23",
+        "2026-03-07",
+        "2026-03-14",
+        "2026-04-25"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "groceries",
+      "sub_category": "weekly_grocery",
+      "merchant": "Zepto",
+      "occurrence_count": 9,
+      "avg_amount": 3003.57,
+      "min_amount": 1967.0,
+      "max_amount": 4995.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-07-19",
+        "2025-09-06",
+        "2025-09-13",
+        "2025-09-20",
+        "2025-09-27"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "household",
+      "sub_category": "household_items",
+      "merchant": "Amazon",
+      "occurrence_count": 9,
+      "avg_amount": 625.44,
+      "min_amount": 336.0,
+      "max_amount": 789.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-03",
+        "2025-07-23",
+        "2025-08-06",
+        "2025-09-27",
+        "2025-12-09"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "recurring_spending_rhythm",
+      "category": "household",
+      "sub_category": "household_items",
+      "merchant": "Flipkart",
+      "occurrence_count": 12,
+      "avg_amount": 462.25,
+      "min_amount": 180.0,
+      "max_amount": 780.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-09",
+        "2025-06-29",
+        "2025-07-01",
+        "2025-09-24",
+        "2025-10-24"
+      ],
+      "expected_nudge_types": []
+    }
+  ],
+  "protected_goal_transfer": [
+    {
+      "candidate_type": "protected_goal_transfer",
+      "category": "goal_allocation",
+      "sub_category": "emergency_fund",
+      "merchant": "Self",
+      "occurrence_count": 11,
+      "avg_amount": 10000.0,
+      "min_amount": 10000.0,
+      "max_amount": 10000.0,
+      "modes": [
+        "FT"
+      ],
+      "sample_dates": [
+        "2025-06-29",
+        "2025-07-29",
+        "2025-08-29",
+        "2025-09-29",
+        "2025-10-29"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_goal_transfer",
+      "category": "goal_allocation",
+      "sub_category": "laptop",
+      "merchant": "Self",
+      "occurrence_count": 11,
+      "avg_amount": 6000.0,
+      "min_amount": 6000.0,
+      "max_amount": 6000.0,
+      "modes": [
+        "FT"
+      ],
+      "sample_dates": [
+        "2025-06-30",
+        "2025-07-30",
+        "2025-08-30",
+        "2025-09-30",
+        "2025-10-30"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "protected_goal_transfer",
+      "category": "goal_allocation",
+      "sub_category": "vacation_bali",
+      "merchant": "Self",
+      "occurrence_count": 11,
+      "avg_amount": 8000.0,
+      "min_amount": 8000.0,
+      "max_amount": 8000.0,
+      "modes": [
+        "FT"
+      ],
+      "sample_dates": [
+        "2025-06-29",
+        "2025-07-29",
+        "2025-08-29",
+        "2025-09-29",
+        "2025-10-29"
+      ],
+      "expected_nudge_types": []
+    }
+  ],
+  "leakage_candidate": [
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "cash_withdrawal",
+      "sub_category": "atm",
+      "merchant": "HDFC ATM",
+      "occurrence_count": 14,
+      "avg_amount": 4857.14,
+      "min_amount": 2000.0,
+      "max_amount": 10000.0,
+      "modes": [
+        "ATM"
+      ],
+      "sample_dates": [
+        "2025-06-27",
+        "2025-08-28",
+        "2025-09-05",
+        "2025-09-18",
+        "2025-10-19"
+      ],
+      "expected_nudge_types": [
+        "cash_blindspot"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "morning_coffee",
+      "merchant": "Blue Tokai",
+      "occurrence_count": 49,
+      "avg_amount": 181.55,
+      "min_amount": 120.0,
+      "max_amount": 278.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-09",
+        "2025-06-13",
+        "2025-06-19",
+        "2025-07-01",
+        "2025-07-09"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "morning_coffee",
+      "merchant": "Cafe Coffee Day",
+      "occurrence_count": 42,
+      "avg_amount": 197.62,
+      "min_amount": 125.0,
+      "max_amount": 278.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-16",
+        "2025-06-25",
+        "2025-06-27",
+        "2025-07-21",
+        "2025-07-31"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "morning_coffee",
+      "merchant": "Starbucks",
+      "occurrence_count": 40,
+      "avg_amount": 212.05,
+      "min_amount": 126.0,
+      "max_amount": 278.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-03",
+        "2025-06-10",
+        "2025-06-20",
+        "2025-06-24",
+        "2025-07-04"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "morning_coffee",
+      "merchant": "Third Wave Coffee",
+      "occurrence_count": 43,
+      "avg_amount": 195.07,
+      "min_amount": 128.0,
+      "max_amount": 280.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-02",
+        "2025-06-04",
+        "2025-06-06",
+        "2025-06-26",
+        "2025-06-30"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "weekend_coffee",
+      "merchant": "Blue Tokai",
+      "occurrence_count": 12,
+      "avg_amount": 349.5,
+      "min_amount": 187.0,
+      "max_amount": 497.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-07",
+        "2025-07-13",
+        "2025-07-26",
+        "2025-11-02",
+        "2025-11-22"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "weekend_coffee",
+      "merchant": "Cafe Coffee Day",
+      "occurrence_count": 12,
+      "avg_amount": 347.58,
+      "min_amount": 212.0,
+      "max_amount": 458.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-09-06",
+        "2025-09-27",
+        "2025-10-04",
+        "2025-12-28",
+        "2026-01-24"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "weekend_coffee",
+      "merchant": "Starbucks",
+      "occurrence_count": 11,
+      "avg_amount": 326.91,
+      "min_amount": 198.0,
+      "max_amount": 436.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-22",
+        "2025-07-12",
+        "2025-07-19",
+        "2025-08-09",
+        "2025-09-20"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "coffee",
+      "sub_category": "weekend_coffee",
+      "merchant": "Third Wave Coffee",
+      "occurrence_count": 15,
+      "avg_amount": 378.2,
+      "min_amount": 314.0,
+      "max_amount": 465.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-15",
+        "2025-06-28",
+        "2025-06-29",
+        "2025-07-05",
+        "2025-08-23"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "cab_from_work",
+      "merchant": "Ola",
+      "occurrence_count": 28,
+      "avg_amount": 284.89,
+      "min_amount": 185.0,
+      "max_amount": 395.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-20",
+        "2025-06-23",
+        "2025-07-02",
+        "2025-07-11",
+        "2025-08-19"
+      ],
+      "expected_nudge_types": [
+        "cab_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "cab_from_work",
+      "merchant": "Rapido",
+      "occurrence_count": 31,
+      "avg_amount": 301.84,
+      "min_amount": 184.0,
+      "max_amount": 396.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-10",
+        "2025-06-24",
+        "2025-07-15",
+        "2025-07-18",
+        "2025-07-22"
+      ],
+      "expected_nudge_types": [
+        "cab_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "cab_from_work",
+      "merchant": "Uber",
+      "occurrence_count": 29,
+      "avg_amount": 275.55,
+      "min_amount": 183.0,
+      "max_amount": 390.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-09",
+        "2025-06-27",
+        "2025-07-03",
+        "2025-08-01",
+        "2025-08-28"
+      ],
+      "expected_nudge_types": [
+        "cab_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "cab_to_work",
+      "merchant": "Ola",
+      "occurrence_count": 33,
+      "avg_amount": 230.55,
+      "min_amount": 151.0,
+      "max_amount": 350.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-20",
+        "2025-06-23",
+        "2025-07-02",
+        "2025-07-11",
+        "2025-07-31"
+      ],
+      "expected_nudge_types": [
+        "cab_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "cab_to_work",
+      "merchant": "Rapido",
+      "occurrence_count": 37,
+      "avg_amount": 254.89,
+      "min_amount": 152.0,
+      "max_amount": 344.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-10",
+        "2025-06-24",
+        "2025-07-09",
+        "2025-07-15",
+        "2025-07-18"
+      ],
+      "expected_nudge_types": [
+        "cab_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "cab_to_work",
+      "merchant": "Uber",
+      "occurrence_count": 33,
+      "avg_amount": 247.94,
+      "min_amount": 167.0,
+      "max_amount": 341.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-09",
+        "2025-06-27",
+        "2025-07-03",
+        "2025-08-01",
+        "2025-08-06"
+      ],
+      "expected_nudge_types": [
+        "cab_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "commute",
+      "sub_category": "metro",
+      "merchant": "BMRCL Metro",
+      "occurrence_count": 114,
+      "avg_amount": 55.18,
+      "min_amount": 30.0,
+      "max_amount": 80.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-02",
+        "2025-06-03",
+        "2025-06-04",
+        "2025-06-13",
+        "2025-06-16"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "friday_social",
+      "merchant": "Arbor Brewing",
+      "occurrence_count": 9,
+      "avg_amount": 1838.94,
+      "min_amount": 1075.25,
+      "max_amount": 2516.8,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-08-08",
+        "2025-09-05",
+        "2025-10-03",
+        "2025-10-10",
+        "2025-10-31"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "friday_social",
+      "merchant": "Biere Club",
+      "occurrence_count": 10,
+      "avg_amount": 2033.86,
+      "min_amount": 1383.0,
+      "max_amount": 3229.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-27",
+        "2025-07-04",
+        "2025-08-22",
+        "2025-09-12",
+        "2025-11-14"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "friday_social",
+      "merchant": "Byg Brewski",
+      "occurrence_count": 15,
+      "avg_amount": 1924.73,
+      "min_amount": 912.0,
+      "max_amount": 3262.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-06",
+        "2025-08-01",
+        "2025-08-29",
+        "2025-09-19",
+        "2025-09-26"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "friday_social",
+      "merchant": "Toit",
+      "occurrence_count": 11,
+      "avg_amount": 1974.66,
+      "min_amount": 752.5,
+      "max_amount": 3211.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-13",
+        "2025-06-20",
+        "2025-07-11",
+        "2025-07-18",
+        "2026-02-06"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "weekend_dining",
+      "merchant": "Empire Restaurant",
+      "occurrence_count": 22,
+      "avg_amount": 1822.21,
+      "min_amount": 845.0,
+      "max_amount": 3219.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-21",
+        "2025-07-12",
+        "2025-08-02",
+        "2025-08-09",
+        "2025-08-16"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "weekend_dining",
+      "merchant": "MTR",
+      "occurrence_count": 15,
+      "avg_amount": 1655.45,
+      "min_amount": 865.0,
+      "max_amount": 3381.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-07-13",
+        "2025-09-13",
+        "2025-11-09",
+        "2025-11-15",
+        "2025-11-22"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "weekend_dining",
+      "merchant": "Meghana Foods",
+      "occurrence_count": 17,
+      "avg_amount": 1858.68,
+      "min_amount": 843.6,
+      "max_amount": 3033.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-07-05",
+        "2025-07-06",
+        "2025-09-14",
+        "2025-10-11",
+        "2025-10-26"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "weekend_dining",
+      "merchant": "Toit",
+      "occurrence_count": 15,
+      "avg_amount": 1850.21,
+      "min_amount": 936.0,
+      "max_amount": 3681.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-01",
+        "2025-06-08",
+        "2025-06-14",
+        "2025-06-29",
+        "2025-07-27"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "eating_out",
+      "sub_category": "weekend_dining",
+      "merchant": "Truffles",
+      "occurrence_count": 9,
+      "avg_amount": 2149.02,
+      "min_amount": 809.2,
+      "max_amount": 3271.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-07-26",
+        "2025-09-27",
+        "2025-10-05",
+        "2025-11-01",
+        "2026-01-04"
+      ],
+      "expected_nudge_types": [
+        "weekend_spike"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "fashion",
+      "sub_category": "impulse_shopping",
+      "merchant": "Amazon",
+      "occurrence_count": 7,
+      "avg_amount": 3723.79,
+      "min_amount": 1841.0,
+      "max_amount": 5642.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-28",
+        "2025-08-02",
+        "2025-09-06",
+        "2025-09-13",
+        "2025-10-18"
+      ],
+      "expected_nudge_types": [
+        "spend_velocity_high"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "fashion",
+      "sub_category": "impulse_shopping",
+      "merchant": "Flipkart",
+      "occurrence_count": 3,
+      "avg_amount": 4698.1,
+      "min_amount": 1014.3,
+      "max_amount": 6675.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-08-23",
+        "2025-10-11",
+        "2025-11-08"
+      ],
+      "expected_nudge_types": [
+        "spend_velocity_high"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "fashion",
+      "sub_category": "impulse_shopping",
+      "merchant": "H&M",
+      "occurrence_count": 5,
+      "avg_amount": 4541.54,
+      "min_amount": 2691.0,
+      "max_amount": 6160.7,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-06-07",
+        "2025-06-14",
+        "2025-06-21",
+        "2026-04-04",
+        "2026-04-11"
+      ],
+      "expected_nudge_types": [
+        "spend_velocity_high"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "fashion",
+      "sub_category": "impulse_shopping",
+      "merchant": "Myntra",
+      "occurrence_count": 4,
+      "avg_amount": 3676.4,
+      "min_amount": 2086.5,
+      "max_amount": 5401.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-08-30",
+        "2025-11-01",
+        "2026-02-28",
+        "2026-05-30"
+      ],
+      "expected_nudge_types": [
+        "spend_velocity_high"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "fashion",
+      "sub_category": "impulse_shopping",
+      "merchant": "Uniqlo",
+      "occurrence_count": 3,
+      "avg_amount": 3412.5,
+      "min_amount": 1435.5,
+      "max_amount": 5287.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-07-12",
+        "2025-08-16",
+        "2025-09-20"
+      ],
+      "expected_nudge_types": [
+        "spend_velocity_high"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "fashion",
+      "sub_category": "impulse_shopping",
+      "merchant": "Zara",
+      "occurrence_count": 2,
+      "avg_amount": 4395.15,
+      "min_amount": 3790.8,
+      "max_amount": 4999.5,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-11-29",
+        "2026-03-14"
+      ],
+      "expected_nudge_types": [
+        "spend_velocity_high"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "dinner",
+      "merchant": "Swiggy",
+      "occurrence_count": 63,
+      "avg_amount": 465.97,
+      "min_amount": 280.0,
+      "max_amount": 647.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-03",
+        "2025-06-05",
+        "2025-06-25",
+        "2025-07-03",
+        "2025-07-04"
+      ],
+      "expected_nudge_types": [
+        "food_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "dinner",
+      "merchant": "Zomato",
+      "occurrence_count": 44,
+      "avg_amount": 483.82,
+      "min_amount": 280.0,
+      "max_amount": 650.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-17",
+        "2025-06-18",
+        "2025-07-11",
+        "2025-07-14",
+        "2025-07-28"
+      ],
+      "expected_nudge_types": [
+        "food_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "late_night_food",
+      "merchant": "Swiggy",
+      "occurrence_count": 24,
+      "avg_amount": 402.13,
+      "min_amount": 258.0,
+      "max_amount": 549.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-12",
+        "2025-06-13",
+        "2025-07-08",
+        "2025-07-11",
+        "2025-08-05"
+      ],
+      "expected_nudge_types": [
+        "food_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "late_night_food",
+      "merchant": "Zomato",
+      "occurrence_count": 18,
+      "avg_amount": 388.39,
+      "min_amount": 253.0,
+      "max_amount": 526.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-07-28",
+        "2025-08-01",
+        "2025-09-16",
+        "2025-09-24",
+        "2025-10-01"
+      ],
+      "expected_nudge_types": [
+        "food_leakage"
+      ]
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "lunch",
+      "merchant": "Office Canteen",
+      "occurrence_count": 51,
+      "avg_amount": 322.98,
+      "min_amount": 209.0,
+      "max_amount": 448.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-02",
+        "2025-06-13",
+        "2025-06-27",
+        "2025-07-04",
+        "2025-07-10"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "lunch",
+      "merchant": "Swiggy",
+      "occurrence_count": 77,
+      "avg_amount": 330.95,
+      "min_amount": 201.0,
+      "max_amount": 550.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-05",
+        "2025-06-06",
+        "2025-06-10",
+        "2025-06-17",
+        "2025-06-18"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "food_delivery",
+      "sub_category": "lunch",
+      "merchant": "Zomato",
+      "occurrence_count": 85,
+      "avg_amount": 380.04,
+      "min_amount": 200.0,
+      "max_amount": 634.0,
+      "modes": [
+        "UPI"
+      ],
+      "sample_dates": [
+        "2025-06-04",
+        "2025-06-08",
+        "2025-06-20",
+        "2025-06-22",
+        "2025-06-23"
+      ],
+      "expected_nudge_types": []
+    },
+    {
+      "candidate_type": "leakage_candidate",
+      "category": "work_expense",
+      "sub_category": "client_visit",
+      "merchant": "Uber Business",
+      "occurrence_count": 2,
+      "avg_amount": 3274.5,
+      "min_amount": 3104.0,
+      "max_amount": 3445.0,
+      "modes": [
+        "CARD"
+      ],
+      "sample_dates": [
+        "2025-10-07",
+        "2026-04-06"
+      ],
+      "expected_nudge_types": [
+        "reimbursable_detected"
+      ]
+    }
+  ]
+}

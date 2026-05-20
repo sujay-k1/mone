@@ -1,0 +1,97 @@
+{
+  "dataset_id": "aarav_spend_control_rash_decisions",
+  "fixed_commitment": [
+    {
+      "name": "Rent",
+      "monthly_amount": 42000,
+      "normalized_bucket": "fixed_commitment",
+      "commitment_strength": "must_pay",
+      "reserve_before_safe_to_spend": true,
+      "cancelable": false,
+      "debt_related": false
+    },
+    {
+      "name": "ACT Fibernet",
+      "monthly_amount": 999,
+      "normalized_bucket": "fixed_commitment",
+      "commitment_strength": "must_pay",
+      "reserve_before_safe_to_spend": true,
+      "cancelable": false,
+      "debt_related": false
+    }
+  ],
+  "cancelable_commitment": [
+    {
+      "name": "Netflix",
+      "monthly_amount": 649,
+      "normalized_bucket": "cancelable_commitment",
+      "commitment_strength": "cancelable",
+      "reserve_before_safe_to_spend": false,
+      "cancelable": true
+    },
+    {
+      "name": "Spotify",
+      "monthly_amount": 119,
+      "normalized_bucket": "cancelable_commitment",
+      "commitment_strength": "cancelable",
+      "reserve_before_safe_to_spend": false,
+      "cancelable": true
+    }
+  ],
+  "protected_goal_transfer": [
+    {
+      "name": "HDFC Bluechip SIP",
+      "monthly_amount": 10000,
+      "normalized_bucket": "protected_goal_transfer",
+      "commitment_strength": "goal_protective",
+      "goal_protective": true
+    },
+    {
+      "name": "Emergency RD",
+      "monthly_amount": 7000,
+      "normalized_bucket": "protected_goal_transfer",
+      "commitment_strength": "goal_protective",
+      "goal_protective": true
+    }
+  ],
+  "debt_commitment": [
+    {
+      "name": "Apple Card EMI",
+      "monthly_amount": 24900,
+      "normalized_bucket": "debt_commitment",
+      "commitment_strength": "must_pay",
+      "debt_related": true,
+      "reserve_before_safe_to_spend": true
+    },
+    {
+      "name": "Bajaj Device EMI",
+      "monthly_amount": 9000,
+      "normalized_bucket": "debt_commitment",
+      "commitment_strength": "must_pay",
+      "debt_related": true,
+      "reserve_before_safe_to_spend": true
+    }
+  ],
+  "recurring_spending_rhythm": [
+    {
+      "name": "Groceries",
+      "normalized_bucket": "recurring_spending_rhythm",
+      "commitment_strength": "forecast_only",
+      "forecast_only": true
+    }
+  ],
+  "leakage_candidate": [
+    {
+      "name": "Coffee habit",
+      "normalized_bucket": "leakage_candidate",
+      "commitment_strength": "risky_leakage",
+      "forecast_only": true
+    },
+    {
+      "name": "Cab habit",
+      "normalized_bucket": "leakage_candidate",
+      "commitment_strength": "risky_leakage",
+      "forecast_only": true
+    }
+  ]
+}

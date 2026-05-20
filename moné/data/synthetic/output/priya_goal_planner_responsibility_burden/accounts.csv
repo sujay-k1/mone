@@ -1,0 +1,6 @@
+account_id,fi_type,masked_account_number,account_status,current_balance,current_value,liquidity_class,balance_role
+acc_deposit_priya_hdfc_0001,deposit,XXXXXXXX7788,ACTIVE,171582.00,171582.00,liquid,spendable_cash
+acc_mf_priya_hdfc_0001,mutual_funds,MFXXXX7788,ACTIVE,2165000.00,2165000.00,semi_liquid,asset_value
+acc_rd_priya_hdfc_0001,recurring_deposit,RDXXXX7788,ACTIVE,282000.00,282000.00,protected_or_locked,asset_value
+acc_td_priya_hdfc_0001,term_deposit,TDXXXX7788,MATURED_CLOSED,0.00,0.00,protected_or_locked,asset_value
+acc_ins_priya_family_0001,insurance_policies,INXXXX7788,ACTIVE,194650.00,194650.00,protected_or_locked,asset_value

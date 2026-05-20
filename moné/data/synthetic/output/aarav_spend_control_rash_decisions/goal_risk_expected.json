@@ -1,0 +1,48 @@
+{
+  "dataset_id": "aarav_spend_control_rash_decisions",
+  "goals": [
+    {
+      "goal_id": "emergency_fund",
+      "goal_name": "Emergency fund",
+      "target_amount": 500000,
+      "expected_monthly_allocation": 22000,
+      "actual_allocations": 8,
+      "skipped_months": [
+        "2026-03",
+        "2026-04"
+      ],
+      "projected_delay_days": 75,
+      "status": "risk",
+      "reason": "RD break and TD closure weakened emergency buffer"
+    },
+    {
+      "goal_id": "vacation",
+      "goal_name": "Japan vacation",
+      "target_amount": 250000,
+      "expected_monthly_allocation": 12000,
+      "actual_allocations": 7,
+      "skipped_months": [
+        "2025-10",
+        "2025-12",
+        "2026-02"
+      ],
+      "projected_delay_days": 60,
+      "status": "risk",
+      "reason": "luxury and spontaneous trip spending displaced allocation"
+    },
+    {
+      "goal_id": "laptop",
+      "goal_name": "Laptop/gadget",
+      "target_amount": 180000,
+      "expected_monthly_allocation": 10000,
+      "actual_allocations": 6,
+      "skipped_months": [
+        "2025-08",
+        "2026-02"
+      ],
+      "projected_delay_days": 45,
+      "status": "watch",
+      "reason": "rash purchase converted into EMI pressure"
+    }
+  ]
+}

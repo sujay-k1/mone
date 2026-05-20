@@ -1,0 +1,1853 @@
+{
+  "status": "pass",
+  "failed": [],
+  "summary": {
+    "dataset_id": "priya_goal_planner_responsibility_burden",
+    "status": "pass",
+    "seed": "mone-priya-responsibility-burden-v3",
+    "generated_at": "2026-05-19T09:45:00+05:30",
+    "fixture_generated_at": "2026-05-19T09:45:00+05:30",
+    "data_period_start": "2025-06-01",
+    "data_period_end": "2026-05-31",
+    "data_as_of_date": "2026-05-31",
+    "total_files": 22,
+    "total_transactions": 590,
+    "deposit_transactions": 549,
+    "asset_transactions": 41,
+    "credit_card_transactions": 6,
+    "card_statement_cycles": 14,
+    "missing_card_statement_cycle_count": 0,
+    "local_micro_upi_count": 254,
+    "cash_withdrawal_count": 20,
+    "self_transfer_count": 15,
+    "parents_support_count": 13,
+    "sibling_support_count": 4,
+    "education_loan_emi_count": 12,
+    "healthcare_spend_count": 26,
+    "insurance_policy_count": 1,
+    "goal_count": 6,
+    "nudge_candidates": 329,
+    "interrupt_nudges": 6,
+    "safe_to_spend_risk_months": 4,
+    "safe_to_spend_watch_months": 6,
+    "safe_to_spend_healthy_months": 2,
+    "final_net_worth": 2086232.0,
+    "final_liquid_net_worth": -19068.0,
+    "financial_health_overall_status": "Watch",
+    "failed_check_count": 0
+  },
+  "checks": [
+    {
+      "name": "output_manifest_present",
+      "expected": "output manifest exists",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_hashes_match",
+      "expected": "hashes match actual files",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_validation_status_matches_validation_report",
+      "expected": "manifest validation status matches report status",
+      "actual": {
+        "manifest_validation_status": "pass",
+        "validation_report_status": "pass",
+        "manifest_failed_check_count": 0,
+        "validation_report_failed_check_count": 0,
+        "status_mismatch": false,
+        "failed_count_mismatch": false,
+        "stale": false,
+        "payload_current": true,
+        "payload_matches_top_level": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_failed_check_count_matches_validation_report",
+      "expected": "manifest failed check count matches report summary",
+      "actual": {
+        "manifest_validation_status": "pass",
+        "validation_report_status": "pass",
+        "manifest_failed_check_count": 0,
+        "validation_report_failed_check_count": 0,
+        "status_mismatch": false,
+        "failed_count_mismatch": false,
+        "stale": false,
+        "payload_current": true,
+        "payload_matches_top_level": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "output_manifest_status_not_stale",
+      "expected": "manifest validation status is not stale",
+      "actual": {
+        "manifest_validation_status": "pass",
+        "validation_report_status": "pass",
+        "manifest_failed_check_count": 0,
+        "validation_report_failed_check_count": 0,
+        "status_mismatch": false,
+        "failed_count_mismatch": false,
+        "stale": false,
+        "payload_current": true,
+        "payload_matches_top_level": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "validation_check_actual_payloads_are_current",
+      "expected": "manifest status check payloads reflect current top-level values",
+      "actual": {
+        "manifest_validation_status": "pass",
+        "validation_report_status": "pass",
+        "manifest_failed_check_count": 0,
+        "validation_report_failed_check_count": 0,
+        "status_mismatch": false,
+        "failed_count_mismatch": false,
+        "stale": false,
+        "payload_current": true,
+        "payload_matches_top_level": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "manifest_status_check_payload_matches_top_level_values",
+      "expected": "manifest status check diagnostics match top-level files",
+      "actual": {
+        "manifest_validation_status": "pass",
+        "validation_report_status": "pass",
+        "manifest_failed_check_count": 0,
+        "validation_report_failed_check_count": 0,
+        "status_mismatch": false,
+        "failed_count_mismatch": false,
+        "stale": false,
+        "payload_current": true,
+        "payload_matches_top_level": true
+      },
+      "result": "pass"
+    },
+    {
+      "name": "required_files_present",
+      "expected": "all required files present",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "no_stale_files",
+      "expected": "no unexpected files",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_files_have_no_mone_taxonomy",
+      "expected": "source files exclude taxonomy keys",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_narrations_have_no_taxonomy_leakage",
+      "expected": "source text excludes taxonomy narration leaks",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "source_vs_expected_boundary_passes",
+      "expected": "source and expected layers are separated",
+      "actual": {
+        "source_violations": [],
+        "expected_files": [
+          "ground_truth.json",
+          "income_candidates_expected.json",
+          "recurring_candidates_expected.json",
+          "emi_candidates_expected.json",
+          "safe_to_spend_expected.json",
+          "goal_risk_expected.json",
+          "financial_health_expected.json",
+          "net_worth_expected.json",
+          "nudge_expected.json",
+          "validation_report.json",
+          "output_manifest.json"
+        ]
+      },
+      "result": "pass"
+    },
+    {
+      "name": "raw_payload_has_required_fi_types",
+      "expected": "deposit, MF, RD, TD, insurance present",
+      "actual": [
+        "deposit",
+        "insurance_policies",
+        "mutual_funds",
+        "recurring_deposit",
+        "term_deposit"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "transactions_csv_matches_raw_payload",
+      "expected": "raw and csv tx ids match",
+      "actual": {
+        "raw_only": [],
+        "csv_only": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "ground_truth_one_to_one",
+      "expected": "ground truth one-to-one",
+      "actual": {
+        "csv": 590,
+        "gt": 590
+      },
+      "result": "pass"
+    },
+    {
+      "name": "running_balance_reconciles",
+      "expected": "deposit running balance nonnegative and raw matches csv",
+      "actual": {
+        "issues": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "monthly_cashflow_reconciles",
+      "expected": "monthly cashflow matches tx csv",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "mode_summary_reconciles",
+      "expected": "mode summary matches tx csv",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "transaction_mode_matches_narration_prefix",
+      "expected": "source transaction mode matches narration prefix",
+      "actual": {
+        "issues": [],
+        "upi_rows_with_ft_prefix": [],
+        "ft_rows_with_upi_prefix": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "no_upi_rows_with_ft_prefix",
+      "expected": "UPI rows do not use FT narration prefix",
+      "actual": {
+        "issues": [],
+        "upi_rows_with_ft_prefix": [],
+        "ft_rows_with_upi_prefix": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "no_ft_rows_with_upi_prefix",
+      "expected": "FT rows do not use UPI narration prefix",
+      "actual": {
+        "issues": [],
+        "upi_rows_with_ft_prefix": [],
+        "ft_rows_with_upi_prefix": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "lpg_transactions_present",
+      "expected": "periodic LPG/gas payments are present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20250624_0011",
+        "TXN_PRIYA_SRC_DEPOSIT_20250824_0098",
+        "TXN_PRIYA_SRC_DEPOSIT_20251023_0187",
+        "TXN_PRIYA_SRC_DEPOSIT_20251224_0282",
+        "TXN_PRIYA_SRC_DEPOSIT_20260223_0383",
+        "TXN_PRIYA_SRC_DEPOSIT_20260423_0481"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "rent_component_transactions_present",
+      "expected": "rent-related component payments are present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20250704_0053",
+        "TXN_PRIYA_SRC_DEPOSIT_20251004_0186",
+        "TXN_PRIYA_SRC_DEPOSIT_20260104_0333",
+        "TXN_PRIYA_SRC_DEPOSIT_20260504_0523"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "variable_electricity_present",
+      "expected": "electricity bills vary by month",
+      "actual": [
+        1580.0,
+        2260.0,
+        1880.0,
+        1320.0,
+        2740.0,
+        1680.0,
+        1460.0,
+        1940.0,
+        2210.0,
+        3150.0,
+        4620.0,
+        3840.0
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "internet_mobile_topup_present",
+      "expected": "mobile/internet topups are present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20250921_0145",
+        "TXN_PRIYA_SRC_DEPOSIT_20251120_0231",
+        "TXN_PRIYA_SRC_DEPOSIT_20260320_0433"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "domestic_help_advance_present",
+      "expected": "domestic help advance is present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260213_0567"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "emi_extra_payment_present",
+      "expected": "loan/EMI extra payment is present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260321_0467"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "sip_or_rd_lumpsum_present",
+      "expected": "fund-building topup/lumpsum is present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260322_0468",
+        "TXN_PRIYA_SRC_DEPOSIT_20260323_0470"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "vehicle_service_center_cost_present",
+      "expected": "vehicle service or repair cost is present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260306_0568"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "annual_subscription_due_present",
+      "expected": "annual subscription or renewal due in demo month is present",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260511_0530"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "needs_review_raw_signals_present",
+      "expected": "ambiguous raw signals exist for future review",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20250609_0020",
+        "TXN_PRIYA_SRC_DEPOSIT_20250617_0029",
+        "TXN_PRIYA_SRC_DEPOSIT_20250621_0036",
+        "TXN_PRIYA_SRC_DEPOSIT_20250626_0037",
+        "TXN_PRIYA_SRC_DEPOSIT_20250708_0072",
+        "TXN_PRIYA_SRC_DEPOSIT_20250714_0068",
+        "TXN_PRIYA_SRC_DEPOSIT_20250721_0082",
+        "TXN_PRIYA_SRC_DEPOSIT_20250815_0113",
+        "TXN_PRIYA_SRC_DEPOSIT_20250821_0127",
+        "TXN_PRIYA_SRC_DEPOSIT_20250828_0107",
+        "TXN_PRIYA_SRC_DEPOSIT_20250906_0169",
+        "TXN_PRIYA_SRC_DEPOSIT_20250907_0163",
+        "TXN_PRIYA_SRC_DEPOSIT_20250916_0154",
+        "TXN_PRIYA_SRC_DEPOSIT_20250921_0168",
+        "TXN_PRIYA_SRC_DEPOSIT_20250921_0170",
+        "TXN_PRIYA_SRC_DEPOSIT_20251020_0207",
+        "TXN_PRIYA_SRC_DEPOSIT_20251026_0215",
+        "TXN_PRIYA_SRC_DEPOSIT_20251028_0203",
+        "TXN_PRIYA_SRC_DEPOSIT_20251031_0198",
+        "TXN_PRIYA_SRC_DEPOSIT_20251102_0250",
+        "TXN_PRIYA_SRC_DEPOSIT_20251102_0257",
+        "TXN_PRIYA_SRC_DEPOSIT_20251104_0256",
+        "TXN_PRIYA_SRC_DEPOSIT_20251107_0240",
+        "TXN_PRIYA_SRC_DEPOSIT_20251112_0263",
+        "TXN_PRIYA_SRC_DEPOSIT_20251113_0265",
+        "TXN_PRIYA_SRC_DEPOSIT_20251208_0292",
+        "TXN_PRIYA_SRC_DEPOSIT_20251210_0303",
+        "TXN_PRIYA_SRC_DEPOSIT_20251210_0291",
+        "TXN_PRIYA_SRC_DEPOSIT_20251213_0317",
+        "TXN_PRIYA_SRC_DEPOSIT_20251215_0315",
+        "TXN_PRIYA_SRC_DEPOSIT_20251217_0578",
+        "TXN_PRIYA_SRC_DEPOSIT_20260106_0366",
+        "TXN_PRIYA_SRC_DEPOSIT_20260107_0351",
+        "TXN_PRIYA_SRC_DEPOSIT_20260108_0364",
+        "TXN_PRIYA_SRC_DEPOSIT_20260121_0365",
+        "TXN_PRIYA_SRC_DEPOSIT_20260121_0363",
+        "TXN_PRIYA_SRC_DEPOSIT_20260203_0404",
+        "TXN_PRIYA_SRC_DEPOSIT_20260204_0408",
+        "TXN_PRIYA_SRC_DEPOSIT_20260209_0403",
+        "TXN_PRIYA_SRC_DEPOSIT_20260213_0396",
+        "TXN_PRIYA_SRC_DEPOSIT_20260216_0406",
+        "TXN_PRIYA_SRC_DEPOSIT_20260221_0415",
+        "TXN_PRIYA_SRC_DEPOSIT_20260226_0414",
+        "TXN_PRIYA_SRC_DEPOSIT_20260301_0454",
+        "TXN_PRIYA_SRC_DEPOSIT_20260304_0452",
+        "TXN_PRIYA_SRC_DEPOSIT_20260313_0461",
+        "TXN_PRIYA_SRC_DEPOSIT_20260326_0462",
+        "TXN_PRIYA_SRC_DEPOSIT_20260406_0509",
+        "TXN_PRIYA_SRC_DEPOSIT_20260421_0508",
+        "TXN_PRIYA_SRC_DEPOSIT_20260505_0540",
+        "TXN_PRIYA_SRC_DEPOSIT_20260513_0554",
+        "TXN_PRIYA_SRC_DEPOSIT_20260521_0545",
+        "TXN_PRIYA_SRC_DEPOSIT_20260526_0553"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "priya_subscriptions_present_but_not_excessive",
+      "expected": "Priya has useful but non-chaotic subscriptions",
+      "actual": [
+        "GOOGLE ONE",
+        "ICLOUD",
+        "LINKEDIN PREMIUM",
+        "NEWSPAPER DIGITAL",
+        "PRIME MEMBERSHIP",
+        "SPOTIFY",
+        "YOUTUBE PREMIUM"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "priya_parent_extra_support_present",
+      "expected": "Priya has extra parent-support transfer evidence",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20250609_0005",
+        "TXN_PRIYA_SRC_DEPOSIT_20250709_0047",
+        "TXN_PRIYA_SRC_DEPOSIT_20250809_0092",
+        "TXN_PRIYA_SRC_DEPOSIT_20250909_0139",
+        "TXN_PRIYA_SRC_DEPOSIT_20251009_0180",
+        "TXN_PRIYA_SRC_DEPOSIT_20251019_0562",
+        "TXN_PRIYA_SRC_DEPOSIT_20251109_0225",
+        "TXN_PRIYA_SRC_DEPOSIT_20251209_0276",
+        "TXN_PRIYA_SRC_DEPOSIT_20260109_0327",
+        "TXN_PRIYA_SRC_DEPOSIT_20260209_0377",
+        "TXN_PRIYA_SRC_DEPOSIT_20260309_0427",
+        "TXN_PRIYA_SRC_DEPOSIT_20260409_0475",
+        "TXN_PRIYA_SRC_DEPOSIT_20260509_0517"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "priya_education_loan_part_payment_present",
+      "expected": "Priya has a responsible education-loan part payment",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260321_0467"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "priya_disciplined_fund_topup_present",
+      "expected": "Priya has disciplined bonus-month fund topup evidence",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20260322_0468",
+        "TXN_PRIYA_SRC_DEPOSIT_20260323_0470"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "priya_remains_responsibility_burdened_not_reckless",
+      "expected": "raw hardening preserves Priya's responsibility-burden story",
+      "actual": {
+        "overall": "Watch",
+        "education_emi": 12,
+        "parents": 13
+      },
+      "result": "pass"
+    },
+    {
+      "name": "accounts_reconcile_with_raw_payload",
+      "expected": "accounts csv current values match raw",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "pii_policy_holder_profile",
+      "expected": "raw holder profile is synthetic and does not drive demo identity",
+      "actual": "Synthetic Holder PRIYA",
+      "result": "pass"
+    },
+    {
+      "name": "parents_support_present",
+      "expected": "monthly parents support present",
+      "actual": 13,
+      "result": "pass"
+    },
+    {
+      "name": "sibling_support_present",
+      "expected": "irregular sibling support present",
+      "actual": 4,
+      "result": "pass"
+    },
+    {
+      "name": "family_obligation_load_present",
+      "expected": "family obligations present",
+      "actual": 32,
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_emi_present",
+      "expected": "education loan EMI present",
+      "actual": 12,
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_emi_monthly_regular",
+      "expected": "education loan EMI monthly regular",
+      "actual": {
+        "2025-06": 1,
+        "2025-07": 1,
+        "2025-08": 1,
+        "2025-09": 1,
+        "2025-10": 1,
+        "2025-11": 1,
+        "2025-12": 1,
+        "2026-01": 1,
+        "2026-02": 1,
+        "2026-03": 1,
+        "2026-04": 1,
+        "2026-05": 1
+      },
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_emi_in_recurring_candidates",
+      "expected": "education loan in recurring expected",
+      "actual": "HDFC Credila",
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_emi_in_emi_candidates",
+      "expected": "education loan in EMI expected",
+      "actual": "education_loan_emi",
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_emi_reduces_safe_to_spend",
+      "expected": "debt pressure in safe-to-spend",
+      "actual": [
+        24500,
+        24500,
+        24500,
+        24500,
+        24500,
+        24500,
+        24500,
+        24500,
+        35000,
+        35000,
+        35000,
+        35000
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_emi_contributes_to_debt_pressure",
+      "expected": "health debt pressure watch/risk",
+      "actual": "Watch",
+      "result": "pass"
+    },
+    {
+      "name": "self_account_transfers_present",
+      "expected": "self transfers present",
+      "actual": 15,
+      "result": "pass"
+    },
+    {
+      "name": "self_transfers_not_income",
+      "expected": "self transfers not income",
+      "actual": 0,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_variety_present",
+      "expected": "local UPI category variety",
+      "actual": 24,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_frequency_lower_than_aarav",
+      "expected": "12-30 local UPI per month",
+      "actual": {
+        "2025-06": 18,
+        "2025-07": 20,
+        "2025-08": 21,
+        "2025-09": 16,
+        "2025-10": 19,
+        "2025-11": 26,
+        "2025-12": 28,
+        "2026-01": 23,
+        "2026-02": 24,
+        "2026-03": 20,
+        "2026-04": 18,
+        "2026-05": 21
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_monthly_frequency_in_target_range",
+      "expected": "12-30 local UPI per month",
+      "actual": {
+        "2025-06": 18,
+        "2025-07": 20,
+        "2025-08": 21,
+        "2025-09": 16,
+        "2025-10": 19,
+        "2025-11": 26,
+        "2025-12": 28,
+        "2026-01": 23,
+        "2026-02": 24,
+        "2026-03": 20,
+        "2026-04": 18,
+        "2026-05": 21
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_amount_distribution_realistic",
+      "expected": "most local UPI below 900 and max <= 3500",
+      "actual": {
+        "count": 254,
+        "max": 3449.0,
+        "under_900": 210
+      },
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_truncated_merchants",
+      "expected": "truncated/local shop narrations present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_qr_aggregator_narrations",
+      "expected": "QR/pay aggregator present",
+      "actual": [
+        "UPI/DE/PAYTMQR2819",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/PAYTMQR2819",
+        "UPI/DE/BHARATPE*OM SAI",
+        "UPI/DE/FRESH VEG QR"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_ambiguous_payees",
+      "expected": "person-name payees present",
+      "actual": [
+        "UPI/DE/PAPA",
+        "UPI/DE/MOM",
+        "UPI/DE/PAPA",
+        "UPI/DE/SURESH",
+        "UPI/DE/ROHAN"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_has_ground_truth_categories",
+      "expected": "local UPI hidden categories present",
+      "actual": 24,
+      "result": "pass"
+    },
+    {
+      "name": "local_micro_upi_not_all_high_confidence",
+      "expected": "low/medium confidence cases present",
+      "actual": {
+        "medium": 111,
+        "low": 32,
+        "high": 111
+      },
+      "result": "pass"
+    },
+    {
+      "name": "tagging_ambiguity_cases_present",
+      "expected": "ambiguous cases present",
+      "actual": 32,
+      "result": "pass"
+    },
+    {
+      "name": "cash_withdrawals_present",
+      "expected": "cash withdrawals present",
+      "actual": 20,
+      "result": "pass"
+    },
+    {
+      "name": "cash_withdrawals_marked_blindspot",
+      "expected": "cash withdrawals marked blindspot",
+      "actual": 20,
+      "result": "pass"
+    },
+    {
+      "name": "cash_withdrawals_not_fully_known_spend",
+      "expected": "cash confidence medium/low",
+      "actual": {
+        "medium": 20
+      },
+      "result": "pass"
+    },
+    {
+      "name": "healthcare_burden_present",
+      "expected": "healthcare burden present",
+      "actual": 26,
+      "result": "pass"
+    },
+    {
+      "name": "insurance_policy_present_if_supported",
+      "expected": "insurance FI present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "insurance_claim_not_income_if_present",
+      "expected": "claim not income",
+      "actual": [
+        {
+          "category": "insurance",
+          "sub_category": "insurance_claim",
+          "merchant": "HDFC Ergo",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": false,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": true,
+          "is_premium": false,
+          "is_claim": true,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": false,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": 0,
+          "financial_health_impact": null,
+          "day_of_week": "Monday",
+          "time_of_day": "afternoon",
+          "salary_cycle_phase": "pre_salary_caution"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "goal_drift_caused_by_responsibilities",
+      "expected": "goal reasons are responsibility-driven",
+      "actual": "{\"dataset_id\": \"priya_goal_planner_responsibility_burden\", \"goals\": [{\"goal_id\": \"emergency_fund\", \"goal_name\": \"Emergency fund\", \"target_amount\": 800000, \"deadline\": \"2026-12-31\", \"monthly_allocation_needed\": 30000, \"actual_allocations\": 9, \"skipped_or_reduced_months\": [\"2025-10\", \"2026-01\", \"2026-03\"], \"projected_delay_days\": 45, \"status\": \"Watch\", \"reason\": \"Family support and healthcare events reduced allocation capacity.\"}, {\"goal_id\": \"parents_healthcare_buffer\", \"goal_name\": \"Parents healthcare buffer\", \"target_amount\": 500000, \"deadline\": \"2026-09-30\", \"monthly_allocation_needed\": 25000, \"actual_allocations\": 6, \"skipped_or_reduced_months\": [\"2025-08\", \"2025-10\", \"2026-02\"], \"projected_delay_days\": 75, \"status\": \"Risk\", \"reason\": \"Parent healthcare support and insurance premiums raised near-term pressure.\"}, {\"goal_id\": \"family_trip\", \"goal_name\": \"Japan family trip\", \"target_amount\": 420000, \"deadline\": \"2027-03-31\", \"monthly_allocation_needed\": 18000, \"actual_allocations\": 7, \"skipped_or_reduced_months\": [\"2025-12\", \"2026-01\"], \"projected_delay_days\": 55, \"status\": \"Watch\", \"reason\": \"Planned travel booking pulled forward cash needs.\"}, {\"goal_id\": \"home_upgrade\", \"goal_name\": \"Home upgrade fund\", \"target_amount\": 300000, \"deadline\": \"2026-11-30\", \"monthly_allocation_needed\": 16000, \"actual_allocations\": 8, \"skipped_or_reduced_months\": [\"2026-01\", \"2026-02\"], \"projected_delay_days\": 40, \"status\": \"Watch\", \"reason\": \"Household appliance and repair expenses temporarily reduced headroom.\"}, {\"goal_id\": \"long_term_investment\", \"goal_name\": \"Long-term investment target\", \"target_amount\": 2500000, \"deadline\": \"2030-12-31\", \"monthly_allocation_needed\": 40000, \"actual_allocations\": 12, \"skipped_or_reduced_months\": [], \"projected_delay_days\": 0, \"status\": \"Healthy\", \"reason\": \"SIP discipline remains intact despite responsibility load.\"}, {\"goal_id\": \"education_loan_payoff\", \"goal_name\": \"Education-loan payoff acceleration\", \"target_amount\": 250000, \"deadline\": \"2027-05-31\", \"monthly_allocation_needed\": 12000, \"actual_allocations\": 5, \"skipped_or_reduced_months\": [\"2025-10\", \"2026-01\", \"2026-03\"], \"projected_delay_days\": 60, \"status\": \"Watch\", \"reason\": \"Monthly EMI is regular, but acceleration capacity is constrained by family and healthcare commitments.\"}]}",
+      "result": "pass"
+    },
+    {
+      "name": "multiple_goals_present",
+      "expected": "multiple goals present",
+      "actual": 6,
+      "result": "pass"
+    },
+    {
+      "name": "goal_status_not_all_healthy",
+      "expected": "some goal watch/risk",
+      "actual": [
+        "Watch",
+        "Risk",
+        "Watch",
+        "Watch",
+        "Healthy",
+        "Watch"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "explainable_large_spends_not_marked_bad",
+      "expected": "large spends are explainable, not bad/reckless",
+      "actual": [
+        {
+          "category": "healthcare",
+          "sub_category": "parent_healthcare_support",
+          "merchant": "Hospital",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": true,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": true,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": true,
+          "expected_nudge_type": "healthcare_buffer_pressure",
+          "surface_mode": "interrupt",
+          "should_interrupt": true,
+          "nudge_priority": "high",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -28000,
+          "financial_health_impact": null,
+          "day_of_week": "Thursday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "late_cycle"
+        },
+        {
+          "category": "healthcare",
+          "sub_category": "diagnostics",
+          "merchant": "Diagnostic Center",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": true,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -18500,
+          "financial_health_impact": null,
+          "day_of_week": "Wednesday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "mid_cycle"
+        },
+        {
+          "category": "family",
+          "sub_category": "festival_gifts",
+          "merchant": "Myntra",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": true,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": true,
+          "expected_nudge_type": "goal_drift_watch",
+          "surface_mode": "interrupt",
+          "should_interrupt": true,
+          "nudge_priority": "high",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -46500,
+          "financial_health_impact": null,
+          "day_of_week": "Friday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "late_cycle"
+        },
+        {
+          "category": "family",
+          "sub_category": "parents_support",
+          "merchant": "Parents",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": true,
+          "is_parent_support": true,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -22000,
+          "financial_health_impact": null,
+          "day_of_week": "Sunday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "late_cycle"
+        },
+        {
+          "category": "travel",
+          "sub_category": "planned_travel",
+          "merchant": "Indigo Airlines",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": true,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": true,
+          "linked_goal_id": "family_trip",
+          "nudge_candidate": true,
+          "expected_nudge_type": "goal_drift_watch",
+          "surface_mode": "interrupt",
+          "should_interrupt": true,
+          "nudge_priority": "high",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -72000,
+          "financial_health_impact": null,
+          "day_of_week": "Monday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "mid_cycle"
+        },
+        {
+          "category": "travel",
+          "sub_category": "planned_travel",
+          "merchant": "MakeMyTrip",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": true,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": true,
+          "linked_goal_id": "family_trip",
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -54000,
+          "financial_health_impact": null,
+          "day_of_week": "Tuesday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "mid_cycle"
+        },
+        {
+          "category": "household",
+          "sub_category": "home_appliance",
+          "merchant": "Croma",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": true,
+          "expected_nudge_type": "liquidity_pressure",
+          "surface_mode": "interrupt",
+          "should_interrupt": true,
+          "nudge_priority": "high",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -62000,
+          "financial_health_impact": null,
+          "day_of_week": "Friday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "late_cycle"
+        },
+        {
+          "category": "household",
+          "sub_category": "home_repair",
+          "merchant": "Sanjay Plumber",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": true,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -26500,
+          "financial_health_impact": null,
+          "day_of_week": "Saturday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "mid_cycle"
+        },
+        {
+          "category": "household",
+          "sub_category": "domestic_help_advance",
+          "merchant": "Meena Househelp",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": true,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": true,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -12000,
+          "financial_health_impact": null,
+          "day_of_week": "Friday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "late_cycle"
+        },
+        {
+          "category": "vehicle",
+          "sub_category": "vehicle_service",
+          "merchant": "Honda Service Center",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": false,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": false,
+          "expected_nudge_type": null,
+          "surface_mode": "silent_signal",
+          "should_interrupt": false,
+          "nudge_priority": "low",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -7800,
+          "financial_health_impact": null,
+          "day_of_week": "Friday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "salary_week"
+        },
+        {
+          "category": "travel",
+          "sub_category": "family_travel",
+          "merchant": "IRCTC",
+          "is_income": false,
+          "is_salary": false,
+          "is_bonus": false,
+          "is_interest": false,
+          "is_reimbursement_credit": false,
+          "is_internal_transfer": false,
+          "is_spending": true,
+          "is_obligation": false,
+          "is_rent": false,
+          "is_emi": false,
+          "is_education_loan_emi": false,
+          "is_debt_commitment": false,
+          "is_discretionary": false,
+          "is_recurring": false,
+          "is_family_support": false,
+          "is_parent_support": false,
+          "is_sibling_support": false,
+          "is_domestic_help": false,
+          "is_healthcare": false,
+          "is_insurance": false,
+          "is_premium": false,
+          "is_claim": false,
+          "is_investment": false,
+          "is_goal_allocation": false,
+          "is_cash_blindspot": false,
+          "is_credit_card_payment": false,
+          "is_utility": false,
+          "is_travel": true,
+          "is_festival": false,
+          "is_explainable_large_spend": true,
+          "affects_goal": false,
+          "linked_goal_id": null,
+          "nudge_candidate": true,
+          "expected_nudge_type": "goal_drift_watch",
+          "surface_mode": "interrupt",
+          "should_interrupt": true,
+          "nudge_priority": "high",
+          "user_facing_tone": "gentle",
+          "confidence_expected": "high",
+          "expected_safe_to_spend_impact": -38000,
+          "financial_health_impact": null,
+          "day_of_week": "Saturday",
+          "time_of_day": "evening",
+          "salary_cycle_phase": "mid_cycle"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "net_worth_expected_file_present",
+      "expected": "net worth file exists",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "net_worth_reconciles",
+      "expected": "net worth final reconciles with source/liabilities",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "liquid_net_worth_watch_or_risk",
+      "expected": "liquid net worth is watch/risk",
+      "actual": "watch",
+      "result": "pass"
+    },
+    {
+      "name": "education_loan_liability_included_in_net_worth",
+      "expected": "education loan liability included",
+      "actual": 631000,
+      "result": "pass"
+    },
+    {
+      "name": "overall_health_watch_or_risk",
+      "expected": "overall health Watch or Risk",
+      "actual": "Watch",
+      "result": "pass"
+    },
+    {
+      "name": "financial_health_expected_present",
+      "expected": "financial health expected present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "responsibility_load_reflected_in_health",
+      "expected": "responsibility load reflected",
+      "actual": "Risk",
+      "result": "pass"
+    },
+    {
+      "name": "not_reckless_like_aarav",
+      "expected": "Priya is burdened rather than spend-drift led",
+      "actual": "{\"dataset_id\": \"priya_goal_planner_responsibility_burden\", \"overall_status\": \"Watch\", \"dimensions\": {\"cashflow_stability\": \"Watch\", \"obligation_load\": \"Risk\", \"safe_to_spend\": \"Watch\", \"goal_progress\": \"Watch\", \"emergency_readiness\": \"Watch\", \"debt_pressure\": \"Watch\", \"spending_drift\": \"Watch\", \"credit_card_discipline\": \"Watch\", \"liquidity_stress\": \"Watch\", \"investment_discipline\": \"Healthy\", \"family_responsibility_load\": \"Risk\", \"insurance_readiness\": \"Healthy\", \"net_worth\": \"Watch\", \"liquid_net_worth\": \"Watch\"}, \"reason\": \"Priya is responsibility-heavy: fixed commitments and education debt leave limited flexible room.\"}",
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_statement_present",
+      "expected": "credit card statement present",
+      "actual": "scenario_grade",
+      "result": "pass"
+    },
+    {
+      "name": "card_purchases_not_double_counted",
+      "expected": "card statement linked to deposit rows",
+      "actual": [
+        "TXN_PRIYA_SRC_DEPOSIT_20250821_0559",
+        "TXN_PRIYA_SRC_DEPOSIT_20251017_0561",
+        "TXN_PRIYA_SRC_DEPOSIT_20251208_0563",
+        "TXN_PRIYA_SRC_DEPOSIT_20251209_0564",
+        "TXN_PRIYA_SRC_DEPOSIT_20260116_0565",
+        "TXN_PRIYA_SRC_DEPOSIT_20260404_0569"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "all_card_transaction_statement_cycles_exist",
+      "expected": "all card transactions reference existing cycles",
+      "actual": {
+        "missing_transaction_cycles": [],
+        "missing_emi_cycles": [],
+        "missing_summary_cycles": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "all_emi_schedule_statement_cycles_exist",
+      "expected": "all card EMI schedule cycles exist",
+      "actual": {
+        "missing_transaction_cycles": [],
+        "missing_emi_cycles": [],
+        "missing_summary_cycles": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_summary_contains_all_referenced_cycles",
+      "expected": "summary cycles cover referenced cycles",
+      "actual": {
+        "missing_transaction_cycles": [],
+        "missing_emi_cycles": [],
+        "missing_summary_cycles": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "no_missing_credit_card_statement_cycles",
+      "expected": "no card statement cycles are missing",
+      "actual": {
+        "missing_transaction_cycles": [],
+        "missing_emi_cycles": [],
+        "missing_summary_cycles": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_payment_dates_match_due_or_late_window",
+      "expected": "card payments are in due/late window",
+      "actual": {
+        "issues": [],
+        "early_without_interim": [],
+        "checked": 5
+      },
+      "result": "pass"
+    },
+    {
+      "name": "early_card_payments_explicitly_marked_interim",
+      "expected": "early payments are explicit if present",
+      "actual": {
+        "issues": [],
+        "early_without_interim": [],
+        "checked": 5
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_payment_timing_semantics_clear",
+      "expected": "card payment timing semantics clear",
+      "actual": {
+        "issues": [],
+        "early_without_interim": [],
+        "checked": 5
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_statement_metadata_namespaced",
+      "expected": "card statement reconciliation metadata namespaced",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_modeling_limitations_documented",
+      "expected": "credit card limitations documented",
+      "actual": [
+        "Hybrid compatibility convention with deposit CARD-mode rows",
+        "Statement cycles are scenario-testing inputs, not full issuer-grade accounting",
+        "Previous outstanding and utilization are synthetic pressure indicators"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "credit_card_not_marked_production_grade",
+      "expected": "credit card is not production grade",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "card_cashflow_counting_policy_documented",
+      "expected": "card cashflow policy documented",
+      "actual": {
+        "card_statement_purchases_are_primary_card_source": true,
+        "deposit_card_mode_purchase_rows_are_legacy_dedupe_links": true,
+        "deposit_card_bill_payment_rows_are_cashflow_events": true,
+        "count_card_purchases_as_additional_deposit_cashflow": false
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_statement_and_deposit_cashflow_semantics_clear",
+      "expected": "hybrid card semantics explicit",
+      "actual": {
+        "card_statement_purchases_are_primary_card_source": true,
+        "deposit_card_mode_purchase_rows_are_legacy_dedupe_links": true,
+        "deposit_card_bill_payment_rows_are_cashflow_events": true,
+        "count_card_purchases_as_additional_deposit_cashflow": false
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_source_narrations_are_merchant_like",
+      "expected": "card source narrations are merchant-like",
+      "actual": {
+        "issues": [],
+        "semantic_leaks": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "source_card_narrations_do_not_leak_ground_truth_semantics",
+      "expected": "card source narrations avoid semantic labels",
+      "actual": {
+        "issues": [],
+        "semantic_leaks": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "card_discipline_watch_not_extreme_risk",
+      "expected": "card discipline watch, not extreme",
+      "actual": "Watch",
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_monthly_status_distribution_priya_appropriate",
+      "expected": "2-4 risk, 6-8 watch, 1-3 healthy months",
+      "actual": {
+        "watch": 6,
+        "risk": 4,
+        "healthy": 2
+      },
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_status_matches_numeric_value",
+      "expected": "safe-to-spend status matches numeric capacity",
+      "actual": {
+        "issues": [],
+        "healthy_negative": [],
+        "risk_without_shortfall_or_event": [],
+        "watch_deep_negative": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "healthy_safe_to_spend_months_have_non_negative_capacity",
+      "expected": "healthy months have non-negative capacity",
+      "actual": {
+        "issues": [],
+        "healthy_negative": [],
+        "risk_without_shortfall_or_event": [],
+        "watch_deep_negative": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "risk_safe_to_spend_months_have_material_shortfall_or_risk_event",
+      "expected": "risk months have material shortfall or risk reason",
+      "actual": {
+        "issues": [],
+        "healthy_negative": [],
+        "risk_without_shortfall_or_event": [],
+        "watch_deep_negative": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "watch_safe_to_spend_months_are_tight_not_deeply_negative",
+      "expected": "watch months are tight, not deeply negative",
+      "actual": {
+        "issues": [],
+        "healthy_negative": [],
+        "risk_without_shortfall_or_event": [],
+        "watch_deep_negative": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "safe_to_spend_not_risk_every_month",
+      "expected": "safe-to-spend is mixed, not all risk",
+      "actual": {
+        "watch": 6,
+        "risk": 4,
+        "healthy": 2
+      },
+      "result": "pass"
+    },
+    {
+      "name": "financial_health_safe_to_spend_dimension_matches_monthly_pattern",
+      "expected": "safe-to-spend dimension matches mixed monthly pattern",
+      "actual": "Watch",
+      "result": "pass"
+    },
+    {
+      "name": "responsibility_pressure_preserved",
+      "expected": "obligation and family pressure preserved",
+      "actual": {
+        "parents": 13,
+        "education_emi": 12,
+        "risk_months": 4
+      },
+      "result": "pass"
+    },
+    {
+      "name": "family_support_narrations_not_overlabeled",
+      "expected": "family support narrations avoid support labels",
+      "actual": {
+        "family_terms": [],
+        "all_terms": [],
+        "self_transfer_income_like": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "source_narrations_have_no_responsibility_taxonomy_leakage",
+      "expected": "source narrations avoid responsibility taxonomy",
+      "actual": {
+        "family_terms": [],
+        "all_terms": [],
+        "self_transfer_income_like": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "parent_support_still_detectable_from_pattern_and_ground_truth",
+      "expected": "parent support remains in ground truth",
+      "actual": 13,
+      "result": "pass"
+    },
+    {
+      "name": "self_transfer_narrations_not_income_like",
+      "expected": "self transfer narrations are transfer-like, not income-like",
+      "actual": {
+        "family_terms": [],
+        "all_terms": [],
+        "self_transfer_income_like": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "no_macos_metadata_files_in_output_zip",
+      "expected": "no macOS metadata files in output folder",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "no_hidden_packaging_artifacts",
+      "expected": "no hidden packaging artifacts in output folder",
+      "actual": [],
+      "result": "pass"
+    },
+    {
+      "name": "data_period_metadata_present",
+      "expected": "data period metadata present",
+      "actual": {
+        "missing": [],
+        "generated_at": "2026-05-19T09:45:00+05:30",
+        "data_period_end": "2026-05-31",
+        "out_of_period": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "generated_at_not_used_as_data_period_end",
+      "expected": "generated_at is separate from data period end",
+      "actual": {
+        "missing": [],
+        "generated_at": "2026-05-19T09:45:00+05:30",
+        "data_period_end": "2026-05-31",
+        "out_of_period": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "transaction_dates_within_data_period",
+      "expected": "all source transactions fall within data period",
+      "actual": {
+        "missing": [],
+        "generated_at": "2026-05-19T09:45:00+05:30",
+        "data_period_end": "2026-05-31",
+        "out_of_period": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "nudge_expected_file_present",
+      "expected": "nudge file present",
+      "actual": true,
+      "result": "pass"
+    },
+    {
+      "name": "non_nudge_candidates_have_no_expected_nudge_type",
+      "expected": "non-candidate ground truth has no expected nudge type",
+      "actual": {
+        "non_candidate_expected_type": [],
+        "issues": [],
+        "nudge_expected_without_candidate": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "ground_truth_nudge_fields_consistent",
+      "expected": "ground truth nudge fields are internally consistent",
+      "actual": {
+        "non_candidate_expected_type": [],
+        "issues": [],
+        "nudge_expected_without_candidate": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "nudge_expected_is_source_of_nudge_truth",
+      "expected": "nudge_expected entries correspond to ground-truth candidates",
+      "actual": {
+        "non_candidate_expected_type": [],
+        "issues": [],
+        "nudge_expected_without_candidate": []
+      },
+      "result": "pass"
+    },
+    {
+      "name": "nudge_candidate_not_equal_interrupt",
+      "expected": "interrupts are rare",
+      "actual": {
+        "entries": 329,
+        "interrupts": 6
+      },
+      "result": "pass"
+    },
+    {
+      "name": "priya_interrupt_count_reasonable",
+      "expected": "6-14 annual interrupts",
+      "actual": 6,
+      "result": "pass"
+    },
+    {
+      "name": "priya_nudges_gentle_and_responsibility_oriented",
+      "expected": "nudge tone gentle",
+      "actual": {
+        "gentle_responsibility_oriented": 329
+      },
+      "result": "pass"
+    },
+    {
+      "name": "micro_spends_not_all_interrupting",
+      "expected": "local micro interrupts limited",
+      "actual": 1,
+      "result": "pass"
+    },
+    {
+      "name": "interrupt_reasons_high_severity_only",
+      "expected": "interrupt reasons are high severity",
+      "actual": [
+        "healthcare_buffer_pressure",
+        "safe_to_spend_watch",
+        "goal_drift_watch",
+        "goal_drift_watch",
+        "liquidity_pressure",
+        "goal_drift_watch"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "demo_identity_maps_priya_correctly",
+      "expected": "Priya phone maps to Priya dataset",
+      "actual": {
+        "phone": "7304893952",
+        "personaId": "priya",
+        "displayName": "Priya",
+        "dataset_id": "priya_goal_planner_responsibility_burden",
+        "sourceHolderProfile": "masked",
+        "status": "wired"
+      },
+      "result": "pass"
+    },
+    {
+      "name": "priya_not_mapped_to_aarav",
+      "expected": "Priya not mapped to Aarav",
+      "actual": {
+        "phone": "7304893952",
+        "personaId": "priya",
+        "displayName": "Priya",
+        "dataset_id": "priya_goal_planner_responsibility_burden",
+        "sourceHolderProfile": "masked",
+        "status": "wired"
+      },
+      "result": "pass"
+    },
+    {
+      "name": "aarav_phone_still_maps_to_aarav_dataset",
+      "expected": "Aarav still maps to Aarav",
+      "actual": {
+        "phone": "8828290489",
+        "personaId": "aarav",
+        "displayName": "Aarav",
+        "dataset_id": "aarav_spend_control_rash_decisions",
+        "sourceHolderProfile": "masked",
+        "status": "wired"
+      },
+      "result": "pass"
+    },
+    {
+      "name": "unsupported_numbers_have_explicit_state",
+      "expected": "unsupported state present",
+      "actual": {
+        "status": "unsupported_demo_number",
+        "message": "This demo number is not supported yet. Try Aarav or Priya's demo number."
+      },
+      "result": "pass"
+    },
+    {
+      "name": "dataset_registry_priya_ready",
+      "expected": "dataset registry has Priya ready",
+      "actual": {
+        "available_datasets": [
+          {
+            "dataset_id": "aarav_spend_control_rash_decisions",
+            "persona_id": "aarav",
+            "status": "ready"
+          },
+          {
+            "dataset_id": "priya_goal_planner_responsibility_burden",
+            "persona_id": "priya",
+            "status": "ready"
+          }
+        ]
+      },
+      "result": "pass"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "dataset_id": "aarav_spend_control_rash_decisions",
+  "seed": "mone-aarav-rash-decisions-final-v4",
+  "generated_at": "2026-05-19T07:45:00+05:30",
+  "generation_command": "python3 data/synthetic/src/run_all.py --dataset aarav_spend_control_rash_decisions --seed mone-aarav-rash-decisions-final-v4",
+  "validation_command": "python3 data/synthetic/src/validate_against_ground_truth.py --dataset aarav_spend_control_rash_decisions",
+  "files": [
+    "accounts.csv",
+    "credit_card_statement.json",
+    "credit_card_summary.csv",
+    "credit_card_transactions.csv",
+    "dataset_registry.json",
+    "demo_identity_map.json",
+    "device_finance_source.json",
+    "emi_candidates_expected.json",
+    "financial_health_expected.json",
+    "goal_risk_expected.json",
+    "ground_truth.json",
+    "income_candidates_expected.json",
+    "mode_spending_summary.csv",
+    "monthly_cashflow.csv",
+    "net_worth_expected.json",
+    "nudge_expected.json",
+    "output_manifest.json",
+    "raw_payload.json",
+    "recurring_candidates_expected.json",
+    "safe_to_spend_expected.json",
+    "transactions.csv",
+    "validation_report.json"
+  ],
+  "sha256": {
+    "accounts.csv": "dd1ce5f269e1a34436a70492f5f78f422ac40a8de57e5d133707e8c496947a7e",
+    "credit_card_statement.json": "78fce48fe8c48ec32c4f57c1455ffda6e690c045885171cccf600935a2a3de3b",
+    "credit_card_summary.csv": "af8010e6e08a71f09b48e28899082a4c122dd3c8a4da81fb9a251f468874777c",
+    "credit_card_transactions.csv": "bd7bd1954c823a4fe585ccdd7203832f5caae0c0f6ba2cea8d4dc75364825f63",
+    "dataset_registry.json": "02939e7947f8a510176086f605d3c8980f877176d70156cae34b29b026ee0564",
+    "demo_identity_map.json": "a2f323a3879243ce4490140d93c5a178c6f6b599826630e108ff1d708f937d29",
+    "device_finance_source.json": "dcfda30c8772f93b44001028876253353e7f0b73c00a5c865cf1c508b152b848",
+    "emi_candidates_expected.json": "c1ad4e111234785ccee8782909d9e9bd8ee109f8e2f693f3d4f99a9ca9165520",
+    "financial_health_expected.json": "8f17ed6c945a294966485b9e9a727af836fa91ece1d8a5f52be45b92ebdbfca5",
+    "goal_risk_expected.json": "51bcfb51894b3a2c3286c9fea192fb93a0df320b224628eb893f85c4ac0fcf4c",
+    "ground_truth.json": "f6789c5066a0517d933cf794a2802ccd6f278d1af24844039c0efc92d2036848",
+    "income_candidates_expected.json": "90db42c050d078d2c870135a0bb092e362360ba7b61e2c921a9f48fbf60c84c3",
+    "mode_spending_summary.csv": "55d0d5d1638500b0cbce36e8e4499d60fb1017887c790761fa4a0e3e96b429ac",
+    "monthly_cashflow.csv": "b4d721117f8330fd2f58570f59b3415001c926c94865b0e0cf2c398f8d8b634f",
+    "net_worth_expected.json": "26dbbecdcbacb0dd6790fdd2196222be3615c5511e9ad1cac20f3421b8fd24b0",
+    "nudge_expected.json": "ed358b6eb3b85689cadcdbb67d744f99d48ccca5298c41efe73b81e473fd758f",
+    "output_manifest.json": "self_hash_excluded",
+    "raw_payload.json": "d8de25f1daae896458ddb93802f8bac70615c97f0f9041a295d117b38011cf4a",
+    "recurring_candidates_expected.json": "79a322476627296a0bdcf84380e3824575c37b75d43aa8cda2a71bf522ba53a9",
+    "safe_to_spend_expected.json": "331d85bbad7b9ccaf1a48e2755ce1db28d742cd541e23226df7530afe967aeb9",
+    "transactions.csv": "20797e68974495fe3bddf5374a59ead80de5433e82d2c6e8e5c5f817965cda73",
+    "validation_report.json": "validation_report_hash_excluded"
+  },
+  "demo_identity_files": [
+    "demo_identity_map.json"
+  ],
+  "dataset_registry_files": [
+    "dataset_registry.json"
+  ],
+  "external_file_sha256": {
+    "../demo_identity_map.json": "a2f323a3879243ce4490140d93c5a178c6f6b599826630e108ff1d708f937d29",
+    "../dataset_registry.json": "02939e7947f8a510176086f605d3c8980f877176d70156cae34b29b026ee0564"
+  },
+  "row_counts": {
+    "accounts.csv": 4,
+    "credit_card_summary.csv": 13,
+    "credit_card_transactions.csv": 9,
+    "mode_spending_summary.csv": 5,
+    "monthly_cashflow.csv": 12,
+    "transactions.csv": 1607
+  },
+  "transaction_counts_by_file": {
+    "raw_payload.json": 1607,
+    "transactions.csv": 1607,
+    "ground_truth.json": 1607,
+    "credit_card_transactions.csv": 9
+  },
+  "account_counts_by_fi_type": {
+    "deposit": 1,
+    "mutual_funds": 1,
+    "recurring_deposit": 1,
+    "term_deposit": 1
+  },
+  "ground_truth_count": 1607,
+  "expected_file_counts": {
+    "ground_truth.json": 1607,
+    "income_candidates_expected.json": 15,
+    "recurring_candidates_expected.json": 7,
+    "emi_candidates_expected.json": 3,
+    "safe_to_spend_expected.json": 3,
+    "goal_risk_expected.json": 3,
+    "financial_health_expected.json": 3,
+    "nudge_expected.json": 1273,
+    "net_worth_expected.json": 4
+  },
+  "validation_status": "pass",
+  "source_layer_files": [
+    "raw_payload.json",
+    "accounts.csv",
+    "transactions.csv",
+    "monthly_cashflow.csv",
+    "mode_spending_summary.csv",
+    "credit_card_statement.json",
+    "credit_card_transactions.csv",
+    "credit_card_summary.csv",
+    "device_finance_source.json",
+    "demo_identity_map.json",
+    "dataset_registry.json"
+  ],
+  "expected_intelligence_files": [
+    "ground_truth.json",
+    "income_candidates_expected.json",
+    "recurring_candidates_expected.json",
+    "emi_candidates_expected.json",
+    "safe_to_spend_expected.json",
+    "goal_risk_expected.json",
+    "financial_health_expected.json",
+    "nudge_expected.json",
+    "net_worth_expected.json",
+    "validation_report.json",
+    "output_manifest.json"
+  ],
+  "demo_identity_layer_files": [
+    "demo_identity_map.json"
+  ],
+  "dataset_registry_layer_files": [
+    "dataset_registry.json"
+  ],
+  "excluded_from_hash_fields": [
+    "output_manifest.json.sha256",
+    "validation_report.json.sha256"
+  ]
+}

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct MoneApp: App {
@@ -10,10 +11,19 @@ struct MoneApp: App {
 
     var body: some Scene {
         WindowGroup {
+            // LocalDatabaseDebugView()
             RootView()
                 .environment(appVM)
                 .preferredColorScheme(.dark)
         }
+        .modelContainer(for: [
+            StoredPersona.self,
+            StoredAccount.self,
+            StoredTransaction.self,
+            StoredClassification.self,
+            StoredAISuggestion.self,
+            StoredMonthlySnapshot.self
+        ])
     }
 
     // ── UITabBar appearance — Financial Noir palette ──────────────────────
@@ -72,7 +82,7 @@ struct RootView: View {
             case .nameOnboarding:
                 NameOnboardingView()
             case .dashboard:
-                PostAuthDashboardView()
+                MainTabView()
             }
         }
         .environment(sessionVM)
@@ -90,8 +100,12 @@ struct RootView: View {
         .onChange(of: appVM.hasCompletedOnboarding) { _, completed in
             if completed {
                 Task {
-                    await sessionVM.completeOnboarding()
-                    await sessionVM.handleAuthSuccess()
+                    if supabase.auth.currentSession != nil {
+                        await sessionVM.completeOnboarding()
+                        await sessionVM.handleAuthSuccess()
+                    } else {
+                        sessionVM.route = .dashboard
+                    }
                 }
             }
         }
@@ -110,7 +124,7 @@ struct RootView: View {
         guard route == .onboarding else { return }
 
         if sessionVM.shouldForceWelcomeOnboarding || supabase.auth.currentSession == nil {
-            appVM.resetOnboarding(to: .welcome)
+            appVM.resetOnboarding(to: .agendaEducation)
         } else {
             appVM.startAuthenticatedOnboarding(at: sessionVM.nextOnboardingStep)
         }
@@ -128,9 +142,9 @@ struct MainTabView: View {
                 .tabItem { Label("Dashboard", systemImage: "square.grid.2x2") }
                 .tag(AppTab.dashboard)
 
-            TransactionsView()
-                .tabItem { Label("Activity", systemImage: "list.bullet") }
-                .tag(AppTab.transactions)
+            MoneyMapView()
+                .tabItem { Label("Money Map", systemImage: "slider.horizontal.3") }
+                .tag(AppTab.setup)
 
             PayView()
                 .tabItem { Label("Pay", systemImage: "qrcode.viewfinder") }
@@ -140,9 +154,9 @@ struct MainTabView: View {
                 .tabItem { Label("Goals", systemImage: "flag") }
                 .tag(AppTab.goals)
 
-            SetupView()
-                .tabItem { Label("Setup", systemImage: "slider.horizontal.3") }
-                .tag(AppTab.setup)
+            TransactionsView()
+                .tabItem { Label("Transactions", systemImage: "list.bullet") }
+                .tag(AppTab.transactions)
         }
         // Tint drives the selected-state icon/text colour set in UITabBarAppearance
         .tint(Color.monePrimary)
@@ -156,70 +170,6 @@ enum AppTab: Int, CaseIterable {
     case dashboard, transactions, pay, goals, setup
 }
 
-// MARK: - Post-Auth Dashboard
-
-struct PostAuthDashboardView: View {
-    @Environment(SessionViewModel.self) private var sessionVM
-    @State private var showDeleteConfirmation = false
-
-    var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-
-            VStack(spacing: 20) {
-                if sessionVM.isReturningUser {
-                    Text("Welcome back,\n\(sessionVM.displayName).")
-                        .font(.moneDisplay)
-                        .foregroundStyle(Color.monePrimary)
-                        .multilineTextAlignment(.center)
-                } else {
-                    Text("Hi, \(sessionVM.displayName)!")
-                        .font(.moneDisplay)
-                        .foregroundStyle(Color.monePrimary)
-                        .multilineTextAlignment(.center)
-                }
-            }
-            .frame(maxWidth: .infinity)
-
-            Spacer()
-
-            VStack(spacing: MoneSpacing.gutter) {
-                if let error = sessionVM.error {
-                    Text(error)
-                        .font(.moneBodySm)
-                        .foregroundStyle(Color.moneRisk)
-                }
-
-                MonePrimaryButton(title: sessionVM.isLoading ? "Signing out..." : "Log out") {
-                    Task { await sessionVM.signOut() }
-                }
-                .disabled(sessionVM.isLoading)
-
-                Button {
-                    showDeleteConfirmation = true
-                } label: {
-                    Text(sessionVM.isDeletingAccount ? "Deleting account..." : "Delete account")
-                        .font(.moneBodyMd)
-                        .foregroundStyle(Color.moneRisk)
-                }
-                .buttonStyle(.plain)
-                .disabled(sessionVM.isLoading || sessionVM.isDeletingAccount)
-            }
-            .padding(.horizontal, MoneSpacing.page)
-            .padding(.bottom, MoneSpacing.gutter)
-        }
-        .background(Color.moneBackground.ignoresSafeArea())
-        .alert("Delete account?", isPresented: $showDeleteConfirmation) {
-            Button("Cancel", role: .cancel) {}
-            Button("Delete account", role: .destructive) {
-                Task { await sessionVM.deleteAccount() }
-            }
-        } message: {
-            Text("This will permanently delete your Moné account and profile data. This cannot be undone.")
-        }
-    }
-}
-
 // MARK: - Onboarding Flow
 
 struct OnboardingFlow: View {
@@ -231,19 +181,14 @@ struct OnboardingFlow: View {
             Color.moneBackground.ignoresSafeArea()
 
             switch appVM.onboardingStep {
-            case .welcome:          WelcomeView()
-            case .dataPrivacy:      DataPrivacyView()
-            case .auth:
-                AuthView(
-                    onAuthComplete: { Task { await sessionVM.handleAuthSuccess() } }
-                )
-            case .primaryAgenda:    AgendaSelectionView()
-            case .secondaryAgenda:  SecondaryAgendaView()
-            case .setupMethod:      SetupMethodView()
-            case .aaConsent:        AAConsentView()
-            case .buildingMoneyMap: BuildingMoneyMapView()
-            case .confirmFindings:  ConfirmFindingsView()
-            case .goalSetup:        GoalSetupView()
+            case .agendaEducation:  AgendaEducationView()
+            case .methodSelection:  SetupMethodView()
+            case .aaConsent:        DummyAAConsentView()
+            case .phoneOtp:         PhoneVerificationView()
+            case .aaFetching:       DataFetchingView()
+            case .processing:       IntelligenceProcessingView()
+            case .storageChoice:    StorageChoiceView()
+            case .dashboardTour:    DashboardTourView()
             case .complete:         EmptyView()
             }
         }

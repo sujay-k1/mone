@@ -1,0 +1,107 @@
+[
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20250628_0001",
+    "date": "2025-06-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20250728_0123",
+    "date": "2025-07-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20250817_0252",
+    "date": "2025-08-17",
+    "amount": 18000,
+    "type": "variable_income",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20250828_0251",
+    "date": "2025-08-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20250928_0364",
+    "date": "2025-09-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251028_0495",
+    "date": "2025-10-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251128_0627",
+    "date": "2025-11-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251217_0767",
+    "date": "2025-12-17",
+    "amount": 24000,
+    "type": "variable_income",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20251228_0766",
+    "date": "2025-12-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260128_0884",
+    "date": "2026-01-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260228_1023",
+    "date": "2026-02-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260328_1163",
+    "date": "2026-03-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260417_1295",
+    "date": "2026-04-17",
+    "amount": 15000,
+    "type": "variable_income",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260428_1294",
+    "date": "2026-04-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  },
+  {
+    "transaction_id": "TXN_AARAV_SRC_DEPOSIT_20260528_1433",
+    "date": "2026-05-28",
+    "amount": 165000,
+    "type": "salary",
+    "confidence_expected": "high"
+  }
+]

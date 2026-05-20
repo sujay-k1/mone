@@ -73,7 +73,7 @@ struct MoneTertiaryButton: View {
 
 struct MoneIconButton: View {
     let icon: String
-    var size: CGFloat = 48
+    var size: CGFloat = 54
     let action: () -> Void
 
     var body: some View {

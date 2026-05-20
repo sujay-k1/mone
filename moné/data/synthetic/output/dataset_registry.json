@@ -1,0 +1,14 @@
+{
+  "available_datasets": [
+    {
+      "dataset_id": "aarav_spend_control_rash_decisions",
+      "persona_id": "aarav",
+      "status": "ready"
+    },
+    {
+      "dataset_id": "priya_goal_planner",
+      "persona_id": "priya",
+      "status": "not_wired_yet"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "dataset_id": "aarav_spend_control_normal",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "monthly_cashflow_reconciliation",
+      "expected": "monthly_cashflow.csv reconciles to raw payload and ground truth",
+      "actual": "ok",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "mode_summary_reconciliation",
+      "expected": "mode_spending_summary.csv reconciles to raw payload debit modes",
+      "actual": "ok",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "unexpected_fi_types_absent",
+      "expected": "Only deposit FI type appears in Pass 1 package",
+      "actual": "FI types: ['deposit']",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "ground_truth_day_of_week_matches_date",
+      "expected": "day_of_week is derived from transaction valueDate",
+      "actual": "0 mismatches",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "ground_truth_time_of_day_matches_timestamp",
+      "expected": "time_of_day is derived from transactionTimestamp hour",
+      "actual": "0 mismatches",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "salary_cycle_phase_matches_salary_calendar",
+      "expected": "salary_cycle_phase is derived from actual salary calendar",
+      "actual": "0 mismatches",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "negative_balance_policy",
+      "expected": "Minimum balance remains positive and ideally above Rs 25,000",
+      "actual": "minimum balance Rs 34485.15",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "pii_policy_holder_profile",
+      "expected": "Holder profile fields use synthetic placeholders",
+      "actual": "{\"address\": \"Synthetic HSR Layout address, Bangalore\", \"ckycCompliance\": \"true\", \"dob\": \"1999-01-01\", \"email\": \"aarav.synthetic@example.invalid\", \"mobile\": \"9000000000\", \"name\": \"Synthetic Holder AARAV\", \"nominee\": \"REGISTERED\", \"pan\": \"SYNTH0000X\"}",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "recurring_candidates_split_obligation_vs_rhythm",
+      "expected": "recurring candidates are split into protected_obligation, recurring_spending_rhythm, protected_goal_transfer, leakage_candidate",
+      "actual": "buckets: ['leakage_candidate', 'protected_goal_transfer', 'protected_obligation', 'recurring_spending_rhythm']",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "income_candidates_exclude_reimbursements",
+      "expected": "income candidates exclude reimbursements and refunds",
+      "actual": "0 reimbursement/refund candidates",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "ground_truth_one_to_one",
+      "expected": "Every raw payload transaction has one ground truth record",
+      "actual": "1348 payload, 1348 ground truth",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "transactions_csv_deposit_only",
+      "expected": "transactions.csv contains only deposit rows",
+      "actual": "['deposit']",
+      "result": "pass",
+      "severity": "ERROR"
+    },
+    {
+      "name": "accounts_csv_deposit_only",
+      "expected": "accounts.csv contains only deposit rows",
+      "actual": "['deposit']",
+      "result": "pass",
+      "severity": "ERROR"
+    }
+  ],
+  "summary": {
+    "total_transactions": 1348,
+    "deposit_transactions": 1348,
+    "income_events": 15,
+    "obligation_events": 120,
+    "life_events": 0,
+    "nudge_candidates": 440,
+    "fi_types": [
+      "deposit"
+    ],
+    "opening_balance": 150000.0,
+    "closing_balance": 355056.85,
+    "minimum_balance": 34485.15,
+    "recurring_candidate_buckets": {
+      "protected_obligation": 10,
+      "recurring_spending_rhythm": 12,
+      "protected_goal_transfer": 3,
+      "leakage_candidate": 39
+    },
+    "income_candidate_count": 15
+  }
+}

@@ -108,6 +108,29 @@ Ground truth is never shown to the user or exposed in the AA payload. It is stor
 | salary_cycle_phase | string | week_1/week_2/week_3/week_4 |
 | confidence_expected | string | high/medium/low — how confident Moné should be in detection |
 
+### Rash-Decisions Extension Fields
+
+`aarav_spend_control_rash_decisions` adds optional fields for risky behavior and intervention validation:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| is_extreme_purchase | boolean | True for large gadget/luxury purchases |
+| is_investment_redemption | boolean | True for MF redemption proceeds/events |
+| is_liquidity_rescue | boolean | True when an asset is liquidated to rescue cashflow |
+| is_premature_withdrawal | boolean | True for RD/TD premature closure |
+| is_goal_protective | boolean | True for goal-protective transfers/assets |
+| is_credit_card_interest | boolean | True for card interest debit |
+| is_late_fee | boolean | True for card late fee debit |
+| is_term_deposit | boolean | True for TD events |
+| sip_status | string? | scheduled/paid/skipped/failed/delayed/reduced |
+| credit_card_payment_status | string? | full/partial/missed/late |
+| linked_asset_account_id | string? | Asset FI account linked to a cash transaction |
+| linked_cashflow_transaction_id | string? | Deposit transaction linked to an asset event |
+| financial_health_impact | string? | Expected health dimension impact |
+| nudge_priority | string | low/medium/high |
+| surface_mode | string | interrupt/dashboard_insight/weekly_summary/silent_signal |
+| should_interrupt | boolean | True only for high-severity interventions |
+
 ### Reimbursement Linking
 | Field | Type | Description |
 |-------|------|-------------|
@@ -184,3 +207,29 @@ Ground truth is never shown to the user or exposed in the AA payload. It is stor
 | salary_delay | Salary not received on expected date |
 | obligation_upcoming | Large obligation due soon |
 | goal_opportunity | Surplus available for goal acceleration |
+
+## Final Aarav Polish Fields
+
+For `aarav_spend_control_rash_decisions`, hidden ground truth and expected outputs may include credit-card, EMI, and nudge-surface fields. These fields must not be written into `raw_payload.json`, `accounts.csv`, or source-only `transactions.csv`.
+
+Credit-card and EMI fields:
+
+- `is_emi`
+- `is_card_emi`
+- `is_bnpl`
+- `is_personal_loan_emi`
+- `is_device_emi`
+- `emi_id`
+- `emi_installment_number`
+- `emi_total_installments`
+- `emi_payment_status`
+- `linked_original_purchase_txn_id`
+- `linked_card_statement_id`
+- `linked_deposit_payment_txn_id`
+
+Nudge semantics:
+
+- `nudge_candidate` means a transaction or signal is eligible for intelligence.
+- `surface_mode` is one of `silent_signal`, `weekly_summary`, `dashboard_insight`, or `interrupt`.
+- `should_interrupt` is reserved for high-severity, context-sensitive events such as card stress, SIP failure, liquidity rescue, EMI creation from a rash purchase, or severe safe-to-spend risk.
+- Micro-spends such as coffee, lunch, and commute leakage should normally remain `weekly_summary`, `dashboard_insight`, or `silent_signal`.

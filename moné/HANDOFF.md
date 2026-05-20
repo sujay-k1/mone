@@ -2903,3 +2903,164 @@ From `mone-backend/supabase`:
 
 ### Next recommended step
 - Redeploy `setu-aa-fip-status`, rerun the in-app FIP status button, and decide whether to keep max coverage or temporarily exclude `setu-fip-2` based on the displayed status.
+
+---
+
+# Bottom Sheet Verification Pattern — Refactor Plan
+
+## Goal
+Replace full-screen navigation for phone verification with a reusable bottom sheet pattern. Three use cases:
+1. **Login** (AgendaEducationView) — phone/email OTP in sheet, already works via `LoginRestoreSheet`
+2. **Sign-up** (AgendaEducationView) — same auth sheet + a second stacked sheet for name collection
+3. **AA verification** (DummyAAConsentView) — consent checkbox + privacy link, then phone OTP in sheet (no email option)
+
+## Architecture
+- `PhoneOTPSheet` — reusable phone entry + OTP view. Params: title, subtitle, `onVerified(phone:)` callback. No auth/AA logic baked in.
+- `AAConsentSheet` — consent checkbox, privacy policy WebView link, "Verify" button opens `PhoneOTPSheet` as stacked sheet.
+- `NameCollectionSheet` — collects full name after sign-up auth succeeds.
+- Existing `AuthView` continues to be used for login (already supports phone + email).
+
+## Micro-Steps
+
+### Phase 1: Extract PhoneOTPSheet
+- [x] Step 1: Create handoff doc (this section)
+- [x] Step 2: Created `PhoneOTPSheet` in `Views/Onboarding/PhoneOTPSheet.swift` (223 lines). Params: `title`, `subtitle`, `onVerified: (String) -> Void`. Reuses `PhoneVerificationVM`. Uses `MoneField` + `.moneFieldStyle()` + `.monePlaceholder()`. Has NavigationStack + Cancel toolbar button. Three steps: phoneEntry, otpEntry, verified. On verified, calls `onVerified(phone)` then dismisses after 1.2s delay.
+- [x] Step 3: Compiles clean — no Xcode diagnostics
+
+### Phase 2: Wire into DummyAAConsentView
+- [x] Step 4: "Verify with phone number" now sets `showPhoneOTP = true` instead of `appVM.advance()`
+- [x] Step 5: `.sheet` presents `PhoneOTPSheet` with title/subtitle. On verified callback: sets `appVM.verifiedPhone = phone` and jumps directly to `appVM.onboardingStep = .aaFetching` (skips `.phoneOtp`)
+- [x] Step 6: Compiles clean
+
+### Phase 3: AA Consent Sheet (future)
+- [x] Step 7: Created `AAConsentSheet` in `Views/Onboarding/AAConsentSheet.swift` (142 lines). Has: data access list, privacy note, consent checkbox, "Verify with phone number" CTA (disabled until consent). Params: `onVerified: (String) -> Void`.
+- [x] Step 8: Created `SafariView` (UIViewControllerRepresentable wrapping SFSafariViewController) in same file. T&C link opens https://www.onemoney.in/tandc.html. Bar colors match Financial Noir palette.
+- [x] Step 9: "Verify with phone number" presents `PhoneOTPSheet` as stacked sheet. On verified: dismisses consent sheet and calls `onVerified(phone)`. Compiles clean.
+
+### Phase 4: Sign-up flow (future)
+- [ ] Step 10: Create `NameCollectionSheet` — text field for full name, "Continue" CTA
+- [ ] Step 11: Wire sign-up in AgendaEducationView: auth sheet -> name sheet on success
+
+### Phase 5: Cleanup
+- [ ] Step 12: Remove `PhoneVerificationView` if fully replaced
+- [ ] Step 13: Remove `.phoneOtp` onboarding step if no longer used as full-screen view
+
+## Key Files
+| File | Role |
+|------|------|
+| `Views/Onboarding/PhoneVerificationView.swift` | Source of phone/OTP UI + `PhoneVerificationVM` (lines 290-368) |
+| `Views/Onboarding/AuthView.swift` | Existing auth flow, login sheet pattern reference |
+| `Views/Onboarding/DummyAAConsentView.swift` | AA consent, currently navigates full-screen to PhoneVerificationView |
+| `Views/Onboarding/AgendaEducationView.swift` | Has `LoginRestoreSheet` — reference for sheet pattern |
+| `ViewModels/AppViewModel.swift` | `OnboardingStep` enum, `advance()`, `verifiedPhone` |
+| `Design/Components/Fields.swift` | `MoneField`, `.moneFieldStyle()`, `.monePlaceholder()` |
+
+## Design Patterns to Follow
+- **Header**: centered "mone" logo + left-aligned title/subtitle (see memory: `project_onboarding_header_pattern.md`)
+- **Bottom buttons**: back icon + primary CTA in HStack (see memory: `project_bottom_buttons_pattern.md`)
+- **Fields**: use `MoneField` + `.moneFieldStyle()` + `.monePlaceholder()` from `Fields.swift`
+- **Sheet pattern**: `.sheet` with `NavigationStack`, Cancel toolbar button (see `LoginRestoreSheet` in AgendaEducationView lines 432-453)
+
+## Current Status
+**Completed**: Steps 1-9 (PhoneOTPSheet + AAConsentSheet created, wired into DummyAAConsentView, all compile clean)
+**Note**: AAConsentSheet is created but not yet wired into DummyAAConsentView — currently DummyAAConsentView opens PhoneOTPSheet directly.
+
+---
+
+# AA Verification Flow — Extended Sheet Plan
+
+## Overview
+Extend PhoneOTPSheet into a multi-step verification flow, all within one bottom sheet:
+
+**Steps within the sheet:**
+1. Phone entry + consent checkbox → Get OTP
+2. OTP entry → Verify → auto-toast "Phone verified" (auto-dismiss ~1.5s)
+3. PAN entry → Continue → 1500ms loader → validate PAN matches phone
+4. Account selection → all pre-selected, edit mode for toggling → "Fetch data"
+5. Sheet dismisses → full-screen data fetch begins
+6. During data fetch: notification pre-prompt → system permission → local notification on completion
+
+## Detailed Specs
+
+### Toast (after OTP verified)
+- Small overlay: checkmark + "Phone verified" text
+- Auto-appears, stays ~1.5s, fades out
+- While toast is visible, transition to PAN entry step
+
+### PAN Entry
+- Same layout as phone entry: title, subtitle, PAN text field, Continue button
+- **Inline format validation**: PAN format = 5 uppercase letters + 4 digits + 1 uppercase letter (e.g. ETTPK9327L)
+- **Demo PAN mapping**:
+  - Phone 8828290489 (Aarav) → PAN must be `ETTPK9327L`
+  - Phone 7304893952 (Priya) → PAN must be `ETTRK9905L`
+- **On Continue**: show native iOS loader for 1500ms
+  - If PAN matches phone → success, proceed to account selection
+  - If PAN doesn't match → error: "We could not verify your PAN with the number +91 88282 90489"
+- Auto-focus keyboard on PAN field
+
+### Account Selection
+- Shows list of FI accounts linked to phone (data provided by user at implementation time)
+- Each row: FI name (bank/MF/insurance), account type, masked account number
+- **Default state**: all accounts selected, checkboxes visible but disabled (ticked, greyed out)
+- **Edit mode**: "Edit" button in toolbar/header toggles to "Done". Checkboxes become interactive. At least 1 must remain selected.
+- CTA: "Fetch data" button
+
+### Dismiss Protection
+- After OTP verified (step 2+), enable `.interactiveDismissDisabled(true)` for elastic resistance
+- UIKit bridge: `presentationControllerDidAttemptToDismiss` triggers confirmation alert
+- Cancel toolbar button also triggers the same alert
+- Alert copy: "All progress will be lost and you will have to verify your account again."
+- Alert actions: "Stay" (dismiss alert) / "Leave" (dismiss sheet, reset to DummyAAConsentView)
+
+### Notification Permission
+- Triggered AFTER data fetch begins (during full-screen DataFetchingView)
+- Custom pre-prompt: "This will take some time. Feel free to touch the grass or doom-scroll. Want us to notify you when this is done?"
+- Two buttons: "Notify me" (triggers `UNUserNotificationCenter.requestAuthorization`) / "No thanks"
+- On processing complete: send actual local notification if permission granted
+
+## Micro-Steps
+
+### Phase A: Refactor PhoneOTPSheet to multi-step
+- [x] A1: Added `PhoneOTPSheet.Step` enum (`.phoneEntry`, `.otpEntry`, `.panEntry`, `.accountSelection`). Sheet now owns its own step state, syncs from `vm.step` via `.onChange`. Placeholder views for panEntry and accountSelection.
+- [x] A2: Replaced "Phone verified" full-screen with auto-dismissing toast (capsule pill with checkmark, 1.5s). After toast fades, transitions to `.panEntry`. Toast uses `.move(edge: .top).combined(with: .opacity)` transition.
+- [x] A3: Compiles clean.
+
+### Phase B: PAN Entry step
+- [x] B1: Created PAN entry UI in PhoneOTPSheet — title ("Verify your PAN"), subtitle with phone, MoneField with ABCDE1234F placeholder, Continue button, auto-focus on appear
+- [x] B2: PAN format validation via Swift Regex (`/^[A-Z]{5}[0-9]{4}[A-Z]$/`). Auto-uppercases input, caps at 10 chars. Continue button disabled until format valid.
+- [x] B3: Demo PAN matching — 1500ms async delay, checks against phone→PAN mapping. Wrong PAN shows inline error. Correct PAN transitions to `.accountSelection`.
+- [x] B4: Compiles clean (0 diagnostics)
+
+### Phase C: Dismiss protection
+- [x] C1: Added `.interactiveDismissDisabled(isDismissProtected)` — blocks swipe-to-dismiss on `.panEntry` and `.accountSelection` steps
+- [x] C2: Used SwiftUI `.alert` instead of UIKit bridge — "Leave verification?" alert with "Stay" (cancel) and "Leave" (destructive). Simpler, no UIKit needed since `.interactiveDismissDisabled` already handles the elastic resistance.
+- [x] C3: Cancel toolbar button shows the same alert when `isDismissProtected` is true, dismisses directly otherwise
+- [x] C4: Compiles clean (0 diagnostics)
+
+### Phase D: Account Selection step
+- [x] D1: Created `FIAccount` model + `FIAccountData` with demo data for Aarav (7 accounts) and Priya (12 accounts). SF Symbol icons per type. Grouped by institution.
+- [x] D2: Account selection UI with grouped list — institution header (icon + uppercase label), account rows (type + masked number), selection count subtitle.
+- [x] D3: Edit/Done toggle. Checkboxes greyed out and disabled by default, interactive in edit mode. Min-1 validation prevents deselecting last account.
+- [x] D4: "Fetch data" CTA calls `onVerified(phone)` and dismisses sheet. Disabled when 0 selected.
+- [x] D5: Compiles clean (0 diagnostics)
+
+### Phase E: Notification permission
+- [ ] E1: Create custom notification pre-prompt view (overlay or alert during DataFetchingView)
+- [ ] E2: Wire "Notify me" to `UNUserNotificationCenter.requestAuthorization`
+- [ ] E3: Send local notification when IntelligenceProcessingView completes
+- [ ] E4: Verify compiles
+
+### Phase F: Supabase data offloading (deferred — user will provide backend details)
+- [ ] F1: Upload raw AA data to Supabase before client-side processing
+- [ ] F2: Fetch from Supabase instead of local bundle
+- [ ] F3: Verify end-to-end flow
+
+## Key Data
+| Phone | Name | PAN |
+|-------|------|-----|
+| 8828290489 | Aarav | ETTPK9327L |
+| 7304893952 | Priya | ETTRK9905L |
+
+## Current Status (this section)
+**Completed**: Phase A (multi-step refactor) + Phase B (PAN entry) + Phase C (dismiss protection) + Phase D (account selection)
+**Next**: Phase E (notification permission during data fetch)

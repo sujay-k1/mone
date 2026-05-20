@@ -171,6 +171,17 @@ For deposit-only Pass 1, generate single FIP with deposit account.
 - End-of-period balance in summary must match last transaction's currentBalance
 - Opening balance is derived: starting balance before first generated transaction
 
+## Asset Account Value Convention
+
+For multi-FI synthetic fixtures such as `aarav_spend_control_rash_decisions`, `accounts.csv` uses explicit value semantics so asset accounts are not treated like spendable cash:
+
+- `deposit`: `closing_balance` and `current_value` represent liquid cash balance. `liquidity_class = liquid`, `balance_role = cash_balance`.
+- `mutual_funds`: `closing_balance` is kept for compatibility and must equal `current_value`. `current_value` represents market-linked holding value. `liquidity_class = market_linked`, `balance_role = current_value`.
+- `recurring_deposit`: `closing_balance` equals `current_value` / deposit value. `liquidity_class = semi_locked`, `balance_role = deposit_value`.
+- `term_deposit`: `closing_balance` equals `current_value` / deposit value. Principal and premature withdrawal fields are separate. `liquidity_class = locked`, `balance_role = deposit_value`.
+
+Opening/principal values for asset accounts are represented through account summary and `accounts.csv` opening/value columns. Do not also generate ambiguous asset opening credit transactions that downstream parsers may double count.
+
 ## Masked Account Numbers
 
 Format: `XXXX1234` (last 4 digits visible)

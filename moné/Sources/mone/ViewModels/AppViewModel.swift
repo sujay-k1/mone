@@ -8,7 +8,7 @@ class AppViewModel {
 
     // MARK: Onboarding State
     var hasCompletedOnboarding: Bool = false
-    var onboardingStep: OnboardingStep = .welcome
+    var onboardingStep: OnboardingStep = .agendaEducation
 
     // MARK: User Choices
     var primaryAgenda:  AgendaType?  = nil
@@ -16,6 +16,13 @@ class AppViewModel {
     var storageMode:    StorageMode?  = nil
     var setupMethod:    SetupMethod? = nil
     var nudgeIntensity: NudgeIntensity = .balanced
+
+    // MARK: AA Flow State
+    var verifiedPhone: String? = nil
+    var enteredPAN: String? = nil
+    var aaConsentId: String? = nil
+    var aaResponse: SyntheticAAResponse? = nil
+    var aaFetchError: String? = nil
 
     // MARK: Money Map & Data
     var moneyMap: MoneyMap          = MockDataService.defaultMoneyMap()
@@ -29,33 +36,30 @@ class AppViewModel {
     var activeNudge: Nudge?    = nil
     var showNudge:   Bool      = false
 
-    // MARK: - Onboarding Steps
+    // MARK: - Onboarding Steps (Agenda-First Flow)
 
     enum OnboardingStep: Int, CaseIterable {
-        case welcome, dataPrivacy, auth, primaryAgenda, secondaryAgenda,
-             setupMethod, aaConsent, buildingMoneyMap, confirmFindings,
-             goalSetup, complete
+        case agendaEducation      // Education cards + primary/secondary agenda selection
+        case methodSelection      // How to gather financial data
+        case aaConsent            // AA consent explanation + phone entry
+        case phoneOtp             // Phone verification via 2Factor OTP
+        case aaFetching           // Fetching dummy AA data based on verified phone
+        case processing           // Intelligence pipeline (linking, normalizing, detecting)
+        case storageChoice        // Cloud vs local — after user has seen value
+        case dashboardTour        // One-time orientation after the Money Map is ready
+        case complete             // Done — route to dashboard
     }
 
     func advance() {
         switch onboardingStep {
-        case .welcome:          onboardingStep = .dataPrivacy
-        case .dataPrivacy:
-            onboardingStep = storageMode == .encryptedBackup ? .auth : .primaryAgenda
-        case .auth:             onboardingStep = .primaryAgenda
-        case .primaryAgenda:    onboardingStep = .setupMethod
-        case .secondaryAgenda:  onboardingStep = .setupMethod
-        case .setupMethod:
-            switch setupMethod {
-            case .accountAggregator: onboardingStep = .aaConsent
-            default:                 onboardingStep = .buildingMoneyMap
-            }
-        case .aaConsent:        onboardingStep = .buildingMoneyMap
-        case .buildingMoneyMap: onboardingStep = .confirmFindings
-        case .confirmFindings:
-            let needsGoalSetup = (primaryAgenda == .planGoals || secondaryAgenda == .planGoals)
-            onboardingStep = needsGoalSetup ? .goalSetup : .complete
-        case .goalSetup:        onboardingStep = .complete
+        case .agendaEducation:  onboardingStep = .methodSelection
+        case .methodSelection:  onboardingStep = .aaConsent
+        case .aaConsent:        onboardingStep = .phoneOtp
+        case .phoneOtp:         onboardingStep = .aaFetching
+        case .aaFetching:       onboardingStep = .complete
+        case .processing:       onboardingStep = .storageChoice
+        case .storageChoice:    onboardingStep = .dashboardTour
+        case .dashboardTour:    onboardingStep = .complete
         case .complete:
             if let agenda = primaryAgenda {
                 nudgeIntensity = agenda.defaultNudgeIntensity
@@ -73,17 +77,14 @@ class AppViewModel {
 
     func goBack() {
         switch onboardingStep {
-        case .welcome:          break
-        case .dataPrivacy:      onboardingStep = .welcome
-        case .auth:             onboardingStep = .dataPrivacy
-        case .primaryAgenda:    onboardingStep = .dataPrivacy
-        case .secondaryAgenda:  onboardingStep = .primaryAgenda
-        case .setupMethod:      onboardingStep = .primaryAgenda
-        case .aaConsent:        onboardingStep = .setupMethod
-        case .buildingMoneyMap:
-            onboardingStep = setupMethod == .accountAggregator ? .aaConsent : .setupMethod
-        case .confirmFindings:  onboardingStep = .buildingMoneyMap
-        case .goalSetup:        onboardingStep = .confirmFindings
+        case .agendaEducation:  break
+        case .methodSelection:  onboardingStep = .agendaEducation
+        case .aaConsent:        onboardingStep = .methodSelection
+        case .phoneOtp:         onboardingStep = .aaConsent
+        case .aaFetching:       break // no going back from data fetch
+        case .processing:       break // no going back from processing
+        case .storageChoice:    break // no going back after processing
+        case .dashboardTour:    break
         case .complete:         break
         }
     }
@@ -99,7 +100,29 @@ class AppViewModel {
 
     func skipSecondaryAgenda() {
         secondaryAgenda = nil
-        advance()
+    }
+
+    // MARK: - AA Data Handling
+
+    func attachAAData(phone: String, response: SyntheticAAResponse) {
+        verifiedPhone = phone
+        aaResponse = response
+        aaFetchError = nil
+    }
+
+    func processAAData() {
+        guard let response = aaResponse else { return }
+        let result = AADataTransformer.transform(response: response)
+        moneyMap = result.moneyMap
+        transactions = result.transactions
+        insights = result.insights
+    }
+
+    // MARK: - Persona Info
+
+    var personaName: String? {
+        guard let phone = verifiedPhone else { return nil }
+        return DummyAAProvider.personaName(for: phone)
     }
 
     // MARK: - Calculated Properties
@@ -138,9 +161,6 @@ class AppViewModel {
             intensity: nudgeIntensity
         )
         showNudge = activeNudge != nil
-        if activeNudge == nil {
-            // Safe — proceed directly
-        }
     }
 
     func confirmPayment() {
@@ -177,7 +197,7 @@ class AppViewModel {
 
     // MARK: - Flow Reset
 
-    func resetOnboarding(to step: OnboardingStep = .welcome) {
+    func resetOnboarding(to step: OnboardingStep = .agendaEducation) {
         hasCompletedOnboarding = false
         onboardingStep = step
         primaryAgenda = nil
@@ -185,10 +205,12 @@ class AppViewModel {
         storageMode = nil
         setupMethod = nil
         nudgeIntensity = .balanced
+        verifiedPhone = nil
+        aaResponse = nil
+        aaFetchError = nil
     }
 
-    func startAuthenticatedOnboarding(at step: OnboardingStep = .primaryAgenda) {
+    func startAuthenticatedOnboarding(at step: OnboardingStep = .agendaEducation) {
         resetOnboarding(to: step)
-        storageMode = .encryptedBackup
     }
 }

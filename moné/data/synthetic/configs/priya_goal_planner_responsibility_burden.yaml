@@ -1,0 +1,16 @@
+dataset_id: priya_goal_planner_responsibility_burden
+seed: mone-priya-responsibility-burden-v3
+persona:
+  persona_id: priya
+  display_name: Priya
+  age: 35
+  city: Bangalore
+  role: Product Manager
+period:
+  start: 2025-06-01
+  end: 2026-05-31
+fixture_intent:
+  primary_agenda: Plan for goals
+  secondary_agenda: Understand my money
+  overall_financial_health: Watch
+  story: High-income but responsibility-heavy, with family, healthcare, loan, insurance, and goal-pressure complexity.
