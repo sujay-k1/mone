@@ -91,7 +91,7 @@ extension Font {
     // Headlines
     static let moneHL        = Font.system(size: 24, weight: .semibold, design: .serif)
     static let moneHLMd      = Font.system(size: 20, weight: .semibold, design: .serif)
-    static let moneHLSm      = Font.system(size: 17, weight: .semibold)
+    static let moneHLSm      = Font.system(size: 17, weight: .semibold).monospacedDigit()
 
     // Financial amounts — monospaced for tabular alignment (JetBrains Mono analog)
     static let moneAmtLg     = Font.system(size: 34, weight: .semibold, design: .monospaced)
@@ -99,13 +99,13 @@ extension Font {
     static let moneAmtSm     = Font.system(size: 17, weight: .medium,   design: .monospaced)
 
     // Body (Hanken Grotesk analog — default system is clean sans-serif)
-    static let moneBodyLg    = Font.system(size: 17, weight: .regular)
-    static let moneBodyMd    = Font.system(size: 15, weight: .regular)
-    static let moneBodySm    = Font.system(size: 13, weight: .regular)
+    static let moneBodyLg    = Font.system(size: 17, weight: .regular).monospacedDigit()
+    static let moneBodyMd    = Font.system(size: 15, weight: .regular).monospacedDigit()
+    static let moneBodySm    = Font.system(size: 13, weight: .regular).monospacedDigit()
 
     // Labels / Caps
-    static let moneLabelCaps = Font.system(size: 11, weight: .bold)
-    static let moneCaption   = Font.system(size: 12, weight: .regular)
+    static let moneLabelCaps = Font.system(size: 11, weight: .bold).monospacedDigit()
+    static let moneCaption   = Font.system(size: 12, weight: .regular).monospacedDigit()
 }
 
 // MARK: - Spacing Tokens
