@@ -5,8 +5,6 @@ struct DashboardNudgeCard: View {
     let onPrimaryAction: () -> Void
     let onDismiss: () -> Void
 
-    @State private var didAppear = false
-
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {
@@ -19,13 +17,7 @@ struct DashboardNudgeCard: View {
                         .font(.system(size: 36, weight: .light))
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(Color.monePrimary, Color.moneSecondary, Color.moneTertiary)
-                        .symbolEffect(.drawOn.individually, isActive: !didAppear)
-                        .symbolEffect(.pulse.byLayer, options: didAppear ? .repeating : .default)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                didAppear = true
-                            }
-                        }
+                        .symbolEffect(.pulse.byLayer, options: .repeating)
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
