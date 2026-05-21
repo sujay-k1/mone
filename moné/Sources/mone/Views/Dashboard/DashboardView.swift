@@ -3,6 +3,7 @@ import SwiftData
 
 struct DashboardView: View {
     @Environment(AppViewModel.self) private var appVM
+    @Environment(SessionViewModel.self) private var sessionVM
     @Environment(\.modelContext) private var modelContext
 
     @State private var summary: DashboardSummary?
@@ -21,7 +22,9 @@ struct DashboardView: View {
                     if let summary {
                         DashboardHeader(
                             title: dashboardTitle(for: summary),
-                            subtitle: "\(summary.displayName.capitalized) · \(summary.month)"
+                            subtitle: sessionVM.isSignedIn
+                                ? "\(sessionVM.displayName.capitalized) · \(summary.month)"
+                                : summary.month
                         )
 
                         agendaHero(summary)
@@ -116,7 +119,7 @@ struct DashboardView: View {
                 footerItems: [
                     DashboardFooterItem(title: "Commitments", value: formatCurrency(summary.committed)),
                     DashboardFooterItem(title: "Operating", value: formatCurrency(summary.operatingRemaining)),
-                    DashboardFooterItem(title: "Cash impact", value: formatCurrency(summary.liquidCashImpact))
+                    // DashboardFooterItem(title: "Cash impact", value: formatCurrency(summary.liquidCashImpact))
                 ]
             )
 

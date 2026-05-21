@@ -4,32 +4,57 @@
 <dict>
     <key>CFBundleIdentifier</key>
     <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
     <key>CFBundleName</key>
     <string>$(PRODUCT_NAME)</string>
+
     <key>CFBundleDisplayName</key>
     <string>moné</string>
+
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
+
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+
     <key>CFBundleVersion</key>
     <string>$(CURRENT_PROJECT_VERSION)</string>
+
     <key>CFBundleShortVersionString</key>
     <string>$(MARKETING_VERSION)</string>
+
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
+
     <key>UILaunchScreen</key>
     <dict/>
+
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
+
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
     </array>
+
     <key>NSCameraUsageDescription</key>
     <string>moné uses the camera to scan QR codes for Pay with Pause.</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>upi</string>
+        <string>tez</string>
+        <string>phonepe</string>
+        <string>paytmmp</string>
+        <string>bhim</string>
+        <string>amazonpay</string>
+        <string>cred</string>
+        <string>whatsapp</string>
+    </array>
+
     <key>UIUserInterfaceStyle</key>
     <string>Dark</string>
+
     <key>LSRequiresIPhoneOS</key>
     <true/>
 </dict>
