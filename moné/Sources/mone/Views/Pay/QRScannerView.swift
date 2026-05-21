@@ -1,15 +1,16 @@
 import SwiftUI
 import AVFoundation
+import UIKit
 
 struct QRScannerView: UIViewControllerRepresentable {
-    let onScan: (String) -> Void
-    let onCancel: () -> Void
+    /// Return true when the QR is accepted.
+    /// Return false when the QR is not valid for this screen.
+    let onCodeDetected: (String) -> Bool
     let onPermissionDenied: () -> Void
 
     func makeUIViewController(context: Context) -> QRScannerViewController {
         QRScannerViewController(
-            onScan: onScan,
-            onCancel: onCancel,
+            onCodeDetected: onCodeDetected,
             onPermissionDenied: onPermissionDenied
         )
     }
@@ -19,23 +20,28 @@ struct QRScannerView: UIViewControllerRepresentable {
 
 final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
-    private let onScan: (String) -> Void
-    private let onCancel: () -> Void
+    private let onCodeDetected: (String) -> Bool
     private let onPermissionDenied: () -> Void
 
     private let captureSession = AVCaptureSession()
     private let sessionQueue = DispatchQueue(label: "mone.qr.scanner.session")
 
     private var previewLayer: AVCaptureVideoPreviewLayer?
-    private var didScan = false
+    private var activeVideoDevice: AVCaptureDevice?
+    private var didAcceptCode = false
+    private var isSessionConfigured = false
+
+    private var toastLabel: UILabel?
+    private var lastRejectedCode: String?
+    private var lastRejectedAt: Date?
+
+    private var initialZoomFactor: CGFloat = 1.0
 
     init(
-        onScan: @escaping (String) -> Void,
-        onCancel: @escaping () -> Void,
+        onCodeDetected: @escaping (String) -> Bool,
         onPermissionDenied: @escaping () -> Void
     ) {
-        self.onScan = onScan
-        self.onCancel = onCancel
+        self.onCodeDetected = onCodeDetected
         self.onPermissionDenied = onPermissionDenied
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,11 +50,31 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .black
-        addCancelButton()
-        checkCameraPermission()
+    deinit {
+            Foundation.NotificationCenter.default.removeObserver(self)
+        }
+
+        override func viewDidLoad() {
+            super.viewDidLoad()
+
+            view.backgroundColor = .black
+            checkCameraPermission()
+            addPinchToZoom()
+
+            Foundation.NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(appDidBecomeActive),
+                name: UIApplication.didBecomeActiveNotification,
+                object: nil
+            )
+        }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if isSessionConfigured, !didAcceptCode {
+            startSession()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -70,14 +96,21 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
                 DispatchQueue.main.async {
                     guard let self else { return }
-                    granted ? self.setupScanner() : self.onPermissionDenied()
+                    if granted {
+                        self.setupScanner()
+                    } else {
+                        self.showMessage("Camera permission is needed to scan UPI QR codes.")
+                        self.onPermissionDenied()
+                    }
                 }
             }
 
         case .denied, .restricted:
+            showMessage("Camera permission is needed to scan UPI QR codes. Enable it from iPhone Settings.")
             onPermissionDenied()
 
         @unknown default:
+            showMessage("Camera permission is unavailable.")
             onPermissionDenied()
         }
     }
@@ -91,12 +124,14 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         }
 
         var selectedInput: AVCaptureDeviceInput?
+        var selectedDevice: AVCaptureDevice?
 
         for device in devices {
             do {
                 let input = try AVCaptureDeviceInput(device: device)
                 if captureSession.canAddInput(input) {
                     selectedInput = input
+                    selectedDevice = device
                     break
                 }
             } catch {
@@ -104,11 +139,12 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
             }
         }
 
-        guard let selectedInput else {
+        guard let selectedInput, let selectedDevice else {
             showMessage("Could not start any available camera.")
             return
         }
 
+        activeVideoDevice = selectedDevice
         captureSession.addInput(selectedInput)
 
         let metadataOutput = AVCaptureMetadataOutput()
@@ -131,14 +167,14 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         let layer = AVCaptureVideoPreviewLayer(session: captureSession)
         layer.videoGravity = .resizeAspectFill
         layer.frame = view.bounds
+
         view.layer.insertSublayer(layer, at: 0)
         previewLayer = layer
 
-        addScannerOverlay()
+        addScannerGlassOverlay()
 
-        sessionQueue.async { [weak self] in
-            self?.captureSession.startRunning()
-        }
+        isSessionConfigured = true
+        startSession()
     }
 
     /// Preference order:
@@ -146,6 +182,9 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
     /// 2. Rear 0.5x ultra-wide
     /// 3. Rear 2x telephoto
     /// 4. Front camera
+    ///
+    /// Note: iOS can only tell us whether a camera device can be opened.
+    /// It cannot reliably detect a physically damaged lens that still initializes.
     private func preferredCameraDevices() -> [AVCaptureDevice] {
         let candidates: [AVCaptureDevice?] = [
             AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
@@ -155,6 +194,7 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         ]
 
         var seen = Set<String>()
+
         return candidates.compactMap { device in
             guard let device else { return nil }
             guard !seen.contains(device.uniqueID) else { return nil }
@@ -166,8 +206,19 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
     private func stopSession() {
         sessionQueue.async { [weak self] in
             guard let self else { return }
+
             if self.captureSession.isRunning {
                 self.captureSession.stopRunning()
+            }
+        }
+    }
+    
+    private func startSession() {
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+
+            if !self.captureSession.isRunning {
+                self.captureSession.startRunning()
             }
         }
     }
@@ -177,7 +228,7 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         didOutput metadataObjects: [AVMetadataObject],
         from connection: AVCaptureConnection
     ) {
-        guard !didScan else { return }
+        guard !didAcceptCode else { return }
 
         guard
             let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
@@ -188,66 +239,124 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
             return
         }
 
-        didScan = true
-        stopSession()
-        onScan(rawValue)
+        let accepted = onCodeDetected(rawValue)
+
+        if accepted {
+            didAcceptCode = true
+            stopSession()
+        } else {
+            showInvalidQRToast(for: rawValue)
+        }
     }
 
-    private func addCancelButton() {
-        let button = UIButton(type: .system)
-        button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.backgroundColor = UIColor.black.withAlphaComponent(0.45)
-        button.layer.cornerRadius = 18
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+    // MARK: - Zoom
 
-        button.addAction(UIAction { [weak self] _ in
-            self?.onCancel()
-        }, for: .touchUpInside)
+    private func addPinchToZoom() {
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+        view.addGestureRecognizer(pinch)
+    }
+    
+    @objc private func appDidBecomeActive() {
+        if isSessionConfigured, !didAcceptCode {
+            startSession()
+        }
+    }
 
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
+    @objc private func handlePinch(_ sender: UIPinchGestureRecognizer) {
+        guard let device = activeVideoDevice else { return }
+
+        switch sender.state {
+        case .began:
+            initialZoomFactor = device.videoZoomFactor
+
+        case .changed:
+            let maxZoom = min(device.activeFormat.videoMaxZoomFactor, 6.0)
+            let desiredZoom = initialZoomFactor * sender.scale
+            let clampedZoom = max(1.0, min(desiredZoom, maxZoom))
+
+            do {
+                try device.lockForConfiguration()
+                device.videoZoomFactor = clampedZoom
+                device.unlockForConfiguration()
+            } catch {
+                return
+            }
+
+        default:
+            break
+        }
+    }
+
+    // MARK: - Overlay
+
+    private func addScannerGlassOverlay() {
+        let overlay = ScannerGlassOverlayView()
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(overlay)
 
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            overlay.topAnchor.constraint(equalTo: view.topAnchor),
+            overlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            overlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            overlay.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
-    private func addScannerOverlay() {
-        let label = UILabel()
-        label.text = "Scan a UPI QR"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.textAlignment = .center
-        label.backgroundColor = UIColor.black.withAlphaComponent(0.35)
-        label.layer.cornerRadius = 14
-        label.clipsToBounds = true
+    private func showInvalidQRToast(for rawValue: String) {
+        let now = Date()
 
-        let frameView = UIView()
-        frameView.layer.borderColor = UIColor.white.withAlphaComponent(0.85).cgColor
-        frameView.layer.borderWidth = 2
-        frameView.layer.cornerRadius = 28
-        frameView.backgroundColor = UIColor.clear
+        if lastRejectedCode == rawValue,
+           let lastRejectedAt,
+           now.timeIntervalSince(lastRejectedAt) < 2.0 {
+            return
+        }
+
+        lastRejectedCode = rawValue
+        lastRejectedAt = now
+
+        showToast("This isn’t a UPI payment QR")
+    }
+
+    private func showToast(_ message: String) {
+        toastLabel?.removeFromSuperview()
+
+        let label = PaddedLabel()
+        label.text = message
+        label.textInsets = UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.numberOfLines = 2
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.78)
+        label.layer.cornerRadius = 18
+        label.clipsToBounds = true
+        label.alpha = 0
 
         label.translatesAutoresizingMaskIntoConstraints = false
-        frameView.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(frameView)
         view.addSubview(label)
+        toastLabel = label
 
         NSLayoutConstraint.activate([
-            frameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            frameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            frameView.widthAnchor.constraint(equalToConstant: 260),
-            frameView.heightAnchor.constraint(equalToConstant: 260),
-
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.bottomAnchor.constraint(equalTo: frameView.topAnchor, constant: -24),
-            label.widthAnchor.constraint(greaterThanOrEqualToConstant: 170),
-            label.heightAnchor.constraint(equalToConstant: 44)
+            label.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -34),
+            label.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, constant: -48)
         ])
+
+        UIView.animate(withDuration: 0.18) {
+            label.alpha = 1
+            label.transform = CGAffineTransform(translationX: 0, y: -4)
+        } completion: { _ in
+            UIView.animate(
+                withDuration: 0.22,
+                delay: 1.75,
+                options: [.curveEaseInOut]
+            ) {
+                label.alpha = 0
+                label.transform = CGAffineTransform(translationX: 0, y: 4)
+            } completion: { _ in
+                label.removeFromSuperview()
+            }
+        }
     }
 
     private func showMessage(_ message: String) {
@@ -267,5 +376,203 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28),
             label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -28)
         ])
+    }
+}
+
+// MARK: - Glass Overlay
+
+final class ScannerGlassOverlayView: UIView {
+
+    private let materialView = UIVisualEffectView(
+        effect: UIBlurEffect(style: .systemChromeMaterialDark)
+    )
+
+    private let tintView = UIView()
+    private let shineView = UIView()
+    private let dimView = UIView()
+
+    private let viewfinderView = UIView()
+    private let innerRimView = UIView()
+    private let titleLabel = UILabel()
+    private let helperLabel = UILabel()
+
+    private let tintLayer = CAGradientLayer()
+    private let shineLayer = CAGradientLayer()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        isUserInteractionEnabled = false
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        isUserInteractionEnabled = false
+        setup()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        tintLayer.frame = bounds
+        shineLayer.frame = bounds
+
+        applyOutsideCutoutMask(to: materialView.layer)
+        applyOutsideCutoutMask(to: tintView.layer)
+        applyOutsideCutoutMask(to: shineView.layer)
+        applyOutsideCutoutMask(to: dimView.layer)
+    }
+
+    private func setup() {
+        materialView.translatesAutoresizingMaskIntoConstraints = false
+        tintView.translatesAutoresizingMaskIntoConstraints = false
+        shineView.translatesAutoresizingMaskIntoConstraints = false
+        dimView.translatesAutoresizingMaskIntoConstraints = false
+        viewfinderView.translatesAutoresizingMaskIntoConstraints = false
+        innerRimView.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        helperLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(materialView)
+        addSubview(tintView)
+        addSubview(shineView)
+        addSubview(dimView)
+        addSubview(viewfinderView)
+        addSubview(innerRimView)
+        addSubview(titleLabel)
+        addSubview(helperLabel)
+
+        tintLayer.colors = [
+            UIColor.white.withAlphaComponent(0.18).cgColor,
+            UIColor.white.withAlphaComponent(0.04).cgColor,
+            UIColor.black.withAlphaComponent(0.12).cgColor
+        ]
+        tintLayer.startPoint = CGPoint(x: 0.12, y: 0.0)
+        tintLayer.endPoint = CGPoint(x: 0.9, y: 1.0)
+        tintLayer.locations = [0.0, 0.42, 1.0]
+        tintView.layer.addSublayer(tintLayer)
+
+        shineLayer.colors = [
+            UIColor.white.withAlphaComponent(0.32).cgColor,
+            UIColor.white.withAlphaComponent(0.08).cgColor,
+            UIColor.clear.cgColor
+        ]
+        shineLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        shineLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
+        shineLayer.locations = [0.0, 0.22, 0.58]
+        shineView.layer.addSublayer(shineLayer)
+
+        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.12)
+
+        viewfinderView.backgroundColor = .clear
+        viewfinderView.layer.cornerRadius = 32
+        viewfinderView.layer.borderWidth = 2
+        viewfinderView.layer.borderColor = UIColor.white.withAlphaComponent(0.5).cgColor
+        viewfinderView.layer.shadowColor = UIColor.white.cgColor
+        viewfinderView.layer.shadowOpacity = 0.28
+        viewfinderView.layer.shadowRadius = 14
+        viewfinderView.layer.shadowOffset = .zero
+
+        innerRimView.backgroundColor = .clear
+        innerRimView.layer.cornerRadius = 26
+        innerRimView.layer.borderWidth = 1
+        innerRimView.layer.borderColor = UIColor.white.withAlphaComponent(0.22).cgColor
+
+        titleLabel.text = "Scan a UPI QR"
+        titleLabel.textColor = .white
+        titleLabel.textAlignment = .center
+        titleLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+
+        helperLabel.text = "Pinch to zoom"
+        helperLabel.textColor = UIColor.white.withAlphaComponent(0.76)
+        helperLabel.textAlignment = .center
+        helperLabel.font = .systemFont(ofSize: 13, weight: .medium)
+
+        NSLayoutConstraint.activate([
+            materialView.topAnchor.constraint(equalTo: topAnchor),
+            materialView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            materialView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            materialView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            tintView.topAnchor.constraint(equalTo: topAnchor),
+            tintView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tintView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tintView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            shineView.topAnchor.constraint(equalTo: topAnchor),
+            shineView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            shineView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            shineView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            dimView.topAnchor.constraint(equalTo: topAnchor),
+            dimView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            dimView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            dimView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            viewfinderView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            viewfinderView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -18),
+            viewfinderView.widthAnchor.constraint(equalToConstant: 270),
+            viewfinderView.heightAnchor.constraint(equalToConstant: 270),
+
+            innerRimView.centerXAnchor.constraint(equalTo: viewfinderView.centerXAnchor),
+            innerRimView.centerYAnchor.constraint(equalTo: viewfinderView.centerYAnchor),
+            innerRimView.widthAnchor.constraint(equalTo: viewfinderView.widthAnchor, constant: -22),
+            innerRimView.heightAnchor.constraint(equalTo: viewfinderView.heightAnchor, constant: -22),
+
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: viewfinderView.topAnchor, constant: -24),
+
+            helperLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            helperLabel.topAnchor.constraint(equalTo: viewfinderView.bottomAnchor, constant: 18)
+        ])
+    }
+
+    private func applyOutsideCutoutMask(to layer: CALayer) {
+        let fullPath = UIBezierPath(rect: bounds)
+
+        let cutoutFrame = viewfinderView.frame.insetBy(dx: -6, dy: -6)
+        let cutoutPath = UIBezierPath(
+            roundedRect: cutoutFrame,
+            cornerRadius: viewfinderView.layer.cornerRadius + 6
+        )
+
+        fullPath.append(cutoutPath)
+
+        let mask = CAShapeLayer()
+        mask.frame = bounds
+        mask.path = fullPath.cgPath
+        mask.fillRule = .evenOdd
+
+        layer.mask = mask
+    }
+}
+
+final class PaddedLabel: UILabel {
+    var textInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: textInsets))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(
+            width: size.width + textInsets.left + textInsets.right,
+            height: size.height + textInsets.top + textInsets.bottom
+        )
+    }
+
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let adjustedSize = CGSize(
+            width: size.width - textInsets.left - textInsets.right,
+            height: size.height - textInsets.top - textInsets.bottom
+        )
+
+        let fittingSize = super.sizeThatFits(adjustedSize)
+
+        return CGSize(
+            width: fittingSize.width + textInsets.left + textInsets.right,
+            height: fittingSize.height + textInsets.top + textInsets.bottom
+        )
     }
 }

@@ -46,6 +46,10 @@
 		66BC26982FBE682D000D4FF7 /* PaymentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26972FBE682C000D4FF7 /* PaymentModels.swift */; };
 		66BC269B2FBE6868000D4FF7 /* UPIAppDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC269A2FBE6867000D4FF7 /* UPIAppDiscoveryService.swift */; };
 		66BC269D2FBE687C000D4FF7 /* PaymentGuidanceEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC269C2FBE687B000D4FF7 /* PaymentGuidanceEngine.swift */; };
+		66BC26A12FBE9F04000D4FF7 /* GoalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26A02FBE9EFF000D4FF7 /* GoalModels.swift */; };
+		66BC26A32FBE9F08000D4FF7 /* GoalPlannerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26A22FBE9F08000D4FF7 /* GoalPlannerEngine.swift */; };
+		66BC26A52FBE9F11000D4FF7 /* GoalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26A42FBE9F11000D4FF7 /* GoalStore.swift */; };
+		66BC26AB2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26AA2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift */; };
 		67A7E21DC1115C6FD43EA155 /* MoneTaxonomy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8116131A5B5E619673058A3B /* MoneTaxonomy.swift */; };
 		787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F8BD84AFCFC35206849E91D /* SignUpSheet.swift */; };
 		78A595B2D422922DC0198789 /* BuildingMoneyMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAFCE495917736DBE9F3D7D /* BuildingMoneyMapView.swift */; };
@@ -144,10 +148,14 @@
 		66BC268D2FBE3B15000D4FF7 /* FinancialDataCloudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialDataCloudService.swift; sourceTree = "<group>"; };
 		66BC26902FBE65A2000D4FF7 /* UPIQRParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIQRParser.swift; sourceTree = "<group>"; };
 		66BC26922FBE65CA000D4FF7 /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
-		66BC26942FBE681C000D4FF7 /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		66BC26942FBE681C000D4FF7 /* GoalPlannerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPlannerModels.swift; sourceTree = "<group>"; };
 		66BC26972FBE682C000D4FF7 /* PaymentModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentModels.swift; sourceTree = "<group>"; };
 		66BC269A2FBE6867000D4FF7 /* UPIAppDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIAppDiscoveryService.swift; sourceTree = "<group>"; };
 		66BC269C2FBE687B000D4FF7 /* PaymentGuidanceEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentGuidanceEngine.swift; sourceTree = "<group>"; };
+		66BC26A02FBE9EFF000D4FF7 /* GoalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalModels.swift; sourceTree = "<group>"; };
+		66BC26A22FBE9F08000D4FF7 /* GoalPlannerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPlannerEngine.swift; sourceTree = "<group>"; };
+		66BC26A42FBE9F11000D4FF7 /* GoalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStore.swift; sourceTree = "<group>"; };
+		66BC26AA2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPlannerPersistence.swift; sourceTree = "<group>"; };
 		67B2F63CC66F34DAF96D56B0 /* KnownEntityRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownEntityRegistry.swift; sourceTree = "<group>"; };
 		68AEC708AA320B08933BD1F4 /* GoalProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProjectionCalculator.swift; sourceTree = "<group>"; };
 		696A2C6010A91A3F6A9C4BCD /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -288,6 +296,8 @@
 				F221DBD8877250D3B0F370F3 /* AIReviewClassificationClient.swift */,
 				5F84CA79D50AF55A6E327DFD /* DummyAAProvider.swift */,
 				B0A64CCC5850D44BB683F6FC /* FinancialHealthCalculator.swift */,
+				66BC26A22FBE9F08000D4FF7 /* GoalPlannerEngine.swift */,
+				66BC26AA2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift */,
 				68AEC708AA320B08933BD1F4 /* GoalProjectionCalculator.swift */,
 				6101DA80B71C988811E1A622 /* MockDataService.swift */,
 				95C8A11F6611DC538343AB4B /* NudgeEngine.swift */,
@@ -373,6 +383,8 @@
 		7FDBD6F4C040D8987D762573 /* Goals */ = {
 			isa = PBXGroup;
 			children = (
+				66BC26A02FBE9EFF000D4FF7 /* GoalModels.swift */,
+				66BC26A42FBE9F11000D4FF7 /* GoalStore.swift */,
 				4F2CAF36A15D1C92BF678E7D /* GoalsView.swift */,
 			);
 			path = Goals;
@@ -440,7 +452,7 @@
 		CC4B7958EBB3354AB7688EFD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				66BC26942FBE681C000D4FF7 /* Untitled.swift */,
+				66BC26942FBE681C000D4FF7 /* GoalPlannerModels.swift */,
 				E952EA0CDD3AFEF1801E705A /* Agenda.swift */,
 				48C9DB4D1D49AA688ECDDF60 /* FinancialHealth.swift */,
 				3815EAAB5F0CD6B16B6CC6AC /* Goal.swift */,
@@ -594,6 +606,7 @@
 				EE6FC4FC68D0C938ADF344D4 /* AAConsentSheet.swift in Sources */,
 				7908F0AAA3DA1E5517E977AD /* AAConsentView.swift in Sources */,
 				E1A95077F8D564727861D688 /* AADataTransformer.swift in Sources */,
+				66BC26A52FBE9F11000D4FF7 /* GoalStore.swift in Sources */,
 				A57FAA8E9BB34D9115020F12 /* AAIntelligencePipeline.swift in Sources */,
 				A84E96BE25AF0624CBF095CB /* AIClassificationModels.swift in Sources */,
 				66BC268F2FBE3D27000D4FF7 /* FinancialDataBackupModels.swift in Sources */,
@@ -609,6 +622,7 @@
 				2FCD8627F5A3DCD82A1182F6 /* Buttons.swift in Sources */,
 				C2E462ADC05F11D4EEF413ED /* Cards.swift in Sources */,
 				F2735537C4CEDB6AC359B22C /* ClassificationModels.swift in Sources */,
+				66BC26A32FBE9F08000D4FF7 /* GoalPlannerEngine.swift in Sources */,
 				88BB481F92A70DCED5FF225D /* ClassificationOverrideResolver.swift in Sources */,
 				158296186970EC60462267AF /* ConfirmFindingsView.swift in Sources */,
 				D641D9230B080888839DF8E4 /* DashboardDataLoader.swift in Sources */,
@@ -660,6 +674,7 @@
 				66BC26822FBE2BA5000D4FF7 /* ProfileAvatarButton.swift in Sources */,
 				D4EBBC65AF9E37CF2DC68D59 /* RawPayloadImporter.swift in Sources */,
 				DFE57410A905437D8115B251 /* RemoteAAPayloadService.swift in Sources */,
+				66BC26AB2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift in Sources */,
 				BF523D345052460B5B3EACA9 /* RemoteAAPipelineDebugView.swift in Sources */,
 				99AA08551F325847C892D476 /* ReviewQueueDebugView.swift in Sources */,
 				66BC268E2FBE3B17000D4FF7 /* FinancialDataCloudService.swift in Sources */,
@@ -675,6 +690,7 @@
 				5E9FA6AB6777477B9B12402F /* SupabaseClient.swift in Sources */,
 				01452073EB27A1D1F0F4F260 /* Theme.swift in Sources */,
 				66BC26842FBE2BB5000D4FF7 /* ProfileSpaceView.swift in Sources */,
+				66BC26A12FBE9F04000D4FF7 /* GoalModels.swift in Sources */,
 				79C5AC202175070E59372893 /* Transaction.swift in Sources */,
 				EE40591738E0EC432FA81EBA /* TransactionClassifier.swift in Sources */,
 				CCD37B49BEF75A9996CB485C /* TransactionFeatureExtractor.swift in Sources */,

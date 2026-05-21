@@ -2,10 +2,12 @@ import SwiftUI
 import SwiftData
 
 struct MoneyMapView: View {
+    @Environment(SessionViewModel.self) private var sessionVM
     @Environment(\.modelContext) private var modelContext
 
     @State private var model: MoneyMapScreenModel?
     @State private var errorMessage: String?
+    @State private var showTransactionHistory = false
 
     var body: some View {
         ZStack {
@@ -37,6 +39,19 @@ struct MoneyMapView: View {
         .task {
             loadMoneyMap()
         }
+        .sheet(isPresented: $showTransactionHistory) {
+            if let model {
+                MoneyMapTransactionHistorySheet(
+                    model: model,
+                    onRetag: { transaction, option in
+                        retag(transaction, as: option)
+                    }
+                )
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Color.moneBackground)
+            }
+        }
     }
 
     private func header(_ model: MoneyMapScreenModel) -> some View {
@@ -47,11 +62,13 @@ struct MoneyMapView: View {
                     .tracking(1.5)
                     .foregroundStyle(Color.moneTertiary)
 
-                Text("MoneyMap")
+                Text("Money Map")
                     .font(.moneHLMd)
                     .foregroundStyle(Color.monePrimary)
 
-                Text("\(model.displayName.capitalized) · \(model.month)")
+                Text(sessionVM.isSignedIn
+                     ? "\(sessionVM.displayName.capitalized) · \(model.month)"
+                     : model.month)
                     .font(.moneBodySm)
                     .foregroundStyle(Color.moneSecondary)
             }
@@ -129,6 +146,12 @@ struct MoneyMapView: View {
                 Text("Tax and unusual deductions are separated from operating affordability so they do not distort safe-to-spend.")
                     .font(.moneBodySm)
                     .foregroundStyle(Color.moneSecondary)
+            }
+
+            HStack(spacing: 12) {
+                MoneSecondaryButton(title: "View transactions", fullWidth: true) {
+                    showTransactionHistory = true
+                }
             }
         }
         .padding(MoneSpacing.cardSm)
@@ -320,7 +343,7 @@ struct MoneyMapView: View {
             ProgressView()
                 .tint(Color.monePrimary)
 
-            Text("Loading MoneyMap")
+            Text("Loading Money Map")
                 .font(.moneBodyMd)
                 .foregroundStyle(Color.moneSecondary)
         }
@@ -329,7 +352,7 @@ struct MoneyMapView: View {
 
     private func errorState(_ message: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("MoneyMap not ready")
+            Text("Money Map not ready")
                 .font(.moneHLMd)
                 .foregroundStyle(Color.monePrimary)
 
@@ -350,6 +373,23 @@ struct MoneyMapView: View {
             if model == nil {
                 errorMessage = "No processed financial data found. Complete Account Aggregator setup first."
             }
+        } catch {
+            errorMessage = String(describing: error)
+        }
+    }
+
+    @MainActor
+    private func retag(
+        _ transaction: MoneyMapTransaction,
+        as option: MoneyMapRetagOption
+    ) {
+        do {
+            let loader = MoneyMapDataLoader(modelContext: modelContext)
+            try loader.retagTransaction(
+                transactionId: transaction.id,
+                option: option
+            )
+            model = try loader.loadLatestMoneyMap()
         } catch {
             errorMessage = String(describing: error)
         }
@@ -381,9 +421,319 @@ struct MoneyMapView: View {
             return Color.moneTertiary.opacity(0.35)
         case .liquidCashImpact:
             return Color.moneRisk
+        case .income:
+            return Color.moneHealthy
+        case .cash:
+            return Color.moneSecondary
         case .neutral:
             return Color.moneStroke
         }
+    }
+}
+
+private struct MoneyMapTransactionHistorySheet: View {
+    let model: MoneyMapScreenModel
+    let onRetag: (MoneyMapTransaction, MoneyMapRetagOption) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+    @State private var selectedFilter: MoneyMapTransactionFilter = .all
+
+    private var availableFilters: [MoneyMapTransactionFilter] {
+        MoneyMapTransactionFilter.allCases.filter { filter in
+            filter == .all || model.transactions.contains { filter.matches($0) }
+        }
+    }
+
+    private var filteredTransactions: [MoneyMapTransaction] {
+        model.transactions.filter { selectedFilter.matches($0) }
+    }
+
+    private var monthGroups: [MoneyMapTransactionMonthGroup] {
+        let grouped = Dictionary(grouping: filteredTransactions) { transaction in
+            transaction.month
+        }
+
+        return grouped
+            .map { month, transactions in
+                MoneyMapTransactionMonthGroup(
+                    month: month,
+                    title: monthTitle(month),
+                    transactions: transactions.sorted { $0.sortDateText > $1.sortDateText }
+                )
+            }
+            .sorted { $0.month > $1.month }
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            sheetHeader
+
+            filterBar
+
+            if filteredTransactions.isEmpty {
+                emptyTransactions
+            } else {
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(alignment: .leading, spacing: 12, pinnedViews: [.sectionHeaders]) {
+                        ForEach(monthGroups) { group in
+                            SwiftUI.Section {
+                                ForEach(group.transactions) { transaction in
+                                    MoneyMapTransactionCard(
+                                        transaction: transaction,
+                                        onRetag: { option in
+                                            onRetag(transaction, option)
+                                        }
+                                    )
+                                }
+                            } header: {
+                                MoneyMapStickyMonthHeader(group: group)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, MoneSpacing.page)
+                    .padding(.bottom, 32)
+                }
+            }
+        }
+        .background(Color.moneBackground.ignoresSafeArea())
+    }
+
+    private var sheetHeader: some View {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Transaction history")
+                    .font(.moneHLMd)
+                    .foregroundStyle(Color.monePrimary)
+
+                Text("\(model.displayName.capitalized) · \(model.transactions.count) transactions")
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+            }
+
+            Spacer()
+
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 24))
+                    .foregroundStyle(Color.moneTertiary)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, MoneSpacing.page)
+        .padding(.top, 24)
+        .padding(.bottom, 16)
+    }
+
+    private var filterBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(availableFilters) { filter in
+                    Button {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            selectedFilter = filter
+                        }
+                    } label: {
+                        Text(filter.title.uppercased())
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(selectedFilter == filter ? Color.moneBackground : Color.monePrimary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(selectedFilter == filter ? Color.monePrimary : Color.moneStroke.opacity(0.35))
+                            .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, MoneSpacing.page)
+        }
+        .padding(.bottom, 12)
+    }
+
+    private var emptyTransactions: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "tray")
+                .font(.system(size: 28))
+                .foregroundStyle(Color.moneTertiary)
+
+            Text("No transactions in this filter")
+                .font(.moneBodyMd)
+                .foregroundStyle(Color.monePrimary)
+
+            Text("Try another category chip.")
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneSecondary)
+        }
+        .frame(maxWidth: .infinity, minHeight: 220)
+        .padding(MoneSpacing.page)
+    }
+
+    private func monthTitle(_ month: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM"
+
+        guard let date = formatter.date(from: month) else {
+            return month
+        }
+
+        let output = DateFormatter()
+        output.dateFormat = "MMMM yyyy"
+        return output.string(from: date)
+    }
+}
+
+private struct MoneyMapStickyMonthHeader: View {
+    let group: MoneyMapTransactionMonthGroup
+
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(alignment: .lastTextBaseline) {
+                Text(group.title.uppercased())
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.monePrimary)
+
+                Spacer()
+
+                Text("Out \(formatCurrency(group.totalDebits)) · In \(formatCurrency(group.totalCredits))")
+                    .font(.system(size: 11))
+                    .foregroundStyle(Color.moneSecondary)
+                    .lineLimit(1)
+            }
+
+            Rectangle()
+                .fill(Color.moneStroke)
+                .frame(height: 0.5)
+        }
+        .padding(.top, 12)
+        .padding(.bottom, 8)
+        .background(Color.moneBackground)
+    }
+}
+
+private struct MoneyMapTransactionCard: View {
+    let transaction: MoneyMapTransaction
+    let onRetag: (MoneyMapRetagOption) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: transaction.symbolName)
+                    .font(.system(size: 16))
+                    .foregroundStyle(iconColor)
+                    .frame(width: 34, height: 34)
+                    .background(iconColor.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(transaction.title)
+                        .font(.moneBodyMd)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.monePrimary)
+                        .lineLimit(2)
+
+                    Text(transaction.narration)
+                        .font(.system(size: 11))
+                        .foregroundStyle(Color.moneTertiary)
+                        .lineLimit(2)
+                }
+
+                Spacer(minLength: 12)
+
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text((transaction.isCredit ? "+" : "−") + formatCurrency(transaction.amount))
+                        .font(.moneBodyMd)
+                        .foregroundStyle(transaction.isCredit ? Color.moneHealthy : Color.monePrimary)
+                        .lineLimit(1)
+
+                    Text(transaction.dateText)
+                        .font(.system(size: 11))
+                        .foregroundStyle(Color.moneTertiary)
+                }
+            }
+
+            HStack(spacing: 8) {
+                transactionBadge(transaction.mode)
+                transactionBadge(displayFamily(transaction.categoryFamily))
+                transactionBadge("\(transaction.confidence)%")
+
+                if transaction.needsReview {
+                    transactionBadge("Review", color: .orange)
+                }
+            }
+
+            if let reason = transaction.reviewReason, !reason.isEmpty {
+                Text(reason)
+                    .font(.moneBodySm)
+                    .foregroundStyle(.orange)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            HStack {
+                Text(transaction.type.uppercased())
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.moneTertiary)
+
+                Spacer()
+
+                Menu {
+                    ForEach(MoneyMapRetagOption.defaults) { option in
+                        Button {
+                            onRetag(option)
+                        } label: {
+                            Label(option.title, systemImage: option.symbolName)
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "tag")
+                        Text("Retag")
+                    }
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.monePrimary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 7)
+                    .background(Color.moneStroke.opacity(0.35))
+                    .clipShape(Capsule())
+                }
+            }
+        }
+        .padding(14)
+        .moneCard()
+    }
+
+    private var iconColor: Color {
+        if transaction.isCredit { return Color.moneHealthy }
+        if transaction.needsReview { return .orange }
+
+        switch transaction.kind {
+        case .tax, .outliers:
+            return Color.moneRisk
+        case .fund:
+            return Color.moneHealthy
+        case .liability:
+            return .blue
+        default:
+            return Color.moneSecondary
+        }
+    }
+
+    private func transactionBadge(_ text: String, color: Color = Color.moneSecondary) -> some View {
+        Text(text.uppercased())
+            .font(.system(size: 10, weight: .bold))
+            .foregroundStyle(color)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 5)
+            .background(color.opacity(0.1))
+            .clipShape(Capsule())
+    }
+
+    private func displayFamily(_ family: String) -> String {
+        family
+            .replacingOccurrences(of: "_", with: " ")
+            .split(separator: " ")
+            .map { $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
+            .joined(separator: " ")
     }
 }
 
@@ -429,6 +779,10 @@ private struct MoneyMapSegmentedBar: View {
             return Color.moneTertiary.opacity(0.35)
         case .liquidCashImpact:
             return Color.moneRisk
+        case .income:
+            return Color.moneHealthy
+        case .cash:
+            return Color.moneSecondary
         case .neutral:
             return Color.moneStroke
         }
@@ -609,3 +963,7 @@ private func formatCurrencyCompact(_ value: Double) -> String {
 #Preview {
     MoneyMapView()
 }
+
+
+
+

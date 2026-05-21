@@ -4,15 +4,16 @@ import UIKit
 struct PayView: View {
     @Environment(AppViewModel.self) private var appVM
 
-    @State private var showScanner = false
-    @State private var hasAutoOpenedScanner = false
-    @State private var scannerErrorMessage: String?
-
+    @State private var scannerID = UUID()
     @State private var scannedPayload: UPIQRPayload?
+
+    @State private var showPaymentSheet = false
     @State private var amountText = ""
     @State private var descriptionText = ""
     @State private var selectedApp: UPIApp?
     @State private var installedUPIApps: [UPIApp] = []
+
+    @State private var paymentErrorMessage: String?
 
     @FocusState private var amountFocused: Bool
     @FocusState private var descriptionFocused: Bool
@@ -23,6 +24,7 @@ struct PayView: View {
 
     private var inferredCategory: TransactionCategory {
         guard let scannedPayload else { return .other }
+
         return PaymentGuidanceEngine.inferCategory(
             from: scannedPayload,
             description: descriptionText
@@ -48,159 +50,137 @@ struct PayView: View {
         )
     }
 
+    private var canContinue: Bool {
+        guard let amount = parsedAmount, amount > 0 else { return false }
+        guard selectedApp != nil else { return false }
+        return true
+    }
+
     var body: some View {
         ZStack {
-            Color.moneBackground.ignoresSafeArea()
-            ContourBackground().ignoresSafeArea()
+            QRScannerView(
+                onCodeDetected: { rawValue in
+                    handleDetectedCode(rawValue)
+                },
+                onPermissionDenied: {
+                    paymentErrorMessage = "Camera permission is needed to scan UPI QR codes."
+                }
+            )
+            .id(scannerID)
+            .ignoresSafeArea()
 
-            if let scannedPayload {
-                paymentForm(payload: scannedPayload)
-            } else {
-                scanRequiredView
-            }
+            topCameraChrome
         }
         .onAppear {
             installedUPIApps = UPIAppDiscoveryService.installedApps()
-
-            if !hasAutoOpenedScanner {
-                hasAutoOpenedScanner = true
-                showScanner = true
+        }
+        .sheet(isPresented: $showPaymentSheet, onDismiss: {
+            restartScannerIfNeeded()
+        }) {
+            if let scannedPayload {
+                paymentSheet(payload: scannedPayload)
+                    .presentationDetents([.fraction(0.74), .large])
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(28)
             }
         }
-        .sheet(isPresented: $showScanner) {
-            QRScannerView(
-                onScan: { rawValue in
-                    showScanner = false
-                    handleScannedQRCode(rawValue)
-                },
-                onCancel: {
-                    showScanner = false
-                },
-                onPermissionDenied: {
-                    showScanner = false
-                    scannerErrorMessage = "Camera permission is needed to scan UPI QR codes. You can enable it from iPhone Settings."
-                }
-            )
-            .ignoresSafeArea()
-        }
         .alert(
-            "Could not scan QR",
+            "Payment unavailable",
             isPresented: Binding(
-                get: { scannerErrorMessage != nil },
-                set: { if !$0 { scannerErrorMessage = nil } }
+                get: { paymentErrorMessage != nil },
+                set: { if !$0 { paymentErrorMessage = nil } }
             )
         ) {
             Button("OK", role: .cancel) {
-                scannerErrorMessage = nil
+                paymentErrorMessage = nil
             }
         } message: {
-            Text(scannerErrorMessage ?? "")
+            Text(paymentErrorMessage ?? "")
         }
     }
 
-    private var scanRequiredView: some View {
-        VStack(spacing: 24) {
-            Spacer()
+    private var topCameraChrome: some View {
+        VStack {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("moné")
+                        .font(.moneLabelCaps)
+                        .tracking(1.5)
+                        .foregroundStyle(.white.opacity(0.72))
 
-            Image(systemName: "qrcode.viewfinder")
-                .font(.system(size: 64, weight: .thin))
-                .foregroundStyle(Color.monePrimary)
-
-            VStack(spacing: 8) {
-                Text("Scan to pay")
-                    .font(.moneHLMd)
-                    .foregroundStyle(Color.monePrimary)
-
-                Text("Point your camera at a UPI QR code to begin.")
-                    .font(.moneBodyMd)
-                    .foregroundStyle(Color.moneSecondary)
-                    .multilineTextAlignment(.center)
-            }
-
-            Button {
-                showScanner = true
-            } label: {
-                HStack(spacing: 10) {
-                    Image(systemName: "camera.viewfinder")
-                    Text("Open camera")
-                }
-                .font(.headline)
-                .foregroundStyle(Color.moneBackground)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(Color.monePrimary)
-                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-            }
-            .padding(.horizontal, MoneSpacing.page)
-
-            Spacer()
-        }
-        .padding(.horizontal, MoneSpacing.page)
-    }
-
-    private func paymentForm(payload: UPIQRPayload) -> some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: MoneSpacing.section) {
-
-                header
-
-                vendorCard(payload: payload)
-
-                inputFields
-
-                if let guidance {
-                    guidanceCard(guidance)
+                    Text("Pay with Pause")
+                        .font(.moneHLMd)
+                        .foregroundStyle(.white)
                 }
 
-                upiAppSelector
-
-                continueButton(payload: payload)
+                Spacer()
 
                 Button {
-                    resetAndScanAgain()
+                    scannerID = UUID()
                 } label: {
-                    Text("Scan a different QR")
-                        .font(.moneBodySm.weight(.medium))
-                        .foregroundStyle(Color.moneSecondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 42, height: 42)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
                 }
                 .buttonStyle(.plain)
-
-                Spacer(minLength: 40)
             }
-            .padding(.horizontal, MoneSpacing.page)
-            .padding(.top, 16)
+            .padding(.top, 14)
+            .padding(.horizontal, 20)
+
+            Spacer()
         }
     }
 
-    private var header: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("moné")
-                    .font(.moneLabelCaps)
-                    .tracking(1.5)
-                    .foregroundStyle(Color.moneTertiary)
+    private func paymentSheet(payload: UPIQRPayload) -> some View {
+        ZStack {
+            Color.moneBackground
+                .ignoresSafeArea()
+                .onTapGesture {
+                    hideKeyboard()
+                }
 
-                Text("Pay with Pause")
-                    .font(.moneHLMd)
-                    .foregroundStyle(Color.monePrimary)
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: MoneSpacing.section) {
+                    sheetHeader(payload: payload)
+
+                    vendorCard(payload: payload)
+
+                    inputFields
+
+                    upiAppSelector
+
+                    Spacer(minLength: 96)
+                }
+                .padding(.horizontal, MoneSpacing.page)
+                .padding(.top, 20)
             }
-
-            Spacer()
-
-            Button {
-                showScanner = true
-            } label: {
-                Image(systemName: "qrcode.viewfinder")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(Color.monePrimary)
-                    .frame(width: 42, height: 42)
-                    .background(Color.moneSurface)
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(Color.moneStroke, lineWidth: 1))
+            .scrollDismissesKeyboard(.interactively)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                hideKeyboard()
             }
-            .buttonStyle(.plain)
+        }
+        .safeAreaInset(edge: .bottom) {
+            paymentButtonDock(payload: payload)
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                amountFocused = true
+            }
+        }
+    }
+
+    private func sheetHeader(payload: UPIQRPayload) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("PAYMENT DETAILS")
+                .moneLabelCaps()
+
+            Text("Review the amount, add a note, then choose where to pay from.")
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneSecondary)
         }
     }
 
@@ -274,6 +254,9 @@ struct PayView: View {
                         .keyboardType(.decimalPad)
                         .focused($amountFocused)
                         .tint(Color.moneActionFill)
+                        .onTapGesture {
+                            amountFocused = true
+                        }
                 }
                 .padding(MoneSpacing.cardSm)
                 .background(Color.moneSurface)
@@ -282,6 +265,12 @@ struct PayView: View {
                     RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous)
                         .strokeBorder(Color.moneStroke, lineWidth: 1)
                 )
+
+                if let guidance {
+                    guidanceCard(guidance)
+                        .padding(.top, 4)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
             }
 
             VStack(alignment: .leading, spacing: 8) {
@@ -301,8 +290,12 @@ struct PayView: View {
                         RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous)
                             .strokeBorder(Color.moneStroke, lineWidth: 1)
                     )
+                    .onTapGesture {
+                        descriptionFocused = true
+                    }
             }
         }
+        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: guidance)
     }
 
     private func guidanceCard(_ guidance: PaymentGuidance) -> some View {
@@ -341,6 +334,18 @@ struct PayView: View {
                 .strokeBorder(guidanceColor(guidance.severity).opacity(0.35), lineWidth: 1)
         )
     }
+    
+    private func hideKeyboard() {
+        amountFocused = false
+        descriptionFocused = false
+
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
+    }
 
     private var upiAppSelector: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -372,6 +377,7 @@ struct PayView: View {
         let isSelected = selectedApp == app
 
         return Button {
+            hideKeyboard()
             selectedApp = app
         } label: {
             VStack(spacing: 8) {
@@ -418,20 +424,36 @@ struct PayView: View {
         .disabled(!canContinue)
         .opacity(canContinue ? 1 : 0.55)
     }
+    
+    private func paymentButtonDock(payload: UPIQRPayload) -> some View {
+        VStack(spacing: 10) {
+            continueButton(payload: payload)
+                .padding(.horizontal, MoneSpacing.page)
+                .padding(.top, 12)
 
-    private var canContinue: Bool {
-        guard let amount = parsedAmount, amount > 0 else { return false }
-        guard selectedApp != nil else { return false }
-        return true
+            Text(canContinue ? "You’ll continue in the selected UPI app." : "Enter an amount to continue.")
+                .font(.caption)
+                .foregroundStyle(Color.moneSecondary)
+                .padding(.bottom, 10)
+        }
+        .frame(maxWidth: .infinity)
+        .background(
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    Rectangle()
+                        .fill(Color.moneBackground.opacity(0.78))
+                )
+        )
     }
 
-    private func handleScannedQRCode(_ rawValue: String) {
+    private func handleDetectedCode(_ rawValue: String) -> Bool {
         guard let payload = UPIQRParser.parse(rawValue) else {
-            scannerErrorMessage = "This QR does not look like a valid UPI payment QR."
-            return
+            return false
         }
 
         scannedPayload = payload
+
         amountText = payload.amount.map { amount in
             amount.truncatingRemainder(dividingBy: 1) == 0
                 ? String(Int(amount))
@@ -439,11 +461,18 @@ struct PayView: View {
         } ?? ""
 
         descriptionText = payload.transactionNote ?? ""
+
         installedUPIApps = UPIAppDiscoveryService.installedApps()
         selectedApp = installedUPIApps.first
+
+        showPaymentSheet = true
+
+        return true
     }
 
     private func openSelectedUPIApp(payload: UPIQRPayload) {
+        hideKeyboard()
+
         guard
             let app = selectedApp,
             let amount = parsedAmount,
@@ -454,18 +483,29 @@ struct PayView: View {
         }
 
         UIApplication.shared.open(url) { success in
-            if !success {
-                scannerErrorMessage = "Could not open \(app.displayName). Please try another UPI app."
+            if success {
+                showPaymentSheet = false
+            } else {
+                paymentErrorMessage = "Could not open \(app.displayName). Please try another UPI app."
             }
         }
     }
 
     private func resetAndScanAgain() {
+        showPaymentSheet = false
         scannedPayload = nil
         amountText = ""
         descriptionText = ""
         selectedApp = nil
-        showScanner = true
+        scannerID = UUID()
+    }
+
+    private func restartScannerIfNeeded() {
+        scannedPayload = nil
+        amountText = ""
+        descriptionText = ""
+        selectedApp = nil
+        scannerID = UUID()
     }
 
     private func categoryIcon(_ category: TransactionCategory) -> String {

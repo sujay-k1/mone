@@ -5,8 +5,10 @@ import SwiftData
 final class MoneyMapDataLoader {
 
     private let store: IntelligencePersistenceStore
+    private let modelContext: ModelContext
 
     init(modelContext: ModelContext) {
+        self.modelContext = modelContext
         self.store = IntelligencePersistenceStore(modelContext: modelContext)
     }
 
@@ -20,13 +22,17 @@ final class MoneyMapDataLoader {
         }
 
         let accounts = try store.loadAccounts(personaId: personaId)
-        let rows = try store.loadTransactionRows(
-            personaId: personaId,
-            month: snapshot.month
+        let allRows = try store.loadTransactionRows(
+            personaId: personaId
         )
-        .filter { row in
-            row.transaction.type.uppercased() == "DEBIT"
-        }
+
+        let rows = allRows
+            .filter { row in
+                row.transaction.month == snapshot.month
+            }
+            .filter { row in
+                row.transaction.type.uppercased() == "DEBIT"
+            }
 
         let reviewRows = rows.filter { row in
             row.classification?.needsReview == true
@@ -125,8 +131,38 @@ final class MoneyMapDataLoader {
                 kind: .liability,
                 limit: 6
             ),
-            reviewItems: reviewItems(from: reviewRows)
+            reviewItems: reviewItems(from: reviewRows),
+            transactions: transactionHistoryItems(from: allRows)
         )
+    }
+
+
+
+    func retagTransaction(
+        transactionId: String,
+        option: MoneyMapRetagOption
+    ) throws {
+        let descriptor = FetchDescriptor<StoredClassification>(
+            predicate: #Predicate { item in
+                item.transactionId == transactionId
+            }
+        )
+
+        guard let classification = try modelContext.fetch(descriptor).first else {
+            return
+        }
+
+        classification.role = option.role
+        classification.categoryFamily = option.categoryFamily
+        classification.category = option.category
+        classification.confidence = 100
+        classification.needsReview = false
+        classification.reviewReason = nil
+        classification.evidenceText = "User retagged as \(option.title)"
+        classification.reviewOptionsText = ""
+        classification.source = "user_override"
+
+        try modelContext.save()
     }
 
     private func amount(_ rows: [StoredTransactionRow]) -> Double {
@@ -219,6 +255,87 @@ final class MoneyMapDataLoader {
                     kind: .review
                 )
             }
+    }
+
+
+
+    private func transactionHistoryItems(
+        from rows: [StoredTransactionRow]
+    ) -> [MoneyMapTransaction] {
+        rows
+            .map { row in
+                let kind = transactionKind(for: row)
+                let family = row.classification?.categoryFamily ?? MoneCategoryFamily.other
+                let category = row.classification?.category ?? "other"
+                let role = row.classification?.role ?? "unknown"
+                let title = displayTitle(for: row, fallback: row.transaction.type.uppercased() == "CREDIT" ? "Money received" : "Transaction")
+
+                return MoneyMapTransaction(
+                    id: row.transaction.id,
+                    month: row.transaction.month,
+                    dateText: displayDate(row.transaction.valueDate ?? row.transaction.timestamp),
+                    sortDateText: row.transaction.valueDate ?? row.transaction.timestamp ?? row.transaction.month,
+                    title: title,
+                    narration: row.transaction.narration,
+                    amount: row.transaction.amount,
+                    type: row.transaction.type,
+                    mode: row.transaction.mode,
+                    accountType: row.transaction.accountType,
+                    categoryFamily: family,
+                    category: category,
+                    role: role,
+                    confidence: row.classification?.confidence ?? 0,
+                    needsReview: row.classification?.needsReview ?? false,
+                    reviewReason: row.classification?.reviewReason,
+                    evidenceText: row.classification?.evidenceText ?? "",
+                    symbolName: symbol(for: family, kind: kind),
+                    kind: kind
+                )
+            }
+            .sorted { first, second in
+                first.sortDateText > second.sortDateText
+            }
+    }
+
+    private func transactionKind(for row: StoredTransactionRow) -> MoneyMapBucketKind {
+        if row.transaction.type.uppercased() == "CREDIT" {
+            return .income
+        }
+
+        if row.classification?.needsReview == true {
+            return .review
+        }
+
+        if row.classification?.categoryFamily == MoneCategoryFamily.tax {
+            return .tax
+        }
+
+        if row.classification?.categoryFamily == MoneCategoryFamily.cash || row.classification?.role == MoneRole.cashWithdrawal {
+            return .cash
+        }
+
+        if row.classification?.role == MoneRole.committedOutflow {
+            return .committed
+        }
+
+        if row.classification?.role == MoneRole.everydaySpend {
+            return .everyday
+        }
+
+        if row.classification?.role == MoneRole.fundBuilding || row.classification?.categoryFamily == MoneCategoryFamily.investments {
+            return .fund
+        }
+
+        if row.classification?.role == MoneRole.liabilityPayment || row.classification?.categoryFamily == MoneCategoryFamily.debt {
+            return .liability
+        }
+
+        return .neutral
+    }
+
+    private func displayDate(_ raw: String?) -> String {
+        guard let raw else { return "—" }
+        return String(raw.prefix(10))
     }
 
     private func displayTitle(
