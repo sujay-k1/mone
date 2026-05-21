@@ -31,7 +31,7 @@ struct GoalsView: View {
             ContourBackground().opacity(0.35).ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
-                LazyVStack(alignment: .leading, spacing: MoneSpacing.gutter) {
+                LazyVStack(alignment: .leading, spacing: 36) {
                     DashboardHeader(
                         title: "Goals",
                         subtitle: plannerGoals.isEmpty
@@ -85,6 +85,7 @@ struct GoalsView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("AVAILABLE NOW")
                     .moneLabelCaps(color: .moneTertiary)
+                    .tracking(2.5)
 
                 compactCapabilityRow(
                     icon: "banknote",
@@ -146,7 +147,7 @@ struct GoalsView: View {
             }
         }
         .padding(MoneSpacing.cardSm)
-        .moneCard(radius: MoneRadius.xl)
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private var plannerSummaryCard: some View {
@@ -158,14 +159,15 @@ struct GoalsView: View {
             MiniStat(label: "Goals", value: "\(plannerGoals.count)")
         }
         .padding(.vertical, MoneSpacing.cardSm)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private var activeGoalsSection: some View {
-        VStack(alignment: .leading, spacing: MoneSpacing.gap) {
+        VStack(alignment: .leading, spacing: 14) {
             HStack {
                 Text("ACTIVE GOALS")
                     .moneLabelCaps(color: .moneTertiary)
+                    .tracking(2.5)
                 Spacer()
                 Button {
                     startCreateGoal()
@@ -188,9 +190,10 @@ struct GoalsView: View {
     }
 
     private var suggestedGoalsSection: some View {
-        VStack(alignment: .leading, spacing: MoneSpacing.gap) {
+        VStack(alignment: .leading, spacing: 14) {
             Text("SUGGESTED BY MONÉ")
                 .moneLabelCaps(color: .moneTertiary)
+                .tracking(2.5)
 
             Button {
                 draft.reset()
@@ -269,8 +272,8 @@ struct GoalsView: View {
 
             Spacer()
         }
-        .padding(MoneSpacing.cardSm)
-        .moneCard(radius: MoneRadius.xl)
+        .padding(20)
+        .moneCard(radius: MoneRadius.xl, elevated: true)
         .opacity(isMuted ? 0.68 : 1)
     }
 
@@ -300,8 +303,8 @@ struct GoalsView: View {
                 .font(.system(size: 12, weight: .bold))
                 .foregroundStyle(Color.moneTertiary)
         }
-        .padding(MoneSpacing.cardSm)
-        .moneCard(radius: MoneRadius.xl)
+        .padding(20)
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     @MainActor
@@ -415,7 +418,7 @@ private struct GoalEducationCarousel: View {
             }
             .padding(MoneSpacing.cardSm)
         }
-        .moneCard(radius: MoneRadius.xxl)
+        .moneCard(radius: MoneRadius.xxl, elevated: true)
     }
 }
 
@@ -437,19 +440,19 @@ private struct PlannerGoalCard: View {
 
     var body: some View {
         Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 18) {
                 HStack(alignment: .top) {
-                    HStack(spacing: 10) {
+                    HStack(spacing: 12) {
                         ZStack {
                             Circle()
                                 .fill(Color.moneSurfaceEl)
-                                .frame(width: 40, height: 40)
+                                .frame(width: 44, height: 44)
                             Image(systemName: goalIcon)
-                                .font(.system(size: 16, weight: .medium))
+                                .font(.system(size: 18, weight: .medium))
                                 .foregroundStyle(Color.moneSecondary)
                         }
 
-                        VStack(alignment: .leading, spacing: 3) {
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(goal.title)
                                 .font(.moneHLSm)
                                 .foregroundStyle(Color.monePrimary)
@@ -481,7 +484,7 @@ private struct PlannerGoalCard: View {
                 }
                 .frame(height: 6)
 
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text(goal.planLine)
                         .font(.moneBodyMd)
                         .foregroundStyle(Color.monePrimary)
@@ -491,8 +494,8 @@ private struct PlannerGoalCard: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(MoneSpacing.cardSm)
-            .moneCard()
+            .padding(20)
+            .moneCard(radius: MoneRadius.xl, elevated: true)
         }
         .buttonStyle(.plain)
     }
@@ -1440,11 +1443,12 @@ private struct GoalDetailStep: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(MoneSpacing.cardSm)
-            .moneCard()
+            .padding(20)
+            .moneCard(radius: MoneRadius.xl, elevated: true)
 
-            VStack(alignment: .leading, spacing: MoneSpacing.gap) {
+            VStack(alignment: .leading, spacing: 14) {
                 Text("MILESTONES")
+                    .tracking(2.5)
                     .moneLabelCaps(color: .moneTertiary)
 
                 ForEach(goal.milestones) { milestone in
@@ -1515,8 +1519,8 @@ private struct MilestoneRow: View {
 
             Spacer()
         }
-        .padding(MoneSpacing.cardSm)
-        .moneCard(radius: MoneRadius.xl)
+        .padding(20)
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
 
