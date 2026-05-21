@@ -24,6 +24,8 @@ struct DashboardNudgeCard: View {
                     Text(nudge.title)
                         .font(.moneBodyLg)
                         .foregroundStyle(Color.monePrimary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
 
                     Text(nudge.message)
                         .font(.moneBodySm)
