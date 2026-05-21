@@ -809,10 +809,22 @@ private struct MoneyMapMiniCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Image(systemName: item.symbolName)
-                .font(.system(size: 18))
-                .foregroundStyle(Color.moneSecondary)
-                .padding(.bottom, 16)
+            HStack(alignment: .top) {
+                Image(systemName: item.symbolName)
+                    .font(.system(size: 18))
+                    .foregroundStyle(Color.moneSecondary)
+
+                Spacer()
+
+                Text(item.status.uppercased())
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(statusColor)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(statusColor.opacity(0.12))
+                    .clipShape(Capsule())
+            }
+            .padding(.bottom, 16)
 
             Text(item.title)
                 .font(.moneBodySm)
@@ -826,22 +838,10 @@ private struct MoneyMapMiniCard: View {
                 .foregroundStyle(Color.monePrimary)
                 .padding(.bottom, 10)
 
-            HStack {
-                Text(item.subtitle)
-                    .font(.system(size: 11))
-                    .foregroundStyle(Color.moneTertiary)
-                    .lineLimit(1)
-
-                Spacer()
-
-                Text(item.status.uppercased())
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(statusColor)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 3)
-                    .background(statusColor.opacity(0.12))
-                    .clipShape(Capsule())
-            }
+            Text(item.subtitle)
+                .font(.system(size: 11))
+                .foregroundStyle(Color.moneTertiary)
+                .lineLimit(1)
         }
         .padding(20)
         .moneCard(radius: MoneRadius.xl, elevated: true)
@@ -886,7 +886,6 @@ private struct MoneyMapCategoryCard: View {
                 Text(group.status.uppercased())
                     .font(.system(size: 9, weight: .bold))
                     .foregroundStyle(group.status == "High" ? Color.moneRisk : Color.moneSecondary)
-                    .padding(.horizontal, 6)
                     .padding(.vertical, 3)
                     .background(Color.moneStroke.opacity(0.35))
                     .clipShape(Capsule())
