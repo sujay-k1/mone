@@ -14,7 +14,7 @@ struct DashboardNudgeCard: View {
                     .font(.system(size: 18, weight: .light))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(Color.monePrimary, Color.moneSecondary, Color.moneTertiary)
-                    .symbolEffect(.drawOn.individually, options: .repeating, value: animationTrigger)
+                    .symbolEffect(.drawOn.individually, isActive: animationTrigger)
                     .frame(width: 32, height: 32)
                     .background(Color.moneStroke.opacity(0.25))
                     .clipShape(Circle())
