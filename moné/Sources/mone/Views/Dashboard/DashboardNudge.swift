@@ -68,7 +68,7 @@ final class DashboardNudgeStore {
                 DashboardNudge(
                     id: .signUp,
                     title: "Keep your Money Map safe",
-                    message: "Create an account to keep your setup, insights, goals, and preferences available across sessions.",
+                    message: "Don't lose your progress and financial health, sign up to keep your data encrypted on cloud.",
                     primaryActionTitle: "Sign up",
                     iconName: "checkmark.shield"
                 )
@@ -92,7 +92,7 @@ final class DashboardNudgeStore {
                 DashboardNudge(
                     id: .notifications,
                     title: "Stay ahead of changes",
-                    message: "Enable notifications to get timely alerts about new trends, progress, unusual spends, and upcoming pressure points.",
+                    message: "Get timely nudges about trends, progress, upcoming pressure points",
                     primaryActionTitle: "Enable alerts",
                     iconName: "bell.and.waves.left.and.right"
                 )
