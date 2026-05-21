@@ -14,7 +14,7 @@ struct MoneyMapView: View {
             Color.moneBackground.ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
-                LazyVStack(alignment: .leading, spacing: MoneSpacing.gutter) {
+                LazyVStack(alignment: .leading, spacing: 36) {
                     if let model {
                         header(model)
                         snapshotCard(model)
@@ -59,11 +59,11 @@ struct MoneyMapView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("moné")
                     .font(.moneLabelCaps)
-                    .tracking(1.5)
+                    .tracking(3.0)
                     .foregroundStyle(Color.moneTertiary)
 
                 Text("Money Map")
-                    .font(.moneHLMd)
+                    .font(.moneDisplay)
                     .foregroundStyle(Color.monePrimary)
 
                 Text(sessionVM.isSignedIn
@@ -155,7 +155,7 @@ struct MoneyMapView: View {
             }
         }
         .padding(MoneSpacing.cardSm)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private func bucketGrid(_ model: MoneyMapScreenModel) -> some View {
@@ -310,6 +310,7 @@ struct MoneyMapView: View {
             HStack(alignment: .lastTextBaseline) {
                 Text(title.uppercased())
                     .font(.moneLabelCaps)
+                    .tracking(2.5)
                     .foregroundStyle(Color.monePrimary)
 
                 Spacer()
@@ -317,12 +318,6 @@ struct MoneyMapView: View {
                 Text(trailing)
                     .font(.moneBodySm)
                     .foregroundStyle(Color.moneSecondary)
-            }
-            .padding(.bottom, 4)
-            .overlay(alignment: .bottom) {
-                Rectangle()
-                    .fill(Color.moneStroke)
-                    .frame(height: 0.5)
             }
 
             content()
@@ -335,7 +330,7 @@ struct MoneyMapView: View {
             .foregroundStyle(Color.moneSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(MoneSpacing.cardSm)
-            .moneCard()
+            .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private var loadingState: some View {
@@ -361,7 +356,7 @@ struct MoneyMapView: View {
                 .foregroundStyle(Color.moneSecondary)
         }
         .padding(MoneSpacing.cardSm)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     @MainActor
@@ -699,7 +694,7 @@ private struct MoneyMapTransactionCard: View {
             }
         }
         .padding(14)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private var iconColor: Color {
@@ -828,7 +823,7 @@ private struct MoneyMapMiniCard: View {
             }
         }
         .padding(12)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private var statusColor: Color {
@@ -877,7 +872,7 @@ private struct MoneyMapCategoryCard: View {
                 .foregroundStyle(Color.moneTertiary)
         }
         .padding(14)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
 
@@ -934,7 +929,7 @@ private struct MoneyMapListRow: View {
                 .foregroundStyle(item.kind == .review || item.kind == .outliers ? Color.moneRisk : Color.monePrimary)
         }
         .padding(14)
-        .moneCard()
+        .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
 

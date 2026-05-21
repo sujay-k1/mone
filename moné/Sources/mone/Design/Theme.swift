@@ -143,7 +143,7 @@ struct MoneCardModifier: ViewModifier {
             .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(Color.moneStroke, lineWidth: 1)
+                    .strokeBorder(elevated ? Color.moneStrokeMid : Color.moneStroke, lineWidth: elevated ? 0.5 : 1)
             )
     }
 }
