@@ -5,7 +5,7 @@ struct DashboardNudgeCard: View {
     let onPrimaryAction: () -> Void
     let onDismiss: () -> Void
 
-    @State private var animationTrigger = false
+    @State private var isDrawing = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -14,11 +14,18 @@ struct DashboardNudgeCard: View {
                     .font(.system(size: 18, weight: .light))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(Color.monePrimary, Color.moneSecondary, Color.moneTertiary)
-                    .symbolEffect(.drawOn.individually, isActive: animationTrigger)
+                    .symbolEffect(.drawOn.individually, isActive: isDrawing)
                     .frame(width: 32, height: 32)
                     .background(Color.moneStroke.opacity(0.25))
                     .clipShape(Circle())
-                    .onAppear { animationTrigger = true }
+                    .task {
+                        while !Task.isCancelled {
+                            isDrawing = false
+                            try? await Task.sleep(for: .milliseconds(100))
+                            isDrawing = true
+                            try? await Task.sleep(for: .seconds(2.5))
+                        }
+                    }
 
                 VStack(alignment: .leading, spacing: 5) {
                     Text(nudge.title)
