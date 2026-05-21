@@ -224,7 +224,7 @@ struct MoneyMapView: View {
             if model.committedItems.isEmpty {
                 emptySection("No recurring commitments detected for this month.")
             } else {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(model.committedItems) { item in
                         MoneyMapMiniCard(item: item)
                     }
@@ -241,7 +241,7 @@ struct MoneyMapView: View {
             if model.everydayGroups.isEmpty {
                 emptySection("No everyday spend categories detected for this month.")
             } else {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(model.everydayGroups) { group in
                         MoneyMapCategoryCard(group: group)
                     }
@@ -808,7 +808,7 @@ private struct MoneyMapMiniCard: View {
     let item: MoneyMapItem
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top) {
                 Image(systemName: item.symbolName)
                     .font(.system(size: 16))
@@ -825,7 +825,7 @@ private struct MoneyMapMiniCard: View {
                     .clipShape(Capsule())
             }
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(item.title)
                     .font(.moneBodySm)
                     .fontWeight(.bold)
@@ -833,16 +833,16 @@ private struct MoneyMapMiniCard: View {
                     .lineLimit(1)
 
                 Text(formatCurrency(item.amount))
-                    .font(.moneBodySm)
+                    .font(.moneBodyMd)
                     .foregroundStyle(Color.monePrimary)
 
                 Text(item.subtitle)
-                    .font(.system(size: 10))
+                    .font(.system(size: 11))
                     .foregroundStyle(Color.moneTertiary)
                     .lineLimit(1)
             }
         }
-        .padding(12)
+        .padding(20)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
@@ -862,7 +862,7 @@ private struct MoneyMapCategoryCard: View {
     let group: MoneyMapCategoryGroup
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top) {
                 Text(group.title)
                     .font(.moneBodySm)
@@ -882,16 +882,16 @@ private struct MoneyMapCategoryCard: View {
             }
 
             Text(formatCurrency(group.amount))
-                .font(.moneBodyMd)
+                .font(.moneBodyLg)
                 .foregroundStyle(Color.monePrimary)
 
             MicroTrendLine(isHigh: group.status == "High")
 
             Text("\(group.transactionCount) transaction\(group.transactionCount == 1 ? "" : "s")")
-                .font(.system(size: 10))
+                .font(.system(size: 11))
                 .foregroundStyle(Color.moneTertiary)
         }
-        .padding(14)
+        .padding(20)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
@@ -921,23 +921,23 @@ private struct MoneyMapListRow: View {
     let item: MoneyMapItem
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
+        HStack(alignment: .center, spacing: 14) {
             Image(systemName: item.symbolName)
                 .font(.system(size: 16))
                 .foregroundStyle(Color.moneSecondary)
-                .frame(width: 28, height: 28)
+                .frame(width: 36, height: 36)
                 .background(Color.moneStroke.opacity(0.35))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
 
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(item.title)
-                    .font(.moneBodySm)
+                    .font(.moneBodyMd)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.monePrimary)
                     .lineLimit(1)
 
                 Text(item.subtitle)
-                    .font(.system(size: 11))
+                    .font(.system(size: 12))
                     .foregroundStyle(Color.moneTertiary)
                     .lineLimit(2)
             }
@@ -945,10 +945,10 @@ private struct MoneyMapListRow: View {
             Spacer()
 
             Text(formatCurrency(item.amount))
-                .font(.moneBodySm)
+                .font(.moneBodyMd)
                 .foregroundStyle(item.kind == .review || item.kind == .outliers ? Color.moneRisk : Color.monePrimary)
         }
-        .padding(14)
+        .padding(20)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
