@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 struct DashboardView: View {
     @Environment(AppViewModel.self) private var appVM
@@ -10,15 +11,20 @@ struct DashboardView: View {
     @State private var errorMessage: String?
     @State private var showSignUp = false
     @State private var isRestoringFinancialData = false
+    @State private var didCompleteInitialDashboardLoad = false
+    
+    @State private var activeNudge: DashboardNudge?
+    private let nudgeStore = DashboardNudgeStore()
+    
+    @State private var showSMSInfoSheet = false
 
-    private static let signUpDismissedKey = "mone.signUpDismissed"
 
     var body: some View {
         ZStack {
             Color.moneBackground.ignoresSafeArea()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 36) {
                     if let summary {
                         DashboardHeader(
                             title: dashboardTitle(for: summary),
@@ -26,6 +32,18 @@ struct DashboardView: View {
                                 ? "\(sessionVM.displayName.capitalized) · \(summary.month)"
                                 : summary.month
                         )
+                        
+                        if let activeNudge {
+                            DashboardNudgeCard(
+                                nudge: activeNudge,
+                                onPrimaryAction: {
+                                    handleNudgeAction(activeNudge.id)
+                                },
+                                onDismiss: {
+                                    dismissNudge(activeNudge.id)
+                                }
+                            )
+                        }
 
                         agendaHero(summary)
 
@@ -74,17 +92,14 @@ struct DashboardView: View {
             await loadDashboard()
         }
         .onAppear {
-            let alreadyDismissed = UserDefaults.standard.bool(forKey: Self.signUpDismissedKey)
-            let isSignedIn = supabase.auth.currentSession != nil
-            if !alreadyDismissed && !isSignedIn && appVM.verifiedPhone != nil {
-                showSignUp = true
+            if didCompleteInitialDashboardLoad, summary != nil {
+                loadDashboardNudge()
             }
         }
         .sheet(isPresented: $showSignUp) {
             SignUpSheet(
                 aaPhone: appVM.verifiedPhone ?? "",
                 onDismissed: {
-                    UserDefaults.standard.set(true, forKey: Self.signUpDismissedKey)
                     showSignUp = false
                 },
                 onComplete: {
@@ -94,6 +109,13 @@ struct DashboardView: View {
             .presentationDetents([PresentationDetent.large])
             .presentationDragIndicator(.visible)
         }
+        
+        .sheet(isPresented: $showSMSInfoSheet) {
+            SMSConnectInfoSheet()
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        }
+        
     }
 
     private func dashboardTitle(for summary: DashboardSummary) -> String {
@@ -189,12 +211,16 @@ struct DashboardView: View {
                 summary = localSummary
                 appVM.dashboardHealthState = localSummary.healthState
                 errorMessage = nil
+                didCompleteInitialDashboardLoad = true
+                loadDashboardNudge()
                 return
             }
 
             guard supabase.auth.currentSession != nil else {
                 summary = nil
+                activeNudge = nil
                 errorMessage = "No processed financial data found. Complete Account Aggregator setup first."
+                didCompleteInitialDashboardLoad = true
                 return
             }
 
@@ -208,21 +234,100 @@ struct DashboardView: View {
 
             guard restored else {
                 summary = nil
+                activeNudge = nil
                 errorMessage = "No saved financial data found for this account."
+                didCompleteInitialDashboardLoad = true
                 return
             }
 
             let reloadLoader = DashboardDataLoader(modelContext: modelContext)
-            summary = try reloadLoader.loadLatestSummary()
+            let restoredSummary = try reloadLoader.loadLatestSummary()
+            summary = restoredSummary
 
-            if summary == nil {
+            if let restoredSummary {
+                appVM.dashboardHealthState = restoredSummary.healthState
+                errorMessage = nil
+                loadDashboardNudge()
+            } else {
+                activeNudge = nil
                 errorMessage = "We restored your data, but could not rebuild the dashboard."
             }
+
+            didCompleteInitialDashboardLoad = true
         } catch {
             isRestoringFinancialData = false
+            activeNudge = nil
+            didCompleteInitialDashboardLoad = true
             errorMessage = "Could not restore your financial data. \(String(describing: error))"
         }
     }
+
+    @MainActor
+    private func loadDashboardNudge() {
+        let context = DashboardNudgeContext(
+            isSignedIn: isUserSignedIn(),
+            hasAnyGoal: hasAnyGoal(),
+            hasNotificationPermission: hasNotificationPermission(),
+            hasSMSPermission: hasSMSPermission()
+        )
+
+        activeNudge = nudgeStore.nextEligibleNudge(context: context)
+    }
+
+    private func isUserSignedIn() -> Bool {
+        sessionVM.isSignedIn || supabase.auth.currentSession != nil
+    }
+
+    private func hasAnyGoal() -> Bool {
+        !appVM.moneyMap.goals.isEmpty
+    }
+
+    private func hasNotificationPermission() -> Bool {
+        UserDefaults.standard.bool(forKey: DashboardNudgeKeys.notificationPermissionGranted)
+    }
+
+    private func hasSMSPermission() -> Bool {
+        UserDefaults.standard.bool(forKey: DashboardNudgeKeys.smsPermissionConnected)
+    }
+
+    @MainActor
+    private func dismissNudge(_ id: DashboardNudgeID) {
+        nudgeStore.dismiss(id)
+        activeNudge = nil
+    }
+
+    @MainActor
+    private func handleNudgeAction(_ id: DashboardNudgeID) {
+        switch id {
+        case .signUp:
+            showSignUp = true
+
+        case .goalSetting:
+            NotificationCenter.default.post(name: .moneOpenGoalSetup, object: nil)
+
+        case .notifications:
+            requestNotificationPermission()
+
+        case .smsPermission:
+            showSMSInfoSheet = true
+        }
+    }
+
+    @MainActor
+    private func requestNotificationPermission() {
+        Task {
+            let granted = try? await UNUserNotificationCenter.current()
+                .requestAuthorization(options: [.alert, .badge, .sound])
+
+            await MainActor.run {
+                if granted == true {
+                    UserDefaults.standard.set(true, forKey: DashboardNudgeKeys.notificationPermissionGranted)
+                    dismissNudge(.notifications)
+                }
+            }
+        }
+    }
+
 }
 
 // MARK: - Shared Dashboard Header
@@ -233,34 +338,33 @@ struct DashboardHeader: View {
     var subtitle: String? = nil
 
     var body: some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
                 Text("moné")
                     .font(.moneLabelCaps)
-                    .tracking(1.5)
+                    .tracking(3.0)
                     .foregroundStyle(Color.moneTertiary)
 
-                Text(title)
-                    .font(.moneHLMd)
-                    .foregroundStyle(Color.monePrimary)
+                Spacer()
 
-                if let subtitle {
-                    Text(subtitle)
-                        .font(.moneBodySm)
-                        .foregroundStyle(Color.moneSecondary)
-                }
+                Circle()
+                    .fill(Color.moneHealthy)
+                    .frame(width: 6, height: 6)
             }
 
-            Spacer()
+            Text(title)
+                .font(.moneDisplay)
+                .foregroundStyle(Color.monePrimary)
+                .fixedSize(horizontal: false, vertical: true)
 
-            Circle()
-                .fill(Color.moneHealthy)
-                .frame(width: 8, height: 8)
-                .overlay(
-                    Circle()
-                        .strokeBorder(Color.moneHealthy.opacity(0.3), lineWidth: 4)
-                )
+            if let subtitle {
+                Text(subtitle)
+                    .font(.moneBodySm)
+                    .tracking(0.5)
+                    .foregroundStyle(Color.moneSecondary)
+            }
         }
+        .padding(.top, 8)
     }
 }
 
@@ -272,20 +376,15 @@ private struct DashboardSectionTitle: View {
     }
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack {
-                Text(title.uppercased())
-                    .font(.moneLabelCaps)
-                    .foregroundStyle(Color.moneTertiary)
-
-                Spacer()
-            }
-
-            Rectangle()
-                .fill(Color.moneStroke)
-                .frame(height: 0.5)
+        HStack {
+            Text(title.uppercased())
+                .font(.moneLabelCaps)
+                .tracking(2.5)
+                .foregroundStyle(Color.moneTertiary)
+            Spacer()
         }
-        .padding(.top, 8)
+        .padding(.top, 12)
+        .padding(.bottom, -20)
     }
 }
 
@@ -383,14 +482,12 @@ private struct AgendaMetricCard: View {
                 .font(.moneBodyMd)
                 .foregroundStyle(Color.moneSecondary)
 
-            Divider()
-                .background(Color.moneStroke)
-
             HStack {
                 ForEach(footerItems) { item in
                     VStack(alignment: .leading, spacing: 4) {
                         Text(item.title.uppercased())
                             .font(.moneLabelCaps)
+                            .tracking(1.5)
                             .foregroundStyle(Color.moneTertiary)
 
                         Text(item.value)
@@ -401,35 +498,118 @@ private struct AgendaMetricCard: View {
                     Spacer()
                 }
             }
+            .padding(.top, 4)
         }
-        .dashboardCard()
+        .padding(.vertical, 20)
+        .padding(.horizontal, MoneSpacing.page)
+        .background(Color.moneSurfaceEl)
+        .padding(.horizontal, -MoneSpacing.page)
     }
 }
 
 private struct MoneySplitCard: View {
     let summary: DashboardSummary
 
+    private var fixedCosts: Double { summary.committed + summary.liability + summary.taxDeduction }
+    private var isShortfall: Bool  { summary.operatingRemaining < 0 }
+    private var isHighOutliers: Bool { summary.income > 0 && summary.outliers / summary.income > 0.12 }
+
+    private var variantLabel: String {
+        if isShortfall    { return "Funding shortfall" }
+        if isHighOutliers { return "High outliers" }
+        return "Balanced distribution"
+    }
+
+    private var variantColor: Color {
+        isShortfall || isHighOutliers ? Color.moneRisk : Color.moneSecondary
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            Text("Monthly money split")
+        VStack(alignment: .leading, spacing: 20) {
+            Text(variantLabel.uppercased())
                 .font(.moneLabelCaps)
-                .foregroundStyle(Color.moneSecondary)
+                .foregroundStyle(variantColor)
 
             MoneySplitBar(summary: summary)
 
-            VStack(spacing: 12) {
-                DashboardAmountRow(title: "Regular commitments", value: summary.committed)
-                DashboardAmountRow(title: "Everyday", value: summary.everyday)
-                DashboardAmountRow(title: "Fund-building", value: summary.fund)
-                DashboardAmountRow(title: "Liabilities", value: summary.liability)
-                DashboardAmountRow(title: "Outliers", value: summary.outliers)
-                DashboardAmountRow(title: "Review", value: summary.review)
-                DashboardAmountRow(title: "Operating remaining", value: summary.operatingRemaining)
-                DashboardAmountRow(title: "Tax / statutory", value: summary.taxDeduction)
-                DashboardAmountRow(title: "Liquid cash impact", value: summary.liquidCashImpact)
+            if isShortfall {
+                shortfallContent
+            } else if isHighOutliers {
+                outliersContent
+            } else {
+                balancedContent
             }
         }
         .dashboardCard()
+    }
+
+    private var balancedContent: some View {
+        VStack(spacing: 0) {
+            splitRow("Fixed costs",   fixedCosts,      isLast: false)
+            splitRow("Discretionary", summary.everyday, isLast: false)
+            splitRow("Wealth build",  summary.fund,     isLast: true)
+        }
+    }
+
+    private var outliersContent: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("Outliers")
+                    .font(.moneBodyMd)
+                    .foregroundStyle(Color.moneRisk)
+                Spacer()
+                Text("+\(formatCurrency(summary.outliers))")
+                    .font(.moneBodyMd)
+                    .foregroundStyle(Color.moneRisk)
+            }
+            .padding(.vertical, 14)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(Color.moneStroke.opacity(0.5)).frame(height: 0.5)
+            }
+
+            splitRow("Fixed costs",  fixedCosts,   dimmed: true, isLast: false)
+            splitRow("Wealth build", summary.fund, dimmed: true, isLast: true)
+        }
+    }
+
+    private var shortfallContent: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.moneRisk)
+                .padding(.top, 1)
+
+            Text("Income this period does not cover scheduled outflows. Pulling \(formatCurrency(abs(summary.operatingRemaining))) from reserve.")
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneRisk)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(14)
+        .background(Color.moneRisk.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func splitRow(
+        _ title: String,
+        _ value: Double,
+        dimmed: Bool = false,
+        isLast: Bool
+    ) -> some View {
+        HStack {
+            Text(title)
+                .font(.moneBodyMd)
+                .foregroundStyle(dimmed ? Color.moneTertiary : Color.monePrimary)
+            Spacer()
+            Text(formatCurrency(value))
+                .font(.moneBodyMd)
+                .foregroundStyle(dimmed ? Color.moneTertiary : Color.monePrimary)
+        }
+        .padding(.vertical, 14)
+        .overlay(alignment: .bottom) {
+            if !isLast {
+                Rectangle().fill(Color.moneStroke.opacity(0.5)).frame(height: 0.5)
+            }
+        }
     }
 }
 
@@ -438,12 +618,8 @@ private struct MoneySplitBar: View {
 
     private var total: Double {
         max(
-            summary.committed +
-            summary.everyday +
-            summary.fund +
-            summary.liability +
-            summary.outliers +
-            summary.review +
+            summary.committed + summary.everyday + summary.fund +
+            summary.liability + summary.outliers + summary.review +
             max(summary.operatingRemaining, 0),
             1
         )
@@ -452,20 +628,20 @@ private struct MoneySplitBar: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 2) {
-                segment(summary.committed, width: geometry.size.width, color: Color.monePrimary)
-                segment(summary.everyday, width: geometry.size.width, color: Color.moneSecondary)
-                segment(summary.fund, width: geometry.size.width, color: Color.moneHealthy)
-                segment(summary.liability, width: geometry.size.width, color: .blue)
-                segment(summary.outliers, width: geometry.size.width, color: Color.moneRisk.opacity(0.75))
-                segment(summary.review, width: geometry.size.width, color: .orange)
-                segment(max(summary.operatingRemaining, 0), width: geometry.size.width, color: Color.moneTertiary.opacity(0.35))
+                segment(summary.committed,                  geometry.size.width, Color.monePrimary)
+                segment(summary.everyday,                   geometry.size.width, Color.moneSecondary)
+                segment(summary.fund,                       geometry.size.width, Color.moneHealthy)
+                segment(summary.liability,                  geometry.size.width, .blue)
+                segment(summary.outliers,                   geometry.size.width, Color.moneRisk)
+                segment(summary.review,                     geometry.size.width, .orange)
+                segment(max(summary.operatingRemaining, 0), geometry.size.width, Color.moneTertiary.opacity(0.35))
             }
             .clipShape(Capsule())
         }
-        .frame(height: 10)
+        .frame(height: 14)
     }
 
-    private func segment(_ value: Double, width: Double, color: Color) -> some View {
+    private func segment(_ value: Double, _ width: Double, _ color: Color) -> some View {
         Rectangle()
             .fill(color)
             .frame(width: max(width * value / total, value > 0 ? 3 : 0))
@@ -988,12 +1164,12 @@ private extension View {
     func dashboardCard() -> some View {
         self
             .padding(20)
-            .background(Color.moneSurface)
+            .background(Color.moneSurfaceEl)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.moneStroke, lineWidth: 0.5)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(Color.moneStrokeMid, lineWidth: 0.5)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
@@ -1005,6 +1181,65 @@ private func formatCurrency(_ value: Double) -> String {
     formatter.locale = Locale(identifier: "en_IN")
 
     return formatter.string(from: NSNumber(value: value)) ?? "₹\(Int(value))"
+}
+
+private struct SMSConnectInfoSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        ZStack {
+            Color.moneBackground.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
+                    Text("SMS signals")
+                        .font(.moneHLMd)
+                        .foregroundStyle(Color.monePrimary)
+
+                    Spacer()
+
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 22))
+                            .foregroundStyle(Color.moneTertiary)
+                    }
+                    .buttonStyle(.plain)
+                }
+
+                Text("Real-time SMS nudges are not available on iPhone yet.")
+                    .font(.moneBodyLg)
+                    .foregroundStyle(Color.monePrimary)
+
+                Text("iOS does not allow Moné to read your SMS inbox for transaction messages. For now, Moné uses Account Aggregator data, local categorisation, and notifications to keep your Money Map updated.")
+                    .font(.moneBodyMd)
+                    .foregroundStyle(Color.moneSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("What still works")
+                        .font(.moneLabelCaps)
+                        .foregroundStyle(Color.moneTertiary)
+
+                    Text("• Account Aggregator refreshes")
+                    Text("• AI-assisted transaction categorisation")
+                    Text("• Dashboard and Money Map trends")
+                    Text("• Notification-based nudges")
+                }
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneSecondary)
+
+                Spacer()
+
+                MonePrimaryButton(title: "Got it") {
+                    dismiss()
+                }
+            }
+            .padding(MoneSpacing.page)
+        }
+        .presentationBackground(Color.moneBackground)
+    }
 }
 
 #Preview {

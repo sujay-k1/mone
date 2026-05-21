@@ -808,11 +808,29 @@ private struct MoneyMapMiniCard: View {
     let item: MoneyMapItem
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .top) {
-                Image(systemName: item.symbolName)
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.moneSecondary)
+        VStack(alignment: .leading, spacing: 0) {
+            Image(systemName: item.symbolName)
+                .font(.system(size: 18))
+                .foregroundStyle(Color.moneSecondary)
+                .padding(.bottom, 16)
+
+            Text(item.title)
+                .font(.moneBodySm)
+                .fontWeight(.medium)
+                .foregroundStyle(Color.monePrimary)
+                .lineLimit(1)
+                .padding(.bottom, 8)
+
+            Text(formatCurrency(item.amount))
+                .font(.moneBodyLg)
+                .foregroundStyle(Color.monePrimary)
+                .padding(.bottom, 10)
+
+            HStack {
+                Text(item.subtitle)
+                    .font(.system(size: 11))
+                    .foregroundStyle(Color.moneTertiary)
+                    .lineLimit(1)
 
                 Spacer()
 
@@ -823,23 +841,6 @@ private struct MoneyMapMiniCard: View {
                     .padding(.vertical, 3)
                     .background(statusColor.opacity(0.12))
                     .clipShape(Capsule())
-            }
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text(item.title)
-                    .font(.moneBodySm)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.monePrimary)
-                    .lineLimit(1)
-
-                Text(formatCurrency(item.amount))
-                    .font(.moneBodyMd)
-                    .foregroundStyle(Color.monePrimary)
-
-                Text(item.subtitle)
-                    .font(.system(size: 11))
-                    .foregroundStyle(Color.moneTertiary)
-                    .lineLimit(1)
             }
         }
         .padding(20)
@@ -863,12 +864,22 @@ private struct MoneyMapCategoryCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .top) {
-                Text(group.title)
-                    .font(.moneBodySm)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.monePrimary)
-                    .lineLimit(1)
+            Text(group.title)
+                .font(.moneBodySm)
+                .fontWeight(.bold)
+                .foregroundStyle(Color.monePrimary)
+                .lineLimit(2)
+
+            Text(formatCurrency(group.amount))
+                .font(.moneBodyLg)
+                .foregroundStyle(Color.monePrimary)
+
+            MicroTrendLine(isHigh: group.status == "High")
+
+            HStack {
+                Text("\(group.transactionCount) transaction\(group.transactionCount == 1 ? "" : "s")")
+                    .font(.system(size: 11))
+                    .foregroundStyle(Color.moneTertiary)
 
                 Spacer()
 
@@ -880,16 +891,6 @@ private struct MoneyMapCategoryCard: View {
                     .background(Color.moneStroke.opacity(0.35))
                     .clipShape(Capsule())
             }
-
-            Text(formatCurrency(group.amount))
-                .font(.moneBodyLg)
-                .foregroundStyle(Color.monePrimary)
-
-            MicroTrendLine(isHigh: group.status == "High")
-
-            Text("\(group.transactionCount) transaction\(group.transactionCount == 1 ? "" : "s")")
-                .font(.system(size: 11))
-                .foregroundStyle(Color.moneTertiary)
         }
         .padding(20)
         .moneCard(radius: MoneRadius.xl, elevated: true)
