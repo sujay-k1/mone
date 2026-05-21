@@ -87,9 +87,11 @@ struct MoneyMapView: View {
 
     private func snapshotCard(_ model: MoneyMapScreenModel) -> some View {
         VStack(alignment: .leading, spacing: 24) {
+
+            // ── Income + Confidence ──────────────────────────────────────
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Monthly inflow recon")
+                    Text("\(model.month.uppercased()) INFLOW RECON")
                         .font(.moneLabelCaps)
                         .foregroundStyle(Color.moneTertiary)
 
@@ -100,77 +102,95 @@ struct MoneyMapView: View {
 
                 Spacer()
 
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(model.confidence)% confidence")
-                        .font(.moneLabelCaps)
-                        .foregroundStyle(confidenceColor(model.confidence))
+                VStack(alignment: .trailing, spacing: 5) {
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(confidenceColor(model.confidence))
+                            .frame(width: 7, height: 7)
+                        Text("\(model.confidence)% confidence")
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(confidenceColor(model.confidence))
+                    }
 
-                    Text("\(model.transactionCount) signals")
+                    Text("Refined over \(model.transactionCount) signals")
                         .font(.moneBodySm)
-                        .foregroundStyle(Color.moneTertiary)
+                        .italic()
+                        .foregroundStyle(Color.moneSecondary)
                 }
             }
 
+            // ── Segmented bar ────────────────────────────────────────────
             MoneyMapSegmentedBar(model: model)
 
-            bucketGrid(model)
+            // ── Bucket grid ──────────────────────────────────────────────
+            LazyVGrid(
+                columns: [GridItem(.flexible()), GridItem(.flexible())],
+                alignment: .leading,
+                spacing: 16
+            ) {
+                moneyLabel("Committed",  model.regularCommitted,         .committed)
+                moneyLabel("Everyday",   model.everyday,                 .everyday)
+                moneyLabel("Fund",       model.fund,                     .fund)
+                moneyLabel("Outliers",   model.outliers,                 .outliers)
+                moneyLabel("Review",     model.review,                   .review)
+                moneyLabel("Remaining",  model.operatingRemaining,       .operatingRemaining)
+            }
 
             Divider()
                 .background(Color.moneStroke)
 
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text("Operating position")
+            // ── Outstanding position ─────────────────────────────────────
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Outstanding position")
                         .font(.moneLabelCaps)
                         .foregroundStyle(Color.moneTertiary)
 
-                    Spacer()
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text(formatCurrencyCompact(model.outstandingLiabilities > 0 ? model.outstandingLiabilities : abs(model.operatingRemaining)))
+                            .font(.system(size: 28, weight: .regular, design: .serif))
+                            .foregroundStyle(model.operatingRemaining < 0 ? Color.moneRisk : Color.monePrimary)
 
-                    Text(formatCurrency(model.operatingRemaining))
-                        .font(.moneBodyLg)
-                        .foregroundStyle(model.operatingRemaining < 0 ? Color.moneRisk : Color.monePrimary)
+                        Text(model.outstandingLiabilities > 0 ? "Liabilities" : (model.operatingRemaining < 0 ? "Shortfall" : "Surplus"))
+                            .font(.moneBodySm)
+                            .foregroundStyle(Color.moneSecondary)
+                    }
                 }
 
-                HStack {
-                    Text("Liquid cash impact")
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("\(model.confidence)%")
+                        .font(.moneBodyLg)
+                        .foregroundStyle(confidenceColor(model.confidence))
+
+                    Text("Confidence")
                         .font(.moneLabelCaps)
                         .foregroundStyle(Color.moneTertiary)
-
-                    Spacer()
-
-                    Text(formatCurrency(model.liquidCashImpact))
-                        .font(.moneBodyLg)
-                        .foregroundStyle(model.liquidCashImpact < 0 ? Color.moneRisk : Color.monePrimary)
                 }
-
-                Text("Tax and unusual deductions are separated from operating affordability so they do not distort safe-to-spend.")
-                    .font(.moneBodySm)
-                    .foregroundStyle(Color.moneSecondary)
             }
 
-            HStack(spacing: 12) {
-                MoneSecondaryButton(title: "View transactions", fullWidth: true) {
-                    showTransactionHistory = true
-                }
+            HStack {
+                Text("\(model.transactionCount) items confirmed")
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+
+                Spacer()
+
+                Text(model.statusLabel.uppercased())
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(model.operatingRemaining < 0 ? Color.moneRisk : Color.moneSecondary)
+            }
+
+            Divider()
+                .background(Color.moneStroke)
+
+            MoneSecondaryButton(title: "View transactions", fullWidth: true) {
+                showTransactionHistory = true
             }
         }
         .padding(MoneSpacing.cardSm)
         .moneCard(radius: MoneRadius.xl, elevated: true)
-    }
-
-    private func bucketGrid(_ model: MoneyMapScreenModel) -> some View {
-        LazyVGrid(
-            columns: [GridItem(.flexible()), GridItem(.flexible())],
-            alignment: .leading,
-            spacing: 16
-        ) {
-            moneyLabel("Committed", model.regularCommitted, .committed)
-            moneyLabel("Everyday", model.everyday, .everyday)
-            moneyLabel("Fund", model.fund, .fund)
-            moneyLabel("Liability", model.liability, .liability)
-            moneyLabel("Tax", model.taxDeduction, .tax)
-            moneyLabel("Review", model.review, .review)
-        }
     }
 
     private func moneyLabel(
@@ -746,7 +766,7 @@ private struct MoneyMapSegmentedBar: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 3))
         }
-        .frame(height: 42)
+        .frame(height: 64)
     }
 
     private func segmentWidth(_ amount: Double, totalWidth: CGFloat) -> CGFloat {
