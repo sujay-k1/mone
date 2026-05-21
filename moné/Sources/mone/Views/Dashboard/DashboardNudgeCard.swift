@@ -11,11 +11,11 @@ struct DashboardNudgeCard: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: nudge.iconName)
-                    .font(.system(size: 18, weight: .light))
+                    .font(.system(size: 36, weight: .light))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(Color.monePrimary, Color.moneSecondary, Color.moneTertiary)
                     .symbolEffect(.drawOn.individually, isActive: isDrawing)
-                    .frame(width: 32, height: 32)
+                    .frame(width: 64, height: 64)
                     .background(Color.moneStroke.opacity(0.25))
                     .clipShape(Circle())
                     .task {
@@ -23,7 +23,7 @@ struct DashboardNudgeCard: View {
                             isDrawing = false
                             try? await Task.sleep(for: .milliseconds(100))
                             isDrawing = true
-                            try? await Task.sleep(for: .seconds(2.5))
+                            try? await Task.sleep(for: .milliseconds(2100))
                         }
                     }
 
