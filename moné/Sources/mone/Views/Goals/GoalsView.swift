@@ -12,7 +12,6 @@ struct GoalsView: View {
     @State private var draft = PlannerDraft()
     @State private var dashboardSummary: DashboardSummary?
     @State private var moneyMapModel: MoneyMapScreenModel?
-    @State private var plannerContextMessage: String?
 
     private let engine = GoalPlannerEngine()
 
@@ -30,29 +29,49 @@ struct GoalsView: View {
             Color.moneBackground.ignoresSafeArea()
             ContourBackground().opacity(0.35).ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
-                LazyVStack(alignment: .leading, spacing: 36) {
-                    DashboardHeader(
-                        title: "Goals",
-                        subtitle: plannerGoals.isEmpty
-                            ? "Turn intentions into practical plans"
-                            : "\(plannerGoals.count) active planner goal\(plannerGoals.count == 1 ? "" : "s")"
-                    )
-                    .padding(.top, 16)
+            if plannerGoals.isEmpty {
+                GeometryReader { geo in
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: 24) {
+                            VStack(alignment: .leading, spacing: 36) {
+                                DashboardHeader(
+                                    title: "Goals",
+                                    subtitle: "Goals suggested by moné"
+                                )
+                                .padding(.top, 16)
 
-                    if plannerGoals.isEmpty {
-                        plannerContextCard
-                        emptyState
-                    } else {
-                        plannerContextCard
+                                suggestedGoalsSection
+                            }
+                            .padding(.horizontal, MoneSpacing.page)
+
+                            GoalEducationCarousel()
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                        .frame(
+                            width: geo.size.width,
+                            height: geo.size.height + geo.safeAreaInsets.bottom,
+                            alignment: .top
+                        )
+                    }
+                    .scrollDisabled(true)
+                }
+            } else {
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(alignment: .leading, spacing: 36) {
+                        DashboardHeader(
+                            title: "Goals",
+                            subtitle: "\(plannerGoals.count) active planner goal\(plannerGoals.count == 1 ? "" : "s")"
+                        )
+                        .padding(.top, 16)
+
                         plannerSummaryCard
                         activeGoalsSection
                         suggestedGoalsSection
-                    }
 
-                    Spacer(minLength: 28)
+                        Spacer(minLength: 28)
+                    }
+                    .padding(.horizontal, MoneSpacing.page)
                 }
-                .padding(.horizontal, MoneSpacing.page)
             }
         }
         .sheet(isPresented: $showPlannerSheet) {
@@ -74,82 +93,6 @@ struct GoalsView: View {
         }
     }
 
-    private var emptyState: some View {
-        VStack(alignment: .leading, spacing: MoneSpacing.gutter) {
-            GoalEducationCarousel()
-
-            MonePrimaryButton(title: "Add your first goal", icon: "plus") {
-                startCreateGoal()
-            }
-
-            VStack(alignment: .leading, spacing: 10) {
-                Text("AVAILABLE NOW")
-                    .moneLabelCaps(color: .moneTertiary)
-                    .tracking(2.5)
-
-                compactCapabilityRow(
-                    icon: "banknote",
-                    title: "Build savings",
-                    detail: "Save for emergency, home, travel, medical reserve, or a large purchase."
-                )
-
-                compactCapabilityRow(
-                    icon: "slider.horizontal.3",
-                    title: "Control spending",
-                    detail: "Reduce one leakage area without turning the whole month into a budget exercise."
-                )
-
-                compactCapabilityRow(
-                    icon: "arrow.up.right",
-                    title: "Grow income",
-                    detail: "Coming soon",
-                    isMuted: true
-                )
-            }
-        }
-    }
-
-    private var plannerContextCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top, spacing: 12) {
-                ZStack {
-                    Circle()
-                        .fill(Color.moneSurfaceEl)
-                        .frame(width: 38, height: 38)
-                    Image(systemName: dashboardSummary == nil && moneyMapModel == nil ? "clock.arrow.circlepath" : "checkmark.seal")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(dashboardSummary == nil && moneyMapModel == nil ? Color.moneWatch : Color.moneHealthy)
-                }
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("PLANNER CONTEXT")
-                        .moneLabelCaps(color: .moneTertiary)
-                    Text(plannerSnapshot.contextLine)
-                        .font(.moneBodySm.weight(.medium))
-                        .foregroundStyle(Color.monePrimary)
-                    if let plannerContextMessage {
-                        Text(plannerContextMessage)
-                            .font(.moneBodySm)
-                            .foregroundStyle(Color.moneSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-
-                Spacer()
-            }
-
-            HStack(spacing: 0) {
-                MiniStat(label: "Income", value: plannerSnapshot.income.plannerCurrency)
-                Divider().background(Color.moneStroke).frame(height: 34)
-                MiniStat(label: "Operating", value: plannerSnapshot.operatingRemaining.plannerCurrency)
-                Divider().background(Color.moneStroke).frame(height: 34)
-                MiniStat(label: "Capacity", value: plannerSnapshot.safeMonthlyGoalCapacity.plannerCurrency)
-            }
-        }
-        .padding(MoneSpacing.cardSm)
-        .moneCard(radius: MoneRadius.xl, elevated: true)
-    }
-
     private var plannerSummaryCard: some View {
         HStack(spacing: 0) {
             MiniStat(label: "Monthly plan", value: totalMonthlyAction.plannerCurrency)
@@ -158,12 +101,12 @@ struct GoalsView: View {
             Divider().background(Color.moneStroke).frame(height: 36)
             MiniStat(label: "Goals", value: "\(plannerGoals.count)")
         }
-        .padding(.vertical, MoneSpacing.cardSm)
+        .padding(.vertical, 20)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
     private var activeGoalsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 20) {
             HStack {
                 Text("ACTIVE GOALS")
                     .moneLabelCaps(color: .moneTertiary)
@@ -190,10 +133,8 @@ struct GoalsView: View {
     }
 
     private var suggestedGoalsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text("SUGGESTED BY MONÉ")
-                .moneLabelCaps(color: .moneTertiary)
-                .tracking(2.5)
+        VStack(alignment: .leading, spacing: 20) {
+            
 
             Button {
                 draft.reset()
@@ -239,62 +180,26 @@ struct GoalsView: View {
         }
     }
 
-    private func compactCapabilityRow(icon: String, title: String, detail: String, isMuted: Bool = false) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            ZStack {
-                Circle()
-                    .fill(Color.moneSurfaceEl)
-                    .frame(width: 38, height: 38)
-                Image(systemName: icon)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(isMuted ? Color.moneTertiary : Color.moneSecondary)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 8) {
-                    Text(title)
-                        .font(.moneHLSm)
-                        .foregroundStyle(isMuted ? Color.moneTertiary : Color.monePrimary)
-
-                    if isMuted {
-                        Text("COMING SOON")
-                            .font(.moneLabelCaps)
-                            .tracking(0.8)
-                            .foregroundStyle(Color.moneTertiary)
-                    }
-                }
-
-                Text(detail)
-                    .font(.moneBodySm)
-                    .foregroundStyle(isMuted ? Color.moneTertiary : Color.moneSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Spacer()
-        }
-        .padding(20)
-        .moneCard(radius: MoneRadius.xl, elevated: true)
-        .opacity(isMuted ? 0.68 : 1)
-    }
-
     private func suggestionCard(icon: String, title: String, detail: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .top, spacing: 14) {
             ZStack {
                 Circle()
                     .fill(Color.moneSurfaceEl)
-                    .frame(width: 38, height: 38)
+                    .frame(width: 46, height: 46)
                 Image(systemName: icon)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(Color.moneSecondary)
             }
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.moneHLSm)
                     .foregroundStyle(Color.monePrimary)
                 Text(detail)
                     .font(.moneBodySm)
                     .foregroundStyle(Color.moneSecondary)
+                    .lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Spacer()
@@ -302,8 +207,9 @@ struct GoalsView: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .bold))
                 .foregroundStyle(Color.moneTertiary)
+                .padding(.top, 2)
         }
-        .padding(20)
+        .padding(MoneSpacing.cardLg)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
@@ -316,15 +222,9 @@ struct GoalsView: View {
             let moneyMapLoader = MoneyMapDataLoader(modelContext: modelContext)
             moneyMapModel = try moneyMapLoader.loadLatestMoneyMap()
 
-            if dashboardSummary == nil && moneyMapModel == nil {
-                plannerContextMessage = "Using the runtime estimate until processed financial data is available on this device."
-            } else {
-                plannerContextMessage = nil
-            }
         } catch {
             dashboardSummary = nil
             moneyMapModel = nil
-            plannerContextMessage = "Using the runtime estimate because processed financial data could not be loaded."
         }
     }
 
@@ -344,81 +244,256 @@ struct GoalsView: View {
 // MARK: - Empty Carousel
 
 private struct GoalEducationCarousel: View {
-    @State private var page = 0
+    @State private var page: Int = 0
+    @State private var dragOffset: CGFloat = 0
+    @State private var swipeForward: Bool = true
 
-    private let cards: [(title: String, body: String, metric: String, icon: String)] = [
+    private let pageIcons = ["dot.scope", "dot.radiowaves.left.and.right", "rainbow"]
+
+    private let cards: [(title: String, body: String)] = [
         (
-            "Goals are action plans",
-            "Moné converts a vague intention into a target, duration, milestones, and a next action.",
-            "Target → Plan → Milestones",
-            "dot.scope"
+            "Setting a goal is easy!",
+            "Moné helps you set a practical goal that you need: Save money, bracket spending, etc."
         ),
         (
-            "Built from your money map",
-            "Plans use your income, obligations, everyday spends, and safe capacity so targets do not become fantasy.",
-            "Reality checked",
-            "binoculars"
+            "moné makes achieving them real",
+            "moné determines path for you to stay on track, it is smart enough to reroute!."
         ),
         (
-            "Adjust when life changes",
-            "If a goal starts slipping, Moné helps you change the timeline or intensity instead of treating it as failure.",
-            "Adaptive, not rigid",
-            "arrow.triangle.2.circlepath"
+            "Financial well-being for you!",
+            "You don't have to worry about yet another task, moné keeps a close eye and works for you!"
         )
     ]
 
     var body: some View {
-        VStack(spacing: 10) {
-            TabView(selection: $page) {
+        GeometryReader { geo in
+            ZStack {
                 ForEach(cards.indices, id: \.self) { index in
-                    carouselCard(cards[index])
-                        .tag(index)
+                    carouselCard(cards[index], index: index)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .offset(y: cardOffset(for: index, height: geo.size.height))
+                        .zIndex(Double(index))
                 }
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .frame(height: 184)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .gesture(
+                DragGesture(minimumDistance: 20)
+                    .onChanged { value in
+                        let dy = value.translation.height
+                        if dy < 0 && page < cards.count - 1 {
+                            dragOffset = dy
+                        } else if dy > 0 && page > 0 {
+                            dragOffset = dy
+                        }
+                    }
+                    .onEnded { value in
+                        let threshold: CGFloat = 60
 
-            HStack(spacing: 6) {
-                ForEach(cards.indices, id: \.self) { index in
-                    Capsule()
-                        .fill(index == page ? Color.moneActionFill : Color.moneStrokeBright)
-                        .frame(width: index == page ? 18 : 6, height: 6)
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                            if value.translation.height < -threshold && page < cards.count - 1 {
+                                swipeForward = true
+                                page += 1
+                            } else if value.translation.height > threshold && page > 0 {
+                                swipeForward = false
+                                page -= 1
+                            }
+                            dragOffset = 0
+                        }
+                    }
+            )
+            .overlay(alignment: .bottomTrailing) {
+                VStack(spacing: 6) {
+                    ForEach(cards.indices, id: \.self) { index in
+                        Capsule()
+                            .fill(index == page ? Color.moneActionFill : Color.moneStrokeBright)
+                            .frame(width: 6, height: index == page ? 18 : 6)
+                    }
                 }
+                .animation(.easeInOut(duration: 0.2), value: page)
+                .padding(.trailing, MoneSpacing.cardLg)
+                .padding(.bottom, MoneSpacing.cardLg)
             }
-            .animation(.easeInOut(duration: 0.2), value: page)
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .overlay(alignment: .topTrailing) {
+            CarouselIconsOverlay(page: page)
+                .padding(.top, MoneSpacing.cardLg)
+                .padding(.trailing, MoneSpacing.cardLg - 8)
         }
     }
 
-    private func carouselCard(_ card: (title: String, body: String, metric: String, icon: String)) -> some View {
+
+    private let settledOffsets: [CGFloat] = [0, 96, 160]
+
+    private func cardOffset(for index: Int, height: CGFloat) -> CGFloat {
+        let settled = settledOffsets[index]
+        let pageSettled = settledOffsets[page]
+
+        if index < page {
+            return settled
+        } else if index == page {
+            return dragOffset > 0 ? settled + dragOffset : settled
+        } else {
+            let parked = CGFloat(index - page) * height + pageSettled
+            return parked + dragOffset
+        }
+    }
+
+    private func carouselCard(_ card: (title: String, body: String), index: Int) -> some View {
         ZStack(alignment: .topLeading) {
             ContourBackground().opacity(0.35)
 
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 18) {
                 HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(card.metric.uppercased())
-                            .moneLabelCaps(color: .moneTertiary)
+                    VStack(alignment: .leading, spacing: 8) {
                         Text(card.title)
                             .font(.moneHLMd)
                             .foregroundStyle(Color.monePrimary)
                     }
 
-                    Spacer()
-
-                    Image(systemName: card.icon)
-                        .font(.system(size: 22, weight: .medium))
-                        .foregroundStyle(Color.moneSecondary)
                 }
 
                 Text(card.body)
                     .font(.moneBodyMd)
                     .foregroundStyle(Color.moneSecondary)
-                    .lineSpacing(3)
+                    .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(MoneSpacing.cardSm)
+            .padding(MoneSpacing.cardLg)
+            .padding(.top, index == 0 ? 32 : 0)
         }
-        .moneCard(radius: MoneRadius.xxl, elevated: true)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .moneCard(radius: 0, elevated: true)
+    }
+}
+
+// MARK: - Carousel Icon Views
+
+private struct CarouselIconsOverlay: View {
+    let page: Int
+
+    // dot.scope: showPage0 = outer gate (page transition), page0Cycle = inner gate (drawOn loop)
+    @State private var showPage0 = false
+    @State private var page0Cycle = false
+    @State private var usePage0Disappear = false
+
+    @State private var showPage1Plus = false
+    @State private var usePage1PlusDisappear = false
+    @State private var page1PlusEffectActive = false
+
+    private let pageIcons = ["dot.scope", "dot.radiowaves.left.and.right", "rainbow"]
+
+    var body: some View {
+        ZStack {
+            // dot.scope — page 0
+            // Two nested conditionals: outer controls page transition, inner drives drawOn loop
+            if showPage0 {
+                if usePage0Disappear {
+                    dotScopeImage
+                        .transition(.symbolEffect(.disappear))
+                } else if page0Cycle {
+                    dotScopeImage
+                        .transition(.symbolEffect(.drawOn))
+                }
+            }
+
+            // radiowave / rainbow — pages 1 and 2
+            if showPage1Plus {
+                if usePage1PlusDisappear {
+                    page1PlusImage(effectActive: false)
+                        .transition(.symbolEffect(.disappear))
+                } else {
+                    page1PlusImage(effectActive: page1PlusEffectActive)
+                        .transition(.symbolEffect(.drawOn))
+                }
+            }
+        }
+        .frame(width: 88, height: 88)
+        .task(id: page) {
+            if page == 0 {
+                // 1. Stop page1Plus effect, switch to disappear branch, then animate out
+                page1PlusEffectActive = false
+                usePage1PlusDisappear = true
+                try? await Task.sleep(for: .milliseconds(16))
+                withAnimation { showPage1Plus = false }
+
+                // 2. Reset dot.scope outer gate and cycle (no animation), then fire drawOn
+                var t = SwiftUI.Transaction()
+                t.disablesAnimations = true
+                withTransaction(t) {
+                    showPage0 = false
+                    usePage0Disappear = false
+                    page0Cycle = false
+                }
+                try? await Task.sleep(for: .milliseconds(80))
+                guard !Task.isCancelled else { return }
+                // showPage0=true alone doesn't show image; page0Cycle must be true simultaneously
+                withAnimation {
+                    showPage0 = true
+                    page0Cycle = true   // drawOn fires when both become true together
+                }
+
+                // 3. Continuous loop: drawOn → hold briefly → drawOff → drawOn → …
+                try? await Task.sleep(for: .milliseconds(400)) // let initial drawOn finish
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .milliseconds(500)) // hold (brief)
+                    guard !Task.isCancelled else { return }
+
+                    withAnimation { page0Cycle = false }           // drawOff (reverse of .drawOn transition)
+                    try? await Task.sleep(for: .milliseconds(500)) // let drawOff finish
+                    guard !Task.isCancelled else { return }
+
+                    withAnimation { page0Cycle = true }            // drawOn fires immediately after
+                    try? await Task.sleep(for: .milliseconds(200)) // let drawOn finish
+                }
+
+            } else {
+                // 1. Ensure dot.scope is in the tree (mid-cycle it might be hidden),
+                //    switch to disappear branch, then animate out
+                page0Cycle = true          // guarantee image is in tree before disappear
+                usePage0Disappear = true   // switch to disappear branch
+                try? await Task.sleep(for: .milliseconds(16))
+                withAnimation { showPage0 = false }
+
+                if !showPage1Plus {
+                    // 2. Reset page1Plus (no animation), then fire drawOn with effect OFF
+                    var t = SwiftUI.Transaction()
+                    t.disablesAnimations = true
+                    withTransaction(t) {
+                        showPage1Plus = false
+                        usePage1PlusDisappear = false
+                        page1PlusEffectActive = false
+                    }
+                    try? await Task.sleep(for: .milliseconds(80))
+                    guard !Task.isCancelled else { return }
+                    withAnimation { showPage1Plus = true }
+
+                    // 3. After drawOn finishes, start variableColor
+                    try? await Task.sleep(for: .milliseconds(1500))
+                    guard !Task.isCancelled else { return }
+                    page1PlusEffectActive = true
+                }
+                // Pages 1↔2: showPage1Plus stays true, symbolName changes → .replace fires
+            }
+        }
+    }
+
+    private var dotScopeImage: some View {
+        Image(systemName: "dot.scope")
+            .font(.system(size: 88, weight: .thin))
+            .foregroundStyle(Color.monePrimary)
+            .symbolRenderingMode(.hierarchical)
+            .frame(width: 88, height: 88)
+    }
+
+    private func page1PlusImage(effectActive: Bool) -> some View {
+        Image(systemName: pageIcons[page])
+            .font(.system(size: 88, weight: .thin))
+            .foregroundStyle(Color.monePrimary)
+            .symbolRenderingMode(page == 2 ? .multicolor : .hierarchical)
+            .symbolEffect(.variableColor.iterative.reversing, options: .repeat(.continuous).speed(0.35), isActive: effectActive)
+            .contentTransition(.symbolEffect(.replace))
+            .frame(width: 88, height: 88)
     }
 }
 
@@ -440,19 +515,19 @@ private struct PlannerGoalCard: View {
 
     var body: some View {
         Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 22) {
                 HStack(alignment: .top) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 14) {
                         ZStack {
                             Circle()
                                 .fill(Color.moneSurfaceEl)
-                                .frame(width: 44, height: 44)
+                                .frame(width: 52, height: 52)
                             Image(systemName: goalIcon)
-                                .font(.system(size: 18, weight: .medium))
+                                .font(.system(size: 20, weight: .medium))
                                 .foregroundStyle(Color.moneSecondary)
                         }
 
-                        VStack(alignment: .leading, spacing: 4) {
+                        VStack(alignment: .leading, spacing: 5) {
                             Text(goal.title)
                                 .font(.moneHLSm)
                                 .foregroundStyle(Color.monePrimary)
@@ -468,33 +543,34 @@ private struct PlannerGoalCard: View {
                         .font(.moneLabelCaps)
                         .tracking(0.8)
                         .foregroundStyle(statusColor)
-                        .padding(.horizontal, 9)
-                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
                         .background(statusColor.opacity(0.12))
                         .clipShape(Capsule())
                 }
 
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
-                        Capsule().fill(Color.moneSurfaceHigh).frame(height: 6)
+                        Capsule().fill(Color.moneSurfaceHigh).frame(height: 8)
                         Capsule()
                             .fill(statusColor)
-                            .frame(width: geo.size.width * CGFloat(goal.progressFraction), height: 6)
+                            .frame(width: geo.size.width * CGFloat(goal.progressFraction), height: 8)
                     }
                 }
-                .frame(height: 6)
+                .frame(height: 8)
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text(goal.planLine)
                         .font(.moneBodyMd)
                         .foregroundStyle(Color.monePrimary)
                     Text(goal.nextAction)
                         .font(.moneBodySm)
                         .foregroundStyle(Color.moneSecondary)
+                        .lineSpacing(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(20)
+            .padding(MoneSpacing.cardLg)
             .moneCard(radius: MoneRadius.xl, elevated: true)
         }
         .buttonStyle(.plain)
@@ -864,39 +940,40 @@ private struct SavingsPurposeCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 20) {
             Button(action: onSelect) {
-                HStack(alignment: .top, spacing: 12) {
+                HStack(alignment: .top, spacing: 14) {
                     ZStack {
                         Circle()
                             .fill(isSelected ? Color.moneActionFill.opacity(0.15) : Color.moneSurfaceEl)
-                            .frame(width: 46, height: 46)
+                            .frame(width: 52, height: 52)
                         Image(systemName: purpose.icon)
-                            .font(.system(size: 18, weight: .medium))
+                            .font(.system(size: 20, weight: .medium))
                             .foregroundStyle(isSelected ? Color.moneActionFill : Color.moneSecondary)
                     }
 
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: 6) {
                         Text(purpose.title)
                             .font(.moneHLSm)
                             .foregroundStyle(Color.monePrimary)
                         Text(purpose.detail)
                             .font(.moneBodySm)
                             .foregroundStyle(Color.moneSecondary)
+                            .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
                     Spacer()
 
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                        .font(.system(size: 20, weight: .medium))
+                        .font(.system(size: 22, weight: .medium))
                         .foregroundStyle(isSelected ? Color.moneActionFill : Color.moneTertiary)
                 }
             }
             .buttonStyle(.plain)
 
             if isSelected {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 20) {
                     MoneField(label: "TARGET AMOUNT") {
                         HStack(spacing: 8) {
                             Text("₹")
@@ -905,7 +982,7 @@ private struct SavingsPurposeCard: View {
                             TextField("3,00,000", text: $amountText)
                                 .keyboardType(.decimalPad)
                                 .focused(focusedField, equals: .amount)
-                                .moneFieldStyle()
+                                .moneNumericFieldStyle()
                         }
                     }
 
@@ -953,7 +1030,7 @@ private struct SavingsPurposeCard: View {
                 .padding(.top, 2)
             }
         }
-        .padding(MoneSpacing.cardSm)
+        .padding(MoneSpacing.cardLg)
         .background(isSelected ? Color.moneSurfaceEl : Color.moneSurface)
         .clipShape(RoundedRectangle(cornerRadius: MoneRadius.xl, style: .continuous))
         .overlay(
@@ -1040,7 +1117,7 @@ private struct SpendingFocusStep: View {
     }
 
     private func focusGroup(title: String, items: [PlannerSpendingFocus]) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 14) {
             Text(title)
                 .moneLabelCaps(color: .moneTertiary)
 
@@ -1075,45 +1152,46 @@ private struct SpendingFocusCard: View {
     let onSelect: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 20) {
             Button(action: onSelect) {
-                HStack(alignment: .top, spacing: 12) {
+                HStack(alignment: .top, spacing: 14) {
                     ZStack {
                         Circle()
                             .fill(isSelected ? Color.moneActionFill.opacity(0.15) : Color.moneSurfaceEl)
-                            .frame(width: 46, height: 46)
+                            .frame(width: 52, height: 52)
                         Image(systemName: focus.icon)
-                            .font(.system(size: 18, weight: .medium))
+                            .font(.system(size: 20, weight: .medium))
                             .foregroundStyle(isSelected ? Color.moneActionFill : Color.moneSecondary)
                     }
 
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: 6) {
                         Text(focus.title)
                             .font(.moneHLSm)
                             .foregroundStyle(Color.monePrimary)
                         Text("\(baseline.plannerCurrency)/month · \(focus.detail)")
                             .font(.moneBodySm)
                             .foregroundStyle(Color.moneSecondary)
+                            .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
                     Spacer()
 
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                        .font(.system(size: 20, weight: .medium))
+                        .font(.system(size: 22, weight: .medium))
                         .foregroundStyle(isSelected ? Color.moneActionFill : Color.moneTertiary)
                 }
             }
             .buttonStyle(.plain)
 
             if isSelected {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 20) {
                     HStack(spacing: 0) {
                         MiniStat(label: "Baseline", value: baseline.plannerCurrency)
                         Divider().background(Color.moneStroke).frame(height: 36)
                         MiniStat(label: "Suggested", value: suggestedTarget.plannerCurrency)
                     }
-                    .padding(.vertical, 12)
+                    .padding(.vertical, 16)
                     .background(Color.moneSurface)
                     .clipShape(RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous))
 
@@ -1125,7 +1203,7 @@ private struct SpendingFocusCard: View {
                             TextField("8,500", text: $targetText)
                                 .keyboardType(.decimalPad)
                                 .focused(isTargetFocused)
-                                .moneFieldStyle()
+                                .moneNumericFieldStyle()
                         }
                     }
 
@@ -1142,7 +1220,7 @@ private struct SpendingFocusCard: View {
                 }
             }
         }
-        .padding(MoneSpacing.cardSm)
+        .padding(MoneSpacing.cardLg)
         .background(isSelected ? Color.moneSurfaceEl : Color.moneSurface)
         .clipShape(RoundedRectangle(cornerRadius: MoneRadius.xl, style: .continuous))
         .overlay(
@@ -1404,9 +1482,9 @@ private struct GoalDetailStep: View {
                     : "Here is the current plan and milestone path."
             )
 
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 22) {
                 HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 6) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text(goal.amountLine)
                             .font(.moneHLMd)
                             .foregroundStyle(Color.monePrimary)
@@ -1421,32 +1499,40 @@ private struct GoalDetailStep: View {
                         .font(.moneLabelCaps)
                         .tracking(0.8)
                         .foregroundStyle(Color.moneSecondary)
-                        .padding(.horizontal, 9)
-                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
                         .background(Color.moneSurfaceEl)
                         .clipShape(Capsule())
                 }
 
-                ProgressView(value: goal.progressFraction)
-                    .tint(Color.moneActionFill)
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(Color.moneSurfaceHigh).frame(height: 8)
+                        Capsule()
+                            .fill(Color.moneActionFill)
+                            .frame(width: geo.size.width * CGFloat(goal.progressFraction), height: 8)
+                    }
+                }
+                .frame(height: 8)
 
                 detailRows
 
                 Divider().background(Color.moneStroke)
 
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text("NEXT ACTION")
                         .moneLabelCaps(color: .moneTertiary)
                     Text(goal.nextAction)
                         .font(.moneBodyMd)
                         .foregroundStyle(Color.monePrimary)
+                        .lineSpacing(3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(20)
+            .padding(MoneSpacing.cardLg)
             .moneCard(radius: MoneRadius.xl, elevated: true)
 
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 20) {
                 Text("MILESTONES")
                     .tracking(2.5)
                     .moneLabelCaps(color: .moneTertiary)
@@ -1460,7 +1546,7 @@ private struct GoalDetailStep: View {
 
     @ViewBuilder
     private var detailRows: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 14) {
             switch goal.kind {
             case .buildSavings:
                 if let savings = goal.savings {
@@ -1497,29 +1583,30 @@ private struct MilestoneRow: View {
     let milestone: PlannerMilestone
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .top, spacing: 14) {
             ZStack {
                 Circle()
                     .fill(milestone.isCompleted ? Color.moneHealthy : Color.moneSurfaceEl)
-                    .frame(width: 30, height: 30)
+                    .frame(width: 38, height: 38)
                 Image(systemName: milestone.isCompleted ? "checkmark" : "circle.fill")
-                    .font(.system(size: milestone.isCompleted ? 12 : 6, weight: .bold))
+                    .font(.system(size: milestone.isCompleted ? 14 : 7, weight: .bold))
                     .foregroundStyle(milestone.isCompleted ? Color.moneBackground : Color.moneSecondary)
             }
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(milestone.title)
                     .font(.moneHLSm)
                     .foregroundStyle(Color.monePrimary)
                 Text(milestone.detail)
                     .font(.moneBodySm)
                     .foregroundStyle(Color.moneSecondary)
+                    .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             Spacer()
         }
-        .padding(20)
+        .padding(MoneSpacing.cardLg)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
@@ -1527,18 +1614,19 @@ private struct MilestoneRow: View {
 // MARK: - Shared UI Helpers
 
 private func intro(title: String, subtitle: String) -> some View {
-    VStack(alignment: .leading, spacing: 8) {
+    VStack(alignment: .leading, spacing: 12) {
         Text(title)
-            .font(.moneHLMd)
+            .font(.moneHL)
             .foregroundStyle(Color.monePrimary)
             .fixedSize(horizontal: false, vertical: true)
 
         Text(subtitle)
             .font(.moneBodyMd)
             .foregroundStyle(Color.moneSecondary)
-            .lineSpacing(3)
+            .lineSpacing(4)
             .fixedSize(horizontal: false, vertical: true)
     }
+    .padding(.top, 8)
 }
 
 private func selectableRow(
@@ -1549,17 +1637,17 @@ private func selectableRow(
     tag: String? = nil,
     isDisabled: Bool = false
 ) -> some View {
-    HStack(alignment: .top, spacing: 12) {
+    HStack(alignment: .top, spacing: 14) {
         ZStack {
             Circle()
                 .fill(isSelected ? Color.moneActionFill.opacity(0.15) : Color.moneSurfaceEl)
-                .frame(width: 46, height: 46)
+                .frame(width: 52, height: 52)
             Image(systemName: icon)
-                .font(.system(size: 18, weight: .medium))
+                .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(isSelected ? Color.moneActionFill : isDisabled ? Color.moneTertiary : Color.moneSecondary)
         }
 
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 Text(title)
                     .font(.moneHLSm)
@@ -1574,6 +1662,7 @@ private func selectableRow(
             Text(subtitle)
                 .font(.moneBodySm)
                 .foregroundStyle(isDisabled ? Color.moneTertiary : Color.moneSecondary)
+                .lineSpacing(2)
                 .fixedSize(horizontal: false, vertical: true)
         }
 
@@ -1581,11 +1670,11 @@ private func selectableRow(
 
         if !isDisabled {
             Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                .font(.system(size: 20, weight: .medium))
+                .font(.system(size: 22, weight: .medium))
                 .foregroundStyle(isSelected ? Color.moneActionFill : Color.moneTertiary)
         }
     }
-    .padding(MoneSpacing.cardSm)
+    .padding(MoneSpacing.cardLg)
     .background(isSelected ? Color.moneSurfaceEl : Color.moneSurface)
     .clipShape(RoundedRectangle(cornerRadius: MoneRadius.xl, style: .continuous))
     .overlay(
