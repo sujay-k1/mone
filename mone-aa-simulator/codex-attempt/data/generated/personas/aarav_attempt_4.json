@@ -1,0 +1,104 @@
+{
+  "persona": {
+    "persona_id": "aarav",
+    "full_name": "Aarav Sharma",
+    "age": 29,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Software Engineer",
+    "employer_name": "TechNova Solutions",
+    "monthly_salary_inr": 165000,
+    "monthly_rent_inr": 42000,
+    "monthly_fixed_obligations_inr": 78000,
+    "monthly_discretionary_low_inr": 45000,
+    "monthly_discretionary_high_inr": 75000,
+    "credit_card_limit_inr": 300000,
+    "typical_credit_card_outstanding_low_inr": 35000,
+    "typical_credit_card_outstanding_high_inr": 140000,
+    "work_pattern": "9-to-5 with occasional late nights",
+    "commute_pattern": "20-minute metro ride",
+    "family_obligations": [
+      "elderly aunt in Pune (₹5000/month support)"
+    ],
+    "friend_network": [
+      "borrows ₹10k-₹20k occasionally for group dinners"
+    ],
+    "relationship_context": "single, no children",
+    "health_tendencies": [
+      "smokes 10 cigarettes/day (₹2500/month)",
+      "occasional gym membership (₹3000/month)"
+    ],
+    "vices": [
+      "weekly bar-hopping (₹8000/month)",
+      "monthly gaming subscriptions (₹1500)"
+    ],
+    "food_habits": [
+      "₹12000/month for dining out",
+      "₹6000/month for grocery delivery"
+    ],
+    "shopping_habits": [
+      "₹10000/month for clothing/electronics"
+    ],
+    "travel_habits": [
+      "₹5000/month for local travel",
+      "₹20000 every 3 months for weekend getaways"
+    ],
+    "financial_temperament": "impulsive but not destitute",
+    "credit_behavior": "pays minimum due 30% of the time",
+    "savings_discipline": "₹5000/month into emergency fund (currently ₹25000)",
+    "risk_tolerance": "moderate",
+    "recurring_obligations": [
+      "rent (₹42000)",
+      "utilities (₹8000)",
+      "car insurance (₹4000)",
+      "phone/internet (₹3000)",
+      "personal loan (₹10000)",
+      "subscription services (₹2000)"
+    ],
+    "stress_responses": [
+      "uses credit card for 40% of discretionary spending during stress months",
+      "borrows from friends for group events",
+      "liquidates non-essential assets (e.g., gaming console) once/year"
+    ],
+    "monthly_survival_logic": "salary covers fixed obligations with ₹8500 surplus normally",
+    "stress_month_behavior": "one month/year where discretionary spending jumps to ₹12000",
+    "boring_month_behavior": "pays rent on time, uses credit card for 20% of discretionary spending",
+    "realism_notes": [
+      "occasionally misses credit card payments by 5-10 days",
+      "uses pay-later apps for ₹5000-₹10000 during festivals",
+      "maintains minimum emergency fund despite chaotic spending"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "BUDGET_MISMATCH",
+        "evidence": "Monthly salary (165000) - fixed obligations (78000) = 87000 surplus, but persona claims only 8500 surplus. This discrepancy invalidates the entire financial model.",
+        "why_blocking": "The survival logic is mathematically impossible with the given numbers. A 87000 surplus cannot plausibly be reduced to 8500 without omitting 78500 in unaccounted expenses."
+      },
+      {
+        "code": "INCOME_EXPENSE_MISMATCH",
+        "evidence": "Discretionary spending (food 18000 + shopping 10000 + vices 9500 + family 5000 + friends 15000 + travel 5000 + 6666) = 64166, but persona claims 45000-75000 range. This creates a 8834-10834 surplus that conflicts with the 8500 survival claim.",
+        "why_blocking": "The discretionary spending range is inconsistent with both the survival logic and actual expense breakdowns."
+      },
+      {
+        "code": "CREDIT_BEHAVIOR_IMPLAUSIBILITY",
+        "evidence": "Credit card limit (300000) with typical outstanding (35000-140000) combined with 30% minimum payment behavior creates unsustainable debt cycles.",
+        "why_blocking": "The credit behavior is not aligned with the income level. A senior software engineer in Bengaluru with 165k salary would not typically have 140k credit card outstanding."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "The budget arithmetic is fundamentally broken with multiple conflicting surplus claims",
+      "The discretionary spending range is inconsistent with actual expense breakdowns",
+      "Credit behavior is implausibly high for the income level",
+      "The survival logic contains a 87000 vs 8500 surplus contradiction that makes the persona invalid"
+    ],
+    "required_regeneration_scope": "Complete financial model regeneration with corrected salary-obligation-discretionary arithmetic",
+    "non_blocking_observations": [
+      "The persona has detailed vices and discretionary spending patterns",
+      "Includes realistic stress responses and financial temperament",
+      "Has specific city/neighborhood details for Bengaluru"
+    ]
+  }
+}

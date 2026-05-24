@@ -1,0 +1,104 @@
+{
+  "persona": {
+    "persona_id": "aarav",
+    "full_name": "Aarav Mehta",
+    "age": 32,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Software Engineer",
+    "employer_name": "TechNova Solutions",
+    "monthly_salary_inr": 165000,
+    "monthly_rent_inr": 42000,
+    "monthly_fixed_obligations_inr": 83000,
+    "monthly_discretionary_low_inr": 45000,
+    "monthly_discretionary_high_inr": 75000,
+    "credit_card_limit_inr": 300000,
+    "typical_credit_card_outstanding_low_inr": 35000,
+    "typical_credit_card_outstanding_high_inr": 140000,
+    "work_pattern": "Full-time, 9-5 with occasional late nights",
+    "commute_pattern": "25 km daily by metro and Uber",
+    "family_obligations": [
+      "Supporting sister's education in Pune",
+      "Parents' medical insurance"
+    ],
+    "friend_network": [
+      "Borrowing from 2-3 friends during stress months",
+      "Group dining and movie outings"
+    ],
+    "relationship_context": "Single, active in social circles",
+    "health_tendencies": [
+      "Occasional gym membership",
+      "Smokes 10 cigarettes/day"
+    ],
+    "vices": [
+      "Frequent takeout meals",
+      "Monthly gaming spending",
+      "Impulse shopping on e-commerce"
+    ],
+    "food_habits": [
+      "3-4 meals/day at cafes/restaurants",
+      "Weekend brunches with friends"
+    ],
+    "shopping_habits": [
+      "Monthly clothing purchases",
+      "Tech gadget upgrades every 6 months"
+    ],
+    "travel_habits": [
+      "Bi-monthly weekend getaways",
+      "Annual outstation trip"
+    ],
+    "financial_temperament": "Chaotic but functional",
+    "credit_behavior": "Pays minimum due when stressed, delays payments during overspending",
+    "savings_discipline": "Minimal emergency fund, relies on credit during gaps",
+    "risk_tolerance": "Moderate, avoids major investments",
+    "recurring_obligations": [
+      "Car EMI: ₹15,000",
+      "Personal loan: ₹10,000",
+      "Insurance premiums: ₹8,000",
+      "Phone/internet: ₹3,000"
+    ],
+    "stress_responses": [
+      "Uses credit card for unexpected expenses",
+      "Borrows from friends for urgent needs",
+      "Cuts discretionary spending temporarily"
+    ],
+    "monthly_survival_logic": "Salary covers fixed obligations with ₹7,000 buffer; discretionary spending relies on credit card and savings",
+    "stress_month_behavior": "Medical emergency in family leads to ₹50,000 hospital bill, fully covered by credit card with 40% balance carried forward",
+    "boring_month_behavior": "Standard salary, rent, bills, and routine discretionary spending with 1-2 late credit card payments",
+    "realism_notes": [
+      "Maintains minimum credit card payments",
+      "Avoids complete financial collapse",
+      "Has 3-4 months of partial credit card repayment annually"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "BUDGET_MISMATCH",
+        "evidence": "Monthly salary (165000) - fixed obligations (83000) = 82000 buffer, but 'monthly_survival_logic' claims only 7000 buffer. This discrepancy invalidates the entire financial model.",
+        "why_blocking": "The buffer calculation is mathematically impossible with given numbers, making the persona's financial behavior infeasible."
+      },
+      {
+        "code": "CREDIT_BEHAVIOR_CONTRADICTION",
+        "evidence": "Stress_month_behavior uses 50000 credit card payment, but 'credit_behavior' states 'pays minimum due when stressed' which would require 300000*0.05=15000 minimum payment, not 50000.",
+        "why_blocking": "Credit behavior contradicts itself between stress month scenario and general behavior description."
+      },
+      {
+        "code": "DISCRETIONARY_OVERFLOW",
+        "evidence": "Discretionary_high (75000) exceeds available buffer (82000) by 75000/82000 = 91.5% of available funds, making routine discretionary spending unsustainable without debt.",
+        "why_blocking": "Discretionary spending ranges are not financially viable with given income and obligations."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "The persona cannot generate a year of realistic raw AA data due to fundamental budget arithmetic errors",
+      "The financial behavior contradictions make stress month scenarios implausible",
+      "The discretionary spending ranges exceed available funds, violating financial realism"
+    ],
+    "required_regeneration_scope": "Full persona regeneration required to fix budget arithmetic, align credit behavior with scenarios, and adjust discretionary spending ranges to match actual available funds",
+    "non_blocking_observations": [
+      "The persona has sufficient detail for a realistic AA simulation if financial inconsistencies were resolved",
+      "The stress response mechanisms are plausible given the corrected financial parameters"
+    ]
+  }
+}

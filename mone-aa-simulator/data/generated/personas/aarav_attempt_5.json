@@ -1,0 +1,102 @@
+{
+  "persona": {
+    "persona_id": "aarav",
+    "full_name": "Aarav Sharma",
+    "age": 32,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Software Engineer",
+    "employer_name": "TechNova Solutions",
+    "monthly_salary_inr": 165000,
+    "monthly_rent_inr": 42000,
+    "monthly_fixed_obligations_inr": 80000,
+    "monthly_discretionary_low_inr": 45000,
+    "monthly_discretionary_high_inr": 85000,
+    "credit_card_limit_inr": 280000,
+    "typical_credit_card_outstanding_low_inr": 35000,
+    "typical_credit_card_outstanding_high_inr": 140000,
+    "work_pattern": "9-to-5 with occasional late nights",
+    "commute_pattern": "25 km daily by carpooling",
+    "family_obligations": [
+      "elderly parent medical support (₹5000/month)"
+    ],
+    "friend_network": [
+      "borrows ₹10k-20k occasionally for group dinners"
+    ],
+    "relationship_context": "single, no children",
+    "health_tendencies": [
+      "smokes 10 cigarettes/day, occasional gym membership"
+    ],
+    "vices": [
+      "casino visits (₹5k-15k/month), binge-watching streaming services"
+    ],
+    "food_habits": [
+      "₹12k/month for meals, ₹3k on takeout"
+    ],
+    "shopping_habits": [
+      "₹8k/month on clothing, ₹5k on gadgets"
+    ],
+    "travel_habits": [
+      "₹10k/month for local travel, ₹2k for weekend getaways"
+    ],
+    "financial_temperament": "impulsive but not destitute",
+    "credit_behavior": "pays minimum due 2-3 times/year, 1-2 late payments/year",
+    "savings_discipline": "₹5k/month to emergency fund, 10% of salary to SIPs",
+    "risk_tolerance": "moderate, uses credit card for emergencies",
+    "recurring_obligations": [
+      "rent (₹42k)",
+      "utilities (₹8k)",
+      "domestic help (₹10k)",
+      "mobile/data (₹3k)",
+      "health insurance (₹5k)",
+      "car loan (₹15k)",
+      "SIPs (₹15k)"
+    ],
+    "stress_responses": [
+      "uses credit card for ₹30k emergency repair",
+      "borrows ₹15k from friend during medical crisis",
+      "sells unused electronics for ₹20k"
+    ],
+    "monthly_survival_logic": "salary covers 75% of fixed obligations, 50% of discretionary",
+    "stress_month_behavior": "one month with ₹50k unexpected expense, uses credit card and borrows",
+    "boring_month_behavior": "regular salary, rent, bills, commute, food, subscriptions, moderate social spending",
+    "realism_notes": [
+      "domestic help salary included in fixed obligations",
+      "car loan is 5-year term at 9% interest",
+      "SIPs are ₹15k/month to mutual funds",
+      "credit card used for 30% of discretionary spending",
+      "emergency fund is 6 months of expenses"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "INCOME_EXPENSE_MISMATCH",
+        "evidence": "monthly_salary_inr=165000, monthly_rent_inr=42000, monthly_fixed_obligations_inr=80000, recurring_obligations=[rent(42k), utilities(8k), domestic help(10k), mobile/data(3k), health insurance(5k), car loan(15k), SIPs(15k)]",
+        "why_blocking": "Sum of recurring obligations (42k+8k+10k+3k+5k+15k+15k=98k) exceeds monthly_fixed_obligations_inr=80k by 18k. This creates a fundamental budget inconsistency."
+      },
+      {
+        "code": "UNREALISTIC_DISCRETIONARY_SPENDING",
+        "evidence": "monthly_discretionary_low_inr=45000, monthly_discretionary_high_inr=85000, food_habits=12k+3k=15k, shopping_habits=8k+5k=13k, travel_habits=10k+2k=12k",
+        "why_blocking": "Minimum discretionary spending (45k) already exceeds food (15k) + shopping (13k) + travel (12k) = 40k by 5k. This creates an impossible baseline for discretionary spending."
+      },
+      {
+        "code": "CREDIT_BEHAVIOR_MISMATCH",
+        "evidence": "credit_card_limit_inr=280000, typical_credit_card_outstanding_high_inr=140000, monthly_discretionary_high_inr=85000",
+        "why_blocking": "Credit card usage for 30% of discretionary spending (85k*30%=25.5k) is plausible, but the high outstanding balance (140k) implies 140k/280k=50% utilization, which is inconsistent with the stated 'credit card used for 30% of discretionary spending' in realism_notes."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "The fixed obligations arithmetic is fundamentally broken, making the persona impossible to simulate financially",
+      "Discretionary spending categories exceed the stated discretionary range even at minimum levels",
+      "Credit card utilization rates in behavior and realism notes are contradictory"
+    ],
+    "required_regeneration_scope": "Complete financial model overhaul including salary, obligations, discretionary spending, and credit behavior parameters",
+    "non_blocking_observations": [
+      "Work pattern and commute pattern are plausible for Bengaluru",
+      "Health tendencies and vices are realistic for a 32-year-old software engineer",
+      "Stress responses include both credit card usage and informal borrowing which is behaviorally plausible"
+    ]
+  }
+}

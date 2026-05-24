@@ -1,0 +1,429 @@
+{
+"persona_id": "aarav",
+"source_reference": "",
+"account_universe_version": "v1",
+"visibility_assumption": "full_visibility",
+"synthetic_visibility_note": "This account universe intentionally includes pay-later and insurance accounts as visible because Moné's dummy AA environment assumes full visibility across Aarav-owned financial accounts.",
+"relationship_semantics_note": "Insurance premium relationships are semantic account links, not symmetric transfer pairs. Card or bank accounts show payment debits; insurance policies show premium-paid status or policy updates where supported.",
+"accounts": [
+{
+"account_id": "aarav_hdfc_salary_savings_001",
+"institution_name": "HDFC Bank",
+"account_family": "deposit",
+"aa_account_type": "SAVINGS",
+"display_name": "HDFC Bank Salary Savings Account",
+"masked_account_number": "XXXXXX7421",
+"ownership": "single",
+"primary_use": "Primary salary account for NimbleCart salary credit, rent transfer, household UPI payments, family transfers, credit card bill payment, pay-later repayment, and most bank-led obligations.",
+"upi_linked": true,
+"payment_rail_notes": "Primary UPI handle and net banking account. Salary is credited here on the last working day of each month between 18:15 and 20:30. Rent, cook, maid, apartment maintenance, mother medicine transfers, friend transfers, and most self-transfers can originate here.",
+"product_details": {
+"account_variant": "salary savings account",
+"salary_credit_employer_name": "NimbleCart Technologies Private Limited",
+"monthly_salary_inr": 165000,
+"salary_credit_frequency": "monthly",
+"salary_credit_rule": "Last working day of each month between 18:15 and 20:30",
+"default_rent_payment_account": true,
+"default_credit_card_payment_account": true,
+"default_sip_debit_account": true,
+"default_pay_later_repayment_account": true,
+"atm_access": true,
+"cash_visibility_note": "ATM withdrawals from this account may appear later in bank statements, but small cash spends are not individually AA-visible."
+},
+"why_this_account_exists": "Aarav needs a primary visible salary account to receive ₹165000 monthly salary and to support rent, UPI, card payments, family support, staff payments, SIP debit, and repayments.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Use this as the main source for salary credits, rent to Suresh Krishnamurthy, household UPI payments, mother medicine transfers to Anita Menon, card bill payments, pay-later repayments, SIP debits in successful months, ATM withdrawals, and self-transfers to the secondary savings account."
+},
+{
+"account_id": "aarav_icici_secondary_savings_001",
+"institution_name": "ICICI Bank",
+"account_family": "deposit",
+"aa_account_type": "SAVINGS",
+"display_name": "ICICI Bank Secondary Savings Account",
+"masked_account_number": "XXXXXX3188",
+"ownership": "single",
+"primary_use": "Secondary savings account for buffers, self-transfers, occasional UPI spends, liquid fund redemption credits, and backup bill payments when the salary account is tight.",
+"upi_linked": true,
+"payment_rail_notes": "Secondary UPI handle. Used less frequently than the salary account but must remain visible so self-transfers and liquid fund redemptions can be traced.",
+"product_details": {
+"account_variant": "regular savings account",
+"salary_account": false,
+"default_redemption_credit_account": true,
+"backup_credit_card_payment_account": true,
+"backup_upi_account": true,
+"atm_access": true,
+"cash_visibility_note": "ATM withdrawals from this account may appear later, but individual cash purchases remain outside AA visibility."
+},
+"why_this_account_exists": "Aarav’s persona requires a secondary bank account for buffers, self-transfers, and small asset drawdowns. Full visibility requires both sides of future self-transfers to exist.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Use this account for visible transfers from and to the HDFC salary account, occasional UPI payments, backup card payments, and liquid fund redemption credits during stress months."
+},
+{
+"account_id": "aarav_axis_credit_card_001",
+"institution_name": "Axis Bank",
+"account_family": "credit_card",
+"aa_account_type": "CREDIT_CARD",
+"display_name": "Axis Bank Atlas Credit Card",
+"masked_account_number": "XXXX-XXXX-XXXX-6094",
+"ownership": "single",
+"primary_use": "Main credit card for food delivery, quick commerce, pubs, dating, gadgets, travel bookings, subscriptions, gym autopay, broadband autopay, mobile autopay, scooter insurance, and group fronting.",
+"upi_linked": false,
+"payment_rail_notes": "Primary card spend rail. Card transactions should appear inside the credit card account first. Deposit accounts should only show impact when Aarav pays the card bill.",
+"product_details": {
+"credit_card_limit_inr": 350000,
+"statement_day": 20,
+"due_day": 9,
+"autopay_enabled": false,
+"usual_payment_sources": [
+"aarav_hdfc_salary_savings_001",
+"aarav_icici_secondary_savings_001"
+],
+"typical_statement_balance_low_inr": 68000,
+"typical_statement_balance_high_inr": 155000,
+"typical_current_outstanding_low_inr": 78000,
+"typical_current_outstanding_high_inr": 185000,
+"revolved_balance_months_per_year": 2,
+"typical_revolved_balance_low_inr": 25000,
+"typical_revolved_balance_high_inr": 65000,
+"full_payment_months_per_year": 7,
+"constrained_full_payment_months_per_year": 3,
+"card_autopay_posting_rule": "Bills marked as card autopay should appear first as credit card transactions. They should affect deposit accounts only when the credit card bill is paid. Do not duplicate card autopays as direct bank debits.",
+"card_choice_rationale": "Aarav took this card for travel rewards and lounge benefits, but uses it broadly for lifestyle spends, subscriptions, food delivery, quick commerce, pubs, gadgets, and group fronting.",
+"primary_card_categories": [
+"food delivery",
+"quick commerce",
+"pubs",
+"coffee",
+"dating",
+"gadgets",
+"travel bookings",
+"gym membership",
+"subscriptions",
+"broadband",
+"mobile postpaid",
+"scooter insurance"
+]
+},
+"why_this_account_exists": "Aarav’s locked persona depends on credit card float, high current outstanding, occasional partial payment, group fronting, subscriptions, travel bookings, and scooter insurance paid by card.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Use this for merchant-level card spends. Credit card payments should be visible as outgoing payments from HDFC or ICICI and matching payment credits in this card account. Do not create duplicate bank debits for card purchases."
+},
+{
+"account_id": "aarav_simpl_paylater_001",
+"institution_name": "Simpl",
+"account_family": "pay_later",
+"aa_account_type": "BNPL",
+"display_name": "Simpl Pay Later Account",
+"masked_account_number": "SIMPL-XX-4826",
+"ownership": "single",
+"primary_use": "Pay-later account for quick commerce and food delivery during the final 8 days before salary.",
+"upi_linked": false,
+"payment_rail_notes": "Used when bank balance is tight before salary and Aarav wants to preserve cash. Repayments should later appear from a visible bank account, usually HDFC salary savings.",
+"product_details": {
+"pay_later_limit_inr": 25000,
+"usual_use_window": "Final 8 days before salary",
+"monthly_usage_low_inr": 2500,
+"monthly_usage_high_inr": 18000,
+"typical_merchants": [
+"Swiggy",
+"Zomato",
+"Blinkit",
+"Zepto",
+"Swiggy Instamart"
+],
+"repayment_source_account_id": "aarav_hdfc_salary_savings_001",
+"late_fee_risk": "high in stress months and low in normal months",
+"aa_schema_note": "Modeled as a synthetic credit-line/pay-later FI account for Moné's dummy AA environment, even if real AA coverage varies by provider."
+},
+"why_this_account_exists": "The persona explicitly uses pay-later for quick commerce and food delivery during the last 8 days before salary.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Use this for BNPL purchase records and repayment obligations. Repayment should be visible from HDFC salary savings or, rarely, ICICI secondary savings after salary."
+},
+{
+"account_id": "aarav_uti_sip_mf_001",
+"institution_name": "UTI Mutual Fund",
+"account_family": "mutual_fund",
+"aa_account_type": "MUTUAL_FUND",
+"display_name": "UTI Nifty 50 Index Fund Direct Growth Folio",
+"masked_account_number": "FOLIO-XX-7359",
+"ownership": "single",
+"primary_use": "Scheduled monthly SIP investment account.",
+"upi_linked": false,
+"payment_rail_notes": "SIP debit should originate from the HDFC salary savings account only in successful months. Skipped months should show no SIP outflow.",
+"product_details": {
+"fund_name": "UTI Nifty 50 Index Fund Direct Growth",
+"investment_mode": "SIP",
+"scheduled_sip_amount_inr": 7500,
+"usual_sip_day": 2,
+"successful_months_per_year": 9,
+"skipped_months_per_year": 3,
+"actual_annual_sip_outflow_inr": 67500,
+"default_debit_account_id": "aarav_hdfc_salary_savings_001",
+"skip_trigger": "Skipped when salary has already been absorbed by rent, large credit card payment, travel booking, family support, or bank balance below ₹20000 on the 2nd."
+},
+"why_this_account_exists": "Aarav’s persona includes a ₹7500 monthly mutual fund SIP that succeeds 9 months per year and is skipped 3 months per year.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Generate SIP investment outflows only in 9 successful months. Do not treat the SIP as a fixed obligation. No opening balance should be generated at this stage."
+},
+{
+"account_id": "aarav_icici_liquid_mf_001",
+"institution_name": "ICICI Prudential Mutual Fund",
+"account_family": "mutual_fund",
+"aa_account_type": "MUTUAL_FUND",
+"display_name": "ICICI Prudential Liquid Fund Direct Growth Folio",
+"masked_account_number": "FOLIO-XX-9142",
+"ownership": "single",
+"primary_use": "Small liquid or redeemable mutual fund position for stress drawdowns.",
+"upi_linked": false,
+"payment_rail_notes": "Redemptions should credit a visible bank account, usually ICICI secondary savings, with plausible settlement timing.",
+"product_details": {
+"fund_name": "ICICI Prudential Liquid Fund Direct Growth",
+"investment_mode": "lump sum and ad hoc surplus parking",
+"typical_asset_drawdown_inr": 30000,
+"asset_drawdown_frequency_per_year": 2,
+"default_redemption_credit_account_id": "aarav_icici_secondary_savings_001",
+"redemption_use_cases": [
+"credit card due date pressure",
+"travel booking overlap",
+"family support overlap",
+"rent and card bill collision"
+],
+"redemption_settlement_expectation": "Redemption credit should arrive later than the sell instruction and should not be used as a same-timestamp liquidity fix.",
+"starting_state_requirement": "Financial starting state must include enough existing liquid fund units/value to support two stress redemptions of around ₹30000 each."
+},
+"why_this_account_exists": "The persona requires small liquid fund or redeemable MF drawdowns around ₹30000 twice per year.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Use this account for redemption credits during stress months. Do not create opening balance now. Redemptions must credit ICICI secondary savings or another visible deposit account."
+},
+{
+"account_id": "aarav_acko_scooter_insurance_001",
+"institution_name": "Acko General Insurance",
+"account_family": "insurance",
+"aa_account_type": "GENERAL_INSURANCE",
+"display_name": "Acko Two-Wheeler Insurance Policy - TVS Ntorq 125",
+"masked_account_number": "POLICY-XX-2861",
+"ownership": "single",
+"primary_use": "Annual scooter insurance policy for Aarav’s TVS Ntorq 125.",
+"upi_linked": false,
+"payment_rail_notes": "Premium is usually paid by credit card. Scooter fuel, parking, service, and repairs should appear later through bank, UPI, or card transactions, not through a separate vehicle account.",
+"product_details": {
+"policy_type": "two_wheeler_insurance",
+"vehicle_model": "TVS Ntorq 125",
+"annual_premium_inr": 7800,
+"typical_payment_month": "September",
+"typical_payment_mode": "credit card",
+"usual_payment_account_id": "aarav_axis_credit_card_001",
+"idv_inr": 72000,
+"policy_frequency": "annual"
+},
+"why_this_account_exists": "Aarav’s persona includes annual scooter insurance and recurring scooter-related payments. The insurance policy is AA-visible as an insurance product; the scooter itself is not a financial account.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Generate annual premium as a card transaction if transactions are created later. Do not create a separate vehicle account."
+},
+{
+"account_id": "aarav_maxlife_term_insurance_001",
+"institution_name": "Max Life Insurance",
+"account_family": "insurance",
+"aa_account_type": "TERM_INSURANCE",
+"display_name": "Max Life Term Insurance Policy",
+"masked_account_number": "POLICY-XX-6674",
+"ownership": "single",
+"primary_use": "Annual term insurance policy.",
+"upi_linked": false,
+"payment_rail_notes": "Premium may be paid by net banking from HDFC salary savings or by credit card depending on liquidity and card pressure.",
+"product_details": {
+"policy_type": "term_life_insurance",
+"annual_premium_inr": 15000,
+"typical_payment_month": "December",
+"coverage_amount_inr": 10000000,
+"policy_frequency": "annual",
+"usual_payment_source_account_ids": [
+"aarav_hdfc_salary_savings_001",
+"aarav_axis_credit_card_001"
+]
+},
+"why_this_account_exists": "Aarav’s persona includes an annual term insurance premium that must have a visible policy home and future payment rail.",
+"raw_aa_visibility": "visible",
+"downstream_generation_notes": "Generate one annual premium payment later, either through HDFC net banking or Axis card. Do not spread this into monthly sinking transactions unless explicitly introduced later."
+}
+],
+"required_account_relationships": [
+{
+"relationship_type": "credit_card_payment",
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id": "aarav_axis_credit_card_001",
+"rule": "Most credit card bill payments should debit HDFC salary savings and credit the Axis credit card account. Card spends must not be duplicated as direct bank debits."
+},
+{
+"relationship_type": "credit_card_payment",
+"source_account_id": "aarav_icici_secondary_savings_001",
+"destination_account_id": "aarav_axis_credit_card_001",
+"rule": "Backup card bill payments may debit ICICI secondary savings when Aarav uses buffer money, liquid fund redemption proceeds, or stress-month cash management."
+},
+{
+"relationship_type": "self_transfer",
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id": "aarav_icici_secondary_savings_001",
+"rule": "Self-transfers from salary savings to secondary savings must have matching debit and credit entries with plausible timestamp gaps."
+},
+{
+"relationship_type": "self_transfer",
+"source_account_id": "aarav_icici_secondary_savings_001",
+"destination_account_id": "aarav_hdfc_salary_savings_001",
+"rule": "Reverse self-transfers must also be traceable across both visible accounts, especially before rent, card bill, or pay-later repayment pressure."
+},
+{
+"relationship_type": "sip_debit",
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id": "aarav_uti_sip_mf_001",
+"rule": "Debit ₹7500 on the 2nd only in 9 successful SIP months. In 3 skipped months there should be no SIP debit."
+},
+{
+"relationship_type": "redemption_credit",
+"source_account_id": "aarav_icici_liquid_mf_001",
+"destination_account_id": "aarav_icici_secondary_savings_001",
+"rule": "Liquid fund redemptions should be around ₹30000 and occur twice per year during stress drawdowns. Credit should arrive later than the redemption instruction and must be visible in the destination savings account."
+},
+{
+"relationship_type": "pay_later_repayment",
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id": "aarav_simpl_paylater_001",
+"rule": "Simpl repayments should usually occur after salary credit and debit HDFC salary savings."
+},
+{
+"relationship_type": "pay_later_repayment",
+"source_account_id": "aarav_icici_secondary_savings_001",
+"destination_account_id": "aarav_simpl_paylater_001",
+"rule": "ICICI secondary savings may be used for pay-later repayment in constrained months if Aarav has moved funds or received a redemption credit there."
+},
+{
+"relationship_type": "pay_later_purchase",
+"source_account_id": "aarav_simpl_paylater_001",
+"destination_account_id": "external_merchants",
+"rule": "Food delivery and quick commerce purchases during the final 8 days before salary should increase Simpl outstanding first. Deposit accounts should show impact only when Simpl is repaid. Do not duplicate Simpl purchases as direct bank debits."
+},
+{
+"relationship_type": "insurance_premium",
+"source_account_id": "aarav_axis_credit_card_001",
+"destination_account_id": "aarav_acko_scooter_insurance_001",
+"rule": "Annual scooter insurance premium of ₹7800 should usually appear as a credit card transaction in September."
+},
+{
+"relationship_type": "insurance_premium",
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id": "aarav_maxlife_term_insurance_001",
+"rule": "Annual term insurance premium of ₹15000 may be paid by HDFC net banking in December."
+},
+{
+"relationship_type": "insurance_premium",
+"source_account_id": "aarav_axis_credit_card_001",
+"destination_account_id": "aarav_maxlife_term_insurance_001",
+"rule": "Annual term insurance premium may alternatively appear as a credit card transaction if Aarav chooses card payment in December. Do not generate both payment paths in the same year."
+}
+],
+"external_counterparty_handling": {
+"landlord": {
+"name": "Suresh Krishnamurthy",
+"account_home": "External counterparty receiving rent from aarav_hdfc_salary_savings_001",
+"rule": "No Aarav-owned landlord account should be created."
+},
+"friends": [
+{
+"name": "Kabir Sethi",
+"account_home": "External UPI counterparty",
+"rule": "Borrowing, repayment, and group settlement should appear only as ordinary peer transfers through Aarav's visible bank accounts."
+},
+{
+"name": "Nikhil Rao",
+"account_home": "External UPI counterparty",
+"rule": "Group reimbursements and short transfers should not be modeled as loan accounts."
+},
+{
+"name": "Zoya Khan",
+"account_home": "External UPI counterparty",
+"rule": "Concert, weekend plan, and settlement transfers should appear as ordinary UPI credits or debits."
+},
+{
+"name": "Rohan Bhat",
+"account_home": "External UPI counterparty",
+"rule": "Rohan pays his own rent directly to the landlord. Household settlements with Aarav should appear only as UPI transfers."
+}
+],
+"family": [
+{
+"name": "Anita Menon",
+"account_home": "External UPI or bank transfer counterparty",
+"rule": "Monthly medicine money should debit Aarav's visible deposit account and should not create a family loan account."
+},
+{
+"name": "Vikram Menon",
+"account_home": "External UPI or bank transfer counterparty",
+"rule": "Irregular family support should appear as ordinary transfer outflows."
+},
+{
+"name": "Meera Menon",
+"account_home": "External UPI or bank transfer counterparty",
+"rule": "Occasional sister support should appear as ordinary transfer outflows."
+}
+]
+},
+"non_account_visibility_notes": {
+"cash": {
+"aa_visible_account_created": false,
+"rule": "Cash is not an AA account. ATM withdrawals from visible bank accounts may appear later, but tips, street food, small parking, and other cash spends are not individually visible."
+},
+"scooter": {
+"aa_visible_vehicle_account_created": false,
+"rule": "The TVS Ntorq 125 is not a financial account. Fuel, service, parking, repair, and insurance payments should later appear through bank, UPI, card, or insurance policy records."
+},
+"friend_borrowing": {
+"aa_visible_loan_account_created": false,
+"rule": "Friend borrowing and repayment must not create formal loan accounts. They should appear only as ordinary peer transfers."
+},
+"group_fronting": {
+"aa_visible_group_account_created": false,
+"rule": "Group fronting should appear as full merchant debits on card or bank followed by partial UPI credits from friends over plausible delays."
+}
+},
+"intentionally_excluded_accounts": [
+{
+"account_family": "recurring_deposit",
+"reason": "Locked Aarav persona uses SIP and liquid fund drawdowns, not an active RD."
+},
+{
+"account_family": "term_deposit",
+"reason": "No FD behavior is required in locked Aarav persona v1."
+},
+{
+"account_family": "personal_loan",
+"reason": "Friend borrowing remains ordinary peer transfers, not a formal loan account."
+},
+{
+"account_family": "vehicle_loan",
+"reason": "TVS Ntorq ownership does not require an active vehicle loan in this persona."
+}
+],
+"coverage_checklist": {
+"salary_account_exists": true,
+"secondary_bank_account_exists": true,
+"credit_card_account_exists": true,
+"pay_later_account_exists": true,
+"mutual_fund_accounts_exist": true,
+"liquid_or_redeemable_asset_exists": true,
+"insurance_accounts_exist": true,
+"vehicle_related_account_or_policy_exists": true,
+"all_self_transfers_traceable": true,
+"cash_not_modeled_as_aa_account": true,
+"friend_transfers_have_bank_upi_home": true,
+"group_fronting_has_card_and_bank_home": true,
+"scooter_payments_have_bank_card_or_policy_home": true
+},
+"do_not_generate_yet": [
+"transactions",
+"opening balances",
+"monthly balances",
+"year arc",
+"daily life",
+"raw AA payload"
+]
+}

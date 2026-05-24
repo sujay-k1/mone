@@ -1,88 +1,271 @@
 import SwiftUI
 import SwiftData
+import Charts
 
 struct MoneyMapView: View {
     @Environment(SessionViewModel.self) private var sessionVM
+    @Environment(AppViewModel.self) private var appVM
     @Environment(\.modelContext) private var modelContext
 
     @State private var model: MoneyMapScreenModel?
     @State private var errorMessage: String?
     @State private var showTransactionHistory = false
+    @State private var transactionHistoryFilter: MoneyMapTransactionFilter = .all
+    @State private var shouldRunTourAutoScroll = false
+
+    // ── Card expand state ────────────────────────────────────────────────
+    @State private var expandedItem: MoneyMapItem? = nil
+    @State private var expandedGroup: MoneyMapCategoryGroup? = nil
+    @State private var expandedSubscriptions: Bool = false
+    @State private var cardDragOffset: CGFloat = 0
+
+    // Directly-animatable overlay geometry — no computed intermediaries.
+    // We set these to the source frame on tap (no animation), then
+    // DispatchQueue.main.async to animate to the expanded values, guaranteeing
+    // two separate render passes.
+    @State private var overlayCenter: CGPoint = .zero
+    @State private var overlaySize: CGSize = .zero
+    @State private var scrimVisible: Bool = false
+    @State private var expandedSourceFrame: CGRect = .zero
+    @State private var dismissToken: UUID = UUID()
+
+    // Card frame tracking
+    @State private var cardFrames: [String: CGRect] = [:]
+
+    private struct CardFrameKey: PreferenceKey {
+        static var defaultValue: [String: CGRect] = [:]
+        static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+            value.merge(nextValue()) { $1 }
+        }
+    }
+
+    // Container geometry is read by a root GeometryReader (more reliable than .background).
+    @State private var containerSize: CGSize = .zero
+
+    private var containerCenter: CGPoint {
+        CGPoint(x: containerSize.width / 2, y: containerSize.height / 2)
+    }
+    private var expandedSideLength: CGFloat {
+        max(containerSize.width - MoneSpacing.page * 2, 0)
+    }
+    private var isShowingOverlay: Bool {
+        expandedItem != nil || expandedGroup != nil || expandedSubscriptions
+    }
+    private enum TourScrollTarget {
+        static let top = "moneyMapTourTop"
+        static let lower = "moneyMapTourLower"
+        static let bottom = "moneyMapTourBottom"
+    }
 
     var body: some View {
-        ZStack {
-            Color.moneBackground.ignoresSafeArea()
+        GeometryReader { geo in
+            ZStack {
+                Color.moneBackground.ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
-                LazyVStack(alignment: .leading, spacing: 36) {
-                    if let model {
-                        header(model)
-                        snapshotCard(model)
-                        committedSection(model)
-                        everydaySection(model)
-                        outliersSection(model)
-                        fundSection(model)
-                        liabilitiesSection(model)
-                        reviewSection(model)
-                    } else if let errorMessage {
-                        errorState(errorMessage)
-                    } else {
-                        loadingState
+                ScrollViewReader { proxy in
+                    ScrollView(showsIndicators: false) {
+                        LazyVStack(alignment: .leading, spacing: 36) {
+                            if let model {
+                                header(model)
+                                    .id(TourScrollTarget.top)
+                                snapshotCard(model)
+                                committedSection(model)
+                                everydaySection(model)
+                                    .id(TourScrollTarget.lower)
+                                outliersSection(model)
+                                fundSection(model)
+                                liabilitiesSection(model)
+                                reviewSection(model)
+                            } else if let errorMessage {
+                                errorState(errorMessage)
+                            } else {
+                                loadingState
+                            }
+                            Spacer(minLength: 28)
+                                .id(TourScrollTarget.bottom)
+                        }
+                        .padding(.horizontal, MoneSpacing.page)
                     }
-
-                    Spacer(minLength: 28)
+                    .onReceive(NotificationCenter.default.publisher(for: .moneTabTourStepDidChange)) { notification in
+                        guard notification.userInfo?["step"] as? String == MoneTabTourStepName.moneyMap else { return }
+                        shouldRunTourAutoScroll = true
+                        runTourAutoScrollIfReady(proxy)
+                    }
+                    .onAppear {
+                        if UserDefaults.standard.string(forKey: MoneTabTourStepName.activeStepDefaultsKey) == MoneTabTourStepName.moneyMap {
+                            shouldRunTourAutoScroll = true
+                            runTourAutoScrollIfReady(proxy)
+                        }
+                    }
+                    .onChange(of: model != nil) { _, _ in
+                        runTourAutoScrollIfReady(proxy)
+                    }
                 }
-                .padding(.horizontal, MoneSpacing.page)
-                .padding(.top, 16)
+
+                // ── Scrim ────────────────────────────────────────────────
+                if isShowingOverlay {
+                    Color.black
+                        .opacity(scrimVisible ? 0.55 * Double(1 - min(cardDragOffset / 300, 1)) : 0)
+                        .ignoresSafeArea()
+                        .onTapGesture { dismissToSource() }
+                        .animation(.easeInOut(duration: 0.25), value: scrimVisible)
+                        .animation(.easeInOut(duration: 0.1), value: cardDragOffset)
+                        .zIndex(10)
+                }
+
+                // ── Overlay card ─────────────────────────────────────────
+                if let item = expandedItem {
+                    overlayCard { MoneyMapMiniCard(item: item, isExpanded: true) }.zIndex(11)
+                } else if let group = expandedGroup {
+                    overlayCard { MoneyMapCategoryCard(group: group, isExpanded: true) }.zIndex(11)
+                } else if expandedSubscriptions, let m = model {
+                    overlayCard { SubscriptionsMiniCard(items: m.subscriptionItems, isExpanded: true) }.zIndex(11)
+                }
             }
+            .coordinateSpace(name: "moneyMapRoot")
+            .onPreferenceChange(CardFrameKey.self) { cardFrames = $0 }
+            .onAppear { containerSize = geo.size }
+            .onChange(of: geo.size) { _, s in containerSize = s }
         }
-        .task {
-            loadMoneyMap()
-        }
-        .sheet(isPresented: $showTransactionHistory) {
+        .task { loadMoneyMap() }
+        .sheet(isPresented: $showTransactionHistory, onDismiss: {
+            appVM.moneyMapDeepLink = nil
+        }) {
             if let model {
                 MoneyMapTransactionHistorySheet(
                     model: model,
-                    onRetag: { transaction, option in
-                        retag(transaction, as: option)
-                    }
+                    initialFilter: transactionHistoryFilter,
+                    onRetag: { transaction, option in retag(transaction, as: option) }
                 )
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
                 .presentationBackground(Color.moneBackground)
             }
         }
+        .onChange(of: appVM.moneyMapDeepLink) { _, deepLink in handleDeepLink(deepLink) }
+        .onAppear { handleDeepLink(appVM.moneyMapDeepLink) }
     }
 
-    private func header(_ model: MoneyMapScreenModel) -> some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("moné")
-                    .font(.moneLabelCaps)
-                    .tracking(3.0)
-                    .foregroundStyle(Color.moneTertiary)
-
-                Text("Money Map")
-                    .font(.moneDisplay)
-                    .foregroundStyle(Color.monePrimary)
-
-                Text(sessionVM.isSignedIn
-                     ? "\(sessionVM.displayName.capitalized) · \(model.month)"
-                     : model.month)
-                    .font(.moneBodySm)
-                    .foregroundStyle(Color.moneSecondary)
+    private func runTourAutoScrollIfReady(_ proxy: ScrollViewProxy) {
+        guard shouldRunTourAutoScroll, model != nil else { return }
+        shouldRunTourAutoScroll = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+            withAnimation(.linear(duration: 48.0)) {
+                proxy.scrollTo(TourScrollTarget.bottom, anchor: .bottom)
             }
-
-            Spacer()
-
-            Circle()
-                .fill(confidenceColor(model.confidence))
-                .frame(width: 8, height: 8)
-                .overlay(
-                    Circle()
-                        .strokeBorder(confidenceColor(model.confidence).opacity(0.25), lineWidth: 4)
-                )
         }
+    }
+
+    // ── Expand / dismiss ─────────────────────────────────────────────────
+
+    private func expand(frameKey: String, action: () -> Void) {
+        let src = cardFrames[frameKey] ?? CGRect(origin: containerCenter, size: .zero)
+        expandedSourceFrame = src
+
+        // Step 1 — place overlay at source frame, no animation
+        overlayCenter = CGPoint(x: src.midX, y: src.midY)
+        overlaySize   = CGSize(width: src.width, height: src.height)
+        scrimVisible  = false
+        action()   // inserts the overlay into the hierarchy
+
+        // Step 2 — next run loop: spring to expanded position
+        DispatchQueue.main.async {
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.80)) {
+                self.overlayCenter = self.containerCenter
+                self.overlaySize = CGSize(width: self.expandedSideLength, height: self.expandedSideLength)
+            }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                self.scrimVisible = true
+            }
+        }
+    }
+
+    private func dismissToSource() {
+        let token = UUID()
+        dismissToken = token
+        withAnimation(.spring(response: 0.40, dampingFraction: 0.82)) {
+            overlayCenter = CGPoint(x: expandedSourceFrame.midX, y: expandedSourceFrame.midY)
+            overlaySize   = CGSize(width: expandedSourceFrame.width,
+                                   height: expandedSourceFrame.height)
+            cardDragOffset = 0
+        }
+        withAnimation(.easeInOut(duration: 0.2)) { scrimVisible = false }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
+            guard self.dismissToken == token else { return }
+            self.expandedItem = nil
+            self.expandedGroup = nil
+            self.expandedSubscriptions = false
+        }
+    }
+
+    private var expandDragGesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if value.translation.height > 0 { cardDragOffset = value.translation.height }
+            }
+            .onEnded { value in
+                if value.translation.height > 100 || value.predictedEndTranslation.height > 300 {
+                    dismissToSource()
+                } else {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { cardDragOffset = 0 }
+                }
+            }
+    }
+
+    // ── Overlay card ─────────────────────────────────────────────────────
+
+    @ViewBuilder
+    private func overlayCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        content()
+            .frame(width: overlaySize.width, height: overlaySize.height)
+            .clipShape(RoundedRectangle(cornerRadius: MoneRadius.xl, style: .continuous))
+            .position(overlayCenter)
+            .offset(y: cardDragOffset)
+            .gesture(expandDragGesture)
+            .animation(.spring(response: 0.45, dampingFraction: 0.80), value: overlaySize.width)
+            .animation(.spring(response: 0.45, dampingFraction: 0.80), value: overlayCenter)
+    }
+
+    // ── Frame reporter ────────────────────────────────────────────────────
+
+    private func frameReporter(key: String) -> some View {
+        GeometryReader { geo in
+            Color.clear.preference(
+                key: CardFrameKey.self,
+                value: [key: geo.frame(in: .named("moneyMapRoot"))]
+            )
+        }
+    }
+
+    // ── Deeplink ──────────────────────────────────────────────────────────
+
+    private func handleDeepLink(_ deepLink: AppViewModel.MoneyMapDeepLink?) {
+        guard let deepLink, model != nil else { return }
+        switch deepLink {
+        case .openReviewTransactions:
+            transactionHistoryFilter = .review
+            showTransactionHistory = true
+        case .openSubscriptionCard:
+            expand(frameKey: "subscriptions") { expandedSubscriptions = true }
+        }
+    }
+
+
+    private func header(_ model: MoneyMapScreenModel) -> some View {
+        DashboardHeader(
+            title: "Money Map",
+            subtitle: sessionVM.isSignedIn ? sessionVM.displayName.capitalized : nil,
+            tag: formattedMonth(model.month)
+        )
+    }
+
+    private func formattedMonth(_ monthKey: String) -> String {
+        guard monthKey.count == 7,
+              let month = Int(monthKey.suffix(2)),
+              let year = Int(monthKey.prefix(4)),
+              month >= 1 && month <= 12 else { return monthKey }
+        let names = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
+        return "\(names[month - 1]) \(year)"
     }
 
     private func snapshotCard(_ model: MoneyMapScreenModel) -> some View {
@@ -91,7 +274,7 @@ struct MoneyMapView: View {
             // ── Income + Confidence ──────────────────────────────────────
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("\(model.month.uppercased()) INFLOW RECON")
+                    Text("INFLOW VS. OUTFLOW")
                         .font(.moneLabelCaps)
                         .foregroundStyle(Color.moneTertiary)
 
@@ -119,21 +302,27 @@ struct MoneyMapView: View {
                 }
             }
 
-            // ── Segmented bar ────────────────────────────────────────────
-            MoneyMapSegmentedBar(model: model)
+            // ── Income vs outflow comparison bars ────────────────────────
+            MoneyMapInflowOutflowBars(model: model)
 
-            // ── Bucket grid ──────────────────────────────────────────────
+            // ── Bucket index ─────────────────────────────────────────────
             LazyVGrid(
                 columns: [GridItem(.flexible()), GridItem(.flexible())],
                 alignment: .leading,
                 spacing: 16
             ) {
-                moneyLabel("Committed",  model.regularCommitted,         .committed)
-                moneyLabel("Everyday",   model.everyday,                 .everyday)
-                moneyLabel("Fund",       model.fund,                     .fund)
-                moneyLabel("Outliers",   model.outliers,                 .outliers)
-                moneyLabel("Review",     model.review,                   .review)
-                moneyLabel("Remaining",  model.operatingRemaining,       .operatingRemaining)
+                moneyLabel("Committed",   model.regularCommitted + model.subscriptions, .committed)
+                moneyLabel("Everyday",    model.everyday,                               .everyday)
+                moneyLabel("Investments", model.fund,                                   .fund)
+                moneyLabel("Liabilities", model.liability,                              .liability)
+                moneyLabel("Tax",         model.taxDeduction,                           .tax)
+                moneyLabel("Outliers",    model.outliers,                               .outliers)
+                if model.review > 0 {
+                    moneyLabel("Review",  model.review,                                 .review)
+                }
+                moneyLabel(model.operatingRemaining >= 0 ? "Remaining" : "Shortfall",
+                           model.operatingRemaining,
+                           model.operatingRemaining >= 0 ? .operatingRemaining : .outliers)
             }
 
             Divider()
@@ -161,7 +350,7 @@ struct MoneyMapView: View {
 
                 VStack(alignment: .trailing, spacing: 4) {
                     Text("\(model.confidence)%")
-                        .font(.moneBodyLg)
+                        .font(.moneAmtSm)
                         .foregroundStyle(confidenceColor(model.confidence))
 
                     Text("Confidence")
@@ -209,7 +398,7 @@ struct MoneyMapView: View {
                     .foregroundStyle(Color.moneTertiary)
 
                 Text(formatCurrency(amount))
-                    .font(.moneBodySm)
+                    .font(.moneAmtSm)
                     .foregroundStyle(Color.monePrimary)
             }
         }
@@ -217,16 +406,43 @@ struct MoneyMapView: View {
     }
 
     private func committedSection(_ model: MoneyMapScreenModel) -> some View {
-        section(
+        let totalCommitted = model.regularCommitted
+            + model.liability
+            + model.subscriptionItems.map(\.amount).reduce(0, +)
+        let hasContent = !model.committedItems.isEmpty
+            || !model.subscriptionItems.isEmpty
+            || !model.liabilityItems.isEmpty
+        return section(
             title: "Monthly committed",
-            trailing: "\(formatCurrency(model.regularCommitted)) detected"
+            trailing: "\(formatCurrency(totalCommitted)) detected"
         ) {
-            if model.committedItems.isEmpty {
+            if !hasContent {
                 emptySection("No recurring commitments detected for this month.")
             } else {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(model.committedItems) { item in
                         MoneyMapMiniCard(item: item)
+                            .background(frameReporter(key: item.id))
+                            .opacity(expandedItem?.id == item.id ? 0 : 1)
+                            .onTapGesture {
+                                expand(frameKey: item.id) { expandedItem = item }
+                            }
+                    }
+                    ForEach(model.liabilityItems) { item in
+                        MoneyMapMiniCard(item: item)
+                            .background(frameReporter(key: item.id))
+                            .opacity(expandedItem?.id == item.id ? 0 : 1)
+                            .onTapGesture {
+                                expand(frameKey: item.id) { expandedItem = item }
+                            }
+                    }
+                    if !model.subscriptionItems.isEmpty {
+                        SubscriptionsMiniCard(items: model.subscriptionItems)
+                            .background(frameReporter(key: "subscriptions"))
+                            .opacity(expandedSubscriptions ? 0 : 1)
+                            .onTapGesture {
+                                expand(frameKey: "subscriptions") { expandedSubscriptions = true }
+                            }
                     }
                 }
             }
@@ -244,6 +460,11 @@ struct MoneyMapView: View {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(model.everydayGroups) { group in
                         MoneyMapCategoryCard(group: group)
+                            .background(frameReporter(key: group.id))
+                            .opacity(expandedGroup?.id == group.id ? 0 : 1)
+                            .onTapGesture {
+                                expand(frameKey: group.id) { expandedGroup = group }
+                            }
                     }
                 }
             }
@@ -253,7 +474,7 @@ struct MoneyMapView: View {
     private func outliersSection(_ model: MoneyMapScreenModel) -> some View {
         section(
             title: "Outliers",
-            trailing: "\(formatCurrency(model.outliers)) unusual"
+            trailing: "\(formatCurrency(model.outlierItems.map(\.amount).reduce(0, +))) unusual"
         ) {
             if model.outlierItems.isEmpty {
                 emptySection("No high-impact unusual items detected from transaction-level data.")
@@ -448,10 +669,18 @@ struct MoneyMapView: View {
 
 private struct MoneyMapTransactionHistorySheet: View {
     let model: MoneyMapScreenModel
+    var initialFilter: MoneyMapTransactionFilter = .all
     let onRetag: (MoneyMapTransaction, MoneyMapRetagOption) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var selectedFilter: MoneyMapTransactionFilter = .all
+
+    init(model: MoneyMapScreenModel, initialFilter: MoneyMapTransactionFilter = .all, onRetag: @escaping (MoneyMapTransaction, MoneyMapRetagOption) -> Void) {
+        self.model = model
+        self.initialFilter = initialFilter
+        self.onRetag = onRetag
+        self._selectedFilter = State(initialValue: initialFilter)
+    }
 
     private var availableFilters: [MoneyMapTransactionFilter] {
         MoneyMapTransactionFilter.allCases.filter { filter in
@@ -657,7 +886,7 @@ private struct MoneyMapTransactionCard: View {
 
                 VStack(alignment: .trailing, spacing: 4) {
                     Text((transaction.isCredit ? "+" : "−") + formatCurrency(transaction.amount))
-                        .font(.moneBodyMd)
+                        .font(.moneAmtSm)
                         .foregroundStyle(transaction.isCredit ? Color.moneHealthy : Color.monePrimary)
                         .lineLimit(1)
 
@@ -752,6 +981,307 @@ private struct MoneyMapTransactionCard: View {
     }
 }
 
+// MARK: - Diagonal Hatch Fill
+
+private struct DiagonalHatch: View {
+    var spacing: CGFloat = 7
+    var lineWidth: CGFloat = 0.5
+    var color: Color = Color.monePrimary.opacity(0.3)
+
+    var body: some View {
+        Canvas { ctx, size in
+            var path = Path()
+            // Draw lines at 45° across the full rect, stepping by `spacing`
+            var offset = -size.height
+            while offset < size.width {
+                path.move(to: CGPoint(x: offset, y: 0))
+                path.addLine(to: CGPoint(x: offset + size.height, y: size.height))
+                offset += spacing
+            }
+            ctx.stroke(path, with: .color(color), lineWidth: lineWidth)
+        }
+    }
+}
+
+// MARK: - Inflow vs Outflow Comparison Bars
+
+private struct MoneyMapInflowOutflowBars: View {
+    let model: MoneyMapScreenModel
+
+    private var segments: [(label: String, amount: Double, kind: MoneyMapBucketKind)] {
+        var s: [(String, Double, MoneyMapBucketKind)] = []
+        if model.regularCommitted > 0 { s.append(("Committed",     model.regularCommitted, .committed)) }
+        if model.subscriptions    > 0 { s.append(("Subscriptions", model.subscriptions,    .committed)) }
+        if model.everyday         > 0 { s.append(("Everyday",      model.everyday,         .everyday))  }
+        if model.fund             > 0 { s.append(("Investments",   model.fund,             .fund))      }
+        if model.liability        > 0 { s.append(("Liabilities",   model.liability,        .liability)) }
+        if model.taxDeduction     > 0 { s.append(("Tax",           model.taxDeduction,     .tax))       }
+        if model.outliers         > 0 { s.append(("Outliers",      model.outliers,         .outliers))  }
+        if model.review           > 0 { s.append(("Review",        model.review,           .review))    }
+        return s
+    }
+
+    private var totalOutflow: Double { segments.map(\.amount).reduce(0, +) }
+
+    private let barHeight: CGFloat = 36
+
+    var body: some View {
+        let reference = max(model.income, totalOutflow, 1)
+
+        VStack(alignment: .leading, spacing: 4) {
+            // ── Inflow label + amount ─────────────────────────────────────
+            HStack {
+                Text("INFLOW")
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.moneTertiary)
+                Spacer()
+                Text(formatCurrencyCompact(model.income))
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.moneSecondary)
+            }
+
+            // ── Income bar ────────────────────────────────────────────────
+            GeometryReader { geo in
+                let filled = geo.size.width * CGFloat(model.income / reference)
+                HStack(spacing: 0) {
+                    Rectangle()
+                        .fill(Color.monePrimary.opacity(0.45))
+                        .frame(width: filled)
+                        .zIndex(1)
+                    DiagonalHatch()
+                        .zIndex(0)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 3))
+            }
+            .frame(height: barHeight)
+
+            // ── Outflow label + amount ────────────────────────────────────
+            HStack {
+                Text("OUTFLOW")
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.moneTertiary)
+                Spacer()
+                Text(formatCurrencyCompact(totalOutflow))
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(totalOutflow > model.income ? Color.moneRisk : Color.moneSecondary)
+            }
+
+            // ── Outflow segmented bar ─────────────────────────────────────
+            GeometryReader { geo in
+                let filled = geo.size.width * CGFloat(totalOutflow / reference)
+                let segGaps = CGFloat(max(segments.count - 1, 0)) * 2
+                HStack(spacing: 0) {
+                    // Coloured segments
+                    HStack(spacing: 2) {
+                        ForEach(segments.indices, id: \.self) { i in
+                            let seg = segments[i]
+                            let segWidth = (filled - segGaps) * CGFloat(seg.amount / max(totalOutflow, 1))
+                            Rectangle()
+                                .fill(segmentColor(seg.kind))
+                                .frame(width: max(segWidth, 2))
+                        }
+                    }
+                    .frame(width: filled)
+                    .zIndex(1)
+
+                    DiagonalHatch()
+                        .zIndex(0)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 3))
+            }
+            .frame(height: barHeight)
+        }
+    }
+
+    private func segmentColor(_ kind: MoneyMapBucketKind) -> Color {
+        switch kind {
+        case .committed:  return Color.monePrimary.opacity(0.8)
+        case .everyday:   return Color.moneSecondary.opacity(0.7)
+        case .fund:       return Color.moneHealthy
+        case .liability:  return .blue.opacity(0.75)
+        case .tax:        return .purple.opacity(0.7)
+        case .outliers:   return Color.moneRisk.opacity(0.75)
+        case .review:     return .orange.opacity(0.75)
+        default:          return Color.moneTertiary.opacity(0.4)
+        }
+    }
+}
+
+/// Simple left-to-right wrapping layout for the legend chips.
+private struct FlowLayout: Layout {
+    var spacing: CGFloat = 4
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowH: CGFloat = 0
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > maxWidth && x > 0 {
+                y += rowH + spacing; x = 0; rowH = 0
+            }
+            rowH = max(rowH, size.height)
+            x += size.width + spacing
+        }
+        return CGSize(width: maxWidth, height: y + rowH)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        _ = bounds.width
+        var x = bounds.minX
+        var y = bounds.minY
+        var rowH: CGFloat = 0
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > bounds.maxX && x > bounds.minX {
+                y += rowH + spacing; x = bounds.minX; rowH = 0
+            }
+            view.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+            rowH = max(rowH, size.height)
+            x += size.width + spacing
+        }
+    }
+}
+
+// MARK: - Waterfall Chart
+
+private struct MoneyMapWaterfallChart: View {
+    let model: MoneyMapScreenModel
+
+    // Label column width measured via preference key
+    @State private var labelColWidth: CGFloat = 90
+
+    private var totalOutflow: Double {
+        model.waterfallRows
+            .filter { $0.kind != .operatingRemaining }
+            .map { abs($0.amount) }
+            .reduce(0, +)
+    }
+
+    var body: some View {
+        let reference = max(model.income, totalOutflow, 1)
+
+        VStack(alignment: .leading, spacing: 0) {
+            // ── Income reference row ─────────────────────────────────────
+            WaterfallBarRow(
+                label: "Income",
+                amount: model.income,
+                fraction: model.income / reference,
+                kind: .income,
+                isIncome: true,
+                labelColWidth: labelColWidth
+            )
+
+            // ── Divider ──────────────────────────────────────────────────
+            Rectangle()
+                .fill(Color.moneStroke.opacity(0.5))
+                .frame(height: 1)
+                .padding(.vertical, 10)
+
+            // ── Outflow rows ─────────────────────────────────────────────
+            ForEach(model.waterfallRows) { row in
+                WaterfallBarRow(
+                    label: row.label,
+                    amount: row.amount,
+                    fraction: abs(row.amount) / reference,
+                    kind: row.kind,
+                    isIncome: false,
+                    labelColWidth: labelColWidth
+                )
+            }
+        }
+        // Measure the widest label and store it
+        .onPreferenceChange(WaterfallLabelWidthKey.self) { value in
+            labelColWidth = min(value, 110)
+        }
+    }
+}
+
+private struct WaterfallBarRow: View {
+    let label: String
+    let amount: Double
+    let fraction: CGFloat   // 0…1 relative to income
+    let kind: MoneyMapBucketKind
+    let isIncome: Bool
+    let labelColWidth: CGFloat
+
+    private let barHeight: CGFloat = 18
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 10) {
+            // Label
+            Text(label)
+                .font(isIncome ? .moneLabelCaps : .system(size: 11))
+                .foregroundStyle(isIncome ? Color.moneTertiary : Color.moneSecondary)
+                .lineLimit(1)
+                .frame(width: labelColWidth, alignment: .trailing)
+                .background(
+                    GeometryReader { geo in
+                        Color.clear.preference(
+                            key: WaterfallLabelWidthKey.self,
+                            value: geo.size.width
+                        )
+                    }
+                )
+
+            // Bar + amount
+            GeometryReader { geo in
+                let barWidth = max(geo.size.width * fraction, fraction > 0 ? 3 : 0)
+                HStack(alignment: .center, spacing: 6) {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(barColor)
+                        .frame(width: barWidth, height: barHeight)
+
+                    Text(amountText)
+                        .font(.system(size: 11, weight: isIncome ? .semibold : .regular, design: .monospaced))
+                        .foregroundStyle(amountColor)
+                        .lineLimit(1)
+                }
+            }
+            .frame(height: barHeight)
+        }
+        .padding(.vertical, 5)
+    }
+
+    private var barColor: Color {
+        if isIncome { return Color.moneHealthy.opacity(0.55) }
+        switch kind {
+        case .committed:          return Color.monePrimary.opacity(0.8)
+        case .everyday:           return Color.moneSecondary.opacity(0.7)
+        case .fund:               return Color.moneHealthy
+        case .liability:          return .blue.opacity(0.75)
+        case .tax:                return .purple.opacity(0.7)
+        case .outliers:           return Color.moneRisk.opacity(0.75)
+        case .review:             return .orange.opacity(0.75)
+        case .operatingRemaining: return Color.moneHealthy.opacity(0.35)
+        default:                  return Color.moneTertiary.opacity(0.4)
+        }
+    }
+
+    private var amountColor: Color {
+        switch kind {
+        case .outliers:           return Color.moneRisk
+        case .operatingRemaining: return Color.moneHealthy
+        case .fund:               return Color.moneHealthy
+        default:                  return Color.monePrimary
+        }
+    }
+
+    private var amountText: String {
+        formatCurrencyCompact(abs(amount))
+    }
+}
+
+private struct WaterfallLabelWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+// MARK: - Segmented Bar (kept for reference, no longer used in snapshot card)
+
 private struct MoneyMapSegmentedBar: View {
     let model: MoneyMapScreenModel
 
@@ -806,6 +1336,7 @@ private struct MoneyMapSegmentedBar: View {
 
 private struct MoneyMapMiniCard: View {
     let item: MoneyMapItem
+    var isExpanded: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -834,9 +1365,24 @@ private struct MoneyMapMiniCard: View {
                 .padding(.bottom, 8)
 
             Text(formatCurrency(item.amount))
-                .font(.moneBodyLg)
+                .font(.moneAmtMd)
                 .foregroundStyle(Color.monePrimary)
                 .padding(.bottom, 10)
+
+            if isExpanded, let date = item.dateText {
+                Text(date)
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.moneSecondary)
+                    .padding(.bottom, 6)
+            }
+
+            // In grid: fixed spacer keeps height stable (no layout loop).
+            // When expanded in overlay: flexible Spacer pushes subtitle to bottom.
+            if isExpanded {
+                Spacer(minLength: 0)
+            } else {
+                Color.clear.frame(height: 80)
+            }
 
             Text(item.subtitle)
                 .font(.system(size: 11))
@@ -844,6 +1390,7 @@ private struct MoneyMapMiniCard: View {
                 .lineLimit(1)
         }
         .padding(20)
+        .frame(maxHeight: isExpanded ? .infinity : nil)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 
@@ -859,8 +1406,127 @@ private struct MoneyMapMiniCard: View {
     }
 }
 
+// MARK: - Subscriptions Mini Card
+
+private struct SubscriptionsMiniCard: View {
+    let items: [MoneyMapItem]
+    var isExpanded: Bool = false
+
+    private let logoSize: CGFloat = 28
+    private let overlap: CGFloat = -4
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Top row: repeat icon (left) + status badge (right)
+            HStack(alignment: .top) {
+                Image(systemName: "repeat")
+                    .font(.system(size: 18))
+                    .foregroundStyle(Color.moneSecondary)
+
+                Spacer()
+
+                Text("RECURRING")
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(Color.moneSecondary)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(Color.moneSecondary.opacity(0.12))
+                    .clipShape(Capsule())
+            }
+            .padding(.bottom, 14)
+
+            // Logo stack row
+            GeometryReader { geo in
+                logoStack(availableWidth: geo.size.width)
+            }
+            .frame(height: logoSize)
+            .padding(.bottom, 12)
+
+            Text(formatCurrency(items.map(\.amount).reduce(0, +)))
+                .font(.moneAmtMd)
+                .foregroundStyle(Color.monePrimary)
+                .padding(.bottom, 10)
+
+            if isExpanded {
+                Spacer(minLength: 0)
+            } else {
+                Color.clear.frame(height: 80)
+            }
+
+            Text("\(items.count) service\(items.count == 1 ? "" : "s")")
+                .font(.system(size: 11))
+                .foregroundStyle(Color.moneTertiary)
+                .lineLimit(1)
+        }
+        .padding(20)
+        .frame(maxHeight: isExpanded ? .infinity : nil)
+        .moneCard(radius: MoneRadius.xl, elevated: true)
+    }
+
+    @ViewBuilder
+    private func logoStack(availableWidth: CGFloat) -> some View {
+        // How many logos fit before we need overflow?
+        let maxLogos = max(1, Int((availableWidth + overlap) / (logoSize - overlap)))
+        let showCount = items.count > maxLogos ? maxLogos - 1 : items.count
+        let overflow = items.count - showCount
+
+        HStack(spacing: 0) {
+            ForEach(Array(items.prefix(showCount).enumerated()), id: \.offset) { idx, item in
+                logoCircle(for: item.title)
+                    .offset(x: CGFloat(idx) * -(overlap))
+                    .zIndex(Double(showCount - idx))
+            }
+
+            if overflow > 0 {
+                ZStack {
+                    Circle()
+                        .fill(Color.moneStroke)
+                        .frame(width: logoSize, height: logoSize)
+                    Text("+\(overflow)")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(Color.moneSecondary)
+                }
+                .offset(x: CGFloat(showCount) * -(overlap))
+            }
+        }
+    }
+
+    private func logoCircle(for name: String) -> some View {
+        ZStack {
+            Circle()
+                .fill(Color.moneSurface)
+                .frame(width: logoSize, height: logoSize)
+                .overlay(Circle().strokeBorder(Color.moneStroke, lineWidth: 0.5))
+
+            CompanyLogoView(
+                query: name,
+                fallbackSystemName: subscriptionIcon(for: name),
+                padding: 2
+            )
+            .frame(width: logoSize, height: logoSize)
+        }
+        .frame(width: logoSize, height: logoSize)
+    }
+
+    private func subscriptionIcon(for name: String) -> String {
+        let n = name.uppercased()
+        if n.contains("NETFLIX")                        { return "play.rectangle.fill" }
+        if n.contains("SPOTIFY")                        { return "music.note" }
+        if n.contains("APPLE") || n.contains("ICLOUD")  { return "applelogo" }
+        if n.contains("AMAZON") || n.contains("PRIME")  { return "shippingbox.fill" }
+        if n.contains("YOUTUBE") || n.contains("GOOGLE"){ return "play.circle.fill" }
+        if n.contains("HOTSTAR") || n.contains("DISNEY"){ return "sparkles.tv.fill" }
+        if n.contains("SWIGGY") || n.contains("ZOMATO") { return "fork.knife.circle.fill" }
+        if n.contains("ZEPTO")                          { return "cart.fill" }
+        if n.contains("LINKEDIN")                       { return "person.crop.rectangle.stack.fill" }
+        if n.contains("GYM") || n.contains("FITNESS")   { return "dumbbell.fill" }
+        return "repeat.circle.fill"
+    }
+}
+
 private struct MoneyMapCategoryCard: View {
     let group: MoneyMapCategoryGroup
+    var isExpanded: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -871,10 +1537,10 @@ private struct MoneyMapCategoryCard: View {
                 .lineLimit(2)
 
             Text(formatCurrency(group.amount))
-                .font(.moneBodyLg)
+                .font(.moneAmtMd)
                 .foregroundStyle(Color.monePrimary)
 
-            MicroTrendLine(isHigh: group.status == "High")
+            CategorySparkline(group: group, flexible: isExpanded)
 
             HStack {
                 Text("\(group.transactionCount) transaction\(group.transactionCount == 1 ? "" : "s")")
@@ -892,28 +1558,134 @@ private struct MoneyMapCategoryCard: View {
             }
         }
         .padding(20)
+        .frame(maxHeight: isExpanded ? .infinity : nil)
         .moneCard(radius: MoneRadius.xl, elevated: true)
     }
 }
 
-private struct MicroTrendLine: View {
-    let isHigh: Bool
+// MARK: - Category Sparkline
+
+private struct CategorySparkline: View {
+    let group: MoneyMapCategoryGroup
+    var flexible: Bool = false
+
+    private let chartHeight: CGFloat = 48
+
+    private var lineColor: Color {
+        group.status == "High" ? Color.moneRisk : Color.moneSecondary
+    }
 
     var body: some View {
-        GeometryReader { geometry in
-            Path { path in
-                let width = geometry.size.width
-                let height = geometry.size.height
-                path.move(to: CGPoint(x: 0, y: height * 0.8))
-                path.addCurve(
-                    to: CGPoint(x: width, y: isHigh ? height * 0.15 : height * 0.45),
-                    control1: CGPoint(x: width * 0.25, y: height * 0.85),
-                    control2: CGPoint(x: width * 0.65, y: isHigh ? height * 0.05 : height * 0.55)
-                )
-            }
-            .stroke(isHigh ? Color.moneRisk : Color.moneSecondary, lineWidth: 1.5)
+        if group.transactionCount >= 5 {
+            rollingLineChart
+        } else {
+            sparseLineChart
         }
-        .frame(height: 38)
+    }
+
+    // ── ≥5 transactions: rolling avg this month (solid) + prev month (faint) ──
+
+    private var rollingLineChart: some View {
+        let current  = rollingAverage(group.dailyAmounts, window: 5)
+        let previous = rollingAverage(group.previousMonthDailyAmounts, window: 5)
+
+        return Chart {
+            // Previous month — lighter, dashed
+            ForEach(previous, id: \.day) { pt in
+                LineMark(
+                    x: .value("Day", pt.day),
+                    y: .value("₹", pt.avg),
+                    series: .value("Period", "prev")
+                )
+                .foregroundStyle(lineColor.opacity(0.65))
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                .interpolationMethod(.catmullRom)
+            }
+
+            // Current month — solid
+            ForEach(current, id: \.day) { pt in
+                LineMark(
+                    x: .value("Day", pt.day),
+                    y: .value("₹", pt.avg),
+                    series: .value("Period", "current")
+                )
+                .foregroundStyle(lineColor)
+                .lineStyle(StrokeStyle(lineWidth: 1.5))
+                .interpolationMethod(.catmullRom)
+            }
+        }
+        .chartXAxis(.hidden)
+        .chartYAxis(.hidden)
+        .chartLegend(.hidden)
+        .frame(height: flexible ? nil : chartHeight)
+        .frame(maxHeight: flexible ? .infinity : nil)
+    }
+
+    // ── <5 transactions: two edge points — prev month total (left), this month total (right) ──
+
+    private var sparseLineChart: some View {
+        // x=0 → left edge (prev month), x=1 → right edge (this month)
+        let pts: [(x: Int, y: Double, series: String)] = [
+            (0, group.previousMonthAmount, "prev"),
+            (1, group.amount,              "current")
+        ]
+
+        return Chart {
+            // Connecting line — dashed, faint for prev → solid for current direction
+            ForEach(pts, id: \.x) { pt in
+                LineMark(
+                    x: .value("Period", pt.x),
+                    y: .value("₹", pt.y),
+                    series: .value("S", "line")
+                )
+                .foregroundStyle(lineColor.opacity(0.55))
+                .lineStyle(StrokeStyle(lineWidth: 1.5))
+                .interpolationMethod(.linear)
+            }
+
+            // Prev month point — lighter
+            PointMark(
+                x: .value("Period", 0),
+                y: .value("₹", group.previousMonthAmount)
+            )
+            .foregroundStyle(lineColor.opacity(0.45))
+            .symbolSize(24)
+
+            // This month point — solid, slightly larger
+            PointMark(
+                x: .value("Period", 1),
+                y: .value("₹", group.amount)
+            )
+            .foregroundStyle(lineColor)
+            .symbolSize(32)
+        }
+        .chartXScale(domain: 0...1)
+        .chartXAxis(.hidden)
+        .chartYAxis(.hidden)
+        .chartLegend(.hidden)
+        .frame(height: flexible ? nil : chartHeight)
+        .frame(maxHeight: flexible ? .infinity : nil)
+    }
+
+    // ── Rolling average ────────────────────────────────────────────────────
+
+    private struct RollingPoint {
+        let day: Int
+        let avg: Double
+    }
+
+    private func rollingAverage(_ daily: [CategoryDailyAmount], window: Int) -> [RollingPoint] {
+        guard !daily.isEmpty else { return [] }
+        let minDay = daily.map(\.day).min()!
+        let maxDay = daily.map(\.day).max()!
+        var dayMap: [Int: Double] = [:]
+        for pt in daily { dayMap[pt.day] = pt.amount }
+
+        return (minDay...maxDay).map { day in
+            let windowDays = max(minDay, day - window + 1)...day
+            let vals = windowDays.map { dayMap[$0] ?? 0 }
+            return RollingPoint(day: day, avg: vals.reduce(0, +) / Double(vals.count))
+        }
     }
 }
 
@@ -945,7 +1717,7 @@ private struct MoneyMapListRow: View {
             Spacer()
 
             Text(formatCurrency(item.amount))
-                .font(.moneBodyMd)
+                .font(.moneAmtSm)
                 .foregroundStyle(item.kind == .review || item.kind == .outliers ? Color.moneRisk : Color.monePrimary)
         }
         .padding(20)
@@ -978,7 +1750,3 @@ private func formatCurrencyCompact(_ value: Double) -> String {
 #Preview {
     MoneyMapView()
 }
-
-
-
-

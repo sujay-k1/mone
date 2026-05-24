@@ -1,0 +1,98 @@
+{
+  "persona": {
+    "persona_id": "aarav",
+    "full_name": "Aarav Sharma",
+    "age": 32,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Software Engineer",
+    "employer_name": "TechNova Solutions",
+    "monthly_salary_inr": 165000,
+    "monthly_rent_inr": 42000,
+    "monthly_fixed_obligations_inr": 78000,
+    "monthly_discretionary_low_inr": 45000,
+    "monthly_discretionary_high_inr": 85000,
+    "credit_card_limit_inr": 300000,
+    "typical_credit_card_outstanding_low_inr": 35000,
+    "typical_credit_card_outstanding_high_inr": 140000,
+    "work_pattern": "9-5 with occasional late nights",
+    "commute_pattern": "30 mins by metro, 15 mins walk",
+    "family_obligations": [
+      "sister's tuition fees (₹5000/month)"
+    ],
+    "friend_network": [
+      "Ravi (borrowing source)"
+    ],
+    "relationship_context": "single, no dependents",
+    "health_tendencies": [
+      "occasional colds",
+      "smokes 10 cigarettes/day"
+    ],
+    "vices": [
+      "occasional gambling (₹2000-₹5000/month)"
+    ],
+    "food_habits": [
+      "home-cooked meals 5x/week, restaurant 2x/week"
+    ],
+    "shopping_habits": [
+      "mid-range electronics, frequent online purchases"
+    ],
+    "travel_habits": [
+      "domestic flights 2x/year, local travel 1x/month"
+    ],
+    "financial_temperament": "chaotic but not destitute",
+    "credit_behavior": "pays minimum due when stressed, delays payments",
+    "savings_discipline": "sporadic, usually zero",
+    "risk_tolerance": "moderate, avoids high-risk investments",
+    "recurring_obligations": [
+      "rent (₹42000)",
+      "utilities (₹8000)",
+      "domestic help (₹5000)",
+      "mobile/internet (₹3000)",
+      "commute (₹10000)",
+      "subscriptions (Netflix, Spotify, ₹10000)",
+      "minimum investments (₹10000)"
+    ],
+    "stress_responses": [
+      "uses credit card for emergencies",
+      "borrows from Ravi (₹10000-₹30000)",
+      "liquidates non-essential assets (e.g., gaming console)",
+      "delays credit card payments"
+    ],
+    "monthly_survival_logic": "salary covers fixed obligations with ₹2000 surplus; discretionary spending can push into deficit",
+    "stress_month_behavior": "unexpected medical bill (₹25000) + discretionary overspend (₹10000) leads to ₹35000 deficit covered by credit card and ₹20000 loan from Ravi",
+    "boring_month_behavior": "pays salary, covers rent, utilities, subscriptions, smokes, dines out 2x/week, uses credit card for 30% of discretionary spending",
+    "realism_notes": [
+      "occasionally forgets to pay credit card bills",
+      "has 1-2 months/year with partial repayment",
+      "avoids high-interest loans",
+      "uses 'buy now pay later' for electronics"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "BUDGET_MISMATCH",
+        "evidence": "monthly_salary_inr=165000, monthly_fixed_obligations_inr=78000, recurring_obligations=[42000,8000,5000,3000,10000,10000,10000] (sum=88000). Fixed obligations (78000) are explicitly stated but mathematically contradicted by recurring_obligations (88000). Survival logic claims 'salary covers fixed obligations with ₹2000 surplus' but actual math shows salary (165000) - fixed_obligations (78000) = 87000, which must also cover recurring_obligations (88000). This creates a ₹1000 deficit even before discretionary spending.",
+        "why_blocking": "The persona cannot generate realistic financial data without resolving this arithmetic contradiction."
+      },
+      {
+        "code": "STRESS_MONTH_IMPLAUSIBILITY",
+        "evidence": "stress_month_behavior claims ₹35000 deficit covered by credit card and ₹20000 loan. However, credit_card_outstanding_high_inr=140000 implies available credit of 300000-140000=160000. A ₹35000 deficit is trivial for this limit, but the real issue is the prior budget mismatch making the entire financial model unstable.",
+        "why_blocking": "The stress month scenario depends on the base budget being valid, which it is not."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "The fixed obligations are explicitly stated as 78000 but mathematically contradicted by the recurring_obligations list (sum=88000). This makes the persona's financial model self-contradictory.",
+      "The survival logic claims a ₹2000 surplus after fixed obligations but the actual math shows a ₹1000 deficit even before discretionary spending.",
+      "The persona cannot generate a year of realistic raw AA data without resolving the budget arithmetic contradiction."
+    ],
+    "required_regeneration_scope": "Fix the fixed_obligations_inr to match the sum of recurring_obligations (88000) and recalculate all dependent fields (monthly_survival_logic, discretionary ranges, etc.)",
+    "non_blocking_observations": [
+      "The city (Bengaluru) and neighborhood (Whitefield) are realistic for a senior software engineer.",
+      "The credit behavior (minimum due when stressed) is plausible for the income level.",
+      "The vices (gambling, smoking) and shopping habits (mid-range electronics) are realistic for the persona's age and profession."
+    ]
+  }
+}

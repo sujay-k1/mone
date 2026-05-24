@@ -1,0 +1,1034 @@
+{
+"persona_id": "priya",
+"source_reference": "",
+"full_name": "Priya Nair",
+"age": 31,
+"city": "Bengaluru",
+"neighborhood": "Indiranagar",
+"job_title": "Senior Product Manager",
+"employer_name": "ZeptoScale Technologies Private Limited",
+"monthly_salary_inr": 265000,
+"monthly_rent_inr": 68000,
+"monthly_fixed_obligations_inr": 176248,
+"monthly_non_investment_fixed_obligations_inr": 176248,
+"monthly_protected_investments_inr": 40000,
+"monthly_committed_outflows_before_variable_inr": 216248,
+"monthly_discretionary_low_inr": 12000,
+"monthly_discretionary_high_inr": 26000,
+"credit_card_limit_inr": 450000,
+"typical_credit_card_outstanding_low_inr": 38000,
+"typical_credit_card_outstanding_high_inr": 92000,
+"persona_summary": "Priya Nair is a 31-year-old senior product manager in Bengaluru with a strong salary and a highly structured financial life. She earns well, pays on time, invests consistently, and avoids impulsive debt. Her normal months are survivable but narrow because she carries rent, an education loan, parental support, household help, insurance planning, and protected long-term investments. Her stress comes from responsibility rather than chaos: parent medical expenses, annual insurance premiums, travel to Kochi, home repairs, and tax-saving deadlines can temporarily stretch her liquidity.",
+"home_context": {
+"housing_type": "Rented 2BHK apartment",
+"neighborhood": "Indiranagar",
+"monthly_rent_inr": 68000,
+"rent_due_day": 5,
+"rent_payment_mode": "NEFT",
+"landlord_name": "Raghavendra Rao",
+"security_deposit_inr": 408000,
+"lease_renewal_month": "August",
+"lives_with": "Alone",
+"work_setup": "Hybrid work setup with a dedicated desk in the second bedroom",
+"monthly_apartment_maintenance_inr": 3500,
+"household_style": "Clean, functional, low-clutter, with spending concentrated on reliable appliances and work comfort rather than decor"
+},
+"work_pattern": {
+"workdays": [
+"Monday",
+"Tuesday",
+"Wednesday",
+"Thursday",
+"Friday"
+],
+"office_days": [
+"Tuesday",
+"Wednesday",
+"Thursday"
+],
+"work_from_home_days": [
+"Monday",
+"Friday"
+],
+"typical_office_start_time": "10:15",
+"typical_office_end_time": "19:30",
+"typical_wfh_start_time": "09:30",
+"typical_wfh_end_time": "19:00",
+"late_work_nights_per_month": 4,
+"salary_credit_rule": "Salary is credited on the last working day of each month between 18:30 and 21:30.",
+"bonus_expectation": {
+"annual_performance_bonus_month": "April",
+"expected_bonus_net_inr": 340000,
+"bonus_usage_priority": [
+"Replenish emergency fund",
+"Pay annual insurance premiums",
+"Prepay education loan principal",
+"Fund travel to Kochi"
+],
+"bonus_guardrail": "April bonus is a planned annual inflow. It should be used for emergency fund replenishment, insurance premiums, education loan prepayment, or travel. It must not be used to justify structurally negative normal months."
+}
+},
+"commute_pattern": {
+"office_location": "Bellandur",
+"primary_commute_mode": "App cab",
+"secondary_commute_mode": "Metro plus auto",
+"office_day_morning_departure_window": "08:45-09:25",
+"office_day_evening_return_window": "19:45-21:10",
+"average_one_way_cab_cost_inr": 510,
+"average_one_way_metro_auto_cost_inr": 180,
+"monthly_commute_budget_inr": 14500,
+"rainy_day_cab_preference": true,
+"late_night_cab_after_time": "20:45"
+},
+"vehicle_context": {
+"vehicle": "2019 Honda Activa",
+"usage": "Used for local errands, pharmacy runs, nearby groceries, and short Indiranagar trips; not used for office commute to Bellandur.",
+"monthly_fuel_low_inr": 600,
+"monthly_fuel_high_inr": 1200,
+"annual_service_amount_inr": 2500,
+"annual_service_month": "March",
+"annual_insurance_amount_inr": 7200,
+"annual_insurance_month": "March"
+},
+"budget_taxonomy": {
+"non_investment_fixed_obligations": {
+"rent_inr": 68000,
+"education_loan_emi_inr": 38750,
+"family_support_and_father_medicines": {
+"father_support_inr": 18000,
+"mother_support_inr": 22000,
+"father_medicines_inr": 6500,
+"total_inr": 46500
+},
+"household_staff": {
+"domestic_help_inr": 5500,
+"cook_inr": 6500,
+"total_inr": 12000
+},
+"housing_utilities_and_milk": {
+"apartment_maintenance_inr": 3500,
+"electricity_average_inr": 3200,
+"broadband_inr": 1199,
+"mobile_postpaid_inr": 899,
+"milk_subscription_inr": 2200,
+"total_inr": 10998
+},
+"total_inr": 176248
+},
+"protected_investments": {
+"equity_mutual_fund_sips_inr": 25000,
+"recurring_deposit_inr": 10000,
+"nps_contribution_inr": 5000,
+"total_inr": 40000
+},
+"flexible_surplus_savings": {
+"liquid_fund_transfer_min_inr": 0,
+"liquid_fund_transfer_max_inr": 10000,
+"typical_boring_month_inr": 0,
+"comfortable_month_inr": 5000,
+"bonus_month_or_low_spend_month_inr": 10000,
+"rule": "Liquid fund transfers happen only after fixed obligations, protected investments, variable essentials, discretionary spending, and card payment planning are covered. They are not treated as fixed obligations."
+},
+"variable_essentials": {
+"groceries_low_inr": 14500,
+"groceries_high_inr": 21000,
+"late_work_food_delivery_low_inr": 3500,
+"late_work_food_delivery_high_inr": 8000,
+"commute_low_inr": 9500,
+"commute_high_inr": 17000,
+"pharmacy_low_inr": 1800,
+"pharmacy_high_inr": 5500,
+"activa_fuel_low_inr": 600,
+"activa_fuel_high_inr": 1200,
+"typical_total_inr": 30000
+},
+"discretionary": {
+"normal_month_low_inr": 12000,
+"normal_month_high_inr": 26000,
+"typical_total_inr": 18000,
+"component_pool": {
+"eating_out_low_inr": 3000,
+"eating_out_high_inr": 8500,
+"clothing_low_inr": 0,
+"clothing_high_inr": 9000,
+"books_and_learning_low_inr": 0,
+"books_and_learning_high_inr": 5500,
+"gifts_low_inr": 0,
+"gifts_high_inr": 8000,
+"beauty_and_personal_care_low_inr": 2500,
+"beauty_and_personal_care_high_inr": 7000,
+"fitness_low_inr": 0,
+"fitness_high_inr": 4500,
+"dating_low_inr": 0,
+"dating_high_inr": 5000
+},
+"avoid_double_counting_rule": "Food, shopping, dating, fitness, gifts, and beauty sections describe possible components within the monthly discretionary range. They must not be added on top of monthly_discretionary_high_inr. In a normal month only selected components occur."
+}
+},
+"credit_card_mechanics": {
+"primary_card_name": "HDFC Regalia Gold Credit Card",
+"credit_card_limit_inr": 450000,
+"statement_generation_day": 14,
+"payment_due_day": 4,
+"autopay_enabled": true,
+"autopay_mode": "Total amount due",
+"usual_payment_day": 2,
+"typical_statement_amount_low_inr": 38000,
+"typical_statement_amount_high_inr": 92000,
+"peak_statement_amount_in_pressure_month_inr": 165000,
+"card_posting_rule": "Card spends should appear first as credit card transactions. They should affect deposit accounts only when the card bill is paid. Do not duplicate card spends as direct bank debits.",
+"preferred_card_categories": [
+"Flights",
+"Hotels",
+"Office commute cabs",
+"Online groceries",
+"Insurance premium payments where surcharge is acceptable",
+"Electronics with no-cost EMI avoided unless genuinely useful"
+],
+"avoidance_rules": [
+"Does not revolve credit card balances",
+"Does not take cash advances",
+"Does not split routine purchases into EMI",
+"Uses reward points for flights or vouchers only after statement is paid"
+],
+"failure_mode": "In a pressure month, Priya may temporarily let the statement amount rise above comfort level, then pay it in full by drawing from savings or redeeming liquid fund units. She does not revolve the balance."
+},
+"loan_obligations": {
+"education_loan": {
+"lender_name": "HDFC Credila",
+"original_principal_inr": 1850000,
+"outstanding_principal_start_of_year_inr": 845000,
+"monthly_emi_inr": 38750,
+"emi_due_day": 7,
+"payment_mode": "Auto-debit",
+"remaining_tenure_months_at_year_start": 24,
+"prepayment_intent": "Priya wants to prepay ₹200000 during the year if her emergency fund is not disturbed.",
+"late_payment_tolerance": "No late payments; EMI is protected before discretionary spending."
+}
+},
+"named_people": {
+"family": [
+{
+"name": "Suresh Nair",
+"relationship": "Father",
+"city": "Kochi",
+"monthly_support_received_inr": 18000,
+"monthly_medicine_support_inr": 6500,
+"health_context": "Type 2 diabetes and hypertension requiring regular medicines and quarterly reviews"
+},
+{
+"name": "Latha Nair",
+"relationship": "Mother",
+"city": "Kochi",
+"monthly_support_received_inr": 22000,
+"health_context": "Manages household expenses and accompanies Suresh to appointments"
+},
+{
+"name": "Ananya Nair",
+"relationship": "Younger sister",
+"city": "Chennai",
+"support_frequency": "Occasional",
+"typical_transfer_amount_inr": 6000,
+"support_reason": "Exam fees, travel gaps, and emergency expenses"
+}
+],
+"friends": [
+{
+"name": "Meera Iyer",
+"relationship": "College friend in Bengaluru",
+"typical_interaction": "Dinner once a month and shared cab reimbursements"
+},
+{
+"name": "Rohit Menon",
+"relationship": "Former colleague",
+"typical_interaction": "Coffee meetups and occasional event tickets"
+},
+{
+"name": "Nisha Varghese",
+"relationship": "School friend in Kochi",
+"typical_interaction": "Meets during Kochi visits"
+}
+],
+"household_and_service": [
+{
+"name": "Kamala Devi",
+"role": "Domestic help",
+"monthly_payment_inr": 5500,
+"payment_day": 3
+},
+{
+"name": "Shobha Ramesh",
+"role": "Cook",
+"monthly_payment_inr": 6500,
+"payment_day": 3
+},
+{
+"name": "Naveen Kumar",
+"role": "Apartment plumber and electrician contact",
+"typical_payment_inr": 1200,
+"frequency_per_year": 4
+},
+{
+"name": "Raghavendra Rao",
+"role": "Landlord",
+"monthly_payment_inr": 68000,
+"payment_day": 5
+}
+],
+"work": [
+{
+"name": "Arjun Sethi",
+"role": "Direct manager",
+"typical_interaction": "Product reviews and quarterly planning"
+},
+{
+"name": "Kavya Srinivasan",
+"role": "Engineering lead",
+"typical_interaction": "Daily execution and sprint planning"
+},
+{
+"name": "Farhan Khan",
+"role": "Design lead",
+"typical_interaction": "Prototype reviews and user research discussions"
+}
+]
+},
+"family_obligations": [
+{
+"recipient_name": "Suresh Nair",
+"relationship": "Father",
+"amount_inr": 18000,
+"frequency": "Monthly",
+"usual_day": 1,
+"payment_mode": "UPI or IMPS"
+},
+{
+"recipient_name": "Latha Nair",
+"relationship": "Mother",
+"amount_inr": 22000,
+"frequency": "Monthly",
+"usual_day": 1,
+"payment_mode": "UPI or IMPS"
+},
+{
+"recipient_name": "Suresh Nair",
+"relationship": "Father",
+"amount_inr": 6500,
+"frequency": "Monthly",
+"usual_day": 12,
+"payment_mode": "UPI",
+"purpose_as_raw_behavior": "Pharmacy or hospital-linked payments may appear directly from Priya or as transfers to father"
+},
+{
+"recipient_name": "Ananya Nair",
+"relationship": "Sister",
+"amount_inr": 6000,
+"frequency": "Quarterly",
+"usual_months": [
+"January",
+"April",
+"July",
+"October"
+],
+"payment_mode": "UPI"
+}
+],
+"family_support_reconciliation": {
+"father_support_inr": 18000,
+"mother_support_inr": 22000,
+"father_medicines_inr": 6500,
+"total_recurring_family_support_inr": 46500,
+"rule": "Use this single model for recurring family support. Do not introduce alternate parent-transfer splits unless they reconcile to ₹46500 per month."
+},
+"investment_commitments": {
+"protected_monthly_total_inr": 40000,
+"equity_mutual_fund_sips_total_inr": 25000,
+"equity_mutual_fund_sips": [
+{
+"fund_name": "Parag Parikh Flexi Cap Fund Direct Growth",
+"amount_inr": 10000,
+"debit_day": 10
+},
+{
+"fund_name": "Mirae Asset Large & Midcap Fund Direct Growth",
+"amount_inr": 7000,
+"debit_day": 11
+},
+{
+"fund_name": "UTI Nifty 50 Index Fund Direct Growth",
+"amount_inr": 5000,
+"debit_day": 12
+},
+{
+"fund_name": "Axis Small Cap Fund Direct Growth",
+"amount_inr": 3000,
+"debit_day": 15
+}
+],
+"recurring_deposit": {
+"bank_name": "ICICI Bank",
+"amount_inr": 10000,
+"debit_day": 9,
+"tenure_months": 24,
+"goal": "Education loan prepayment and home down payment reserve"
+},
+"nps": {
+"amount_inr": 5000,
+"debit_day": 18,
+"tier": "Tier I",
+"goal": "Long-term retirement and tax discipline"
+},
+"flexible_liquid_fund_transfer": {
+"fund_name": "ICICI Prudential Liquid Fund Direct Growth",
+"minimum_amount_inr": 0,
+"maximum_amount_inr": 10000,
+"usual_review_day": 20,
+"goal": "Emergency buffer and annual premium smoothing",
+"fixed_obligation": false
+},
+"stress_month_adjustment_rule": "Equity SIPs, RD, and NPS are normally protected. Liquid fund transfer is flexible surplus-only and can be skipped in pressure months."
+},
+"insurance_obligations": {
+"health_insurance_self": {
+"insurer_name": "HDFC ERGO",
+"annual_premium_inr": 24500,
+"premium_month": "May",
+"coverage_inr": 1000000,
+"payment_mode": "Credit card or net banking"
+},
+"health_insurance_parents": {
+"insurer_name": "Star Health",
+"annual_premium_inr": 68500,
+"premium_month": "September",
+"coverage_inr": 700000,
+"payment_mode": "Credit card or net banking"
+},
+"term_life_insurance": {
+"insurer_name": "Max Life",
+"annual_premium_inr": 16800,
+"premium_month": "December",
+"coverage_inr": 20000000,
+"payment_mode": "Net banking"
+},
+"vehicle_insurance": {
+"insurer_name": "Acko",
+"annual_premium_inr": 7200,
+"premium_month": "March",
+"vehicle": "2019 Honda Activa used for local errands, pharmacy runs, and nearby groceries"
+}
+},
+"annual_and_irregular_obligations": [
+{
+"name": "Parents health insurance premium",
+"amount_inr": 68500,
+"month": "September",
+"priority": "High"
+},
+{
+"name": "Self health insurance premium",
+"amount_inr": 24500,
+"month": "May",
+"priority": "High"
+},
+{
+"name": "Term insurance premium",
+"amount_inr": 16800,
+"month": "December",
+"priority": "High"
+},
+{
+"name": "Kochi family visit flights",
+"amount_inr": 32000,
+"frequency_per_year": 3,
+"usual_months": [
+"April",
+"August",
+"December"
+],
+"priority": "Medium"
+},
+{
+"name": "Apartment appliance and repair buffer",
+"amount_inr": 30000,
+"frequency_per_year": 1,
+"usual_month": "June",
+"priority": "Medium"
+},
+{
+"name": "Tax-saving top-up or ELSS cleanup",
+"amount_inr": 50000,
+"month": "March",
+"priority": "Medium"
+},
+{
+"name": "Activa insurance and service",
+"amount_inr": 9700,
+"month": "March",
+"priority": "Medium"
+},
+{
+"name": "Onam family gifts",
+"amount_inr": 28000,
+"month": "September",
+"priority": "Medium"
+},
+{
+"name": "Annual professional learning subscription",
+"amount_inr": 22000,
+"month": "January",
+"priority": "Low"
+}
+],
+"relationship_context": {
+"relationship_status": "Single",
+"dating_spend_pattern": "Low frequency and deliberate, with 1 paid dinner or activity every 6 weeks on average",
+"monthly_dating_budget_inr": 5000,
+"budget_rule": "Dating spend is part of monthly discretionary spend and must not be added on top of monthly_discretionary_high_inr.",
+"family_expectation_pressure": "Parents occasionally raise marriage discussions, but Priya does not spend heavily on matrimonial services or events during this year."
+},
+"health_and_family_care_context": {
+"self_health": {
+"gym_or_fitness": "Pilates class pack",
+"monthly_average_inr": 4500,
+"frequency_per_month": 6,
+"budget_rule": "Fitness spend is part of discretionary spending and occurs only when the month has room for it.",
+"stress_effect": "Cancels classes during heavy work weeks but does not cancel the pack immediately"
+},
+"father_health": {
+"condition": "Diabetes and hypertension",
+"routine_monthly_medicine_cost_inr": 6500,
+"quarterly_checkup_cost_inr": 9500,
+"pressure_event": {
+"month": "September",
+"description": "Hospital observation, tests, cardiology consultation, and follow-up medicines after Suresh Nair has a fainting episode in Kochi.",
+"gross_hospital_and_tests_cost_inr": 112000,
+"amount_initially_paid_by_priya_inr": 90000,
+"initial_payment_split": {
+"hospital_credit_card_payment_inr": 65000,
+"upi_transfer_to_suresh_nair_inr": 25000
+},
+"expected_insurance_claim_reimbursement_inr": 55000,
+"expected_insurance_reimbursement_lag_days": 24,
+"expected_sister_contribution_from_ananya_inr": 15000,
+"expected_sister_contribution_lag_days": 12,
+"expected_net_cost_to_priya_after_later_reimbursements_inr": 20000,
+"raw_transaction_behavior": "September raw transactions should show hospital or diagnostic center card spends, a UPI or IMPS transfer to Suresh Nair, later IMPS or NEFT credit from Ananya Nair, and later insurer or TPA reimbursement credit. Reimbursement arrives later and cannot be treated as same-day liquidity rescue."
+}
+},
+"mother_health": {
+"routine_checkup_frequency_per_year": 2,
+"typical_checkup_cost_inr": 4500
+}
+},
+"food_habits": [
+{
+"habit": "Breakfast at home on work-from-home days",
+"frequency_per_week": 2,
+"typical_spend_inr": 0,
+"budget_bucket": "Variable essentials"
+},
+{
+"habit": "Office cafeteria lunch",
+"frequency_per_week": 3,
+"typical_spend_inr": 180,
+"budget_bucket": "Variable essentials"
+},
+{
+"habit": "Swiggy or Zomato dinner after late office days",
+"frequency_per_month": 7,
+"typical_spend_inr": 420,
+"budget_bucket": "Variable essentials when caused by late work; discretionary when it replaces a planned home meal"
+},
+{
+"habit": "BigBasket or Zepto grocery basket",
+"frequency_per_month": 5,
+"typical_spend_inr": 3100,
+"budget_bucket": "Variable essentials"
+},
+{
+"habit": "Weekend restaurant meal with friends",
+"frequency_per_month": 2,
+"typical_spend_inr": 1600,
+"budget_bucket": "Discretionary"
+}
+],
+"shopping_habits": [
+{
+"category": "Workwear",
+"frequency_per_year": 4,
+"typical_spend_inr": 9000,
+"preferred_merchants": [
+"Myntra",
+"Westside",
+"Uniqlo"
+],
+"budget_rule": "Occurs inside the discretionary range and is skipped in pressure months."
+},
+{
+"category": "Skincare and grooming",
+"frequency_per_month": 1,
+"typical_spend_inr": 3200,
+"preferred_merchants": [
+"Nykaa",
+"Health & Glow"
+],
+"budget_rule": "Occurs inside the discretionary range."
+},
+{
+"category": "Electronics",
+"frequency_per_year": 1,
+"typical_spend_inr": 35000,
+"purchase_rule": "Buys only when replacing a failing item or improving work setup; not part of normal monthly discretionary spend unless that month is explicitly planned for it."
+},
+{
+"category": "Books and courses",
+"frequency_per_quarter": 1,
+"typical_spend_inr": 5500,
+"preferred_merchants": [
+"Amazon",
+"Coursera",
+"Udemy"
+],
+"budget_rule": "Occurs inside the discretionary range unless reimbursed by employer."
+}
+],
+"travel_habits": [
+{
+"destination": "Kochi",
+"reason": "Parents and family visits",
+"frequency_per_year": 3,
+"typical_round_trip_cost_inr": 32000,
+"booking_window_days": 21,
+"payment_method": "Credit card"
+},
+{
+"destination": "Goa or Pondicherry",
+"reason": "Short friend trip",
+"frequency_per_year": 1,
+"typical_total_cost_inr": 42000,
+"condition": "Only happens if no family medical pressure is active"
+},
+{
+"destination": "Bengaluru local staycation",
+"reason": "Low-effort rest weekend",
+"frequency_per_year": 1,
+"typical_total_cost_inr": 16000,
+"condition": "Usually replaces a larger vacation when cash flow is tight"
+}
+],
+"financial_temperament": "Priya is disciplined, cautious, and responsibility-driven. She tracks commitments closely, protects EMI and rent payments, and prefers predictable saving systems. She dislikes feeling dependent on credit, but she sometimes feels stretched when family obligations, insurance premiums, and planned investments cluster in the same month.",
+"credit_behavior": "Priya uses her credit card as a payment rail and rewards tool, not as borrowing. She pays the full statement amount every month, usually two days before the due date. During pressure months, she may have a high statement balance and use savings or liquid fund redemption to clear it, but she does not revolve the balance.",
+"savings_discipline": {
+"emergency_fund_target_inr": 900000,
+"emergency_fund_start_of_year_inr": 620000,
+"minimum_comfort_balance_in_salary_account_inr": 75000,
+"liquid_fund_balance_start_of_year_inr": 240000,
+"protected_monthly_auto_savings_inr": 40000,
+"flexible_liquid_fund_transfer_min_inr": 0,
+"flexible_liquid_fund_transfer_max_inr": 10000,
+"manual_savings_rule": "After salary, Priya keeps one month of non-investment fixed obligations visible in the salary account and confirms rent, EMI, family support, card bill, and protected investments before moving any surplus to liquid fund.",
+"small_redemption_threshold_inr": 50000,
+"redemption_preference": "Redeems from liquid fund before breaking FD or reducing long-term SIPs."
+},
+"risk_tolerance": "Moderate. Priya accepts equity risk for long-term goals but keeps a meaningful liquid buffer because family medical expenses can arrive without warning.",
+"recurring_obligations": [
+{
+"name": "Rent to Raghavendra Rao",
+"amount_inr": 68000,
+"frequency": "Monthly",
+"usual_day": 5,
+"category": "Housing"
+},
+{
+"name": "Education loan EMI to HDFC Credila",
+"amount_inr": 38750,
+"frequency": "Monthly",
+"usual_day": 7,
+"category": "Debt"
+},
+{
+"name": "Father support to Suresh Nair",
+"amount_inr": 18000,
+"frequency": "Monthly",
+"usual_day": 1,
+"category": "Family support"
+},
+{
+"name": "Mother support to Latha Nair",
+"amount_inr": 22000,
+"frequency": "Monthly",
+"usual_day": 1,
+"category": "Family support"
+},
+{
+"name": "Father medicine support",
+"amount_inr": 6500,
+"frequency": "Monthly",
+"usual_day": 12,
+"category": "Family medical"
+},
+{
+"name": "Domestic help payment to Kamala Devi",
+"amount_inr": 5500,
+"frequency": "Monthly",
+"usual_day": 3,
+"category": "Household staff"
+},
+{
+"name": "Cook payment to Shobha Ramesh",
+"amount_inr": 6500,
+"frequency": "Monthly",
+"usual_day": 3,
+"category": "Household staff"
+},
+{
+"name": "Apartment maintenance",
+"amount_inr": 3500,
+"frequency": "Monthly",
+"usual_day": 6,
+"category": "Housing"
+},
+{
+"name": "Electricity bill",
+"amount_inr": 3200,
+"frequency": "Monthly",
+"usual_day": 16,
+"category": "Utilities"
+},
+{
+"name": "Broadband bill",
+"amount_inr": 1199,
+"frequency": "Monthly",
+"usual_day": 19,
+"category": "Utilities"
+},
+{
+"name": "Mobile postpaid bill",
+"amount_inr": 899,
+"frequency": "Monthly",
+"usual_day": 21,
+"category": "Utilities"
+},
+{
+"name": "Milk subscription",
+"amount_inr": 2200,
+"frequency": "Monthly",
+"usual_day": 28,
+"category": "Food essentials"
+},
+{
+"name": "Equity mutual fund SIPs",
+"amount_inr": 25000,
+"frequency": "Monthly",
+"usual_days": [
+10,
+11,
+12,
+15
+],
+"category": "Protected investments"
+},
+{
+"name": "Recurring deposit",
+"amount_inr": 10000,
+"frequency": "Monthly",
+"usual_day": 9,
+"category": "Protected investments"
+},
+{
+"name": "NPS contribution",
+"amount_inr": 5000,
+"frequency": "Monthly",
+"usual_day": 18,
+"category": "Protected investments"
+}
+],
+"flexible_surplus_savings_rules": {
+"name": "Liquid fund transfer",
+"minimum_amount_inr": 0,
+"maximum_amount_inr": 10000,
+"usual_review_day": 20,
+"frequency": "Monthly review, not mandatory monthly debit",
+"category": "Flexible surplus savings",
+"rule": "This is not a fixed obligation. It should occur only when the month has clear surplus after fixed obligations, protected investments, variable essentials, discretionary spending, and credit card payment planning."
+},
+"recurring_obligations_reconciliation": {
+"included_in_monthly_fixed_obligations": [
+"Rent",
+"Education loan EMI",
+"Father support",
+"Mother support",
+"Father medicine support",
+"Domestic help",
+"Cook",
+"Apartment maintenance",
+"Electricity",
+"Broadband",
+"Mobile",
+"Milk subscription"
+],
+"monthly_fixed_obligations_inr": 176248,
+"monthly_protected_investments_inr": 40000,
+"monthly_committed_outflows_before_variable_inr": 216248,
+"calculation": {
+"rent_inr": 68000,
+"education_loan_emi_inr": 38750,
+"family_support_and_father_medicines_inr": 46500,
+"household_staff_inr": 12000,
+"housing_utilities_and_milk_inr": 10998,
+"non_investment_fixed_obligations_total_inr": 176248,
+"protected_investments_total_inr": 40000,
+"non_investment_fixed_plus_protected_investments_total_inr": 216248
+},
+"excluded_from_monthly_fixed_obligations": [
+"Protected investments are tracked separately from non-investment fixed obligations",
+"Groceries",
+"Commute",
+"Late-work food delivery",
+"Activa fuel",
+"Credit card bill because it aggregates underlying card spending",
+"Annual insurance premiums",
+"Irregular travel",
+"Irregular medical events",
+"Flexible liquid fund transfer"
+]
+},
+"monthly_budget_shape": {
+"net_salary_inr": 265000,
+"non_investment_fixed_obligations_inr": 176248,
+"protected_investments_inr": 40000,
+"remaining_after_non_investment_fixed_inr": 88752,
+"remaining_after_non_investment_fixed_and_protected_investments_inr": 48752,
+"typical_variable_essentials_inr": 30000,
+"typical_discretionary_inr": 18000,
+"normal_month_cash_gap_or_surplus_inr": 752,
+"normal_month_gap_handling": "A normal boring month is near-zero positive without relying on reimbursement, credit float, or timing tricks. Surplus improves when commute, food delivery, or discretionary spend is lower than typical.",
+"comfortable_month_surplus_inr": 10000,
+"pressure_month_shortfall_range_inr": {
+"low_inr": 45000,
+"high_inr": 140000
+}
+},
+"boring_month_behavior": {
+"description": "Most months are predictable. Salary arrives at month end, family support goes out immediately, rent and EMI clear in the first week, protected investments run mid-month, and Priya keeps discretionary spending modest after checking upcoming card dues.",
+"typical_number_of_card_transactions": 42,
+"typical_number_of_upi_transactions": 58,
+"typical_cash_withdrawals": 1,
+"typical_cash_withdrawal_amount_inr": 4000,
+"deferred_purchases": [
+"Premium handbag",
+"Phone upgrade",
+"International vacation",
+"Furniture replacement"
+],
+"normal_savings_behavior": "Does not cancel protected SIPs, RD, or NPS. Liquid fund transfer happens only if a clear surplus remains after the card bill and normal spending are accounted for."
+},
+"stress_month_behavior": {
+"stress_months": [
+{
+"month": "March",
+"trigger": "Tax-saving top-up, Activa insurance and service, and a high credit card statement after a February Kochi travel booking",
+"additional_pressure_inr": 89200,
+"pressure_components": {
+"tax_saving_top_up_inr": 50000,
+"activa_insurance_inr": 7200,
+"activa_service_inr": 2500,
+"kochi_flight_booking_statement_pressure_inr": 29500
+},
+"behavior": "Defers clothing purchase, reduces food delivery, skips flexible liquid fund transfer, and uses ₹50000 from savings account buffer. Rent, EMI, family support, card full payment, and protected investments remain intact."
+},
+{
+"month": "September",
+"trigger": "Father medical episode, parents health insurance premium, and Onam family gifts",
+"initial_liquidity_pressure_inr": 186500,
+"expected_later_reimbursements_and_contributions_inr": 70000,
+"expected_net_pressure_after_later_credits_inr": 116500,
+"pressure_components": {
+"father_medical_initial_payment_by_priya_inr": 90000,
+"parents_health_insurance_premium_inr": 68500,
+"onam_family_gifts_inr": 28000,
+"expected_insurance_reimbursement_later_inr": 55000,
+"expected_ananya_contribution_later_inr": 15000
+},
+"behavior": "Redeems ₹75000 from liquid fund, delays a planned weekend trip, pays card in full, skips flexible liquid fund transfer, and postpones education loan prepayment. Reimbursement and sister contribution arrive later and are not used as same-day liquidity."
+}
+],
+"non_chaotic_response": "Priya reacts by cutting discretionary spending, using savings, redeeming liquid fund units, and moving optional travel. She does not miss EMI, rent, family support, insurance, or credit card full payment."
+},
+"monthly_survival_logic": "Priya prioritizes obligations in this order: family support, rent, education loan EMI, credit card full payment, utilities and staff, insurance premiums, protected SIPs, RD, NPS, groceries and commute, then discretionary spending. When pressure rises, she first cuts eating out, shopping, fitness add-ons, dating, gifts, and travel; then skips only flexible liquid fund transfer; then redeems liquid fund units; and only as a last resort reduces protected equity SIPs.",
+"payment_timing_rules": {
+"salary": {
+"day_rule": "Last working day of the month",
+"time_window": "18:30-21:30"
+},
+"family_support": {
+"day_rule": "1st calendar day or next banking day",
+"time_window": "08:30-10:30"
+},
+"rent": {
+"day_rule": "5th calendar day or previous working day if 5th is Sunday",
+"time_window": "10:00-13:00"
+},
+"education_loan_emi": {
+"day_rule": "7th calendar day",
+"time_window": "06:00-08:30"
+},
+"credit_card_payment": {
+"day_rule": "2 days before due date",
+"time_window": "21:00-23:00"
+},
+"staff_payments": {
+"day_rule": "3rd calendar day",
+"time_window": "19:00-21:30"
+},
+"utilities": {
+"day_rule": "Within 3 days of bill notification",
+"time_window": "20:00-23:00"
+},
+"protected_investments": {
+"day_rule": "Scheduled auto-debits between 9th and 18th",
+"time_window": "06:00-10:00"
+},
+"flexible_liquid_fund_transfer": {
+"day_rule": "Reviewed on 20th but executed only when surplus exists",
+"time_window": "20:00-23:00"
+}
+},
+"cash_behavior": {
+"cash_usage_level": "Low",
+"monthly_cash_withdrawal_count": 1,
+"usual_cash_withdrawal_amount_inr": 4000,
+"cash_uses": [
+"Apartment small repairs",
+"Vegetable vendor",
+"Tips to building staff",
+"Auto fare when UPI fails"
+],
+"atm_preference": "Withdraws near Indiranagar on weekends or near office on salary week",
+"cash_pressure_behavior": "Does not use cash to hide spending; cash use remains small and practical."
+},
+"merchant_and_category_preferences": {
+"groceries": [
+"BigBasket",
+"Zepto",
+"Reliance Smart",
+"Nature's Basket"
+],
+"food_delivery": [
+"Swiggy",
+"Zomato"
+],
+"commute": [
+"Uber",
+"Ola",
+"Namma Metro",
+"Rapido"
+],
+"pharmacy": [
+"Apollo Pharmacy",
+"MedPlus",
+"Tata 1mg"
+],
+"fuel_and_vehicle": [
+"IndianOil",
+"Shell",
+"Acko",
+"Local Honda service center"
+],
+"shopping": [
+"Myntra",
+"Amazon",
+"Nykaa",
+"Westside",
+"Uniqlo"
+],
+"travel": [
+"MakeMyTrip",
+"IndiGo",
+"Air India Express",
+"Uber Intercity"
+],
+"investments": [
+"AMC SIP auto-debits",
+"NPS contribution",
+"ICICI Bank RD",
+"Liquid fund redemption and purchase entries"
+],
+"banking_style": "Uses UPI for people and small merchants, credit card for online purchases and travel, NEFT for rent, and auto-debit for EMI and protected investments."
+},
+"daily_context_rules": {
+"weekday_office_day": {
+"breakfast_probability": 0.45,
+"cab_probability_if_raining": 0.9,
+"cab_probability_if_not_raining": 0.65,
+"lunch_transaction_probability": 0.75,
+"late_dinner_delivery_probability_after_20_30": 0.55
+},
+"weekday_wfh_day": {
+"grocery_topup_probability": 0.28,
+"food_delivery_probability": 0.22,
+"coffee_order_probability": 0.18,
+"activa_errand_probability": 0.2,
+"no_office_commute": true
+},
+"weekend": {
+"larger_grocery_basket_probability": 0.5,
+"restaurant_or_cafe_probability": 0.45,
+"family_transfer_probability_if_parent_request": 0.35,
+"shopping_probability_after_salary_week": 0.4,
+"shopping_probability_before_salary_week": 0.12,
+"activa_local_errand_probability": 0.55
+},
+"balance_sensitive_behavior": {
+"salary_account_balance_below_inr": 60000,
+"actions": [
+"Avoids clothing and electronics",
+"Uses groceries already stocked",
+"Declines expensive dinner plans",
+"Pays UPI from secondary balance only if salary account is protected",
+"Checks credit card unbilled amount before booking travel",
+"Skips flexible liquid fund transfer"
+]
+},
+"mood_and_pressure_rules": {
+"after_parent_medical_call": "Likely pharmacy, hospital, diagnostic center, or transfer activity within 24 hours",
+"after_late_work_week": "Higher probability of cab and food delivery",
+"after_large_card_statement": "Lower discretionary transactions until card payment clears",
+"after_salary_credit": "Family support, rent planning, and protected investment confidence increase immediately"
+}
+},
+"year_arc_guardrails": [
+"Create one realistic year with mostly boring months and two pressure months: March and September.",
+"Do not make Priya financially chaotic; her stress must come from obligations and timing mismatches.",
+"Do not create repeated missed payments, revolving credit, gambling, luxury binges, or unexplained cash behavior.",
+"Keep salary fixed at ₹265000 net per month and credit it on the last working day toward end of day.",
+"April bonus of ₹340000 is a planned annual inflow and must not be used to justify structurally negative normal months.",
+"Rent should stay ₹68000 per month unless a lease renewal event is explicitly introduced later.",
+"Family support must follow the single recurring model: ₹18000 to Suresh Nair, ₹22000 to Latha Nair, and ₹6500 for father medicines each month.",
+"Education loan EMI must be protected and paid monthly.",
+"Protected SIPs, RD, and NPS should usually run as scheduled; only flexible liquid fund transfer may be skipped during pressure.",
+"One or two months may require dipping into savings or redeeming liquid fund units.",
+"Most daily spending should reflect a hybrid Bengaluru professional life: cabs, office meals, groceries, utilities, staff, family UPI, Activa local errands, and controlled online shopping.",
+"Friend reimbursements should appear naturally as UPI transfers with named people and plausible amounts.",
+"Raw AA output later must contain only accounts and transactions, not this persona explanation."
+],
+"raw_data_generation_constraints": {
+"full_visibility_assumption": "All accounts Priya owns should be visible when the account universe is created later.",
+"self_transfer_rule": "Self-transfers must be traceable across both visible accounts with matching amounts and plausible timestamp gaps.",
+"family_transfer_rule": "Family support should appear as ordinary UPI, IMPS, or bank transfers to named family members. Do not label them with product-side interpretations in raw AA output.",
+"no_hidden_labels_rule": "Final raw AA-style financial output must not contain product-side labels, analysis metadata, persona labels, stress tags, intent fields, or explanations.",
+"daily_life_rule": "Daily transactions must respect 24-hour time, weekday versus weekend, work mode, commute, location, mood, bank balance, credit pressure, and upcoming obligations.",
+"credit_card_posting_rule": "Card spends should appear first as credit card transactions. Deposit accounts should show impact only when the credit card bill is paid. Do not duplicate card spends as direct bank debits."
+},
+"realism_notes": [
+"Priya earns a high salary but her non-investment fixed obligations are material because rent, family support, household staff, utilities, and debt repayment are all recurring.",
+"Her protected monthly investments are disciplined but survivable at ₹40000, while liquid fund transfers are flexible surplus-only.",
+"Her parents are not financially independent enough to absorb medical volatility, making family support a recurring emotional and financial driver.",
+"She uses credit cards responsibly, but travel bookings, insurance premiums, and medical payments can create temporarily large statements.",
+"Normal months should be near-zero positive or modestly positive without relying on reimbursements, credit float, or timing tricks.",
+"Normal months should look repetitive rather than dramatic, with salary, rent, EMI, utilities, staff, family transfers, protected investments, groceries, commute, and modest discretionary spending.",
+"Pressure months should show rational adjustment: skipped flexible liquid fund transfer, delayed purchases, lower eating out, liquid fund redemption, and postponed travel rather than missed obligations.",
+"September medical reimbursement and Ananya contribution should arrive later than the hospital payments and should not be used as same-day liquidity rescue.",
+"Her daily transactions should reflect Bengaluru geography and hybrid work: Indiranagar home base, Bellandur office commute, app cabs, metro-auto combinations, Activa errands, and late dinners after long workdays."
+]
+}

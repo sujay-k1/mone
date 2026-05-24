@@ -1,0 +1,674 @@
+{
+    "persona_id": "priya",
+    "account_universe_version": "v1",
+    "visibility_assumption": "full_visibility",
+    "synthetic_visibility_note": "This universe assumes Moné’s dummy AA environment can see all financial accounts Priya owns across deposits, credit card, education loan, mutual funds, recurring deposit, NPS, and insurance policies. Cash is not modeled as an AA-visible account; ATM withdrawals may appear later only as bank statement debits.",
+    "accounts": [
+        {
+            "account_id": "priya_dep_hdfc_salary_001",
+            "institution_name": "HDFC Bank",
+            "account_family": "deposit",
+            "aa_account_type": "SAVINGS",
+            "display_name": "HDFC Bank Salary Savings Account",
+            "masked_account_number": "XXXXXX4821",
+            "ownership": "single",
+            "primary_use": "Primary salary credit, rent, family transfers, education loan EMI, credit card autopay, utilities, household staff payments, SIPs, NPS contributions, and self-transfers to the ICICI buffer account.",
+            "upi_linked": true,
+            "payment_rail_notes": "Primary UPI handle and net banking account. Salary is credited here. NEFT, IMPS, UPI, e-mandates, and autopay debits may originate here.",
+            "product_details": {
+                "account_variant": "salary savings account",
+                "salary_credit_amount_inr": 265000,
+                "salary_credit_rule": "Last working day of each month between 18:30 and 21:30",
+                "minimum_comfort_balance_reference_inr": 75000,
+                "rent_payment_mode": "NEFT",
+                "rent_amount_inr": 68000,
+                "rent_due_day": 5
+            },
+            "why_this_account_exists": "Priya needs a primary account to receive salary and anchor nearly all recurring obligations.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Use this as the default source for salary-linked obligations, rent, family support, staff payments, EMI, SIPs, NPS, utilities, card bill autopay, and self-transfers to ICICI. ICICI RD installments should be funded from the ICICI buffer account, with HDFC-to-ICICI self-transfer visible when needed."
+        },
+        {
+            "account_id": "priya_dep_icici_buffer_001",
+            "institution_name": "ICICI Bank",
+            "account_family": "deposit",
+            "aa_account_type": "SAVINGS",
+            "display_name": "ICICI Bank Secondary Savings Account",
+            "masked_account_number": "XXXXXX7394",
+            "ownership": "single",
+            "primary_use": "Secondary buffer account for self-transfers, ICICI RD funding, emergency liquidity, insurance planning, liquid fund redemption credits, and occasional UPI fallback payments.",
+            "upi_linked": true,
+            "payment_rail_notes": "UPI and net banking enabled. May receive self-transfers from salary account and redemption credits from liquid fund. Used for ICICI RD installment funding, insurance planning, pressure-month liquidity, and occasional UPI fallback payments.",
+            "product_details": {
+                "account_variant": "regular savings account",
+                "account_purpose": "buffer and emergency liquidity routing",
+                "supports_liquid_fund_redemption_credit": true,
+                "supports_pressure_month_card_payment_support": true,
+                "supports_icici_rd_funding": true
+            },
+            "why_this_account_exists": "Priya’s persona requires a secondary account for buffers, self-transfers, insurance planning, and liquid fund redemptions.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Use for self-transfer pairings, ICICI RD funding, emergency-fund movements, liquid fund redemption credits, and occasional pressure-month support without inventing hidden accounts."
+        },
+        {
+            "account_id": "priya_cc_hdfc_regalia_gold_001",
+            "institution_name": "HDFC Bank",
+            "account_family": "credit_card",
+            "aa_account_type": "CREDIT_CARD",
+            "display_name": "HDFC Regalia Gold Credit Card",
+            "masked_account_number": "XXXX-XXXX-XXXX-6187",
+            "ownership": "single",
+            "primary_use": "Credit card payment rail for flights, hotels, office commute cabs, online groceries, selected insurance premiums, electronics, food delivery, and controlled online shopping.",
+            "upi_linked": false,
+            "payment_rail_notes": "Card spends post on the credit card account first. Deposit account impact occurs only when the card bill is paid. Autopay is enabled for total amount due.",
+            "product_details": {
+                "card_network": "Visa",
+                "credit_limit_inr": 450000,
+                "statement_generation_day": 14,
+                "payment_due_day": 4,
+                "autopay_enabled": true,
+                "autopay_mode": "Total amount due",
+                "usual_payment_day": 2,
+                "typical_statement_amount_low_inr": 38000,
+                "typical_statement_amount_high_inr": 92000,
+                "peak_statement_amount_pressure_month_reference_inr": 165000,
+                "revolve_behavior": "Does not revolve",
+                "cash_advance_behavior": "Does not take cash advances"
+            },
+            "why_this_account_exists": "Priya uses one primary rewards credit card responsibly and pays the full statement amount each month.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Do not duplicate card spends as direct bank debits. Later card payment transactions must pair with bank debits from visible deposit accounts."
+        },
+        {
+            "account_id": "priya_loan_hdfc_credila_edu_001",
+            "institution_name": "HDFC Credila",
+            "account_family": "loan",
+            "aa_account_type": "EDUCATION_LOAN",
+            "display_name": "HDFC Credila Education Loan",
+            "masked_account_number": "XXXXXX9056",
+            "ownership": "single",
+            "primary_use": "Education loan liability with protected monthly EMI auto-debit.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly EMI auto-debit from primary salary account. Any later prepayment should originate from a visible bank account.",
+            "product_details": {
+                "original_principal_inr": 1850000,
+                "monthly_emi_inr": 38750,
+                "emi_due_day": 7,
+                "payment_mode": "Auto-debit",
+                "remaining_tenure_months_at_year_start": 24,
+                "prepayment_intent_reference_inr": 200000,
+                "late_payment_tolerance": "No late payments",
+                "starting_state_requirement": "Financial starting state must set education loan outstanding principal around ₹845000 at the start of the synthetic year."
+            },
+            "why_this_account_exists": "Priya has a continuing education loan obligation that is protected before discretionary spending.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "EMI debits must be visible from the source bank and loan-side credits or loan activity must remain traceable here."
+        },
+        {
+            "account_id": "priya_mf_ppfas_flexicap_001",
+            "institution_name": "Parag Parikh Mutual Fund",
+            "account_family": "mutual_fund",
+            "aa_account_type": "MUTUAL_FUND",
+            "display_name": "Parag Parikh Flexi Cap Fund Direct Growth",
+            "masked_account_number": "FOLIO-XXXX-2841",
+            "ownership": "single",
+            "primary_use": "Protected long-term equity SIP.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly SIP debit by bank mandate from primary salary account.",
+            "product_details": {
+                "scheme_name": "Parag Parikh Flexi Cap Fund Direct Growth",
+                "sip_amount_inr": 10000,
+                "sip_debit_day": 10,
+                "investment_type": "equity mutual fund",
+                "plan": "Direct",
+                "option": "Growth"
+            },
+            "why_this_account_exists": "Required monthly equity SIP account in Priya’s protected investment system.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "SIP transaction should debit the primary salary account and appear as corresponding mutual fund activity."
+        },
+        {
+            "account_id": "priya_mf_mirae_large_midcap_001",
+            "institution_name": "Mirae Asset Mutual Fund",
+            "account_family": "mutual_fund",
+            "aa_account_type": "MUTUAL_FUND",
+            "display_name": "Mirae Asset Large & Midcap Fund Direct Growth",
+            "masked_account_number": "FOLIO-XXXX-5179",
+            "ownership": "single",
+            "primary_use": "Protected long-term equity SIP.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly SIP debit by bank mandate from primary salary account.",
+            "product_details": {
+                "scheme_name": "Mirae Asset Large & Midcap Fund Direct Growth",
+                "sip_amount_inr": 7000,
+                "sip_debit_day": 11,
+                "investment_type": "equity mutual fund",
+                "plan": "Direct",
+                "option": "Growth"
+            },
+            "why_this_account_exists": "Required monthly equity SIP account in Priya’s protected investment system.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "SIP transaction should debit the primary salary account and appear as corresponding mutual fund activity."
+        },
+        {
+            "account_id": "priya_mf_uti_nifty50_001",
+            "institution_name": "UTI Mutual Fund",
+            "account_family": "mutual_fund",
+            "aa_account_type": "MUTUAL_FUND",
+            "display_name": "UTI Nifty 50 Index Fund Direct Growth",
+            "masked_account_number": "FOLIO-XXXX-6302",
+            "ownership": "single",
+            "primary_use": "Protected passive equity SIP.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly SIP debit by bank mandate from primary salary account.",
+            "product_details": {
+                "scheme_name": "UTI Nifty 50 Index Fund Direct Growth",
+                "sip_amount_inr": 5000,
+                "sip_debit_day": 12,
+                "investment_type": "equity mutual fund",
+                "plan": "Direct",
+                "option": "Growth"
+            },
+            "why_this_account_exists": "Required monthly equity SIP account in Priya’s protected investment system.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "SIP transaction should debit the primary salary account and appear as corresponding mutual fund activity."
+        },
+        {
+            "account_id": "priya_mf_axis_smallcap_001",
+            "institution_name": "Axis Mutual Fund",
+            "account_family": "mutual_fund",
+            "aa_account_type": "MUTUAL_FUND",
+            "display_name": "Axis Small Cap Fund Direct Growth",
+            "masked_account_number": "FOLIO-XXXX-9486",
+            "ownership": "single",
+            "primary_use": "Protected long-term small-cap equity SIP.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly SIP debit by bank mandate from primary salary account.",
+            "product_details": {
+                "scheme_name": "Axis Small Cap Fund Direct Growth",
+                "sip_amount_inr": 3000,
+                "sip_debit_day": 15,
+                "investment_type": "equity mutual fund",
+                "plan": "Direct",
+                "option": "Growth"
+            },
+            "why_this_account_exists": "Required monthly equity SIP account in Priya’s protected investment system.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "SIP transaction should debit the primary salary account and appear as corresponding mutual fund activity."
+        },
+        {
+            "account_id": "priya_mf_icici_pru_liquid_001",
+            "institution_name": "ICICI Prudential Mutual Fund",
+            "account_family": "mutual_fund",
+            "aa_account_type": "MUTUAL_FUND",
+            "display_name": "ICICI Prudential Liquid Fund Direct Growth",
+            "masked_account_number": "FOLIO-XXXX-7725",
+            "ownership": "single",
+            "primary_use": "Flexible liquid emergency buffer for surplus parking and pressure-month redemptions.",
+            "upi_linked": false,
+            "payment_rail_notes": "Purchases may debit from visible bank accounts only after surplus review. Redemptions may credit the ICICI secondary savings account or HDFC salary account.",
+            "product_details": {
+                "scheme_name": "ICICI Prudential Liquid Fund Direct Growth",
+                "investment_type": "liquid mutual fund",
+                "plan": "Direct",
+                "option": "Growth",
+                "flexible_transfer_min_inr": 0,
+                "flexible_transfer_max_inr": 10000,
+                "usual_review_day": 20,
+                "fixed_obligation": false,
+                "small_redemption_threshold_reference_inr": 50000,
+                "starting_state_requirement": "Financial starting state must include around ₹240000 of ICICI Prudential Liquid Fund value so Priya can support pressure-month redemptions without inventing liquidity."
+            },
+            "why_this_account_exists": "Priya uses liquid fund units as her emergency buffer and redemption source during pressure months.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Do not schedule as mandatory monthly SIP. Purchases occur only if surplus exists. Redemptions must credit a visible deposit account."
+        },
+        {
+            "account_id": "priya_rd_icici_001",
+            "institution_name": "ICICI Bank",
+            "account_family": "recurring_deposit",
+            "aa_account_type": "RECURRING_DEPOSIT",
+            "display_name": "ICICI Bank Recurring Deposit",
+            "masked_account_number": "RD-XXXX-4418",
+            "ownership": "single",
+            "primary_use": "Protected monthly recurring deposit for education loan prepayment and future home down payment reserve.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly RD installment auto-debit from ICICI secondary savings account.",
+            "product_details": {
+                "monthly_installment_inr": 10000,
+                "debit_day": 9,
+                "tenure_months": 24,
+                "goal_reference": "Education loan prepayment and home down payment reserve"
+            },
+            "why_this_account_exists": "Priya’s protected monthly investments include an ICICI Bank RD of ₹10000 per month.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "RD debit must be visible from the ICICI secondary savings account and corresponding RD-side activity must be visible here. If HDFC salary funds the RD indirectly, generate a visible HDFC-to-ICICI self-transfer before the RD debit."
+        },
+        {
+            "account_id": "priya_nps_tier1_protean_001",
+            "institution_name": "Protean CRA",
+            "account_family": "nps",
+            "aa_account_type": "NPS",
+            "display_name": "NPS Tier I Account",
+            "masked_account_number": "PRAN-XXXX-3562",
+            "ownership": "single",
+            "primary_use": "Protected retirement and tax-discipline contribution account.",
+            "upi_linked": false,
+            "payment_rail_notes": "Monthly contribution debit from primary salary account through NPS payment rail or bank mandate.",
+            "product_details": {
+                "tier": "Tier I",
+                "monthly_contribution_inr": 5000,
+                "debit_day": 18,
+                "contribution_frequency": "Monthly",
+                "goal_reference": "Long-term retirement and tax discipline"
+            },
+            "why_this_account_exists": "Priya contributes ₹5000 per month to NPS Tier I as part of her protected investment discipline.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "NPS debit must originate from a visible bank account and NPS contribution activity must be visible here."
+        },
+        {
+            "account_id": "priya_ins_hdfc_ergo_self_health_001",
+            "institution_name": "HDFC ERGO General Insurance",
+            "account_family": "insurance",
+            "aa_account_type": "INSURANCE_POLICY",
+            "display_name": "HDFC ERGO Health Insurance - Self",
+            "masked_account_number": "POL-XXXX-1084",
+            "ownership": "single",
+            "primary_use": "Self health insurance coverage.",
+            "upi_linked": false,
+            "payment_rail_notes": "Annual premium may be paid by credit card or net banking from a visible bank account.",
+            "product_details": {
+                "policy_type": "health_insurance_self",
+                "annual_premium_inr": 24500,
+                "premium_month": "May",
+                "coverage_inr": 1000000,
+                "payment_mode_reference": "Credit card or net banking"
+            },
+            "why_this_account_exists": "Priya has an annual self health insurance premium and coverage that must be visible in the synthetic AA environment.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Premium payment must route from a visible card or deposit account. Do not invent policy-side claim transactions unless required by later events."
+        },
+        {
+            "account_id": "priya_ins_star_parents_health_001",
+            "institution_name": "Star Health and Allied Insurance",
+            "account_family": "insurance",
+            "aa_account_type": "INSURANCE_POLICY",
+            "display_name": "Star Health Insurance - Parents",
+            "masked_account_number": "POL-XXXX-6927",
+            "ownership": "single",
+            "primary_use": "Parents health insurance coverage and possible claim reimbursement source.",
+            "upi_linked": false,
+            "payment_rail_notes": "Annual premium may be paid by credit card or net banking from a visible account. Claim reimbursement may later credit a visible bank account through insurer or TPA rail.",
+            "product_details": {
+                "policy_type": "health_insurance_parents",
+                "annual_premium_inr": 68500,
+                "premium_month": "September",
+                "coverage_inr": 700000,
+                "payment_mode_reference": "Credit card or net banking",
+                "possible_claim_reimbursement_reference_inr": 55000,
+                "possible_reimbursement_lag_days_reference": 24
+            },
+            "why_this_account_exists": "Priya pays parents health insurance and the father medical event requires a visible policy home for possible reimbursement.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "September pressure-event reimbursement may credit a visible deposit account from insurer or TPA; do not treat it as same-day liquidity."
+        },
+        {
+            "account_id": "priya_ins_maxlife_term_001",
+            "institution_name": "Max Life Insurance",
+            "account_family": "insurance",
+            "aa_account_type": "INSURANCE_POLICY",
+            "display_name": "Max Life Term Insurance",
+            "masked_account_number": "POL-XXXX-3345",
+            "ownership": "single",
+            "primary_use": "Term life insurance protection.",
+            "upi_linked": false,
+            "payment_rail_notes": "Annual premium expected through net banking from a visible bank account.",
+            "product_details": {
+                "policy_type": "term_life_insurance",
+                "annual_premium_inr": 16800,
+                "premium_month": "December",
+                "coverage_inr": 20000000,
+                "payment_mode_reference": "Net banking"
+            },
+            "why_this_account_exists": "Priya carries term insurance with a defined annual premium and coverage.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Premium debit should originate from a visible bank account; policy account should not create monthly activity."
+        },
+        {
+            "account_id": "priya_ins_acko_activa_001",
+            "institution_name": "Acko General Insurance",
+            "account_family": "insurance",
+            "aa_account_type": "INSURANCE_POLICY",
+            "display_name": "Acko Two-Wheeler Insurance - 2019 Honda Activa",
+            "masked_account_number": "POL-XXXX-8570",
+            "ownership": "single",
+            "primary_use": "Annual two-wheeler insurance for Priya’s 2019 Honda Activa.",
+            "upi_linked": false,
+            "payment_rail_notes": "Annual premium may be paid through credit card, UPI, or net banking from a visible account.",
+            "product_details": {
+                "policy_type": "vehicle_insurance",
+                "vehicle": "2019 Honda Activa",
+                "annual_premium_inr": 7200,
+                "premium_month": "March",
+                "payment_mode_reference": "Credit card, UPI, or net banking"
+            },
+            "why_this_account_exists": "Priya’s Activa insurance is an annual March obligation and must have an account home.",
+            "raw_aa_visibility": "visible",
+            "downstream_generation_notes": "Premium payment must originate from a visible bank or credit card account. Activa service expense is not an insurance account event."
+        }
+    ],
+    "relationship_semantics_note": "Insurance premium, claim reimbursement, mutual fund, RD, NPS, and loan relationships are generation links, not always symmetric transfer pairs. Bank or card accounts show payment debits; policy, loan, investment, NPS, or RD accounts show corresponding account activity, status, or holdings where supported. Do not generate multiple payment paths for the same premium, contribution, EMI, or card bill in the same period.",
+    "claim_reimbursement_semantics": "Claim reimbursement relationships are conceptual links. Raw deposit data should show an external insurer or TPA credit; insurance policy data may show claim status where supported. The insurance policy should not behave like a bank transfer source account.",
+    "required_account_relationships": [
+        {
+            "relationship_type": "self_transfer",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_dep_icici_buffer_001",
+            "rule": "Monthly or occasional buffer transfers may fund ICICI RD, emergency buffer, insurance planning, or pressure-month liquidity. Both legs must be visible with matching amount and plausible timestamp gap."
+        },
+        {
+            "relationship_type": "self_transfer",
+            "source_account_id": "priya_dep_icici_buffer_001",
+            "destination_account_id": "priya_dep_hdfc_salary_001",
+            "rule": "Reverse self-transfers may occur when Priya needs buffer money in the salary account for card autopay, rent, insurance premium, family obligation pressure, or other primary-account obligations. Both legs must be visible."
+        },
+        {
+            "relationship_type": "credit_card_payment",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_cc_hdfc_regalia_gold_001",
+            "rule": "Total amount due autopay is normally debited from the HDFC salary account around two days before the payment due date."
+        },
+        {
+            "relationship_type": "credit_card_payment",
+            "source_account_id": "priya_dep_icici_buffer_001",
+            "destination_account_id": "priya_cc_hdfc_regalia_gold_001",
+            "rule": "In pressure months, ICICI buffer may support full card payment either by first transferring funds to HDFC before autopay or by making a manual card payment from ICICI if autopay is intentionally overridden. Do not generate both HDFC autopay and ICICI manual card payment for the same statement."
+        },
+        {
+            "relationship_type": "loan_emi",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_loan_hdfc_credila_edu_001",
+            "rule": "Education loan EMI of ₹38750 is auto-debited monthly on the 7th from the primary salary account."
+        },
+        {
+            "relationship_type": "loan_prepayment",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_loan_hdfc_credila_edu_001",
+            "rule": "Any voluntary principal prepayment, such as a planned bonus-funded prepayment, must originate from a visible bank account and reduce loan principal separately from the regular EMI schedule."
+        },
+        {
+            "relationship_type": "sip_debit",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_mf_ppfas_flexicap_001",
+            "rule": "Monthly SIP debit of ₹10000 on the 10th."
+        },
+        {
+            "relationship_type": "sip_debit",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_mf_mirae_large_midcap_001",
+            "rule": "Monthly SIP debit of ₹7000 on the 11th."
+        },
+        {
+            "relationship_type": "sip_debit",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_mf_uti_nifty50_001",
+            "rule": "Monthly SIP debit of ₹5000 on the 12th."
+        },
+        {
+            "relationship_type": "sip_debit",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_mf_axis_smallcap_001",
+            "rule": "Monthly SIP debit of ₹3000 on the 15th."
+        },
+        {
+            "relationship_type": "sip_debit",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_mf_icici_pru_liquid_001",
+            "rule": "Flexible liquid fund purchase may occur after the 20th only when surplus exists; amount can range from ₹0 to ₹10000 and is not mandatory."
+        },
+        {
+            "relationship_type": "sip_debit",
+            "source_account_id": "priya_dep_icici_buffer_001",
+            "destination_account_id": "priya_mf_icici_pru_liquid_001",
+            "rule": "Secondary savings may be used for occasional liquid fund purchases when Priya routes surplus or emergency buffer through ICICI Bank."
+        },
+        {
+            "relationship_type": "rd_debit",
+            "source_account_id": "priya_dep_icici_buffer_001",
+            "destination_account_id": "priya_rd_icici_001",
+            "rule": "Monthly recurring deposit installment of ₹10000 is debited from ICICI secondary savings on the 9th. If needed, HDFC salary account should transfer funds to ICICI buffer before the RD debit, and both self-transfer legs must be visible."
+        },
+        {
+            "relationship_type": "nps_contribution",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_nps_tier1_protean_001",
+            "rule": "Monthly NPS Tier I contribution of ₹5000 is debited on the 18th."
+        },
+        {
+            "relationship_type": "tax_saving_topup",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_nps_tier1_protean_001",
+            "rule": "March tax-saving top-up of around ₹50000 should be modeled as an additional NPS Tier I contribution by default. Do not create an ELSS account unless the year arc explicitly changes this assumption."
+        },
+        {
+            "relationship_type": "insurance_premium",
+            "source_account_id": "priya_cc_hdfc_regalia_gold_001",
+            "destination_account_id": "priya_ins_hdfc_ergo_self_health_001",
+            "rule": "Self health insurance annual premium of ₹24500 is paid in May. Default rail is credit card where surcharge is acceptable; otherwise HDFC salary account net banking may be used. Generate only one payment path for this premium in the year."
+        },
+        {
+            "relationship_type": "insurance_premium",
+            "source_account_id": "priya_cc_hdfc_regalia_gold_001",
+            "destination_account_id": "priya_ins_star_parents_health_001",
+            "rule": "Parents health insurance annual premium of ₹68500 is paid in September. Default rail is credit card if surcharge is acceptable; otherwise HDFC salary account net banking may be used. Generate only one payment path for this premium in the year."
+        },
+        {
+            "relationship_type": "insurance_premium",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "priya_ins_maxlife_term_001",
+            "rule": "Term insurance annual premium of ₹16800 is expected in December through HDFC salary account net banking. Generate only one payment path for this premium in the year."
+        },
+        {
+            "relationship_type": "insurance_premium",
+            "source_account_id": "priya_cc_hdfc_regalia_gold_001",
+            "destination_account_id": "priya_ins_acko_activa_001",
+            "rule": "Activa insurance annual premium of ₹7200 is expected in March. Default rail is credit card; otherwise UPI or net banking from a visible bank account may be used. Generate only one payment path for this premium in the year."
+        },
+        {
+            "relationship_type": "redemption_credit",
+            "source_account_id": "priya_mf_icici_pru_liquid_001",
+            "destination_account_id": "priya_dep_icici_buffer_001",
+            "rule": "Liquid fund redemptions should normally credit the ICICI secondary savings account, especially during pressure months."
+        },
+        {
+            "relationship_type": "redemption_credit",
+            "source_account_id": "priya_mf_icici_pru_liquid_001",
+            "destination_account_id": "priya_dep_hdfc_salary_001",
+            "rule": "Liquid fund redemption may alternatively credit the HDFC salary account when needed for card payment or immediate obligations."
+        },
+        {
+            "relationship_type": "claim_reimbursement",
+            "source_account_id": "priya_ins_star_parents_health_001",
+            "destination_account_id": "priya_dep_icici_buffer_001",
+            "rule": "Father medical event reimbursement may arrive from insurer or TPA after a lag, with reference amount ₹55000 and no same-day liquidity assumption. This is a conceptual relationship; raw deposit data should show an external insurer or TPA credit."
+        },
+        {
+            "relationship_type": "claim_reimbursement",
+            "source_account_id": "priya_ins_star_parents_health_001",
+            "destination_account_id": "priya_dep_hdfc_salary_001",
+            "rule": "Claim reimbursement may credit the primary salary account if that is used as the registered claim payout account. This is a conceptual relationship; raw deposit data should show an external insurer or TPA credit."
+        },
+        {
+            "relationship_type": "family_transfer",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "external_counterparty_suresh_nair",
+            "rule": "Monthly father support of ₹18000 and possible father medicine support of ₹6500 should appear as ordinary UPI or IMPS transfers, not as a separate owned family account."
+        },
+        {
+            "relationship_type": "family_transfer",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "external_counterparty_latha_nair",
+            "rule": "Monthly mother support of ₹22000 should appear as an ordinary UPI or IMPS transfer, not as a separate owned family account."
+        },
+        {
+            "relationship_type": "family_transfer",
+            "source_account_id": "priya_dep_hdfc_salary_001",
+            "destination_account_id": "external_counterparty_ananya_nair",
+            "rule": "Quarterly sister support of ₹6000 may appear as UPI transfer in January, April, July, and October."
+        },
+        {
+            "relationship_type": "family_transfer",
+            "source_account_id": "external_counterparty_ananya_nair",
+            "destination_account_id": "priya_dep_icici_buffer_001",
+            "rule": "Sister contribution for father medical event may arrive later as ordinary IMPS, NEFT, or UPI credit, with reference amount ₹15000 and lag of about 12 days."
+        }
+    ],
+    "external_counterparty_handling": {
+        "salary_employer": {
+            "counterparty_name": "ZeptoScale Technologies Private Limited",
+            "owned_account_created": false,
+            "handling_rule": "Salary credits appear as external employer credits into Priya’s HDFC salary account."
+        },
+        "landlord": {
+            "counterparty_name": "Raghavendra Rao",
+            "owned_account_created": false,
+            "handling_rule": "Rent is paid by NEFT from Priya’s visible bank account to an external landlord account."
+        },
+        "family_members": {
+            "owned_accounts_created": false,
+            "handling_rule": "Suresh Nair, Latha Nair, and Ananya Nair are external counterparties. Their bank accounts are not Priya-owned AA-visible accounts."
+        },
+        "household_staff": {
+            "owned_accounts_created": false,
+            "handling_rule": "Kamala Devi and Shobha Ramesh receive ordinary UPI transfers from Priya’s visible bank account."
+        },
+        "friends": {
+            "owned_accounts_created": false,
+            "handling_rule": "Friend reimbursements with Meera Iyer, Rohit Menon, and Nisha Varghese appear as normal UPI transfers or credits without creating friend-owned accounts."
+        },
+        "merchants_and_billers": {
+            "owned_accounts_created": false,
+            "handling_rule": "Cabs, groceries, food delivery, pharmacy, utilities, travel, shopping, fuel, hospital, diagnostics, and subscriptions appear as external merchant or biller counterparties."
+        },
+        "insurance_tpa": {
+            "owned_accounts_created": false,
+            "handling_rule": "TPA or insurer reimbursement credits are external credits into Priya’s visible bank account, linked conceptually to the Star Health policy."
+        }
+    },
+    "non_account_visibility_notes": {
+        "cash": {
+            "aa_visible_account_created": false,
+            "rule": "Cash is not an AA account. ATM withdrawals may appear in bank statements, but individual cash spends for vegetables, tips, repairs, or autos are not individually visible."
+        },
+        "upi": {
+            "aa_visible_account_created": false,
+            "rule": "UPI is a payment rail attached to visible bank accounts, not a separate account."
+        },
+        "credit_card_rewards": {
+            "aa_visible_account_created": false,
+            "rule": "Reward points are not modeled as a separate AA-visible financial account."
+        },
+        "security_deposit": {
+            "aa_visible_account_created": false,
+            "rule": "Rental security deposit is not an active Priya-owned account in this universe unless a later bank transaction references it."
+        },
+        "vehicle": {
+            "aa_visible_account_created": false,
+            "rule": "The 2019 Honda Activa is not a financial account. Its insurance policy is visible; fuel, service, and repairs appear as payment transactions later."
+        },
+        "emergency_fund": {
+            "aa_visible_account_created": false,
+            "rule": "Emergency fund is represented through the secondary savings account and ICICI Prudential Liquid Fund, not as a separate synthetic label account."
+        }
+    },
+    "intentionally_excluded_accounts": [
+        {
+            "excluded_account": "Cash wallet or cash ledger",
+            "reason": "Cash is not AA-visible; only ATM withdrawals can appear later in bank statements."
+        },
+        {
+            "excluded_account": "Separate family member bank accounts",
+            "reason": "Family members are external counterparties, not Priya-owned accounts."
+        },
+        {
+            "excluded_account": "Separate UPI wallet",
+            "reason": "Priya’s UPI activity is routed through visible bank accounts; no standalone wallet is required."
+        },
+        {
+            "excluded_account": "Fixed deposit account",
+            "reason": "Persona requires RD and liquid fund but does not require a separate FD account."
+        },
+        {
+            "excluded_account": "Demat or direct equity trading account",
+            "reason": "Persona specifies mutual funds, NPS, RD, and liquid fund; no direct equity behavior is required."
+        },
+        {
+            "excluded_account": "Additional credit cards",
+            "reason": "One HDFC Regalia Gold card is sufficient and realistic for the locked persona."
+        },
+        {
+            "excluded_account": "Buy-now-pay-later or consumer durable loan account",
+            "reason": "Priya avoids impulsive debt and does not routinely split purchases into EMI."
+        },
+        {
+            "excluded_account": "Travel card or forex account",
+            "reason": "Travel is domestic within the persona year and can be handled by the existing credit card and bank accounts."
+        },
+        {
+            "excluded_account": "Separate ELSS mutual fund account",
+            "reason": "March tax-saving top-up is modeled as an additional NPS Tier I contribution by default unless the year arc explicitly changes this assumption."
+        }
+    ],
+    "coverage_checklist": {
+        "salary_265000_per_month_has_account_home": true,
+        "rent_68000_has_payment_source": true,
+        "primary_salary_account_included": true,
+        "secondary_buffer_account_included": true,
+        "credit_card_450000_limit_included": true,
+        "credit_card_full_payment_autopay_supported": true,
+        "education_loan_hdfc_credila_included": true,
+        "education_loan_original_principal_included": true,
+        "education_loan_outstanding_reference_included": true,
+        "education_loan_emi_38750_supported": true,
+        "parag_parikh_sip_10000_included": true,
+        "mirae_asset_sip_7000_included": true,
+        "uti_nifty50_sip_5000_included": true,
+        "axis_smallcap_sip_3000_included": true,
+        "total_equity_sips_25000_supported": true,
+        "icici_rd_10000_included": true,
+        "nps_tier1_5000_included": true,
+        "icici_prudential_liquid_fund_included": true,
+        "liquid_fund_redemption_account_home_exists": true,
+        "self_health_insurance_hdfc_ergo_included": true,
+        "parents_health_insurance_star_health_included": true,
+        "term_insurance_max_life_included": true,
+        "activa_insurance_acko_included": true,
+        "father_medical_reimbursement_path_exists": true,
+        "family_transfers_have_bank_upi_source": true,
+        "cash_behavior_not_created_as_account": true,
+        "all_self_transfers_have_visible_source_and_destination": true,
+        "no_transactions_created": true,
+        "no_opening_balances_created": true,
+        "no_year_arc_created": true,
+        "no_month_plan_created": true,
+        "no_daily_life_created": true,
+        "no_raw_aa_payload_created": true,
+        "rd_funded_from_icici_buffer": true,
+        "reverse_self_transfer_supported": true,
+        "march_tax_saving_topup_account_home_exists": true,
+        "loan_prepayment_relationship_separate_from_emi": true,
+        "liquid_fund_starting_state_requirement_included": true,
+        "education_loan_starting_state_requirement_included": true,
+        "relationship_semantics_note_included": true,
+        "insurance_premium_duplicate_payment_paths_prevented": true,
+        "claim_reimbursement_semantics_clarified": true
+    },
+    "do_not_generate_yet": [
+        "transactions",
+        "opening balances",
+        "monthly balances",
+        "year arc",
+        "daily life",
+        "raw AA payload"
+    ]
+}

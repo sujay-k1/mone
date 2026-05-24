@@ -1,0 +1,2822 @@
+{
+  "year_arc_version": "v1",
+  "synthetic_year": {
+    "start_date": "2025-06-01",
+    "end_date": "2026-05-31"
+  },
+  "source_artifacts": [
+    "Aarav Persona Bible v1",
+    "Priya Persona Bible v1",
+    "Aarav Account Universe v1",
+    "Priya Account Universe v1",
+    "Aarav Financial Starting State v1",
+    "Priya Financial Starting State v1",
+    "World Catalogs v1"
+  ],
+  "global_year_arc_principles": [
+    "This artifact decides macro month posture only; it does not generate transactions, exact daily sequence, exact dated spends, balances, or raw AA payload.",
+    "Most months are boring or mildly active; pressure and stress months are intentionally limited.",
+    "Catalog item IDs are references that allow later month/day planners to select plausible events; they are not coverage targets.",
+    "Recurring obligations continue unless an explicit persona-compatible exception is listed for that month.",
+    "Self-transfers must remain visible paired movements across persona-owned accounts and must not be classified as income or spending.",
+    "Friend reimbursements, family transfers, and claim reimbursements remain ordinary external flows in raw data and must not be product-side labels.",
+    "Card purchases later post to credit card accounts first; deposit accounts show impact only when card bills are paid.",
+    "Simpl/pay-later is only available to Aarav, only near salary-end, and never for Priya.",
+    "Large one-time inflows are not introduced to rescue bad planning; planned salary, lagged reimbursements, and justified liquid fund movements are the only allowed liquidity supports.",
+    "Stress clusters must remain coherent; do not combine travel, hospital, gadget purchase, insurance, tax, and card stress unless the month is explicitly selected as the single stress month and still passes plausibility."
+  ],
+  "calendar_context": {
+    "salary_rule": "Aarav salary of ₹165000 and Priya salary of ₹265000 are expected monthly on the last working day of each month, near evening, per locked account/persona artifacts.",
+    "festival_windows_used": [
+      "Monsoon commute/rain friction: June 2025 through September 2025",
+      "Onam/family context: September 2025",
+      "Diwali gifting/shopping window: October 2025 through November 2025",
+      "New Year social pressure: December 2025 through January 2026",
+      "Priya planned annual bonus context: April 2026",
+      "Aarav Acko scooter insurance annual premium: September 2025",
+      "Known term insurance premium window: December 2025",
+      "Priya tax-saving and Activa insurance/service pressure: March 2026",
+      "Priya HDFC ERGO self-health insurance annual premium: May 2026"
+    ],
+    "working_day_salary_handling_note": "Exact salary dates are deferred. Later schedulers must compute the last working day for each month and avoid weekend/holiday misposting.",
+    "exact_dates_deferred_to_later_stage": true
+  },
+  "persona_year_arcs": {
+    "aarav": {
+      "one_line_year_story": "Aarav has a mostly normal high-income year with convenience leaks, festival/social spikes, one weekend trip, two constrained card months, and one survivable March stress month.",
+      "year_shape": {
+        "boring_month_count": 5,
+        "active_month_count": 4,
+        "pressure_month_count": 2,
+        "stress_month_count": 1
+      },
+      "selected_year_level_events": [
+        {
+          "event_name": "Aarav UTI SIP succeeds in 9 months and is skipped in 3 selected months",
+          "catalog_item_ids": [
+            "finance_aarav_uti_sip_debit"
+          ],
+          "selected_months": [
+            "2025-06",
+            "2025-07",
+            "2025-09",
+            "2025-10",
+            "2025-12",
+            "2026-01",
+            "2026-02",
+            "2026-04",
+            "2026-05"
+          ],
+          "skip_months": [
+            "2025-08",
+            "2025-11",
+            "2026-03"
+          ],
+          "guardrail": "SIP skip must be explicit and caused by pressure/stress, not random."
+        },
+        {
+          "event_name": "Aarav card revolve is limited to two months",
+          "catalog_item_ids": [],
+          "selected_months": [
+            "2025-11",
+            "2026-03"
+          ],
+          "guardrail": "Do not create additional revolving months; high outstanding alone is not revolve."
+        },
+        {
+          "event_name": "One nearby friend weekend trip",
+          "catalog_item_ids": [
+            "travel_hotel_homestay_booking",
+            "travel_intercity_bus_booking",
+            "travel_zoomcar_self_drive_rental",
+            "travel_weekend_destination_local_spend",
+            "social_friend_borrowing_repayment_aarav"
+          ],
+          "selected_months": [
+            "2026-01"
+          ],
+          "guardrail": "Only one weekend trip for the year; reimbursements can lag and split."
+        },
+        {
+          "event_name": "Single liquid-fund support event in stress month",
+          "catalog_item_ids": [
+            "finance_liquid_fund_purchase_redemption"
+          ],
+          "selected_months": [
+            "2026-03"
+          ],
+          "guardrail": "Redemption supports stress-month obligations and must not be treated as income."
+        },
+        {
+          "event_name": "Aarav Acko scooter insurance annual premium",
+          "catalog_item_ids": [
+            "finance_vehicle_insurance_renewal"
+          ],
+          "selected_months": [
+            "2025-09"
+          ],
+          "guardrail": "Known annual premium due in September 2025; planned and modest, not a stress event and not to be moved to March."
+        },
+        {
+          "event_name": "Aarav Max Life term insurance annual premium",
+          "catalog_item_ids": [
+            "finance_insurance_premium_payment"
+          ],
+          "selected_months": [
+            "2025-12"
+          ],
+          "guardrail": "Known annual premium due in December 2025; should not cause card revolve or turn December into insurance stress."
+        }
+      ],
+      "explicitly_not_selected_this_year": [
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No hospital-level medical event for Aarav this year."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No major gadget purchase; avoid forcing catalog coverage."
+        },
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "Aarav sends small family support/gifts but does not take a Kochi flight this year."
+        },
+        {
+          "catalog_item_id_or_context": "finance_income_tax_payment_refund",
+          "reason": "No convenient tax refund or payment rescue is used."
+        },
+        {
+          "catalog_item_id_or_context": "family_aarav_father_appliance_medical_support",
+          "reason": "No high-cost family appliance/medical support selected; keeps March stress focused."
+        }
+      ],
+      "month_arcs": [
+        {
+          "month_id": "2025-06",
+          "month_name": "June 2025",
+          "month_type": "boring",
+          "life_context_summary": "Synthetic year starts with May salary already present but early-month obligations stacked. Bengaluru monsoon friction begins, but Aarav mostly stays in his normal Indiranagar-Bellandur rhythm.",
+          "financial_posture_summary": "Payable but thin after rent, card due, staff, mother medicine transfer, utilities, Simpl repayment, and SIP. This month should feel tight without requiring rescue inflows.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Baseline salary-month obligations and thin-buffer discipline",
+              "catalog_item_ids_allowed": [
+                "housing_aarav_rent",
+                "housing_aarav_cook_payment",
+                "housing_aarav_maid_payment",
+                "housing_aarav_apartment_maintenance",
+                "utility_bescom_electricity",
+                "utility_aarav_broadband",
+                "utility_aarav_mobile_postpaid",
+                "family_aarav_mother_medicines_transfer",
+                "subscription_aarav_gym_membership_autopay",
+                "finance_aarav_uti_sip_debit"
+              ],
+              "why_this_context_is_plausible": "Starting state already shows early-June obligations; the planner should preserve them without inventing extra income.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Monsoon commute fallback without drama",
+              "catalog_item_ids_allowed": [
+                "mobility_aarav_scooter_petrol_refill",
+                "mobility_uber_cab",
+                "mobility_ola_cab_auto",
+                "mobility_namma_yatri_auto",
+                "mobility_namma_metro",
+                "mobility_parking_charges"
+              ],
+              "why_this_context_is_plausible": "June rain can push occasional cab/auto use but should not become a flood month.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Normal convenience food and smoke habits",
+              "catalog_item_ids_allowed": [
+                "food_swiggy_delivery",
+                "food_zomato_delivery_dineout",
+                "food_zepto_quick_commerce",
+                "food_cigarette_smoke_shop_purchase",
+                "food_office_cafeteria_pantry_extras",
+                "food_cafe_coffee_snacks"
+              ],
+              "why_this_context_is_plausible": "Aarav still has delivery, quick-commerce, coffee, and cigarette habits even in a boring month.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "No travel in the first month because early obligations already make liquidity thin."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "Avoid a major gadget purchase during a thin but otherwise normal month."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "Do not redeem liquid fund for ordinary June spending."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No major medical event selected."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Axis card should be paid in full or near-full by due window using visible deposit cash; no new revolving month selected.",
+            "pay_later_behavior": "Simpl repayment for late-May use is allowed because it is an existing starting-state obligation; new Simpl usage, if any, must be only near salary-end and small.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; ICICI buffer can be used only for small backup self-transfer if HDFC is too tight.",
+            "self_transfer_behavior": "Visible HDFC-ICICI self-transfer allowed only as liquidity routing, never income."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Small friend or flatmate settlements are allowed but should not rescue the month; no group-fronting story."
+          },
+          "month_planner_instructions": [
+            "Preserve the early-month obligation stack from starting state.",
+            "Do not solve tightness with fake inflows.",
+            "Keep discretionary spend near boring-month levels.",
+            "If Simpl appears, it must be in the final salary-end window only."
+          ]
+        },
+        {
+          "month_id": "2025-07",
+          "month_name": "July 2025",
+          "month_type": "mildly_active",
+          "life_context_summary": "Monsoon continues. Office late nights and a few pub or restaurant plans return after the careful June start.",
+          "financial_posture_summary": "Income remains strong, but convenience, rain cabs, and social spend lift the card statement. No true liquidity crisis.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Rain-sensitive office and late-work pattern",
+              "catalog_item_ids_allowed": [
+                "work_late_work_dinner_order",
+                "work_late_work_ride_home",
+                "mobility_uber_cab",
+                "mobility_ola_cab_auto",
+                "mobility_namma_yatri_auto",
+                "food_cloud_kitchen_late_night_meal"
+              ],
+              "why_this_context_is_plausible": "Aarav has late office nights and avoids scooter during heavy rain.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Moderate social re-entry",
+              "catalog_item_ids_allowed": [
+                "social_pub_brewery_night",
+                "food_restaurant_dinner",
+                "social_group_cab_fronting",
+                "food_cigarette_smoke_shop_purchase"
+              ],
+              "why_this_context_is_plausible": "A few pub/dinner outings fit Aarav's social profile without creating a high-cost event month.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Routine household and quick commerce",
+              "catalog_item_ids_allowed": [
+                "housing_shared_quick_commerce_flatmate",
+                "food_zepto_quick_commerce",
+                "food_blinkit_quick_commerce",
+                "food_swiggy_instamart"
+              ],
+              "why_this_context_is_plausible": "Flatmate household settlement and quick-commerce are plausible but should remain small.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Monsoon social and late-work uplift",
+              "catalog_item_ids": [
+                "social_pub_brewery_night",
+                "work_late_work_dinner_order",
+                "work_late_work_ride_home"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 9000,
+                "high": 22000
+              },
+              "funding_or_payment_posture": "Mostly card-led with some UPI; no card revolve.",
+              "downstream_guardrail": "Treat as scattered selected evenings, not a daily pattern."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_weekend_destination_local_spend",
+              "reason": "Save the one weekend trip for a later month."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_apple_service_premium_repair",
+              "reason": "No premium repair or gadget shock this month."
+            },
+            {
+              "catalog_item_id_or_context": "family_aarav_father_appliance_medical_support",
+              "reason": "No family pressure selected."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption needed."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card statement can rise but should still be fully cleared by due window.",
+            "pay_later_behavior": "Simpl can appear only near salary-end and only for small food/quick-commerce convenience if selected.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; salary plus ordinary cash flow covers the month.",
+            "self_transfer_behavior": "Self-transfers only for small routing between HDFC and ICICI."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Small reimbursements from pub, cab, or flatmate splits may lag a few days; no perfect symmetry required."
+          },
+          "month_planner_instructions": [
+            "Keep rainy commute costs plausible for office days only.",
+            "Do not combine every food delivery app in the same need.",
+            "Allow one or two social contexts, not a packed social calendar.",
+            "Keep SIP successful."
+          ]
+        },
+        {
+          "month_id": "2025-08",
+          "month_name": "August 2025",
+          "month_type": "pressure",
+          "life_context_summary": "Heavy rain, lease-renewal admin, and scooter reliability friction create a constrained month. This is pressure, not the year’s crisis.",
+          "financial_posture_summary": "Aarav protects rent and card payment but trims investment discipline; SIP can be skipped this month. Card still should not revolve.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": [
+              "Aarav UTI SIP may be skipped this month to preserve cash after rent, card due, monsoon commute, and repairs."
+            ]
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Lease renewal without deposit shock",
+              "catalog_item_ids_allowed": [
+                "housing_aarav_rent",
+                "housing_aarav_apartment_maintenance",
+                "housing_household_repair_plumber_electrician"
+              ],
+              "why_this_context_is_plausible": "August is Aarav's lease renewal month, but no new deposit or rent doubling should be created.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Monsoon scooter and commute friction",
+              "catalog_item_ids_allowed": [
+                "mobility_scooter_activa_service",
+                "mobility_puncture_roadside_mechanic",
+                "mobility_uber_cab",
+                "mobility_ola_cab_auto",
+                "mobility_namma_yatri_auto"
+              ],
+              "why_this_context_is_plausible": "Rain makes scooter service or minor repair plausible.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true,
+              "vehicle_specific_rendering_note": "For Aarav, render this as TVS Ntorq scooter service/repair, not Honda Activa."
+            },
+            {
+              "context_name": "Controlled convenience fallback",
+              "catalog_item_ids_allowed": [
+                "food_swiggy_delivery",
+                "food_zepto_quick_commerce",
+                "work_late_work_dinner_order"
+              ],
+              "why_this_context_is_plausible": "Convenience spend can rise when commute and work friction rise.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Monsoon scooter repair and commute replacement",
+              "catalog_item_ids": [
+                "mobility_scooter_activa_service",
+                "mobility_puncture_roadside_mechanic",
+                "mobility_uber_cab",
+                "mobility_ola_cab_auto"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 12000,
+                "high": 28000
+              },
+              "funding_or_payment_posture": "Paid from salary cash and card where plausible; no liquid-fund redemption.",
+              "downstream_guardrail": "Keep this to one repair/service story plus rain cabs, not repeated breakdowns."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No family travel; August is already pressure through monsoon and lease friction."
+            },
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "Avoid trip costs in the same pressure month."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No major electronics purchase."
+            },
+            {
+              "catalog_item_id_or_context": "medical_minor_accident_scooter_injury_care",
+              "reason": "No accident; only repair/friction."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card may be high but must be cleared by using salary timing and reduced discretionary spend; no revolving month selected.",
+            "pay_later_behavior": "Simpl can appear only near salary-end if cash is tight, and only for small food/quick-commerce spends.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; ICICI backup transfer allowed if needed.",
+            "self_transfer_behavior": "Self-transfer may bridge HDFC timing but must be paired visibly."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Flatmate or friend settlements may be partial and delayed; do not count them as income."
+          },
+          "month_planner_instructions": [
+            "Mark this as one of Aarav's SIP-skip months.",
+            "Do not add travel, gadget, or medical events.",
+            "Keep card payment constrained but not revolved.",
+            "Represent lease renewal as context only unless a minor admin fee is later selected."
+          ]
+        },
+        {
+          "month_id": "2025-09",
+          "month_name": "September 2025",
+          "month_type": "boring",
+          "life_context_summary": "After monsoon pressure, Aarav has a relatively stable month with a small Onam-family gesture to Kochi, his known Acko scooter insurance premium, and no travel.",
+          "financial_posture_summary": "Normal salary cycle, recurring obligations, successful SIP, moderate card use, a modest planned scooter insurance premium, and one small family/festival texture. The month remains boring because the insurance premium and Onam gift are modest and planned.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Routine work-home rhythm",
+              "catalog_item_ids_allowed": [
+                "food_office_cafeteria_pantry_extras",
+                "food_cafe_coffee_snacks",
+                "mobility_aarav_scooter_petrol_refill",
+                "mobility_parking_charges"
+              ],
+              "why_this_context_is_plausible": "September can return to standard office and scooter behavior.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Small Onam family gesture",
+              "catalog_item_ids_allowed": [
+                "family_festival_gift_transfer",
+                "family_aarav_mother_medicines_transfer",
+                "shopping_gift_card_online_gift_purchase"
+              ],
+              "why_this_context_is_plausible": "Aarav is from Kochi and can send a modest family gift without travelling.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Normal low-level lifestyle habits",
+              "catalog_item_ids_allowed": [
+                "food_swiggy_delivery",
+                "food_cigarette_smoke_shop_purchase",
+                "lifestyle_laundry_dry_cleaning",
+                "lifestyle_salon_haircut_grooming"
+              ],
+              "why_this_context_is_plausible": "Boring months still contain repeatable small lifestyle spends.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Known annual scooter insurance premium",
+              "catalog_item_ids_allowed": [
+                "finance_vehicle_insurance_renewal"
+              ],
+              "why_this_context_is_plausible": "Aarav’s Acko scooter insurance annual premium belongs in September and is planned rather than stressful.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Modest Onam family gift without travel",
+              "catalog_item_ids": [
+                "family_festival_gift_transfer",
+                "shopping_gift_card_online_gift_purchase"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 5000,
+                "high": 12000
+              },
+              "funding_or_payment_posture": "Paid from salary account or card; no borrowing or redemption.",
+              "downstream_guardrail": "This is a minor selected context, not a pressure event. Do not amplify into travel, large family support, or multiple gifts."
+            },
+            {
+              "event_name": "Aarav scooter insurance annual premium",
+              "catalog_item_ids": [
+                "finance_vehicle_insurance_renewal"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 7800,
+                "high": 7800
+              },
+              "funding_or_payment_posture": "Paid through Axis card or visible bank rail depending later month plan; not a stress event.",
+              "downstream_guardrail": "This is a known annual premium, not a vehicle breakdown or March-style stress event.",
+              "known_annual_obligation": true,
+              "should_not_escalate_month_type": true
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No Kochi travel for Aarav this year in Onam window."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No family medical event selected."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+              "reason": "No appliance support this month."
+            },
+            {
+              "catalog_item_id_or_context": "social_concert_event_tickets",
+              "reason": "Keep the month boring."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card payment expected; current-cycle card spends should be unremarkable.",
+            "pay_later_behavior": "Simpl should be absent or tiny and only near salary-end.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund action.",
+            "self_transfer_behavior": "Self-transfers rare and purely operational."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Small friend or flatmate reimbursements allowed, but not material to liquidity."
+          },
+          "month_planner_instructions": [
+            "Let the month recover from August pressure.",
+            "Keep SIP successful.",
+            "Do not turn festival context into travel or high gifting.",
+            "Avoid hidden family inflows.",
+            "Keep September boring because the insurance premium and Onam gift are modest and planned."
+          ]
+        },
+        {
+          "month_id": "2025-10",
+          "month_name": "October 2025",
+          "month_type": "mildly_active",
+          "life_context_summary": "Diwali shopping and social planning begin. Aarav buys gifts and upgrades small items, but the larger pressure is deferred to November.",
+          "financial_posture_summary": "Card spend rises through shopping and eating out. Salary can handle obligations, but the next card cycle should start looking heavier.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Diwali pre-shopping and gifts",
+              "catalog_item_ids_allowed": [
+                "shopping_amazon",
+                "shopping_flipkart",
+                "shopping_myntra_ajio_clothes",
+                "shopping_gift_card_online_gift_purchase",
+                "family_festival_gift_transfer"
+              ],
+              "why_this_context_is_plausible": "October is a realistic pre-Diwali shopping window.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Social dinners without group trip",
+              "catalog_item_ids_allowed": [
+                "food_restaurant_dinner",
+                "social_movie_entertainment_tickets",
+                "social_pub_brewery_night",
+                "social_group_cab_fronting"
+              ],
+              "why_this_context_is_plausible": "Festival season supports a few dinners and outings.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Routine digital and subscription texture",
+              "catalog_item_ids_allowed": [
+                "subscription_netflix_streaming",
+                "subscription_spotify_music",
+                "subscription_icloud_google_one_cloud_storage",
+                "subscription_app_store_play_store_purchase"
+              ],
+              "why_this_context_is_plausible": "Aarav has small app and subscription spends that should remain background.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Diwali pre-shopping uplift",
+              "catalog_item_ids": [
+                "shopping_amazon",
+                "shopping_flipkart",
+                "shopping_myntra_ajio_clothes",
+                "shopping_gift_card_online_gift_purchase",
+                "family_festival_gift_transfer"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 18000,
+                "high": 42000
+              },
+              "funding_or_payment_posture": "Primarily card-led; full card payment still expected this month.",
+              "downstream_guardrail": "Do not add a major gadget purchase; use small-to-mid shopping only."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No big electronics; keep Diwali shopping medium-sized."
+            },
+            {
+              "catalog_item_id_or_context": "travel_weekend_destination_local_spend",
+              "reason": "Avoid trip costs before the New Year/weekend-trip window."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No asset drawdown."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical pressure."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card can grow meaningfully but should still be paid in full by due window.",
+            "pay_later_behavior": "Simpl may be used near salary-end only for convenience after shopping pressure.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption.",
+            "self_transfer_behavior": "Self-transfers only if needed for card payment timing."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Friend or group dinner settlements may exist but should be small."
+          },
+          "month_planner_instructions": [
+            "Use October to set up heavier November card statement pressure.",
+            "Keep SIP successful.",
+            "Avoid selecting all shopping merchants for the same need.",
+            "No travel bookings yet."
+          ]
+        },
+        {
+          "month_id": "2025-11",
+          "month_name": "November 2025",
+          "month_type": "pressure",
+          "life_context_summary": "Diwali follow-through, friend plans, and delayed settlements collide with a heavier card statement. This is one of Aarav's constrained months.",
+          "financial_posture_summary": "Rent and core obligations continue, but Aarav may skip SIP and revolve part of the card. Pressure should remain survivable without liquid fund redemption.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": [
+              "Aarav UTI SIP may be skipped this month because Diwali/card pressure crowds out investment discipline."
+            ]
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Diwali social and gifting spillover",
+              "catalog_item_ids_allowed": [
+                "family_festival_gift_transfer",
+                "shopping_amazon",
+                "shopping_flipkart",
+                "food_restaurant_dinner",
+                "social_pub_brewery_night"
+              ],
+              "why_this_context_is_plausible": "Festival shopping and social activity can spill into November.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Group fronting and delayed reimbursements",
+              "catalog_item_ids_allowed": [
+                "work_team_dinner_fronted",
+                "social_group_cab_fronting",
+                "social_friend_borrowing_repayment_aarav"
+              ],
+              "why_this_context_is_plausible": "Aarav's social graph supports fronting and delayed/partial repayments.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Salary-end convenience under pressure",
+              "catalog_item_ids_allowed": [
+                "food_zepto_quick_commerce",
+                "work_late_work_dinner_order",
+                "food_swiggy_delivery"
+              ],
+              "why_this_context_is_plausible": "Cash tightness near salary-end can create small Simpl-eligible convenience use.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Diwali card-pressure month",
+              "catalog_item_ids": [
+                "family_festival_gift_transfer",
+                "shopping_amazon",
+                "shopping_flipkart",
+                "food_restaurant_dinner",
+                "social_pub_brewery_night"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 32000,
+                "high": 68000
+              },
+              "funding_or_payment_posture": "Mostly card-funded; part of card balance may revolve within locked limits.",
+              "downstream_guardrail": "This is one of only two card-revolve months; do not stack travel or medical pressure."
+            },
+            {
+              "event_name": "Delayed friend/group settlement",
+              "catalog_item_ids": [
+                "work_team_dinner_fronted",
+                "social_group_cab_fronting",
+                "social_friend_borrowing_repayment_aarav"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 8000,
+                "high": 22000
+              },
+              "funding_or_payment_posture": "Aarav may front gross spend and receive partial repayments later.",
+              "downstream_guardrail": "Repayments should be split and lagged, not perfectly same-day."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No travel in the same card-pressure month."
+            },
+            {
+              "catalog_item_id_or_context": "travel_weekend_destination_local_spend",
+              "reason": "Reserve the selected weekend trip for January."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical shock."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_apple_service_premium_repair",
+              "reason": "No premium repair or gadget stress here."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "First selected card-revolve month; revolve a controlled portion while avoiding default.",
+            "pay_later_behavior": "Simpl allowed only in the final salary-end window and only for small food/quick-commerce needs.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; use salary, reduced discretionary spend, and delayed repayments.",
+            "self_transfer_behavior": "Self-transfer may be used to route card payment but not to fabricate liquidity."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Friend reimbursements from group fronting should be delayed or partial across later weeks/months."
+          },
+          "month_planner_instructions": [
+            "Mark this as card-revolve month 1 of 2.",
+            "Mark this as SIP-skip month 2 of 3.",
+            "Do not rescue the month with large one-time inflow.",
+            "Avoid high-cost travel and repairs."
+          ]
+        },
+        {
+          "month_id": "2025-12",
+          "month_name": "December 2025",
+          "month_type": "mildly_active",
+          "life_context_summary": "Year-end social calendar rises with team dinners, pubs, New Year planning, and Aarav’s known Max Life term insurance premium. Aarav spends more than baseline but does not enter crisis.",
+          "financial_posture_summary": "Card remains active, friend settlements are messy, and cash discipline weakens near salary-end. Social spend should be capped because the term premium also lands this month; no revolving this month.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Year-end social and work events",
+              "catalog_item_ids_allowed": [
+                "work_team_dinner_fronted",
+                "social_pub_brewery_night",
+                "social_concert_event_tickets",
+                "food_restaurant_dinner",
+                "social_group_cab_fronting"
+              ],
+              "why_this_context_is_plausible": "December supports a few work/social outings and event tickets.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "New Year planning without travel booking overreach",
+              "catalog_item_ids_allowed": [
+                "social_movie_entertainment_tickets",
+                "social_cricket_screening_sports_night",
+                "food_zomato_delivery_dineout",
+                "mobility_uber_cab"
+              ],
+              "why_this_context_is_plausible": "Aarav may celebrate locally rather than travel.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Routine vices and delivery",
+              "catalog_item_ids_allowed": [
+                "food_cigarette_smoke_shop_purchase",
+                "food_swiggy_delivery",
+                "food_zepto_quick_commerce",
+                "food_cloud_kitchen_late_night_meal"
+              ],
+              "why_this_context_is_plausible": "Convenience and smoking habits can spike around social weeks.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Known annual term insurance premium",
+              "catalog_item_ids_allowed": [
+                "finance_insurance_premium_payment"
+              ],
+              "why_this_context_is_plausible": "Aarav’s Max Life term insurance annual premium belongs in December and should be treated as planned.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "New Year local social spend",
+              "catalog_item_ids": [
+                "social_pub_brewery_night",
+                "social_group_cab_fronting",
+                "food_restaurant_dinner",
+                "mobility_uber_cab"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 18000,
+                "high": 38000
+              },
+              "funding_or_payment_posture": "Mostly card-led with UPI/cab splits; no revolve.",
+              "downstream_guardrail": "Keep it local and social, not travel-plus-hotel."
+            },
+            {
+              "event_name": "Aarav Max Life term insurance annual premium",
+              "catalog_item_ids": [
+                "finance_insurance_premium_payment"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 15000,
+                "high": 15000
+              },
+              "funding_or_payment_posture": "Paid from visible bank account or Axis card depending later month plan; should not cause card revolve.",
+              "downstream_guardrail": "Known annual insurance premium only; do not turn December into insurance stress.",
+              "known_annual_obligation": true,
+              "should_not_escalate_month_type": true
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "No overnight travel in December; January is the chosen weekend-trip month."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No gadget purchase."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption."
+            },
+            {
+              "catalog_item_id_or_context": "medical_minor_accident_scooter_injury_care",
+              "reason": "No medical/scooter accident."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card high but cleared using salary; do not make this a revolve month.",
+            "pay_later_behavior": "Simpl may appear near salary-end for small convenience if needed.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption.",
+            "self_transfer_behavior": "Self-transfers only for routine routing."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Local group cab/pub fronting may create small delayed repayments into January."
+          },
+          "month_planner_instructions": [
+            "Limit the number of social nights.",
+            "Keep SIP successful.",
+            "Allow delayed reimbursements but avoid making them income.",
+            "No travel bookings beyond small local plans.",
+            "Cap social spend because the known term insurance premium also lands this month."
+          ]
+        },
+        {
+          "month_id": "2026-01",
+          "month_name": "January 2026",
+          "month_type": "mildly_active",
+          "life_context_summary": "A single nearby weekend trip is selected after New Year. Aarav may front part of the booking and recover money unevenly from friends.",
+          "financial_posture_summary": "Active month with elevated card spend, but not a stress month. Salary and staggered friend repayments should keep it survivable.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Selected weekend trip with friends",
+              "catalog_item_ids_allowed": [
+                "travel_hotel_homestay_booking",
+                "travel_intercity_bus_booking",
+                "travel_zoomcar_self_drive_rental",
+                "travel_weekend_destination_local_spend",
+                "social_friend_borrowing_repayment_aarav"
+              ],
+              "why_this_context_is_plausible": "The year arc supports one nearby weekend trip for Aarav, likely Coorg/Chikmagalur/Gokarna-style.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Travel-adjacent local food and cabs",
+              "catalog_item_ids_allowed": [
+                "food_restaurant_dinner",
+                "social_group_cab_fronting",
+                "mobility_uber_cab",
+                "food_cafe_coffee_snacks"
+              ],
+              "why_this_context_is_plausible": "Trip planning and return can create local social spends.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Post-December settlement cleanup",
+              "catalog_item_ids_allowed": [
+                "social_friend_borrowing_repayment_aarav",
+                "social_group_cab_fronting"
+              ],
+              "why_this_context_is_plausible": "December social spends can settle unevenly in January.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "One nearby weekend trip",
+              "catalog_item_ids": [
+                "travel_hotel_homestay_booking",
+                "travel_intercity_bus_booking",
+                "travel_zoomcar_self_drive_rental",
+                "travel_weekend_destination_local_spend"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 28000,
+                "high": 58000
+              },
+              "funding_or_payment_posture": "Aarav may pay booking on card and receive partial friend repayments later.",
+              "downstream_guardrail": "This is the only weekend-trip month for Aarav; do not add another major travel event."
+            },
+            {
+              "event_name": "Trip/group reimbursement lag",
+              "catalog_item_ids": [
+                "social_friend_borrowing_repayment_aarav",
+                "social_group_cab_fronting"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 6000,
+                "high": 22000
+              },
+              "funding_or_payment_posture": "Credits from friends may arrive in multiple parts after fronting.",
+              "downstream_guardrail": "Keep gross-fronting and repayment traceable but product-side unlabeled later."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No Kochi family flight in addition to weekend trip."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No big gadget purchase in trip month."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical event."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption; active but not stress."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card statement elevated but expected to be cleared; no revolving this month.",
+            "pay_later_behavior": "Simpl may be absent or small near salary-end; do not use it for travel bookings.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption.",
+            "self_transfer_behavior": "Self-transfers allowed only to manage payment source timing."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Friend reimbursements are core to this month and should be delayed/partial, not exact same-day splits."
+          },
+          "month_planner_instructions": [
+            "Do not create a second trip elsewhere in the year for Aarav.",
+            "Track fronted spends and reimbursements visibly in later stages.",
+            "Keep SIP successful.",
+            "Prevent travel plus gadget plus medical clustering."
+          ]
+        },
+        {
+          "month_id": "2026-02",
+          "month_name": "February 2026",
+          "month_type": "boring",
+          "life_context_summary": "After the January trip, Aarav falls back into normal work, delivery, commute, and small social habits.",
+          "financial_posture_summary": "Recovery month with successful SIP and lower card pressure. Friend repayments may still appear but should not be framed as income.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Post-trip normalization",
+              "catalog_item_ids_allowed": [
+                "food_local_grocery_kirana",
+                "food_swiggy_delivery",
+                "food_office_cafeteria_pantry_extras",
+                "mobility_aarav_scooter_petrol_refill",
+                "lifestyle_laundry_dry_cleaning"
+              ],
+              "why_this_context_is_plausible": "February should re-anchor everyday repeatable behavior.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Small settlement tails",
+              "catalog_item_ids_allowed": [
+                "social_friend_borrowing_repayment_aarav",
+                "social_group_cab_fronting"
+              ],
+              "why_this_context_is_plausible": "Delayed trip settlements can continue in small pieces.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Ordinary personal care",
+              "catalog_item_ids_allowed": [
+                "lifestyle_salon_haircut_grooming",
+                "shopping_personal_grooming_cosmetics",
+                "lifestyle_petty_personal_care_convenience"
+              ],
+              "why_this_context_is_plausible": "Low-cost lifestyle maintenance fits a boring month.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_weekend_destination_local_spend",
+              "reason": "Trip already selected in January."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "Avoid gadget rebound."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption in recovery month."
+            },
+            {
+              "catalog_item_id_or_context": "medical_minor_accident_scooter_injury_care",
+              "reason": "Reserve March for the selected stress month."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card payment expected with noticeably lower discretionary load.",
+            "pay_later_behavior": "Simpl should be absent or tiny near salary-end only.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund action.",
+            "self_transfer_behavior": "Self-transfer minimal."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Only tail-end friend settlements from January; not a fresh borrowing loop."
+          },
+          "month_planner_instructions": [
+            "Use February to reduce outstanding pressure.",
+            "Keep SIP successful.",
+            "Avoid adding rare events.",
+            "Do not treat reimbursements as salary."
+          ]
+        },
+        {
+          "month_id": "2026-03",
+          "month_name": "March 2026",
+          "month_type": "stress",
+          "life_context_summary": "The single true stress month: scooter service/repair friction, possible minor scooter-related care, and card pressure hit while the card is already heavy.",
+          "financial_posture_summary": "Aarav remains solvent but messy. SIP can be skipped, part of card can revolve, and one visible liquid-fund redemption may be used. No vehicle insurance renewal, bankruptcy, or hidden rescue.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": [
+              "Aarav UTI SIP may be skipped this month because this is the selected stress month."
+            ]
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Scooter repair and minor care stress cluster",
+              "catalog_item_ids_allowed": [
+                "mobility_scooter_activa_service",
+                "mobility_puncture_roadside_mechanic",
+                "medical_minor_accident_scooter_injury_care"
+              ],
+              "why_this_context_is_plausible": "March carries scooter service/repair friction, possible puncture handling, minor scooter-related care, and card pressure without any vehicle insurance renewal.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true,
+              "vehicle_specific_rendering_note": "For Aarav, render this as TVS Ntorq scooter service/repair, not Honda Activa."
+            },
+            {
+              "context_name": "Card and liquidity management",
+              "catalog_item_ids_allowed": [
+                "finance_liquid_fund_purchase_redemption",
+                "cash_atm_withdrawal"
+              ],
+              "why_this_context_is_plausible": "Aarav may use one liquid-fund redemption to avoid a severe default.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Strictly reduced lifestyle baseline",
+              "catalog_item_ids_allowed": [
+                "food_swiggy_delivery",
+                "food_cigarette_smoke_shop_purchase",
+                "food_local_grocery_kirana",
+                "mobility_namma_metro"
+              ],
+              "why_this_context_is_plausible": "Daily spending should compress after stress hits.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Scooter repair, minor care, and card-pressure stress",
+              "catalog_item_ids": [
+                "mobility_scooter_activa_service",
+                "mobility_puncture_roadside_mechanic",
+                "medical_minor_accident_scooter_injury_care"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 18000,
+                "high": 42000
+              },
+              "funding_or_payment_posture": "Mix of card and visible bank payments; one liquid fund redemption may support card/rent timing but must not become income.",
+              "downstream_guardrail": "Keep it to minor injury/repair/card-pressure; no vehicle insurance renewal, no hospitalisation, no major gadget, no travel."
+            },
+            {
+              "event_name": "Stress-month liquidity drawdown",
+              "catalog_item_ids": [
+                "finance_liquid_fund_purchase_redemption"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 30000,
+                "high": 50000
+              },
+              "funding_or_payment_posture": "One visible liquid fund redemption to ICICI/HDFC may support card/rent timing.",
+              "downstream_guardrail": "This is not income and should not be repeated casually in adjacent months."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No travel in the stress month."
+            },
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "No trip in the stress month."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No gadget purchase during stress."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No hospital-level medical event; only minor scooter-related care if selected."
+            },
+            {
+              "catalog_item_id_or_context": "finance_income_tax_payment_refund",
+              "reason": "Do not add tax refund/payment as a convenient rescue."
+            },
+            {
+              "catalog_item_id_or_context": "finance_vehicle_insurance_renewal",
+              "reason": "Aarav scooter insurance belongs in September 2025, not March 2026."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Second and final card-revolve month; revolve a controlled portion while avoiding default.",
+            "pay_later_behavior": "Simpl can appear only near salary-end and should be small; do not use Simpl to hide stress.",
+            "liquid_fund_or_buffer_behavior": "One liquid fund redemption allowed; no other large inflows.",
+            "self_transfer_behavior": "Self-transfer likely around redemption and card payment, fully visible and paired."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Some friend repayments may be chased, but they cannot cover the stress alone."
+          },
+          "month_planner_instructions": [
+            "Mark this as Aarav's only true stress month.",
+            "Mark this as card-revolve month 2 of 2.",
+            "Mark this as SIP-skip month 3 of 3.",
+            "Do not stack hospital, travel, gadget purchase, vehicle insurance renewal, and tax rescue."
+          ]
+        },
+        {
+          "month_id": "2026-04",
+          "month_name": "April 2026",
+          "month_type": "boring",
+          "life_context_summary": "Post-stress reset. Aarav reduces social spend and uses salary to normalize obligations.",
+          "financial_posture_summary": "No big event. Card should be repaired toward full-payment behavior, though residual revolve repayment may still be visible.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Post-stress normalization",
+              "catalog_item_ids_allowed": [
+                "food_local_grocery_kirana",
+                "food_office_cafeteria_pantry_extras",
+                "mobility_aarav_scooter_petrol_refill",
+                "mobility_namma_metro"
+              ],
+              "why_this_context_is_plausible": "April should show behavioral correction after March stress.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Residual payment cleanup",
+              "catalog_item_ids_allowed": [
+                "social_friend_borrowing_repayment_aarav"
+              ],
+              "why_this_context_is_plausible": "Only follow-through from March is allowed; no new redemption unless already linked.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Low-cost personal maintenance",
+              "catalog_item_ids_allowed": [
+                "lifestyle_laundry_dry_cleaning",
+                "lifestyle_salon_haircut_grooming",
+                "medical_local_pharmacy_purchase"
+              ],
+              "why_this_context_is_plausible": "Small practical spends are plausible after a stress month.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No fresh redemption in April. Any liquid-fund movement belongs to the already-selected March stress event and should not be regenerated here."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_apple_service_premium_repair",
+              "reason": "No premium repair after March stress."
+            },
+            {
+              "catalog_item_id_or_context": "travel_weekend_destination_local_spend",
+              "reason": "No second trip."
+            },
+            {
+              "catalog_item_id_or_context": "social_pub_brewery_night",
+              "reason": "Deprioritize pub nights in recovery month."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Return to full or catch-up card payment behavior; do not create a third revolving month.",
+            "pay_later_behavior": "Simpl should be absent unless tiny near salary-end.",
+            "liquid_fund_or_buffer_behavior": "No new liquid fund action; focus on recovery.",
+            "self_transfer_behavior": "Self-transfers only for routine payment routing."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Small friend repayments may arrive but should not be engineered as rescue."
+          },
+          "month_planner_instructions": [
+            "Use April to show recovery, not new drama.",
+            "Keep SIP successful again.",
+            "Do not add a bonus or external inflow for Aarav.",
+            "Lower food, pub, and gadget spend."
+          ]
+        },
+        {
+          "month_id": "2026-05",
+          "month_name": "May 2026",
+          "month_type": "boring",
+          "life_context_summary": "The synthetic year closes with a stable but still imperfect Aarav: normal office rhythm, routine habits, and a small family or sister gift possibility.",
+          "financial_posture_summary": "Obligations continue, SIP succeeds, card is not revolved, and liquidity remains survivable without looking disciplined.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Stable month-end routine",
+              "catalog_item_ids_allowed": [
+                "housing_aarav_rent",
+                "utility_bescom_electricity",
+                "food_office_cafeteria_pantry_extras",
+                "mobility_aarav_scooter_petrol_refill",
+                "food_swiggy_delivery"
+              ],
+              "why_this_context_is_plausible": "The final month should be ordinary and compatible with future year rollover.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Small family/sister support option",
+              "catalog_item_ids_allowed": [
+                "family_aarav_sister_meera_support_gift",
+                "family_aarav_mother_medicines_transfer",
+                "shopping_gift_card_online_gift_purchase"
+              ],
+              "why_this_context_is_plausible": "A modest gift to Meera or mother is persona-compatible without creating pressure.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Normal convenience/vices",
+              "catalog_item_ids_allowed": [
+                "food_cigarette_smoke_shop_purchase",
+                "food_zepto_quick_commerce",
+                "lifestyle_petty_personal_care_convenience"
+              ],
+              "why_this_context_is_plausible": "Aarav remains chaotic in small ways even when stable.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Small sister or family gift",
+              "catalog_item_ids": [
+                "family_aarav_sister_meera_support_gift",
+                "shopping_gift_card_online_gift_purchase"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 4000,
+                "high": 10000
+              },
+              "funding_or_payment_posture": "Paid from salary/card; no liquidity strain.",
+              "downstream_guardrail": "This is a minor selected context, not a pressure event. Do not amplify into travel, large family support, or multiple gifts."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No year-end travel selected."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No major gadget purchase before year close."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical event."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card payment expected; no revolve.",
+            "pay_later_behavior": "Simpl limited to salary-end only and should not be central.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption.",
+            "self_transfer_behavior": "Self-transfers minimal."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Only small normal settlements; no major fronting."
+          },
+          "month_planner_instructions": [
+            "Close the year stable but not perfect.",
+            "Keep SIP successful.",
+            "Do not add late-year rescue inflows.",
+            "Maintain raw-AA visibility rules for any self-transfer."
+          ]
+        }
+      ]
+    },
+    "priya": {
+      "one_line_year_story": "Priya has a disciplined but tight year where protected obligations continue, September becomes the one family-medical/insurance stress month, March creates planned tax/vehicle pressure, and April bonus is allocated responsibly.",
+      "year_shape": {
+        "boring_month_count": 7,
+        "active_month_count": 3,
+        "pressure_month_count": 1,
+        "stress_month_count": 1
+      },
+      "selected_year_level_events": [
+        {
+          "event_name": "September father medical, parents insurance, and Onam stress cluster",
+          "catalog_item_ids": [
+            "medical_hospital_payment",
+            "medical_diagnostic_lab_test",
+            "medical_clinic_consultation",
+            "medical_insurance_claim_reimbursement_tpa_credit",
+            "finance_insurance_premium_payment",
+            "family_festival_gift_transfer",
+            "family_travel_home_booking",
+            "travel_flight_blr_kochi"
+          ],
+          "selected_months": [
+            "2025-09"
+          ],
+          "guardrail": "Allowed only as one coherent family-obligation cluster; protected obligations still clear."
+        },
+        {
+          "event_name": "Lagged medical claim reimbursement after September payment",
+          "catalog_item_ids": [
+            "medical_insurance_claim_reimbursement_tpa_credit"
+          ],
+          "selected_months": [
+            "2025-10"
+          ],
+          "guardrail": "Must lag after the medical payment and must not be same-day rescue or ordinary income."
+        },
+        {
+          "event_name": "March tax-saving and Activa pressure",
+          "catalog_item_ids": [
+            "finance_priya_nps_tax_saving_top_up",
+            "finance_vehicle_insurance_renewal",
+            "mobility_scooter_activa_service"
+          ],
+          "selected_months": [
+            "2026-03"
+          ],
+          "guardrail": "Pressure month only; should not exceed September stress."
+        },
+        {
+          "event_name": "April planned annual ZeptoScale employer bonus allocation",
+          "catalog_item_ids": [
+            "finance_priya_education_loan_prepayment",
+            "finance_liquid_fund_purchase_redemption"
+          ],
+          "selected_months": [
+            "2026-04"
+          ],
+          "guardrail": "Expected annual bonus from ZeptoScale is a planned employer bonus context from the locked persona; exact date is deferred to month/day planner; it is not a rescue inflow and may be allocated only after protected obligations clear."
+        },
+        {
+          "event_name": "Priya Max Life term insurance annual premium",
+          "catalog_item_ids": [
+            "finance_insurance_premium_payment"
+          ],
+          "selected_months": [
+            "2025-12"
+          ],
+          "guardrail": "Known annual premium due in December 2025; full card autopay and protected obligations remain intact."
+        },
+        {
+          "event_name": "Priya HDFC ERGO self-health insurance annual premium",
+          "catalog_item_ids": [
+            "finance_insurance_premium_payment"
+          ],
+          "selected_months": [
+            "2026-05"
+          ],
+          "guardrail": "Known annual self-health premium due in May 2026; planned obligation, not a health crisis or stress event."
+        }
+      ],
+      "explicitly_not_selected_this_year": [
+        {
+          "catalog_item_id_or_context": "BNPL/pay-later",
+          "reason": "Priya cannot use BNPL under locked rules."
+        },
+        {
+          "catalog_item_id_or_context": "credit_card_revolve",
+          "reason": "Priya must pay HDFC Regalia total amount due in full every month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No large electronics purchase this year."
+        },
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+          "reason": "No leisure vacation or homestay selected; travel, if any, is family context."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment_after_2025-09",
+          "reason": "Do not create a second medical crisis after September."
+        }
+      ],
+      "month_arcs": [
+        {
+          "month_id": "2025-06",
+          "month_name": "June 2025",
+          "month_type": "boring",
+          "life_context_summary": "Priya starts with disciplined working-capital management: rent, EMI, family support, staff, SIPs, RD, NPS, utilities, and full card payment remain protected.",
+          "financial_posture_summary": "Survivable but narrow normal month. She should not need rescue inflows and should not expand discretionary spending.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Protected obligation month start",
+              "catalog_item_ids_allowed": [
+                "housing_priya_rent",
+                "housing_priya_domestic_help_payment",
+                "housing_priya_cook_payment",
+                "housing_priya_apartment_maintenance",
+                "utility_bescom_electricity",
+                "utility_priya_broadband",
+                "utility_priya_mobile_postpaid",
+                "utility_priya_milk_subscription",
+                "family_priya_father_support",
+                "family_priya_mother_support",
+                "family_priya_father_medicines_support",
+                "finance_priya_education_loan_emi",
+                "finance_priya_parag_parikh_sip",
+                "finance_priya_mirae_asset_sip",
+                "finance_priya_uti_nifty_sip",
+                "finance_priya_axis_small_cap_sip",
+                "finance_priya_icici_rd_installment",
+                "finance_priya_nps_monthly_contribution"
+              ],
+              "why_this_context_is_plausible": "Starting state establishes June obligations and Priya's protected-payment discipline.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Normal groceries, commute, and pharmacy",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "food_local_grocery_kirana",
+                "mobility_uber_cab",
+                "mobility_namma_metro",
+                "medical_local_pharmacy_purchase"
+              ],
+              "why_this_context_is_plausible": "Priya's routine variable essentials are controlled but real.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Small controlled fatigue spends",
+              "catalog_item_ids_allowed": [
+                "food_cafe_coffee_snacks",
+                "lifestyle_beauty_skincare_service",
+                "lifestyle_books_learning_purchase"
+              ],
+              "why_this_context_is_plausible": "She is not perfect; small self-care and learning purchases are plausible.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No family medical pressure until September."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No routine liquid fund redemption."
+            },
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No June family travel."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No electronics purchase."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "HDFC Regalia full autopay must clear; no revolving.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "ICICI buffer and liquid fund untouched except planned RD funding; no redemption.",
+            "self_transfer_behavior": "Self-transfer only for RD funding or buffer routing, visibly paired."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Friend dinner/cab settlements can be tiny; family support is an external transfer, not reimbursement."
+          },
+          "month_planner_instructions": [
+            "Do not let discretionary crowd protected obligations.",
+            "Keep all SIPs, RD, NPS, EMI, rent, family support, staff, and card full payment intact.",
+            "Use card-posting-first rule.",
+            "No claim reimbursement or bonus context."
+          ]
+        },
+        {
+          "month_id": "2025-07",
+          "month_name": "July 2025",
+          "month_type": "mildly_active",
+          "life_context_summary": "Rainy commute and late-work weeks increase cabs and delivery, with a few controlled personal-care or learning spends.",
+          "financial_posture_summary": "A mildly active but disciplined month. Protected obligations clear first and no debt behavior changes.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Rainy office commute and late work",
+              "catalog_item_ids_allowed": [
+                "mobility_uber_cab",
+                "mobility_ola_cab_auto",
+                "mobility_namma_metro",
+                "work_late_work_ride_home",
+                "work_late_work_dinner_order"
+              ],
+              "why_this_context_is_plausible": "Priya prefers cabs in rain and has late-work nights.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Controlled books and personal care",
+              "catalog_item_ids_allowed": [
+                "lifestyle_books_learning_purchase",
+                "lifestyle_beauty_skincare_service",
+                "shopping_personal_grooming_cosmetics"
+              ],
+              "why_this_context_is_plausible": "Fatigue can create controlled spending, not impulsive debt.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Planned groceries and household routine",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "food_local_grocery_kirana",
+                "utility_priya_milk_subscription"
+              ],
+              "why_this_context_is_plausible": "Her normal home operations continue.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Rain commute and late-work uplift",
+              "catalog_item_ids": [
+                "mobility_uber_cab",
+                "work_late_work_ride_home",
+                "work_late_work_dinner_order"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 8000,
+                "high": 18000
+              },
+              "funding_or_payment_posture": "Card and UPI within monthly cash flow; full card autopay remains protected.",
+              "downstream_guardrail": "Keep this limited to plausible rainy office days."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "family_travel_home_booking",
+              "reason": "No Kochi travel this month."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No family medical event."
+            },
+            {
+              "catalog_item_id_or_context": "finance_insurance_premium_payment",
+              "reason": "Parents insurance pressure is reserved for September."
+            },
+            {
+              "catalog_item_id_or_context": "finance_priya_nps_tax_saving_top_up",
+              "reason": "Tax top-up reserved for March."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card use can rise through cabs and food but full autopay remains mandatory.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; flexible surplus transfer may be skipped if commute runs high.",
+            "self_transfer_behavior": "Self-transfer only for RD/buffer movements."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Work reimbursements only if prior approved work expense exists; do not inflate income."
+          },
+          "month_planner_instructions": [
+            "Make the month active through commute and fatigue, not through shopping.",
+            "Do not skip protected investments.",
+            "Keep discretionary within controlled range.",
+            "Avoid using every cab/food merchant for the same need."
+          ]
+        },
+        {
+          "month_id": "2025-08",
+          "month_name": "August 2025",
+          "month_type": "boring",
+          "life_context_summary": "Lease-renewal awareness and standard home upkeep, but no major deposit change or relocation. Priya remains structured.",
+          "financial_posture_summary": "Normal obligations and protected investments continue. Any admin or home spend should be minor.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Lease renewal as context, not shock",
+              "catalog_item_ids_allowed": [
+                "housing_priya_rent",
+                "housing_priya_apartment_maintenance",
+                "housing_household_repair_plumber_electrician"
+              ],
+              "why_this_context_is_plausible": "Priya's lease renewal month can have admin attention without extra large outflow.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Routine groceries and staff",
+              "catalog_item_ids_allowed": [
+                "housing_priya_domestic_help_payment",
+                "housing_priya_cook_payment",
+                "food_bigbasket_planned_groceries",
+                "utility_priya_milk_subscription"
+              ],
+              "why_this_context_is_plausible": "Her household routines are stable.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Low-cost friend/social outlet",
+              "catalog_item_ids_allowed": [
+                "social_priya_friend_dinner_shared_cab_settlement",
+                "food_restaurant_dinner",
+                "food_cafe_coffee_snacks"
+              ],
+              "why_this_context_is_plausible": "One controlled friend dinner or shared cab fits without changing month type.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+              "reason": "No appliance shock selected in lease month."
+            },
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "Kochi travel is reserved for September stress context."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical pressure yet."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card autopay; no revolve.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; normal ICICI RD funding only.",
+            "self_transfer_behavior": "Self-transfer visible only for RD/buffer routing."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Friend dinner/cab settlement can be small and same-week; family transfers remain support, not reimbursement."
+          },
+          "month_planner_instructions": [
+            "Do not create deposit or relocation costs.",
+            "Keep all protected obligations intact.",
+            "Keep this month boring despite lease renewal.",
+            "Avoid preloading September medical or insurance payments here."
+          ]
+        },
+        {
+          "month_id": "2025-09",
+          "month_name": "September 2025",
+          "month_type": "stress",
+          "life_context_summary": "The single true stress month for Priya: father medical pressure in Kochi, parents health insurance premium, and Onam family obligations cluster coherently.",
+          "financial_posture_summary": "Protected obligations still clear, but liquidity is stretched. Priya may use ICICI buffer and liquid fund redemption; insurance claim reimbursement must lag and cannot same-day rescue.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": [
+              "Flexible surplus liquid-fund purchase should be skipped; protected SIPs, RD, NPS, EMI, rent, family support, staff, utilities, and full card payment must continue."
+            ]
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Father medical and diagnostics support",
+              "catalog_item_ids_allowed": [
+                "medical_hospital_payment",
+                "medical_diagnostic_lab_test",
+                "medical_clinic_consultation",
+                "medical_tata_1mg_medicine_diagnostics",
+                "medical_insurance_claim_reimbursement_tpa_credit"
+              ],
+              "why_this_context_is_plausible": "Locked persona supports father medical pressure and later claim reimbursement.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Parents insurance and Onam family context",
+              "catalog_item_ids_allowed": [
+                "finance_insurance_premium_payment",
+                "family_festival_gift_transfer",
+                "family_travel_home_booking",
+                "travel_flight_blr_kochi",
+                "mobility_airport_cab_bus"
+              ],
+              "why_this_context_is_plausible": "September is the coherent family obligation cluster for Priya.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Suppressed normal discretionary",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "medical_local_pharmacy_purchase",
+                "mobility_namma_metro"
+              ],
+              "why_this_context_is_plausible": "Routine life continues but discretionary should compress.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Father medical initial payment and diagnostics",
+              "catalog_item_ids": [
+                "medical_hospital_payment",
+                "medical_diagnostic_lab_test",
+                "medical_clinic_consultation",
+                "medical_insurance_claim_reimbursement_tpa_credit"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 80000,
+                "high": 105000
+              },
+              "funding_or_payment_posture": "Initial payment may use card/bank; claim reimbursement should arrive later, not as same-day rescue.",
+              "downstream_guardrail": "Keep it one medical episode; no second unrelated medical crisis."
+            },
+            {
+              "event_name": "Parents health insurance premium plus Onam support",
+              "catalog_item_ids": [
+                "finance_insurance_premium_payment",
+                "family_festival_gift_transfer",
+                "family_travel_home_booking",
+                "travel_flight_blr_kochi"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 90000,
+                "high": 125000
+              },
+              "funding_or_payment_posture": "Use salary plus ICICI buffer/liquid fund; preserve protected obligations.",
+              "downstream_guardrail": "This cluster is allowed only because September is the selected stress month."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No electronics in stress month."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_myntra_ajio_clothes",
+              "reason": "Deprioritize discretionary clothing."
+            },
+            {
+              "catalog_item_id_or_context": "social_priya_friend_dinner_shared_cab_settlement",
+              "reason": "Social dinners should be mostly absent."
+            },
+            {
+              "catalog_item_id_or_context": "finance_priya_education_loan_prepayment",
+              "reason": "No loan prepayment during stress."
+            },
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "No leisure stay; any travel is family/medical context only."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card may carry higher statement but total amount due must still be paid; no revolve.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "Liquid fund redemption allowed for pressure support; not lifestyle. Flexible surplus purchases skipped.",
+            "self_transfer_behavior": "Self-transfer between HDFC and ICICI likely for buffer/liquidity routing and must be fully paired."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Insurance claim reimbursement is allowed only after payment lag; family transfers are support, not reimbursements."
+          },
+          "month_planner_instructions": [
+            "Mark this as Priya's only true stress month.",
+            "Preserve protected obligations despite stress.",
+            "Delay claim reimbursement into a later month; never same-day rescue.",
+            "Do not add gadget, vacation, or extra shopping."
+          ]
+        },
+        {
+          "month_id": "2025-10",
+          "month_name": "October 2025",
+          "month_type": "boring",
+          "life_context_summary": "Recovery after September. Priya focuses on stabilizing cash flow and processing claim paperwork; daily life is intentionally quiet.",
+          "financial_posture_summary": "Normal protected obligations continue. A lagged insurance reimbursement may arrive, but it must trace back to September medical payment and should not trigger lifestyle expansion.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": [
+              "Flexible surplus transfer may remain conservative while September liquidity is replenished."
+            ]
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Post-medical recovery and paperwork",
+              "catalog_item_ids_allowed": [
+                "medical_insurance_claim_reimbursement_tpa_credit",
+                "medical_local_pharmacy_purchase",
+                "medical_tata_1mg_medicine_diagnostics"
+              ],
+              "why_this_context_is_plausible": "Claim reimbursement may lag from the September episode.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Quiet household routine",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "utility_priya_milk_subscription",
+                "housing_priya_domestic_help_payment",
+                "housing_priya_cook_payment"
+              ],
+              "why_this_context_is_plausible": "October should normalize after stress.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Limited personal recovery spend",
+              "catalog_item_ids_allowed": [
+                "lifestyle_beauty_skincare_service",
+                "lifestyle_books_learning_purchase",
+                "food_cafe_coffee_snacks"
+              ],
+              "why_this_context_is_plausible": "A small controlled spend can show fatigue without overcorrection.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Lagged medical claim reimbursement",
+              "catalog_item_ids": [
+                "medical_insurance_claim_reimbursement_tpa_credit"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 45000,
+                "high": 60000
+              },
+              "funding_or_payment_posture": "Credit should appear only after September payment and claim lag; use to rebuild buffer, not fund lifestyle.",
+              "downstream_guardrail": "Do not classify as income; do not use as magical rescue for unrelated spending."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "finance_insurance_premium_payment",
+              "reason": "No second insurance premium this month."
+            },
+            {
+              "catalog_item_id_or_context": "family_travel_home_booking",
+              "reason": "No repeat Kochi travel immediately after September."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No electronics rebound."
+            },
+            {
+              "catalog_item_id_or_context": "social_wedding_housewarming_pooled_gift",
+              "reason": "Avoid extra social pressure while recovering."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card full autopay returns to normal; no revolve.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "Claim credit/buffer rebuild may occur; no lifestyle redemption/purchase churn.",
+            "self_transfer_behavior": "Self-transfer can rebuild ICICI buffer from HDFC or reimbursement proceeds."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Only claim reimbursement is materially relevant; friend reimbursements should be negligible."
+          },
+          "month_planner_instructions": [
+            "Use reimbursement only if it was set up by September medical expense.",
+            "Do not let reimbursement create extra discretionary spend.",
+            "Keep all protected obligations intact.",
+            "Maintain boring-month behavior after the stress cluster."
+          ]
+        },
+        {
+          "month_id": "2025-11",
+          "month_name": "November 2025",
+          "month_type": "mildly_active",
+          "life_context_summary": "Controlled Diwali/social month with gifts, personal care, and maybe one friend dinner. Priya participates without breaking discipline.",
+          "financial_posture_summary": "Moderately higher card use, but full payment and protected obligations are still preserved.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Controlled festival gifting",
+              "catalog_item_ids_allowed": [
+                "family_festival_gift_transfer",
+                "shopping_gift_card_online_gift_purchase",
+                "shopping_myntra_ajio_clothes",
+                "shopping_amazon"
+              ],
+              "why_this_context_is_plausible": "Diwali can create modest gifts and clothing spends.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Friend dinner and shared cab",
+              "catalog_item_ids_allowed": [
+                "social_priya_friend_dinner_shared_cab_settlement",
+                "food_restaurant_dinner",
+                "mobility_uber_cab"
+              ],
+              "why_this_context_is_plausible": "Priya's friend network supports controlled dinners and cab settlements.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Personal care refresh",
+              "catalog_item_ids_allowed": [
+                "lifestyle_beauty_skincare_service",
+                "shopping_personal_grooming_cosmetics"
+              ],
+              "why_this_context_is_plausible": "Festival season can include grooming/personal care.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Controlled Diwali gifts and personal care",
+              "catalog_item_ids": [
+                "family_festival_gift_transfer",
+                "shopping_gift_card_online_gift_purchase",
+                "shopping_myntra_ajio_clothes",
+                "lifestyle_beauty_skincare_service"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 14000,
+                "high": 32000
+              },
+              "funding_or_payment_posture": "Card/UPI within salary cash flow; full card autopay protected.",
+              "downstream_guardrail": "Keep the total controlled; do not turn Diwali into electronics or travel pressure."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No family travel after September's Kochi stress."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No big electronics purchase."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No liquid fund redemption for festival spending."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No second medical crisis."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card spend rises but total due must be paid in full.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; flexible surplus purchase can be low or skipped depending on card bill.",
+            "self_transfer_behavior": "Self-transfer only for RD/buffer movement."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Friend cab/dinner settlements allowed but small and not liquidity-relevant."
+          },
+          "month_planner_instructions": [
+            "Cap festival discretionary.",
+            "Preserve all investments and EMI.",
+            "Avoid electronics or travel.",
+            "Keep friend settlements ordinary."
+          ]
+        },
+        {
+          "month_id": "2025-12",
+          "month_name": "December 2025",
+          "month_type": "boring",
+          "life_context_summary": "Year-end work fatigue, Priya’s known Max Life term insurance premium, and otherwise quiet routines. She avoids expensive celebrations after September stress and November gifts.",
+          "financial_posture_summary": "Low-to-normal discretionary with a planned annual term premium. Full card autopay and protected obligations continue, and December can remain boring if other discretionary stays low.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Quiet year-end routine",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "food_cafe_coffee_snacks",
+                "work_late_work_dinner_order",
+                "work_late_work_ride_home"
+              ],
+              "why_this_context_is_plausible": "Work fatigue can create small food/cab spends without a social spike.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Books/learning instead of party spending",
+              "catalog_item_ids_allowed": [
+                "lifestyle_books_learning_purchase",
+                "subscription_news_learning"
+              ],
+              "why_this_context_is_plausible": "Priya may choose learning or reading over expensive outings.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Ordinary commute and pharmacy",
+              "catalog_item_ids_allowed": [
+                "mobility_uber_cab",
+                "mobility_namma_metro",
+                "medical_local_pharmacy_purchase"
+              ],
+              "why_this_context_is_plausible": "Routine essentials continue.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Known annual term insurance premium",
+              "catalog_item_ids_allowed": [
+                "finance_insurance_premium_payment"
+              ],
+              "why_this_context_is_plausible": "Priya’s Max Life term insurance annual premium belongs in December and is a planned obligation.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Priya Max Life term insurance annual premium",
+              "catalog_item_ids": [
+                "finance_insurance_premium_payment"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 16800,
+                "high": 16800
+              },
+              "funding_or_payment_posture": "Paid from visible HDFC salary account or card as planned annual obligation; full card autopay still protected.",
+              "downstream_guardrail": "Known annual premium; do not create extra pressure or second insurance event.",
+              "known_annual_obligation": true,
+              "should_not_escalate_month_type": true
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "social_pub_brewery_night",
+              "reason": "Pub-heavy New Year behavior is not Priya-compatible this year."
+            },
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "No holiday travel selected."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+              "reason": "No home repair shock."
+            },
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card autopay, no revolve.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; optional surplus transfer may resume if September recovery has stabilized.",
+            "self_transfer_behavior": "Self-transfer routine only."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Only tiny shared cab/meal settlements if any."
+          },
+          "month_planner_instructions": [
+            "Keep December boring despite seasonal pressure.",
+            "Do not create year-end trip or party spike.",
+            "Protected obligations remain unchanged.",
+            "Let Priya continue buffer rebuilding.",
+            "Keep December boring by controlling discretionary despite the known term premium."
+          ]
+        },
+        {
+          "month_id": "2026-01",
+          "month_name": "January 2026",
+          "month_type": "boring",
+          "life_context_summary": "New year resets into work planning and ordinary life. Priya keeps spending controlled and avoids travel.",
+          "financial_posture_summary": "Responsible month with full obligations, manageable card use, and no pressure event.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Work planning and controlled office rhythm",
+              "catalog_item_ids_allowed": [
+                "work_late_work_dinner_order",
+                "work_late_work_ride_home",
+                "food_office_cafeteria_pantry_extras",
+                "mobility_namma_metro"
+              ],
+              "why_this_context_is_plausible": "Quarter planning can cause some late work without a large cost event.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Health and routine self-care",
+              "catalog_item_ids_allowed": [
+                "medical_local_pharmacy_purchase",
+                "lifestyle_beauty_skincare_service",
+                "lifestyle_gym_sports_class_drop_in"
+              ],
+              "why_this_context_is_plausible": "A low-cost reset is compatible with Priya.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Normal groceries and family support",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "family_priya_father_support",
+                "family_priya_mother_support",
+                "family_priya_father_medicines_support"
+              ],
+              "why_this_context_is_plausible": "Family support remains protected and ordinary.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "family_priya_sister_ananya_support",
+              "reason": "No sister emergency selected this month."
+            },
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No January family travel."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No electronics purchase."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical pressure."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card autopay full and routine.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; low optional purchase into liquid fund may be allowed if surplus exists.",
+            "self_transfer_behavior": "Self-transfer routine for RD/buffer only."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Small friend settlements possible but not planned as month story."
+          },
+          "month_planner_instructions": [
+            "Keep January stable after festival/family months.",
+            "No new big family obligation.",
+            "All protected investments continue.",
+            "Do not overcorrect with unrealistic savings spikes."
+          ]
+        },
+        {
+          "month_id": "2026-02",
+          "month_name": "February 2026",
+          "month_type": "boring",
+          "life_context_summary": "A quiet month before March tax and vehicle pressure. Priya deliberately keeps discretionary light.",
+          "financial_posture_summary": "Normal protected obligations and full card payment. Cash planning should prepare for March without creating an inflow.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Pre-March restraint",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "food_local_grocery_kirana",
+                "lifestyle_laundry_dry_cleaning",
+                "food_cafe_coffee_snacks"
+              ],
+              "why_this_context_is_plausible": "Priya is aware March will be heavier and keeps this month simple.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Basic Activa/local errands",
+              "catalog_item_ids_allowed": [
+                "mobility_priya_activa_petrol_refill",
+                "mobility_parking_charges",
+                "medical_local_pharmacy_purchase"
+              ],
+              "why_this_context_is_plausible": "Local errands continue without major service yet.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Low-cost friend catch-up",
+              "catalog_item_ids_allowed": [
+                "social_priya_friend_dinner_shared_cab_settlement",
+                "food_restaurant_dinner"
+              ],
+              "why_this_context_is_plausible": "One controlled friend plan is allowed but should not become a pressure event.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "finance_priya_nps_tax_saving_top_up",
+              "reason": "Defer tax top-up to March."
+            },
+            {
+              "catalog_item_id_or_context": "finance_vehicle_insurance_renewal",
+              "reason": "Defer Activa insurance renewal to March."
+            },
+            {
+              "catalog_item_id_or_context": "family_travel_home_booking",
+              "reason": "No travel."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+              "reason": "No household repair shock."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card autopay; no revolve.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; conserve buffer for March.",
+            "self_transfer_behavior": "Self-transfer routine only."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Small friend dinner settlement only if selected; no material reimbursement story."
+          },
+          "month_planner_instructions": [
+            "Use February as a preparation month.",
+            "Avoid pulling March events into February.",
+            "Keep protected obligations and savings discipline intact.",
+            "No claim/bonus inflows."
+          ]
+        },
+        {
+          "month_id": "2026-03",
+          "month_name": "March 2026",
+          "month_type": "pressure",
+          "life_context_summary": "Tax-saving/NPS top-up and Activa insurance/service create pressure, but this should be less severe than September.",
+          "financial_posture_summary": "Protected obligations clear first. Priya may defer flexible surplus transfer and use salary/ICICI buffer planning, but she does not revolve or use BNPL.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": [
+              "Flexible surplus liquid-fund purchase can be skipped; protected SIPs, RD, NPS monthly contribution, EMI, rent, family support, staff, utilities, and full card payment must continue."
+            ]
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Tax-saving and NPS top-up",
+              "catalog_item_ids_allowed": [
+                "finance_priya_nps_tax_saving_top_up"
+              ],
+              "why_this_context_is_plausible": "March tax-saving behavior is locked as a possible pressure component.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Activa insurance and annual service",
+              "catalog_item_ids_allowed": [
+                "finance_vehicle_insurance_renewal",
+                "mobility_scooter_activa_service",
+                "mobility_priya_activa_petrol_refill"
+              ],
+              "why_this_context_is_plausible": "Priya's vehicle insurance/service are March annual obligations.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true,
+              "vehicle_specific_rendering_note": "For Priya, render this as Honda Activa service/insurance context."
+            },
+            {
+              "context_name": "Reduced discretionary baseline",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "medical_local_pharmacy_purchase",
+                "mobility_namma_metro"
+              ],
+              "why_this_context_is_plausible": "She compresses discretionary while meeting pressure items.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "NPS/tax-saving top-up",
+              "catalog_item_ids": [
+                "finance_priya_nps_tax_saving_top_up"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 40000,
+                "high": 55000
+              },
+              "funding_or_payment_posture": "Funded from salary and planned buffer; not from debt.",
+              "downstream_guardrail": "Do not add tax refund as same-month rescue."
+            },
+            {
+              "event_name": "Activa insurance and service",
+              "catalog_item_ids": [
+                "finance_vehicle_insurance_renewal",
+                "mobility_scooter_activa_service"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 8500,
+                "high": 13000
+              },
+              "funding_or_payment_posture": "Paid from salary/buffer; full card autopay still protected.",
+              "downstream_guardrail": "Keep this as annual vehicle pressure, not accident/repair drama."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "September was the medical stress month; no second medical crisis."
+            },
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No travel in March pressure month."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No electronics purchase."
+            },
+            {
+              "catalog_item_id_or_context": "finance_priya_education_loan_prepayment",
+              "reason": "Loan prepayment waits for April bonus context if selected."
+            },
+            {
+              "catalog_item_id_or_context": "finance_income_tax_payment_refund",
+              "reason": "No tax refund or separate income-tax payment is selected. March pressure is from NPS tax-saving top-up and Activa insurance/service only."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card autopay; no revolve under any condition.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No routine liquid fund redemption; use salary and ICICI buffer if timing requires.",
+            "self_transfer_behavior": "Self-transfer likely between HDFC and ICICI to align RD, buffer, and pressure payments."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "No meaningful reimbursement expected; tax refund should not be inserted as rescue."
+          },
+          "month_planner_instructions": [
+            "Keep March pressure materially below September stress.",
+            "Do not skip protected obligations.",
+            "Skip only flexible surplus transfer if needed.",
+            "Avoid extra discretionary spending."
+          ]
+        },
+        {
+          "month_id": "2026-04",
+          "month_name": "April 2026",
+          "month_type": "mildly_active",
+          "life_context_summary": "Planned annual bonus month from ZeptoScale per locked persona. Priya uses it deliberately for buffer replenishment, possible education-loan prepayment, and insurance planning rather than lifestyle inflation.",
+          "financial_posture_summary": "Positive cash-flow month but not a magical rescue. The expected employer bonus is planned, exact date is deferred to month/day planner, and allocation should happen only after protected obligations clear.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Planned ZeptoScale annual bonus allocation",
+              "catalog_item_ids_allowed": [
+                "finance_priya_education_loan_prepayment",
+                "finance_liquid_fund_purchase_redemption"
+              ],
+              "why_this_context_is_plausible": "Locked persona includes an expected annual performance bonus in April; exact date is deferred and allocation happens only after protected obligations.",
+              "intensity": "high",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Normal obligations continue under stronger liquidity",
+              "catalog_item_ids_allowed": [
+                "housing_priya_rent",
+                "housing_priya_domestic_help_payment",
+                "housing_priya_cook_payment",
+                "housing_priya_apartment_maintenance",
+                "utility_bescom_electricity",
+                "utility_priya_broadband",
+                "utility_priya_mobile_postpaid",
+                "utility_priya_milk_subscription",
+                "family_priya_father_support",
+                "family_priya_mother_support",
+                "family_priya_father_medicines_support",
+                "finance_priya_education_loan_emi",
+                "finance_priya_parag_parikh_sip",
+                "finance_priya_mirae_asset_sip",
+                "finance_priya_uti_nifty_sip",
+                "finance_priya_axis_small_cap_sip",
+                "finance_priya_icici_rd_installment",
+                "finance_priya_nps_monthly_contribution"
+              ],
+              "why_this_context_is_plausible": "Bonus does not replace salary discipline or protected payment sequencing.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Small controlled reward spend",
+              "catalog_item_ids_allowed": [
+                "lifestyle_beauty_skincare_service",
+                "lifestyle_books_learning_purchase",
+                "food_restaurant_dinner"
+              ],
+              "why_this_context_is_plausible": "A modest reward is plausible but must not dominate the month.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Planned ZeptoScale bonus-led education loan prepayment or buffer rebuild",
+              "catalog_item_ids": [
+                "finance_priya_education_loan_prepayment",
+                "finance_liquid_fund_purchase_redemption"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 120000,
+                "high": 220000
+              },
+              "funding_or_payment_posture": "Use planned ZeptoScale bonus for education loan prepayment and/or liquid fund purchase/replenishment only. Do not generate a liquid fund redemption in April.",
+              "downstream_guardrail": "This is a planned bonus context, not a rescue inflow. Do not use it to justify unrelated overspending, negative normal months, or lifestyle spike.",
+              "liquid_fund_action_constraint": "purchase_or_replenishment_only; redemption is not allowed in April bonus month."
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+              "reason": "No bonus-funded vacation selected."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_croma_electronics_store",
+              "reason": "No electronics splurge."
+            },
+            {
+              "catalog_item_id_or_context": "medical_hospital_payment",
+              "reason": "No medical event."
+            },
+            {
+              "catalog_item_id_or_context": "family_travel_home_booking",
+              "reason": "Do not combine bonus allocation with family travel unless later stage explicitly chooses a small visit."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Card full autopay; card use should not spike merely because bonus arrived.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "Liquid fund purchase/replenishment or loan prepayment may occur from planned bonus; no redemption.",
+            "self_transfer_behavior": "Self-transfer may route bonus allocation to ICICI/liquid fund/loan payment and must be visible."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Work reimbursements are separate from bonus and should only follow approved expenses."
+          },
+          "month_planner_instructions": [
+            "Treat ZeptoScale bonus as planned annual employer inflow from the locked persona, not rescue.",
+            "Prioritize buffer rebuild and loan prepayment.",
+            "Keep all protected obligations normal.",
+            "Limit reward spending.",
+            "Defer exact bonus date to month/day planner.",
+            "Allocate bonus only after protected obligations clear."
+          ]
+        },
+        {
+          "month_id": "2026-05",
+          "month_name": "May 2026",
+          "month_type": "boring",
+          "life_context_summary": "The year closes quietly after bonus allocation, with Priya’s known HDFC ERGO self-health insurance annual premium and otherwise routine payments, controlled lifestyle, and stable buffer behavior.",
+          "financial_posture_summary": "All protected obligations continue, the planned self-health premium is paid without debt stress, and there is no BNPL or liquid-fund redemption. May remains boring if discretionary is controlled.",
+          "recurring_obligation_posture": {
+            "salary_expected": true,
+            "known_locked_recurring_obligations_continue": true,
+            "exceptions_or_skips_allowed": []
+          },
+          "selected_contexts_for_later_generation": [
+            {
+              "context_name": "Stable year-close routine",
+              "catalog_item_ids_allowed": [
+                "food_bigbasket_planned_groceries",
+                "mobility_uber_cab",
+                "mobility_namma_metro",
+                "medical_local_pharmacy_purchase"
+              ],
+              "why_this_context_is_plausible": "May should feel ordinary and ready for next synthetic year.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Protected family and investment rhythm",
+              "catalog_item_ids_allowed": [
+                "housing_priya_rent",
+                "housing_priya_domestic_help_payment",
+                "housing_priya_cook_payment",
+                "housing_priya_apartment_maintenance",
+                "utility_bescom_electricity",
+                "utility_priya_broadband",
+                "utility_priya_mobile_postpaid",
+                "utility_priya_milk_subscription",
+                "family_priya_father_support",
+                "family_priya_mother_support",
+                "family_priya_father_medicines_support",
+                "finance_priya_education_loan_emi",
+                "finance_priya_parag_parikh_sip",
+                "finance_priya_mirae_asset_sip",
+                "finance_priya_uti_nifty_sip",
+                "finance_priya_axis_small_cap_sip",
+                "finance_priya_icici_rd_installment",
+                "finance_priya_nps_monthly_contribution"
+              ],
+              "why_this_context_is_plausible": "Priya's structure remains intact through year-end.",
+              "intensity": "medium",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Low discretionary maintenance",
+              "catalog_item_ids_allowed": [
+                "lifestyle_beauty_skincare_service",
+                "lifestyle_books_learning_purchase",
+                "shopping_personal_grooming_cosmetics"
+              ],
+              "why_this_context_is_plausible": "A small controlled spend maintains realism.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            },
+            {
+              "context_name": "Known annual self-health insurance premium",
+              "catalog_item_ids_allowed": [
+                "finance_insurance_premium_payment"
+              ],
+              "why_this_context_is_plausible": "Priya’s HDFC ERGO self-health insurance annual premium belongs in May 2026 as a planned obligation.",
+              "intensity": "low",
+              "must_not_be_forced_into_every_day": true
+            }
+          ],
+          "selected_rare_or_pressure_events": [
+            {
+              "event_name": "Priya HDFC ERGO self-health insurance annual premium",
+              "catalog_item_ids": [
+                "finance_insurance_premium_payment"
+              ],
+              "expected_month_level_amount_band_inr": {
+                "low": 24500,
+                "high": 24500
+              },
+              "funding_or_payment_posture": "Paid as planned annual premium from visible account or card; protected obligations still clear.",
+              "downstream_guardrail": "Known annual premium; do not turn May into a health crisis or insurance stress month.",
+              "known_annual_obligation": true,
+              "should_not_escalate_month_type": true
+            }
+          ],
+          "blocked_or_deprioritized_catalog_contexts": [
+            {
+              "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+              "reason": "No redemption; only routine buffer maintenance if later planner needs."
+            },
+            {
+              "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+              "reason": "No appliance shock before year close."
+            },
+            {
+              "catalog_item_id_or_context": "family_priya_sister_ananya_support",
+              "reason": "No late-year sister emergency."
+            },
+            {
+              "catalog_item_id_or_context": "travel_flight_blr_kochi",
+              "reason": "No travel selected."
+            }
+          ],
+          "credit_and_liquidity_posture": {
+            "credit_card_behavior": "Full card autopay; no revolve.",
+            "pay_later_behavior": "BNPL prohibited.",
+            "liquid_fund_or_buffer_behavior": "No liquid fund redemption; normal surplus behavior only.",
+            "self_transfer_behavior": "Self-transfer routine only."
+          },
+          "friend_family_reimbursement_posture": {
+            "allowed": true,
+            "notes": "Only small friend/cab settlements if selected; no material reimbursements."
+          },
+          "month_planner_instructions": [
+            "Close the year stable but not perfect.",
+            "Do not add any late rare event beyond the known self-health insurance premium.",
+            "Preserve protected obligations.",
+            "Avoid making Priya look unrealistically wealthy after bonus.",
+            "Keep May boring by controlling discretionary around the planned self-health premium."
+          ]
+        }
+      ]
+    }
+  },
+  "cross_persona_independence_rules": [
+    "Aarav and Priya have independent financial lives; the same city, office corridor, or season does not imply shared transactions.",
+    "Aarav's chaotic card/Simpl behavior must not leak into Priya's arc.",
+    "Priya's bonus, medical claim reimbursement, and family support must not influence Aarav.",
+    "Common calendar contexts such as monsoon, Diwali, New Year, and March tax season may affect both personas, but the selected events and intensity must remain persona-specific.",
+    "Do not create transfers between Aarav and Priya unless a later locked artifact explicitly introduces a relationship, which this year arc does not.",
+    "Counterparties such as family, landlords, employers, friends, staff, and insurers remain external unless they are persona-owned financial accounts in the account universe."
+  ],
+  "downstream_generation_contract": {
+    "month_plan_stage_must": [
+      "Use month_type, life_context_summary, and selected contexts to choose a sparse set of plausible day-level contexts.",
+      "Generate exact dates only in the month/day planner stage, respecting working days, salary timing, weekends, and due windows.",
+      "Use selected_rare_or_pressure_events as permissions, not mandatory transaction counts.",
+      "Honor blocked_or_deprioritized_catalog_contexts and do not force catalog coverage.",
+      "Preserve each persona's protected obligations and credit rules before discretionary spends.",
+      "Keep boring months genuinely boring with only repeatable everyday noise and at most one small rare context where listed.",
+      "When using mobility_scooter_activa_service, render vehicle-specific details by persona: Aarav’s scooter context must render as TVS Ntorq service/repair/maintenance, while Priya’s vehicle context must render as Honda Activa service/insurance/maintenance. Do not show Aarav as owning an Activa."
+    ],
+    "day_plan_stage_must": [
+      "Respect weekday/weekend, office/WFH rhythm, time budget, location, mood, upcoming obligations, and account posture.",
+      "Avoid selecting multiple merchants for the same need unless cancellation, split fulfillment, fallback, or retry is explicitly justified.",
+      "Make friend repayments delayed/partial when selected for Aarav; do not make every split perfectly symmetric.",
+      "Make Priya's claim reimbursement lag after medical payment and never same-day rescue."
+    ],
+    "ledger_stage_must": [
+      "Post card purchases to card accounts first and deposit account impact only when card bills are paid.",
+      "Post Simpl purchases to Aarav's Simpl/pay-later account first and deposit impact only on repayment.",
+      "Represent self-transfers as visible paired movements across owned accounts with plausible timestamp gaps.",
+      "Do not classify self-transfers, friend reimbursements, family support, work reimbursements, claim reimbursements, or liquid-fund redemptions as salary.",
+      "Keep final raw AA payload free of internal labels such as month_type, event_name, category, stress, or intent."
+    ],
+    "strict_non_generation_boundary": {
+      "transactions_created_here": false,
+      "daily_sequence_created_here": false,
+      "exact_dates_created_here": false,
+      "account_balances_created_here": false,
+      "raw_aa_payload_created_here": false
+    }
+  },
+  "year_arc_validation": {
+    "no_transactions_generated": true,
+    "no_daily_sequence_generated": true,
+    "no_raw_aa_payload_generated": true,
+    "all_months_present_for_each_persona": true,
+    "month_count_per_persona": 12,
+    "catalog_item_ids_used_only_as_references": true,
+    "does_not_force_coverage_of_catalog": true,
+    "aarav_has_no_more_than_one_stress_month": true,
+    "aarav_card_revolve_months_limited": true,
+    "aarav_simpl_limited_to_salary_end_rule": true,
+    "priya_has_no_bnpl": true,
+    "priya_has_no_credit_card_revolve": true,
+    "priya_protected_obligations_preserved": true,
+    "large_one_time_inflows_not_used_as_rescue": true,
+    "stress_events_not_overclustered": true,
+    "known_annual_insurance_obligations_aligned_to_due_months": true,
+    "aarav_vehicle_insurance_not_misplaced_in_march": true,
+    "priya_self_health_premium_in_may": true,
+    "term_insurance_premiums_in_december": true,
+    "bonus_context_is_planned_not_rescue": true,
+    "priya_march_tax_refund_not_selected": true,
+    "aarav_april_has_no_fresh_liquid_fund_redemption": true,
+    "vehicle_specific_rendering_guardrail_present": true,
+    "known_annual_premiums_marked_non_stress": true,
+    "priya_april_liquid_fund_action_is_purchase_or_replenishment_only": true,
+    "ready_for_month_plan_stage": true
+  },
+  "do_not_generate_yet": [
+    "transactions",
+    "daily sequence",
+    "exact dated spends",
+    "raw AA payload",
+    "opening balances",
+    "monthly account balances"
+  ]
+}

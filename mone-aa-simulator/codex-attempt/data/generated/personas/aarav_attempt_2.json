@@ -1,0 +1,124 @@
+{
+  "persona": {
+    "persona_id": "aarav",
+    "full_name": "Aarav Sharma",
+    "age": 32,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Software Engineer",
+    "employer_name": "NexaTech Solutions",
+    "monthly_salary_inr": 165000,
+    "monthly_rent_inr": 42000,
+    "monthly_fixed_obligations_inr": 75000,
+    "monthly_discretionary_low_inr": 45000,
+    "monthly_discretionary_high_inr": 80000,
+    "credit_card_limit_inr": 250000,
+    "typical_credit_card_outstanding_low_inr": 35000,
+    "typical_credit_card_outstanding_high_inr": 123750,
+    "budget_profile": {
+      "monthly_salary_inr": 165000,
+      "monthly_rent_inr": 42000,
+      "monthly_fixed_obligations_inr": 75000,
+      "monthly_discretionary_low_inr": 45000,
+      "monthly_discretionary_high_inr": 80000,
+      "normal_month_total_spend_low_inr": 120000,
+      "normal_month_total_spend_high_inr": 155000,
+      "normal_month_surplus_after_discretionary_low_inr": 45000,
+      "normal_month_surplus_after_discretionary_high_inr": 10000,
+      "stress_month_extra_spend_inr": 30000,
+      "stress_month_survival_mechanisms": [
+        "Uses credit card float for about ₹12,000 of the deficit.",
+        "Borrows about ₹5,000 from a friend and repays it over the next 1-3 salaries.",
+        "Covers the remaining ₹3,000 by pulling down cash savings or delaying a discretionary purchase."
+      ]
+    },
+    "work_pattern": "Hybrid senior software engineer, usually in office Monday to Thursday and works from home on most Fridays",
+    "commute_pattern": "Drives about km each way from Whitefield to Bellandur on office days, but falls back to Uber or Rapido after late nights or pub evenings",
+    "family_obligations": [
+      "His younger sister Nisha is in Jaipur and gets a fixed monthly support transfer for coaching and rent",
+      "His father Sanjay reminds him about the parents' annual medical insurance premium and occasional pharmacy reimbursements"
+    ],
+    "friend_network": [
+      "Rohan is the friend he borrows from most often and repays late after payday",
+      "Neha is part of the Friday dinner and cocktail circuit and often splits cabs and pub bills with him",
+      "Karthik is the office lunch and coffee buddy who fronts quick UPI settles during busy workdays",
+      "Suresh is the weekend travel friend who nudges him into impulsive plans and gadget purchases",
+      "Tanya is the dating-context spend trigger for nicer bars, cabs, and last-minute dinner bookings"
+    ],
+    "relationship_context": "Single, actively dating, and socially available enough that nights out and app-booked dinners show up in the data",
+    "health_tendencies": [
+      "Smokes every day and usually buys cigarettes in small repeated purchases near office or home",
+      "Skips workouts for stretches, then returns to the gym after guilt spikes or after a stressful week"
+    ],
+    "vices": [
+      "Cigarettes and late-evening convenience-store runs",
+      "Friday pub tabs, cabs home, and the occasional after-party food order",
+      "Impulse electronics and accessory purchases when he feels he has had a rough week",
+      "Food-delivery and quick-commerce spending that continues even when he says he will cut back"
+    ],
+    "food_habits": [
+      "Weekday lunches are usually office-cafeteria meals, coffee runs, or app orders during long coding blocks",
+      "Weekend meals tilt toward cafes, brewery food, and late-night delivery after social plans"
+    ],
+    "shopping_habits": [
+      "He buys gadgets, headphones, and accessories after salary credit or after a stressful sprint",
+      "Clothing and sneakers are usually tied to social plans, trips, or sudden app-sale temptation"
+    ],
+    "travel_habits": [
+      "Most travel is short weekend drives or quick outstation plans with friends rather than carefully budgeted holidays",
+      "Airport, toll, fuel, and late-night cab patterns should show up occasionally but not every month"
+    ],
+    "financial_temperament": "Financially chaotic, socially driven, and prone to short-term avoidance when the card bill looks ugly",
+    "credit_behavior": "Usually clears most of the card when salary hits, but once or twice a year he pays only the minimum due and lets one messy month spill forward",
+    "savings_discipline": "Keeps some money aside when the month starts, then raids it for cabs, food delivery, or an avoidable impulse buy",
+    "risk_tolerance": "Moderate on investments, weak on day-to-day consumption discipline",
+    "recurring_obligations": [
+      "Rent to Mahesh Iyer: ₹42,000",
+      "Utilities and internet: ₹3,500",
+      "Society maintenance and cleaning support to Savita: ₹5,000",
+      "Insurance and SIP commitments: ₹8,500",
+      "Fuel, metro pass, and commuting top-ups: ₹6,000",
+      "Phone plan and subscriptions: ₹3,500",
+      "Monthly family support transfer: ₹6,500"
+    ],
+    "stress_responses": [
+      "Keeps ordering food on bad workdays even after promising himself a quieter week",
+      "Uses the credit card more than UPI because it delays the pain of seeing the balance drop",
+      "Asks Rohan for a temporary transfer and repays late or in parts after salary lands",
+      "Cancels one plan, then leaks money elsewhere through cigarettes, cabs, or quick-commerce orders"
+    ],
+    "monthly_survival_logic": "Most ordinary months remain survivable from salary, but his cushion gets eaten by social leakage, app orders, and one or two careless card decisions",
+    "stress_month_behavior": "A bad month usually includes an avoidable impulse purchase, a delayed card payment, extra cabs and food orders during work stress, and one borrowed transfer from Rohan before he stabilizes after payday",
+    "boring_month_behavior": "A boring month still shows salary, rent to landlord Mahesh Iyer, commuting fuel, coffee, cigarettes, food delivery, subscriptions, office lunches, and a few normal social spends",
+    "realism_notes": [
+      "Landlord Mahesh Iyer should appear as the recurring rent counterparty",
+      "Househelp Savita and office reimbursement source TechNova Ops should appear as named counterparties in later stages",
+      "He should look messy in small ways rather than permanently broken"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "BUDGET_MISMATCH",
+        "evidence": "Stress month extra spend is declared as ₹30,000, but survival mechanisms only cover ₹20,000 (₹12,000 credit card float + ₹5,000 friend loan + ₹3,000 savings). This leaves a ₹10,000 unexplained deficit that violates the 'survival mechanisms must visibly finance the gap' rule.",
+        "why_blocking": "The persona's declared financial behavior is mathematically impossible under the stated income and obligations."
+      },
+      {
+        "code": "CREDIT_BEHAVIOR_MISMATCH",
+        "evidence": "Typical credit card outstanding_high_inr is ₹123,750, but the stress month only uses ₹12,000 of the card. This underutilizes the card's capacity relative to the persona's declared 'financially chaotic' temperament and 'credit behavior' of letting 'one messy month spill forward'.",
+        "why_blocking": "The credit behavior is inconsistent with the declared financial temperament and typical credit utilization range."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "The stress month deficit is not fully covered by the survival mechanisms, creating an unresolvable financial gap that would generate inconsistent AA data",
+      "The credit card usage during stress months is underutilized relative to the persona's declared financial chaos and typical credit card outstanding range"
+    ],
+    "required_regeneration_scope": "The stress_month_survival_mechanisms must be revised to fully cover the ₹30,000 deficit, and the credit card usage during stress months must be adjusted to align with the declared financial behavior and typical credit card outstanding range.",
+    "non_blocking_observations": [
+      "The persona's work pattern, commute, and social graph are concretely specified",
+      "The recurring obligations are itemized and sum correctly to monthly_fixed_obligations_inr",
+      "The persona's discretionary spending range is plausible for a senior software engineer in Bengaluru"
+    ]
+  }
+}

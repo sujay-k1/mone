@@ -1,0 +1,105 @@
+{
+  "persona": {
+    "persona_id": "aarav",
+    "full_name": "Aarav Sharma",
+    "age": 32,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Software Engineer",
+    "employer_name": "TechNova Solutions",
+    "monthly_salary_inr": 165000,
+    "monthly_rent_inr": 42000,
+    "monthly_fixed_obligations_inr": 80000,
+    "monthly_discretionary_low_inr": 45000,
+    "monthly_discretionary_high_inr": 75000,
+    "credit_card_limit_inr": 280000,
+    "typical_credit_card_outstanding_low_inr": 35000,
+    "typical_credit_card_outstanding_high_inr": 140000,
+    "work_pattern": "Mon-Fri 9AM-7PM, occasional weekend work",
+    "commute_pattern": "30 mins by metro, 15 mins walk",
+    "family_obligations": [
+      "elderly parent medical support (₹5000/month)"
+    ],
+    "friend_network": [
+      "Rahul (loan provider, ₹20000 limit)"
+    ],
+    "relationship_context": "single, no children",
+    "health_tendencies": [
+      "occasional stress-related stomach issues"
+    ],
+    "vices": [
+      "cigarettes (₹1500/month)",
+      "occasional alcohol"
+    ],
+    "food_habits": [
+      "home-cooked meals (₹8000/month)",
+      "3x/week dining out"
+    ],
+    "shopping_habits": [
+      "tech gadgets (₹10000/quarter)",
+      "clothing (₹5000/month)"
+    ],
+    "travel_habits": [
+      "domestic flights (₹15000/quarter)"
+    ],
+    "financial_temperament": "impulsive but not destitute",
+    "credit_behavior": "pays minimum due 2x/year, 1x/year full payment",
+    "savings_discipline": "₹5000/month emergency fund, ₹10000/month SIP",
+    "risk_tolerance": "moderate",
+    "recurring_obligations": [
+      "rent (₹42000)",
+      "utilities (₹8000)",
+      "mobile/internet (₹3000)",
+      "groceries (₹12000)",
+      "car loan (₹15000)",
+      "health insurance (₹5000)",
+      "SIP (₹10000)",
+      "emergency fund (₹5000)"
+    ],
+    "stress_responses": [
+      "credit card usage",
+      "friend loans",
+      "delayed bill payments"
+    ],
+    "monthly_survival_logic": "salary - fixed_obligations = ₹85000, discretionary spending draws from this pool",
+    "stress_month_behavior": "one month/year with ₹25000 deficit covered by credit card and ₹10000 friend loan",
+    "boring_month_behavior": "consistent salary, rent, bills, commute, food, subscriptions, normal social spending",
+    "realism_notes": [
+      "car loan is for used vehicle",
+      "SIP is in large-cap equity funds",
+      "emergency fund is in liquid savings account"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "BUDGET_MISMATCH",
+        "evidence": "monthly_salary_inr (165000) - monthly_fixed_obligations_inr (80000) = 85000. However, recurring_obligations sum to 42000 (rent) + 8000 (utilities) + 3000 (mobile) + 12000 (groceries) + 15000 (car loan) + 5000 (insurance) + 10000 (SIP) + 5000 (emergency) = 100000, which exceeds monthly_fixed_obligations_inr (80000).",
+        "why_blocking": "This contradiction makes the financial model impossible to simulate."
+      },
+      {
+        "code": "DISCRETIONARY_MISMATCH",
+        "evidence": "Calculated discretionary spending (food: 14000 + shopping: 8333 + travel: 5000 + vices: 1500 = 28833) is 63% below monthly_discretionary_low_inr (45000).",
+        "why_blocking": "The persona's spending habits cannot justify the stated discretionary range, making the financial behavior unrealistic."
+      },
+      {
+        "code": "CREDIT_BEHAVIOR_MISMATCH",
+        "evidence": "typical_credit_card_outstanding_high_inr (140000) is 50% of credit_card_limit_inr (280000), but stress_month_behavior requires 25000 additional credit usage (total 165000) which is 58.9% of limit.",
+        "why_blocking": "Credit behavior exceeds plausible limits for someone with 'impulsive but not destitute' temperament."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "Fixed obligations and recurring expenses are mutually exclusive but contradictory",
+      "Discretionary spending range is not supported by stated habits",
+      "Credit card usage patterns exceed plausible limits for the income level",
+      "Car loan (15000/month) and other obligations make survival logic implausible"
+    ],
+    "required_regeneration_scope": "Complete financial model overhaul including salary, obligations, and discretionary spending parameters",
+    "non_blocking_observations": [
+      "Whitefield neighborhood in Bengaluru is realistic for a senior software engineer",
+      "Health tendencies and vices are plausible for the profession",
+      "SIP and emergency fund parameters are reasonable"
+    ]
+  }
+}

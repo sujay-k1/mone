@@ -7,7 +7,6 @@ struct PayView: View {
     @State private var scannerID = UUID()
     @State private var scannedPayload: UPIQRPayload?
 
-    @State private var showPaymentSheet = false
     @State private var amountText = ""
     @State private var descriptionText = ""
     @State private var selectedApp: UPIApp?
@@ -17,6 +16,20 @@ struct PayView: View {
 
     @FocusState private var amountFocused: Bool
     @FocusState private var descriptionFocused: Bool
+
+    private var currentMonthTag: String {
+        let sts = appVM.safeToSpend
+        let raw = sts.weekly - sts.spentThisWeek
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 0
+        let amount = formatter.string(from: NSNumber(value: abs(raw))) ?? "\(Int(abs(raw)))"
+        if raw >= 0 {
+            return "₹\(amount) safe to spend"
+        } else {
+            return "₹\(amount) over budget"
+        }
+    }
 
     private var parsedAmount: Double? {
         Double(amountText.replacingOccurrences(of: ",", with: ""))
@@ -74,15 +87,13 @@ struct PayView: View {
         .onAppear {
             installedUPIApps = UPIAppDiscoveryService.installedApps()
         }
-        .sheet(isPresented: $showPaymentSheet, onDismiss: {
+        .sheet(item: $scannedPayload, onDismiss: {
             restartScannerIfNeeded()
-        }) {
-            if let scannedPayload {
-                paymentSheet(payload: scannedPayload)
-                    .presentationDetents([.fraction(0.74), .large])
-                    .presentationDragIndicator(.visible)
-                    .presentationCornerRadius(28)
-            }
+        }) { payload in
+            paymentSheet(payload: payload)
+                .presentationDetents([.fraction(0.74), .large])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
         }
         .alert(
             "Payment unavailable",
@@ -102,32 +113,20 @@ struct PayView: View {
     private var topCameraChrome: some View {
         VStack {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("moné")
-                        .font(.moneLabelCaps)
-                        .tracking(1.5)
-                        .foregroundStyle(.white.opacity(0.72))
-
-                    Text("Pay with Pause")
-                        .font(.moneHLMd)
-                        .foregroundStyle(.white)
-                }
-
-                Spacer()
+                DashboardHeader(title: "Pay with Pause", tag: currentMonthTag, labelColor: .moneSecondary)
 
                 Button {
                     scannerID = UUID()
                 } label: {
                     Image(systemName: "arrow.clockwise")
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.monePrimary)
                         .frame(width: 42, height: 42)
                         .background(.ultraThinMaterial)
                         .clipShape(Circle())
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.top, 14)
             .padding(.horizontal, 20)
 
             Spacer()
@@ -143,7 +142,7 @@ struct PayView: View {
                 }
 
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: MoneSpacing.section) {
+                VStack(alignment: .leading, spacing: 28) {
                     sheetHeader(payload: payload)
 
                     vendorCard(payload: payload)
@@ -155,7 +154,7 @@ struct PayView: View {
                     Spacer(minLength: 96)
                 }
                 .padding(.horizontal, MoneSpacing.page)
-                .padding(.top, 20)
+                .padding(.top, 28)
             }
             .scrollDismissesKeyboard(.interactively)
             .contentShape(Rectangle())
@@ -174,108 +173,92 @@ struct PayView: View {
     }
 
     private func sheetHeader(payload: UPIQRPayload) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("PAYMENT DETAILS")
-                .moneLabelCaps()
-
-            Text("Review the amount, add a note, then choose where to pay from.")
-                .font(.moneBodySm)
-                .foregroundStyle(Color.moneSecondary)
-        }
-    }
-
-    private func vendorCard(payload: UPIQRPayload) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .top, spacing: 12) {
-                ZStack {
-                    Circle()
-                        .fill(Color.moneSurface)
-                        .frame(width: 48, height: 48)
-
-                    Image(systemName: categoryIcon(inferredCategory))
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(Color.monePrimary)
-                }
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(payload.displayName)
-                        .font(.moneBodyLg.weight(.semibold))
-                        .foregroundStyle(Color.monePrimary)
-                        .lineLimit(2)
-
-                    Text(payload.payeeVPA)
-                        .font(.moneBodySm)
-                        .foregroundStyle(Color.moneSecondary)
-                        .lineLimit(1)
-
-                    HStack(spacing: 8) {
-                        Text(inferredCategory.rawValue)
-                            .font(.moneLabelCaps)
-                            .foregroundStyle(Color.moneSecondary)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 5)
-                            .background(Color.moneSurface)
-                            .clipShape(Capsule())
-
-                        if let merchantCode = payload.merchantCode {
-                            Text("MCC \(merchantCode)")
-                                .font(.moneLabelCaps)
-                                .foregroundStyle(Color.moneTertiary)
-                        }
-                    }
-                }
-
-                Spacer()
-            }
-        }
-        .padding(MoneSpacing.cardLg)
-        .background(Color.moneSurface)
-        .clipShape(RoundedRectangle(cornerRadius: MoneRadius.xxl, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: MoneRadius.xxl, style: .continuous)
-                .strokeBorder(Color.moneStroke, lineWidth: 1)
+        DashboardHeader(
+            title: "Pay with Pause",
+            subtitle: "Review the amount, add a note, then choose where to pay from.",
+            tag: currentMonthTag,
+            labelColor: .moneSecondary
         )
     }
 
-    private var inputFields: some View {
-        VStack(alignment: .leading, spacing: 16) {
+    private func vendorCard(payload: UPIQRPayload) -> some View {
+        HStack(alignment: .top, spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(Color.moneSurfaceEl)
+                    .frame(width: 56, height: 56)
+
+                Image(systemName: categoryIcon(inferredCategory))
+                    .font(.system(size: 22, weight: .medium))
+                    .foregroundStyle(Color.moneSecondary)
+            }
+
             VStack(alignment: .leading, spacing: 8) {
-                Text("Amount")
-                    .moneLabelCaps()
+                Text(payload.displayName)
+                    .font(.moneHLSm)
+                    .foregroundStyle(Color.monePrimary)
+                    .lineLimit(2)
+
+                Text(payload.payeeVPA)
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+                    .lineLimit(1)
 
                 HStack(spacing: 8) {
+                    Text(inferredCategory.rawValue.uppercased())
+                        .font(.moneLabelCaps)
+                        .foregroundStyle(Color.moneSecondary)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Color.moneSurface)
+                        .clipShape(Capsule())
+                        .overlay(Capsule().strokeBorder(Color.moneStroke, lineWidth: 1))
+
+                    if let merchantCode = payload.merchantCode {
+                        Text("MCC \(merchantCode)")
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(Color.moneTertiary)
+                    }
+                }
+            }
+
+            Spacer()
+        }
+        .padding(MoneSpacing.cardLg)
+        .moneCard(radius: MoneRadius.xxl, elevated: true)
+    }
+
+    private var inputFields: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("AMOUNT")
+                    .moneLabelCaps(color: .moneTertiary)
+
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text("₹")
                         .font(.moneAmtMd)
                         .foregroundStyle(Color.moneSecondary)
 
                     TextField("0", text: $amountText)
-                        .font(.moneAmtMd)
+                        .font(.moneAmtLg)
                         .foregroundStyle(Color.monePrimary)
                         .keyboardType(.decimalPad)
                         .focused($amountFocused)
                         .tint(Color.moneActionFill)
-                        .onTapGesture {
-                            amountFocused = true
-                        }
+                        .onTapGesture { amountFocused = true }
                 }
-                .padding(MoneSpacing.cardSm)
-                .background(Color.moneSurface)
-                .clipShape(RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous)
-                        .strokeBorder(Color.moneStroke, lineWidth: 1)
-                )
+                .padding(MoneSpacing.cardLg)
+                .moneCard(radius: MoneRadius.xl, elevated: true)
 
                 if let guidance {
                     guidanceCard(guidance)
-                        .padding(.top, 4)
                         .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Description")
-                    .moneLabelCaps()
+            VStack(alignment: .leading, spacing: 10) {
+                Text("NOTE")
+                    .moneLabelCaps(color: .moneTertiary)
 
                 TextField("What is this for?", text: $descriptionText, axis: .vertical)
                     .lineLimit(2...4)
@@ -283,55 +266,48 @@ struct PayView: View {
                     .foregroundStyle(Color.monePrimary)
                     .focused($descriptionFocused)
                     .tint(Color.moneActionFill)
-                    .padding(MoneSpacing.cardSm)
-                    .background(Color.moneSurface)
-                    .clipShape(RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous)
-                            .strokeBorder(Color.moneStroke, lineWidth: 1)
-                    )
-                    .onTapGesture {
-                        descriptionFocused = true
-                    }
+                    .padding(MoneSpacing.cardLg)
+                    .moneCard(radius: MoneRadius.xl, elevated: true)
+                    .onTapGesture { descriptionFocused = true }
             }
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.85), value: guidance)
     }
 
     private func guidanceCard(_ guidance: PaymentGuidance) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top, spacing: 10) {
-                Image(systemName: guidanceIcon(guidance.severity))
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(guidanceColor(guidance.severity))
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: guidanceIcon(guidance.severity))
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(guidanceColor(guidance.severity))
+                .padding(.top, 1)
 
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(guidance.title)
-                        .font(.moneBodyMd.weight(.semibold))
-                        .foregroundStyle(Color.monePrimary)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(guidance.title)
+                    .font(.moneHLSm)
+                    .foregroundStyle(Color.monePrimary)
 
-                    Text(guidance.body)
-                        .font(.moneBodySm)
-                        .foregroundStyle(Color.moneSecondary)
-                        .lineSpacing(3)
+                Text(guidance.body)
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
 
-                    if let metric = guidance.metric {
-                        Text(metric)
-                            .font(.moneLabelCaps)
-                            .foregroundStyle(guidanceColor(guidance.severity))
-                            .padding(.top, 2)
-                    }
+                if let metric = guidance.metric {
+                    Text(metric)
+                        .font(.moneLabelCaps)
+                        .foregroundStyle(guidanceColor(guidance.severity))
+                        .padding(.top, 2)
                 }
-
-                Spacer()
             }
+
+            Spacer()
         }
-        .padding(MoneSpacing.cardSm)
-        .background(guidanceColor(guidance.severity).opacity(0.12))
-        .clipShape(RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous))
+        .padding(MoneSpacing.cardLg)
+        .background(guidanceColor(guidance.severity).opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: MoneRadius.xl, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous)
-                .strokeBorder(guidanceColor(guidance.severity).opacity(0.35), lineWidth: 1)
+            RoundedRectangle(cornerRadius: MoneRadius.xl, style: .continuous)
+                .strokeBorder(guidanceColor(guidance.severity).opacity(0.3), lineWidth: 1)
         )
     }
     
@@ -348,21 +324,20 @@ struct PayView: View {
     }
 
     private var upiAppSelector: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Pay using")
-                .moneLabelCaps()
+        VStack(alignment: .leading, spacing: 14) {
+            Text("PAY USING")
+                .moneLabelCaps(color: .moneTertiary)
 
             if installedUPIApps.isEmpty {
                 Text("No supported UPI apps detected on this iPhone.")
                     .font(.moneBodySm)
                     .foregroundStyle(Color.moneSecondary)
-                    .padding(MoneSpacing.cardSm)
+                    .padding(MoneSpacing.cardLg)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.moneSurface)
-                    .clipShape(RoundedRectangle(cornerRadius: MoneRadius.lg, style: .continuous))
+                    .moneCard(radius: MoneRadius.xl, elevated: true)
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
+                    HStack(spacing: 12) {
                         ForEach(installedUPIApps) { app in
                             upiAppIcon(app)
                         }
@@ -380,15 +355,21 @@ struct PayView: View {
             hideKeyboard()
             selectedApp = app
         } label: {
-            VStack(spacing: 8) {
+            VStack(spacing: 10) {
                 ZStack {
                     Circle()
-                        .fill(isSelected ? Color.monePrimary : Color.moneSurface)
-                        .frame(width: 56, height: 56)
+                        .fill(isSelected ? Color.monePrimary : Color.moneSurfaceEl)
+                        .frame(width: 60, height: 60)
 
-                    Image(systemName: app.systemIconName)
-                        .font(.system(size: 28, weight: .semibold))
-                        .foregroundStyle(isSelected ? Color.moneBackground : Color.monePrimary)
+                    CompanyLogoView(
+                        query: app.displayName,
+                        aliases: [app.id, app.scheme],
+                        fallbackSystemName: app.systemIconName,
+                        padding: 3
+                    )
+                    .frame(width: 52, height: 52)
+                    .clipShape(Circle())
+                    .grayscale(isSelected ? 0.15 : 0)
                 }
                 .overlay(
                     Circle()
@@ -396,8 +377,8 @@ struct PayView: View {
                 )
 
                 Text(app.displayName)
-                    .font(.caption2)
-                    .foregroundStyle(Color.moneSecondary)
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(isSelected ? Color.monePrimary : Color.moneSecondary)
                     .lineLimit(1)
                     .frame(width: 72)
             }
@@ -410,40 +391,39 @@ struct PayView: View {
             openSelectedUPIApp(payload: payload)
         } label: {
             HStack(spacing: 10) {
-                Image(systemName: "arrow.up.forward.app.fill")
                 Text("Continue to pay")
+                    .font(.moneHLSm)
+                Image(systemName: "arrow.up.forward.app.fill")
+                    .font(.system(size: 15, weight: .semibold))
             }
-            .font(.headline)
-            .foregroundStyle(Color.moneBackground)
+            .foregroundStyle(canContinue ? Color.moneActionFg : Color.moneTertiary)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(canContinue ? Color.monePrimary : Color.moneSurface)
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .padding(.vertical, 18)
+            .background(canContinue ? Color.moneActionFill : Color.moneSurface)
+            .clipShape(Capsule())
+            .overlay(Capsule().strokeBorder(canContinue ? Color.clear : Color.moneStroke, lineWidth: 1))
         }
         .buttonStyle(.plain)
         .disabled(!canContinue)
-        .opacity(canContinue ? 1 : 0.55)
     }
-    
+
     private func paymentButtonDock(payload: UPIQRPayload) -> some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
             continueButton(payload: payload)
                 .padding(.horizontal, MoneSpacing.page)
-                .padding(.top, 12)
+                .padding(.top, 16)
 
-            Text(canContinue ? "You’ll continue in the selected UPI app." : "Enter an amount to continue.")
-                .font(.caption)
-                .foregroundStyle(Color.moneSecondary)
-                .padding(.bottom, 10)
+            Text(canContinue ? "You’ll continue in the selected UPI app." : "Enter an amount and select an app to continue.")
+                .font(.moneLabelCaps)
+                .foregroundStyle(Color.moneTertiary)
+                .multilineTextAlignment(.center)
+                .padding(.bottom, 12)
         }
         .frame(maxWidth: .infinity)
         .background(
             Rectangle()
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    Rectangle()
-                        .fill(Color.moneBackground.opacity(0.78))
-                )
+                .fill(Color.moneBackground.opacity(0.92))
+                .ignoresSafeArea()
         )
     }
 
@@ -451,8 +431,6 @@ struct PayView: View {
         guard let payload = UPIQRParser.parse(rawValue) else {
             return false
         }
-
-        scannedPayload = payload
 
         amountText = payload.amount.map { amount in
             amount.truncatingRemainder(dividingBy: 1) == 0
@@ -465,7 +443,7 @@ struct PayView: View {
         installedUPIApps = UPIAppDiscoveryService.installedApps()
         selectedApp = installedUPIApps.first
 
-        showPaymentSheet = true
+        scannedPayload = payload
 
         return true
     }
@@ -484,7 +462,7 @@ struct PayView: View {
 
         UIApplication.shared.open(url) { success in
             if success {
-                showPaymentSheet = false
+                scannedPayload = nil
             } else {
                 paymentErrorMessage = "Could not open \(app.displayName). Please try another UPI app."
             }
@@ -492,7 +470,6 @@ struct PayView: View {
     }
 
     private func resetAndScanAgain() {
-        showPaymentSheet = false
         scannedPayload = nil
         amountText = ""
         descriptionText = ""

@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import Charts
 import UserNotifications
 
 struct DashboardView: View {
@@ -8,84 +9,110 @@ struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
 
     @State private var summary: DashboardSummary?
+    @State private var velocityData: VelocityData?
+    @State private var netWorthData: NetWorthData?
+    @State private var topCategories: [CategorySpendItem] = []
+    @State private var savingsTrend: [SavingsTrendPoint] = []
     @State private var errorMessage: String?
     @State private var showSignUp = false
     @State private var isRestoringFinancialData = false
     @State private var didCompleteInitialDashboardLoad = false
+    @State private var shouldRunTourAutoScroll = false
     
     @State private var activeNudge: DashboardNudge?
     private let nudgeStore = DashboardNudgeStore()
     
     @State private var showSMSInfoSheet = false
 
+    private enum TourScrollTarget {
+        static let top = "dashboardTourTop"
+        static let lower = "dashboardTourLower"
+        static let bottom = "dashboardTourBottom"
+    }
 
     var body: some View {
         ZStack {
             Color.moneBackground.ignoresSafeArea()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 36) {
-                    if let summary {
-                        DashboardHeader(
-                            title: dashboardTitle(for: summary),
-                            subtitle: sessionVM.isSignedIn
-                                ? "\(sessionVM.displayName.capitalized) · \(summary.month)"
-                                : summary.month
-                        )
-                        
-                        if let activeNudge {
-                            DashboardNudgeCard(
-                                nudge: activeNudge,
-                                onPrimaryAction: {
-                                    handleNudgeAction(activeNudge.id)
-                                },
-                                onDismiss: {
-                                    dismissNudge(activeNudge.id)
-                                }
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 36) {
+                        if let summary {
+                            DashboardHeader(
+                                title: dashboardTitle(for: summary),
+                                subtitle: sessionVM.isSignedIn ? sessionVM.displayName.capitalized : nil,
+                                tag: formattedMonth(summary.month)
                             )
+                            .id(TourScrollTarget.top)
+                            
+//                            if let activeNudge {
+//                                DashboardNudgeCard(
+//                                    nudge: activeNudge,
+//                                    onPrimaryAction: {
+//                                        handleNudgeAction(activeNudge.id)
+//                                    },
+//                                    onDismiss: {
+//                                        dismissNudge(activeNudge.id)
+//                                    }//
+//                                )
+//                            }
+
+                            
+                            HealthStateCard(summary: summary)
+                            
+                            DashboardSectionTitle("Safe to spend")
+                            SafeToSpendSplitCard(summary: summary)
+
+                            DashboardSectionTitle("Spend velocity")
+                            SpendVelocityCard(summary: summary, velocity: velocityData)
+                            
+                            DashboardSectionTitle("Top spending categories")
+                                .id(TourScrollTarget.lower)
+                            TopSpendingCategoriesCard(summary: summary, categories: topCategories)
+
+                            DashboardSectionTitle("Net worth stratification")
+                            NetWorthStratificationCard(summary: summary, netWorth: netWorthData)
+
+                            DashboardSectionTitle("Monthly excess liquid trend")
+                            SavingsTrendCard(summary: summary, trend: savingsTrend)
+
+                            DashboardSectionTitle("Tax deductions")
+                            TaxDeductionCard(summary: summary)
+
+                            DashboardSectionTitle("Next best actions")
+                            NextBestActionsCard(summary: summary)
+                            
+                            // agendaHero(summary)
+
+                            Color.clear
+                                .frame(height: 1)
+                                .id(TourScrollTarget.bottom)
+                            
+                        } else if isRestoringFinancialData {
+                            restoringFinancialDataView
+                        } else if let errorMessage {
+                            dashboardError(errorMessage)
+                        } else {
+                            ProgressView()
+                                .tint(Color.monePrimary)
                         }
-
-                        agendaHero(summary)
-
-                        DashboardSectionTitle("Financial health status")
-                        HealthStateCard(summary: summary)
-
-                        DashboardSectionTitle("Monthly money split")
-                        MoneySplitCard(summary: summary)
-
-                        DashboardSectionTitle("Tax & statutory deductions")
-                        TaxDeductionCard(summary: summary)
-
-                        DashboardSectionTitle("Spend velocity")
-                        SpendVelocityCard(summary: summary)
-
-                        DashboardSectionTitle("Fund-building")
-                        FundBuildingCard(summary: summary)
-
-                        DashboardSectionTitle("Debt & liabilities")
-                        DebtAndLiabilityCard(summary: summary)
-
-                        DashboardSectionTitle("Subscription load")
-                        SubscriptionLoadCard(summary: summary)
-
-                        DashboardSectionTitle("Net worth stratification")
-                        NetWorthStratificationCard(summary: summary)
-
-                        DashboardSectionTitle("Forecast confidence")
-                        ForecastConfidenceCard(summary: summary)
-
-                        DashboardSectionTitle("Next best actions")
-                        NextBestActionsCard(summary: summary)
-                    } else if isRestoringFinancialData {
-                        restoringFinancialDataView
-                    } else if let errorMessage {
-                        dashboardError(errorMessage)
-                    } else {
-                        ProgressView()
-                            .tint(Color.monePrimary)
+                    }
+                    .padding(.horizontal, MoneSpacing.page)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .moneTabTourStepDidChange)) { notification in
+                    guard notification.userInfo?["step"] as? String == MoneTabTourStepName.dashboard else { return }
+                    shouldRunTourAutoScroll = true
+                    runTourAutoScrollIfReady(proxy)
+                }
+                .onAppear {
+                    if UserDefaults.standard.string(forKey: MoneTabTourStepName.activeStepDefaultsKey) == MoneTabTourStepName.dashboard {
+                        shouldRunTourAutoScroll = true
+                        runTourAutoScrollIfReady(proxy)
                     }
                 }
-                .padding(MoneSpacing.page)
+                .onChange(of: summary != nil) { _, _ in
+                    runTourAutoScrollIfReady(proxy)
+                }
             }
         }
         .task {
@@ -118,6 +145,16 @@ struct DashboardView: View {
         
     }
 
+    private func runTourAutoScrollIfReady(_ proxy: ScrollViewProxy) {
+        guard shouldRunTourAutoScroll, summary != nil else { return }
+        shouldRunTourAutoScroll = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+            withAnimation(.linear(duration: 48.0)) {
+                proxy.scrollTo(TourScrollTarget.bottom, anchor: .bottom)
+            }
+        }
+    }
+
     private func dashboardTitle(for summary: DashboardSummary) -> String {
         switch appVM.primaryAgenda ?? .controlSpending {
         case .controlSpending:
@@ -127,6 +164,15 @@ struct DashboardView: View {
         case .understandPicture:
             return "Understand your money"
         }
+    }
+
+    private func formattedMonth(_ monthKey: String) -> String {
+        guard monthKey.count == 7,
+              let month = Int(monthKey.suffix(2)),
+              let year = Int(monthKey.prefix(4)),
+              month >= 1 && month <= 12 else { return monthKey }
+        let names = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
+        return "\(names[month - 1]) \(year)"
     }
 
     @ViewBuilder
@@ -210,6 +256,10 @@ struct DashboardView: View {
             if let localSummary = try loader.loadLatestSummary() {
                 summary = localSummary
                 appVM.dashboardHealthState = localSummary.healthState
+                velocityData = try loader.loadVelocityData(currentMonth: localSummary.month)
+                netWorthData = try loader.loadNetWorthData(summary: localSummary)
+                topCategories = (try? loader.loadTopCategories(month: localSummary.month)) ?? []
+                savingsTrend = (try? loader.loadSavingsTrend(currentMonth: localSummary.month)) ?? []
                 errorMessage = nil
                 didCompleteInitialDashboardLoad = true
                 loadDashboardNudge()
@@ -246,6 +296,10 @@ struct DashboardView: View {
 
             if let restoredSummary {
                 appVM.dashboardHealthState = restoredSummary.healthState
+                velocityData = try reloadLoader.loadVelocityData(currentMonth: restoredSummary.month)
+                netWorthData = try reloadLoader.loadNetWorthData(summary: restoredSummary)
+                topCategories = (try? reloadLoader.loadTopCategories(month: restoredSummary.month)) ?? []
+                savingsTrend = (try? reloadLoader.loadSavingsTrend(currentMonth: restoredSummary.month)) ?? []
                 errorMessage = nil
                 loadDashboardNudge()
             } else {
@@ -275,7 +329,10 @@ struct DashboardView: View {
     }
 
     private func isUserSignedIn() -> Bool {
-        sessionVM.isSignedIn || supabase.auth.currentSession != nil
+        guard supabase.auth.currentSession != nil else { return false }
+        guard let profile = sessionVM.profile else { return false }
+        return profile.onboardingCompleted == true
+            && !(profile.fullName ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     private func hasAnyGoal() -> Bool {
@@ -336,20 +393,30 @@ struct DashboardHeader: View {
     @Environment(AppViewModel.self) private var appVM
     let title: String
     var subtitle: String? = nil
+    var tag: String? = nil
+    var labelColor: Color = .moneTertiary
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("moné")
-                    .font(.moneLabelCaps)
-                    .tracking(3.0)
-                    .foregroundStyle(Color.moneTertiary)
+                HStack(spacing: 6) {
+                    Text("moné")
+                        .font(.system(size: 11, weight: .bold, design: .serif).italic())
+                        .tracking(0)
+                        .foregroundStyle(labelColor)
+
+                    if let tag {
+                        Text("·")
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(labelColor)
+                        Text(tag)
+                            .font(.moneLabelCaps)
+                            .tracking(1.5)
+                            .foregroundStyle(labelColor)
+                    }
+                }
 
                 Spacer()
-
-                Circle()
-                    .fill(Color.moneHealthy)
-                    .frame(width: 6, height: 6)
             }
 
             Text(title)
@@ -364,7 +431,6 @@ struct DashboardHeader: View {
                     .foregroundStyle(Color.moneSecondary)
             }
         }
-        .padding(.top, 8)
     }
 }
 
@@ -396,13 +462,10 @@ private struct HealthStateCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text(summary.healthState.rawValue.uppercased())
+                Text("Financial health status".uppercased())
                     .font(.moneLabelCaps)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(statusColor.opacity(0.12))
-                    .foregroundStyle(statusColor)
-                    .clipShape(Capsule())
+                    .tracking(2.5)
+                    .foregroundStyle(Color.moneTertiary)
 
                 Spacer()
 
@@ -418,10 +481,17 @@ private struct HealthStateCard: View {
             HStack {
                 DashboardChip(title: "CONFIDENCE", value: "\(summary.confidence)%")
                 DashboardChip(title: "REVIEW", value: "\(summary.reviewCount)")
-                DashboardChip(title: "CASH IMPACT", value: formatCurrency(summary.liquidCashImpact))
+                DashboardChip(title: "MONTHLY CASH IMPACT", value: formatCurrency(summary.liquidCashImpact))
             }
         }
-        .dashboardCard()
+        .padding(20)
+        .background(Color.moneSurfaceEl)
+        .padding(.horizontal, -MoneSpacing.page)
+        .overlay(
+            Rectangle()
+                .strokeBorder(Color.moneStrokeMid, lineWidth: 0.5)
+                .padding(.horizontal, -MoneSpacing.page)
+        )
     }
 
     private var statusColor: Color {
@@ -559,7 +629,7 @@ private struct MoneySplitCard: View {
                     .foregroundStyle(Color.moneRisk)
                 Spacer()
                 Text("+\(formatCurrency(summary.outliers))")
-                    .font(.moneBodyMd)
+                    .font(.moneAmtSm)
                     .foregroundStyle(Color.moneRisk)
             }
             .padding(.vertical, 14)
@@ -601,7 +671,7 @@ private struct MoneySplitCard: View {
                 .foregroundStyle(dimmed ? Color.moneTertiary : Color.monePrimary)
             Spacer()
             Text(formatCurrency(value))
-                .font(.moneBodyMd)
+                .font(.moneAmtSm)
                 .foregroundStyle(dimmed ? Color.moneTertiary : Color.monePrimary)
         }
         .padding(.vertical, 14)
@@ -655,7 +725,7 @@ private struct TaxDeductionCard: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Tax / statutory")
+                    Text("Tax")
                         .font(.moneLabelCaps)
                         .foregroundStyle(.purple)
 
@@ -693,55 +763,301 @@ private struct TaxDeductionCard: View {
 
 private struct SpendVelocityCard: View {
     let summary: DashboardSummary
+    let velocity: VelocityData?
+
+    private var displayAvg: Double {
+        velocity?.currentAvg ?? summary.dailySpendVelocity
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            HStack {
-                Text("Spend velocity")
-                    .font(.moneLabelCaps)
-                    .foregroundStyle(Color.moneSecondary)
-
+            HStack(alignment: .firstTextBaseline) {
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(formatCurrency(displayAvg))
+                        .font(.moneAmtMd)
+                        .foregroundStyle(displayAvg > summary.income / 25 ? Color.moneRisk : Color.monePrimary)
+                    Text("/ day")
+                        .font(.moneBodySm)
+                        .foregroundStyle(Color.moneSecondary)
+                }
                 Spacer()
-
-                Text("\(formatCurrency(summary.dailySpendVelocity)) / day")
-                    .font(.moneBodyMd)
-                    .foregroundStyle(summary.dailySpendVelocity > summary.income / 25 ? Color.moneRisk : Color.monePrimary)
+                if let velocity {
+                    HStack(spacing: 12) {
+                        legendDot(Color.monePrimary, monthName(velocity.currentMonth))
+                        legendDot(Color.moneSecondary.opacity(0.6), monthName(velocity.previousMonth))
+                    }
+                }
             }
 
-            VelocityBars(value: summary.dailySpendVelocity)
+            if let velocity {
+                VelocityLineChart(velocity: velocity)
+                    .frame(height: 160)
+            } else {
+                Rectangle()
+                    .fill(Color.moneSurfaceEl)
+                    .frame(height: 160)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(
+                        Text("No transaction data yet")
+                            .font(.moneBodySm)
+                            .foregroundStyle(Color.moneTertiary)
+                    )
+            }
 
             Text(velocityMessage)
+
                 .font(.moneBodySm)
                 .foregroundStyle(Color.moneSecondary)
         }
         .dashboardCard()
     }
 
+    private func legendDot(_ color: Color, _ label: String) -> some View {
+        HStack(spacing: 6) {
+            Circle().fill(color).frame(width: 7, height: 7)
+            Text(label)
+                .font(.moneLabelCaps)
+                .foregroundStyle(Color.moneTertiary)
+        }
+    }
+
+    private func monthName(_ monthKey: String) -> String {
+        // monthKey format: "yyyy-MM"
+        guard monthKey.count == 7, let month = Int(monthKey.suffix(2)) else { return monthKey }
+        let names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        guard month >= 1 && month <= 12 else { return monthKey }
+        return names[month - 1].uppercased()
+    }
+
+
     private var velocityMessage: String {
-        if summary.operatingRemaining < 0 {
-            return "Current pace is above available operating buffer."
+        guard let velocity else {
+            return "Spending pace is within a manageable range for this month."
         }
-
-        if summary.dailySpendVelocity > summary.income / 25 {
-            return "Spending pace is elevated for this income cycle."
+        if velocity.currentAvg > velocity.previousAvg * 1.2 {
+            return "Spending pace is running \(Int(((velocity.currentAvg / max(velocity.previousAvg, 1)) - 1) * 100))% higher than last month."
         }
-
-        return "Spending pace is within a manageable range for this month."
+        if velocity.currentAvg < velocity.previousAvg * 0.85 {
+            return "Spending pace is tracking lower than last month."
+        }
+        return "Spending pace is broadly in line with last month."
     }
 }
 
-private struct VelocityBars: View {
-    let value: Double
+private struct VelocityLineChart: View {
+    let velocity: VelocityData
+    @State private var scrubDay: Int? = nil
+    @State private var scrubLocation: CGFloat = 0
+
+    private var currentPoints: [(day: Int, amount: Double)] {
+        velocity.current.map { ($0.key, $0.value) }.sorted { $0.day < $1.day }
+    }
+    private var previousPoints: [(day: Int, amount: Double)] {
+        velocity.previous.map { ($0.key, $0.value) }.sorted { $0.day < $1.day }
+    }
+    private var currentHigherAvg: Bool { velocity.currentAvg >= velocity.previousAvg }
+
+    // All days across both series to define X domain
+    private var allDays: [Int] {
+        Array(Set(currentPoints.map(\.day) + previousPoints.map(\.day))).sorted()
+    }
+    private var xMax: Int { allDays.last ?? 31 }
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 5) {
-            ForEach(0..<7, id: \.self) { index in
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(index == 4 ? Color.monePrimary : Color.moneStroke)
-                    .frame(height: CGFloat([0.45, 0.55, 0.38, 0.68, 0.82, 0.48, 0.42][index]) * 90)
+        Chart {
+            // Area fill under current month
+            ForEach(currentPoints, id: \.day) { point in
+                AreaMark(
+                    x: .value("Day", point.day),
+                    yStart: .value("Base", 0),
+                    yEnd: .value("Spend", point.amount),
+                    series: .value("Series", "current-area")
+                )
+                .foregroundStyle(LinearGradient(
+                    colors: [Color.monePrimary.opacity(0.10), Color.clear],
+                    startPoint: .top, endPoint: .bottom
+                ))
+                .interpolationMethod(.catmullRom)
+            }
+
+            // Previous month line
+            ForEach(previousPoints, id: \.day) { point in
+                LineMark(
+                    x: .value("Day", point.day),
+                    y: .value("Spend", point.amount),
+                    series: .value("Series", "previous")
+                )
+                .foregroundStyle(Color.moneSecondary.opacity(0.4))
+                .interpolationMethod(.catmullRom)
+                .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
+            }
+
+            // Current month line
+            ForEach(currentPoints, id: \.day) { point in
+                LineMark(
+                    x: .value("Day", point.day),
+                    y: .value("Spend", point.amount),
+                    series: .value("Series", "current")
+                )
+                .foregroundStyle(Color.monePrimary)
+                .interpolationMethod(.catmullRom)
+                .lineStyle(StrokeStyle(lineWidth: 2))
+            }
+
+            // Average line — current month (solid)
+            if velocity.currentAvg > 0 {
+                RuleMark(y: .value("Avg", velocity.currentAvg))
+                    .foregroundStyle(Color.monePrimary.opacity(0.55))
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+                    .annotation(
+                        position: currentHigherAvg ? .top : .bottom,
+                        alignment: .trailing
+                    ) {
+                        Text(formatCurrency(velocity.currentAvg))
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(Color.monePrimary)
+                            .padding(.horizontal, 4).padding(.vertical, 2)
+                            .background(Color.moneBackground.opacity(0.85))
+                    }
+            }
+
+            // Average line — previous month (dotted)
+            if velocity.previousAvg > 0 {
+                RuleMark(y: .value("Avg", velocity.previousAvg))
+                    .foregroundStyle(Color.moneSecondary.opacity(0.4))
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 4]))
+                    .annotation(
+                        position: currentHigherAvg ? .bottom : .top,
+                        alignment: .trailing
+                    ) {
+                        Text(formatCurrency(velocity.previousAvg))
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(Color.moneSecondary)
+                            .padding(.horizontal, 4).padding(.vertical, 2)
+                            .background(Color.moneBackground.opacity(0.85))
+                    }
+            }
+
+            // X-axis baseline
+            RuleMark(y: .value("Zero", 0))
+                .foregroundStyle(Color.moneSecondary.opacity(0.3))
+                .lineStyle(StrokeStyle(lineWidth: 0.75))
+
+            // Dot at the end of the current month line
+            if let lastPoint = currentPoints.last {
+                PointMark(
+                    x: .value("Day", lastPoint.day),
+                    y: .value("Spend", lastPoint.amount)
+                )
+                .foregroundStyle(Color.monePrimary)
+                .symbolSize(30)
+            }
+
+            // Scrub rule — only the vertical line and dot, no annotation here
+            if let day = scrubDay {
+                RuleMark(x: .value("Day", day))
+                    .foregroundStyle(Color.monePrimary.opacity(0.35))
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+
+                if let currentVal = velocity.current[day] {
+                    PointMark(
+                        x: .value("Day", day),
+                        y: .value("Spend", currentVal)
+                    )
+                    .foregroundStyle(Color.monePrimary)
+                    .symbolSize(40)
+                }
             }
         }
-        .frame(height: 100)
+        .chartYScale(domain: 0...velocity.yMax)
+        .chartXScale(domain: 1...xMax)
+        .chartXAxis {
+            AxisMarks(values: .stride(by: 5)) { value in
+                AxisValueLabel {
+                    if let day = value.as(Int.self) {
+                        Text("\(day)")
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(Color.moneTertiary)
+                    }
+                }
+                AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                    .foregroundStyle(Color.moneStroke.opacity(0.3))
+            }
+        }
+        .chartYAxis(.hidden)
+        .chartPlotStyle { plot in plot.background(Color.clear) }
+        .chartOverlay { proxy in
+            GeometryReader { geo in
+                ZStack(alignment: .topLeading) {
+                    // Invisible drag target
+                    Rectangle()
+                        .fill(Color.clear)
+                        .contentShape(Rectangle())
+                        .gesture(
+                            DragGesture(minimumDistance: 0)
+                                .onChanged { value in
+                                    let plotOriginX = geo[proxy.plotFrame!].origin.x
+                                    let x = value.location.x - plotOriginX
+                                    if let day: Int = proxy.value(atX: x) {
+                                        scrubDay = max(1, min(day, xMax))
+                                        scrubLocation = value.location.x
+                                    }
+                                }
+                                .onEnded { _ in scrubDay = nil }
+                        )
+
+                    // Floating callout — positioned left or right of scrub line
+                    if let day = scrubDay {
+                        let calloutWidth: CGFloat = 130
+                        let plotWidth = geo[proxy.plotFrame!].width
+                        let plotOriginX = geo[proxy.plotFrame!].origin.x
+                        let isLeftHalf = scrubLocation < (plotOriginX + plotWidth / 2)
+                        let calloutX = isLeftHalf
+                            ? scrubLocation + 10
+                            : scrubLocation - calloutWidth - 10
+
+                        scrubCallout(
+                            day: day,
+                            current: velocity.current[day],
+                            previous: velocity.previous[day]
+                        )
+                        .frame(width: calloutWidth)
+                        .offset(x: calloutX, y: 4)
+                        .allowsHitTesting(false)
+                    }
+                }
+            }
+        }
+    }
+
+    private func scrubCallout(day: Int, current: Double?, previous: Double?) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Day \(day)")
+                .font(.moneLabelCaps)
+                .foregroundStyle(Color.moneTertiary)
+            if let current {
+                HStack(spacing: 6) {
+                    Circle().fill(Color.monePrimary).frame(width: 6, height: 6)
+                    Text(formatCurrency(current))
+                        .font(.moneBodySm.weight(.semibold))
+                        .foregroundStyle(Color.monePrimary)
+                }
+            }
+            if let previous {
+                HStack(spacing: 6) {
+                    Circle().fill(Color.moneSecondary.opacity(0.5)).frame(width: 6, height: 6)
+                    Text(formatCurrency(previous))
+                        .font(.moneBodySm)
+                        .foregroundStyle(Color.moneSecondary)
+                }
+            }
+        }
+        .padding(8)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(Color.moneSurface)
+                .shadow(color: .black.opacity(0.25), radius: 4, y: 2)
+        )
     }
 }
 
@@ -893,52 +1209,273 @@ private struct SubscriptionLoadCard: View {
 
 private struct NetWorthStratificationCard: View {
     let summary: DashboardSummary
+    let netWorth: NetWorthData?
+
+    private let investmentColor = Color.purple.opacity(0.6)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Total net worth")
-                    .font(.moneLabelCaps)
-                    .foregroundStyle(Color.moneSecondary)
+            heroSection
+            stratificationBar
+            Divider().background(Color.moneStroke)
+            indexSection
+            Divider().background(Color.moneStroke)
+            gapsSection
+        }
+        .dashboardCard()
+    }
 
-                Text(formatCurrency(summary.totalNetWorth))
-                    .font(.system(size: 40, weight: .regular, design: .serif))
-                    .foregroundStyle(Color.monePrimary)
+    // MARK: Hero
+
+    private var heroSection: some View {
+        Text(formatCurrency(netWorth?.netWorth ?? summary.totalNetWorth))
+            .font(.moneAmtLg)
+            .foregroundStyle(Color.monePrimary)
+            .minimumScaleFactor(0.7)
+    }
+
+    // MARK: Bar
+
+    @ViewBuilder
+    private var stratificationBar: some View {
+        if let nw = netWorth {
+            let denom = max(nw.grossAssets, 1)
+            GeometryReader { geo in
+                HStack(spacing: 2) {
+                    barSeg(nw.liquid,         geo.size.width, denom, Color.moneHealthy)
+                    barSeg(nw.lockedDeposits, geo.size.width, denom, Color.monePrimary)
+                    barSeg(nw.investments,    geo.size.width, denom, investmentColor)
+                }
+                .clipShape(Capsule())
             }
+            .frame(height: 10)
+        } else {
+            Rectangle()
+                .fill(Color.moneStroke.opacity(0.3))
+                .frame(height: 10)
+                .clipShape(Capsule())
+        }
+    }
 
-            Divider()
-                .background(Color.moneStroke)
+    @ViewBuilder
+    private func barSeg(_ value: Double, _ width: CGFloat, _ denom: Double, _ color: Color) -> some View {
+        let f = CGFloat(value / denom)
+        if f > 0 {
+            Rectangle()
+                .fill(color)
+                .frame(width: max(width * f, 2))
+        }
+    }
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Liquid net worth")
-                    .font(.moneLabelCaps)
-                    .foregroundStyle(Color.moneSecondary)
+    // MARK: Index
 
-                Text(formatCurrency(summary.liquidNetWorth))
-                    .font(.system(size: 34, weight: .regular, design: .serif))
-                    .foregroundStyle(Color.monePrimary)
+    private var indexSection: some View {
+        VStack(spacing: 0) {
+            if let nw = netWorth {
+                let gross = max(nw.grossAssets, 1)
+                let rows: [(String, Double, Color)] = [
+                    ("Liquid",         nw.liquid,         Color.moneHealthy),
+                    ("Fixed deposits", nw.lockedDeposits, Color.monePrimary),
+                    ("Investments",    nw.investments,    investmentColor)
+                ].filter { $0.1 > 0 }
 
-                Text("The true operational buffer available across deposit accounts.")
-                    .font(.moneBodySm)
-                    .foregroundStyle(Color.moneSecondary)
+                ForEach(Array(rows.enumerated()), id: \.offset) { idx, row in
+                    if idx > 0 { rowDivider() }
+                    indexRow(row.0, row.1, pct: row.1 / gross, color: row.2, negative: false)
+                }
+            } else {
+                HStack {
+                    Text("Liquid")
+                        .font(.moneBodySm)
+                        .foregroundStyle(Color.moneSecondary)
+                    Spacer()
+                    Text(formatCurrency(summary.liquidNetWorth))
+                        .font(.moneAmtSm)
+                        .foregroundStyle(Color.monePrimary)
+                }
+                .padding(.vertical, 12)
             }
+        }
+    }
 
-            ProgressView(value: min(summary.liquidityRatio, 1))
-                .tint(Color.monePrimary)
+    private func indexRow(
+        _ label: String,
+        _ value: Double,
+        pct: Double,
+        color: Color,
+        negative: Bool
+    ) -> some View {
+        HStack(spacing: 10) {
+            Circle().fill(color).frame(width: 8, height: 8)
+            Text(label)
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneSecondary)
+            Spacer()
+            Text(negative ? "-\(formatCurrency(value))" : formatCurrency(value))
+                .font(.moneAmtSm)
+                .foregroundStyle(negative ? Color.moneRisk : Color.monePrimary)
+            Text("\(Int((pct * 100).rounded()))%")
+                .font(.moneLabelCaps)
+                .foregroundStyle(Color.moneTertiary)
+                .frame(width: 38, alignment: .trailing)
+        }
+        .padding(.vertical, 12)
+    }
 
-            HStack {
-                DashboardChip(
-                    title: "LIQUIDITY",
-                    value: "\(Int(summary.liquidityRatio * 100))%"
-                )
+    private func rowDivider() -> some View {
+        Rectangle().fill(Color.moneStroke.opacity(0.5)).frame(height: 0.5)
+    }
 
-                DashboardChip(
-                    title: "LOCKED / OTHER",
-                    value: formatCurrency(summary.lockedAssets)
+    // MARK: Gaps
+
+    private var gapsSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("GAPS & ALERTS")
+                .moneLabelCaps(color: Color.moneTertiary)
+
+            if let nw = netWorth {
+                let monthlyExpense = summary.committed + summary.everyday + summary.liability
+                let efMonths = nw.emergencyFundMonths(monthlyExpense: monthlyExpense)
+                let gaps = buildGaps(nw: nw, efMonths: efMonths)
+
+                if gaps.isEmpty {
+                    gapRow(
+                        icon: "checkmark.circle.fill",
+                        color: Color.moneHealthy,
+                        label: "Net worth composition looks healthy.",
+                        detail: nil
+                    )
+                } else {
+                    ForEach(gaps, id: \.label) { gap in
+                        gapRow(icon: gap.icon, color: gap.color, label: gap.label, detail: gap.detail)
+                    }
+                }
+            } else {
+                gapRow(
+                    icon: "info.circle",
+                    color: Color.moneSecondary,
+                    label: "Net worth detail not available.",
+                    detail: nil
                 )
             }
         }
-        .dashboardCard()
+    }
+
+    private struct GapItem {
+        let icon: String
+        let color: Color
+        let label: String
+        let detail: String?
+    }
+
+    private func buildGaps(nw: NetWorthData, efMonths: Double) -> [GapItem] {
+        var items: [GapItem] = []
+
+        // 1. Liability — biggest net-worth red flag
+        if summary.liability > 0 {
+            let annualDebt = summary.liability * 12
+            let isHeavy = nw.grossAssets > 0 && annualDebt / nw.grossAssets > 0.4
+            items.append(GapItem(
+                icon: isHeavy ? "exclamationmark.triangle.fill" : "info.circle",
+                color: isHeavy ? Color.moneRisk : Color.moneWatch,
+                label: "Monthly debt obligation: \(formatCurrency(summary.liability)).",
+                detail: isHeavy ? "Annual debt payments exceed 40% of your gross asset base." : nil
+            ))
+        }
+
+        // 2. Emergency fund
+        if nw.liquid == 0 {
+            items.append(GapItem(
+                icon: "exclamationmark.triangle.fill",
+                color: Color.moneRisk,
+                label: "No liquid savings detected.",
+                detail: "Link a savings or current account to see your liquid balance."
+            ))
+        } else if efMonths < 3 {
+            items.append(GapItem(
+                icon: "exclamationmark.triangle.fill",
+                color: Color.moneRisk,
+                label: "Emergency fund is \(String(format: "%.1f", efMonths)) months.",
+                detail: "Target: 3× monthly expenses."
+            ))
+        } else if efMonths < 6 {
+            items.append(GapItem(
+                icon: "exclamationmark.triangle.fill",
+                color: Color.moneWatch,
+                label: "Emergency buffer is adequate but not optimal.",
+                detail: "Currently \(String(format: "%.1f", efMonths))× of 6× target."
+            ))
+        }
+
+        // 3. Investments
+        if nw.investments == 0 {
+            items.append(GapItem(
+                icon: "exclamationmark.triangle.fill",
+                color: Color.moneRisk,
+                label: "No wealth-building investments detected.",
+                detail: nil
+            ))
+        } else if !nw.investmentIsRegular {
+            items.append(GapItem(
+                icon: "exclamationmark.triangle.fill",
+                color: Color.moneWatch,
+                label: "Investment contributions have been irregular in recent months.",
+                detail: nil
+            ))
+        }
+
+        // 4. Liquidity ratio
+        if nw.liquidityRatio < 0.1 && nw.grossAssets > 0 {
+            items.append(GapItem(
+                icon: "exclamationmark.triangle.fill",
+                color: Color.moneWatch,
+                label: "Most assets are locked.",
+                detail: "Limited liquid access in case of emergency."
+            ))
+        }
+
+        // 5. Fixed deposits — informational
+        if nw.lockedDeposits == 0 {
+            items.append(GapItem(
+                icon: "info.circle",
+                color: Color.moneSecondary,
+                label: "No fixed or recurring deposits linked.",
+                detail: nil
+            ))
+        }
+
+        // 6. NPS — informational
+        items.append(GapItem(
+            icon: "info.circle",
+            color: Color.moneSecondary,
+            label: "NPS not linked.",
+            detail: "Consider for long-term retirement corpus."
+        ))
+
+        return items
+    }
+
+    private func gapRow(icon: String, color: Color, label: String, detail: String?) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 14))
+                .foregroundStyle(color)
+                .padding(.top, 1)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.moneBodySm.weight(.semibold))
+                    .foregroundStyle(Color.monePrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                if let detail {
+                    Text(detail)
+                        .font(.moneBodySm)
+                        .foregroundStyle(Color.moneSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
     }
 }
 
@@ -955,7 +1492,7 @@ private struct ForecastConfidenceCard: View {
                 Spacer()
 
                 Text("\(summary.confidence)%")
-                    .font(.moneBodyLg)
+                    .font(.moneAmtSm)
                     .foregroundStyle(summary.confidence >= 75 ? Color.monePrimary : .orange)
             }
 
@@ -980,31 +1517,38 @@ private struct ForecastConfidenceCard: View {
 
 private struct NextBestActionsCard: View {
     let summary: DashboardSummary
+    @Environment(AppViewModel.self) private var appVM
 
     var body: some View {
+        @Bindable var appVM = appVM
         VStack(alignment: .leading, spacing: 16) {
             ForEach(actions, id: \.title) { action in
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text(action.priority.uppercased())
-                            .font(.moneLabelCaps)
-                            .foregroundStyle(action.color)
+                Button {
+                    navigate(for: action.deepLink)
+                } label: {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text(action.priority.uppercased())
+                                .font(.moneLabelCaps)
+                                .foregroundStyle(action.color)
 
-                        Spacer()
+                            Spacer()
 
-                        Image(systemName: "chevron.right")
-                            .font(.caption)
-                            .foregroundStyle(Color.moneTertiary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(Color.moneTertiary)
+                        }
+
+                        Text(action.title)
+                            .font(.moneHLMd)
+                            .foregroundStyle(Color.monePrimary)
+
+                        Text(action.description)
+                            .font(.moneBodySm)
+                            .foregroundStyle(Color.moneSecondary)
                     }
-
-                    Text(action.title)
-                        .font(.moneHLMd)
-                        .foregroundStyle(Color.monePrimary)
-
-                    Text(action.description)
-                        .font(.moneBodySm)
-                        .foregroundStyle(Color.moneSecondary)
                 }
+                .buttonStyle(.plain)
 
                 if action.title != actions.last?.title {
                     Divider()
@@ -1015,20 +1559,41 @@ private struct NextBestActionsCard: View {
         .dashboardCard()
     }
 
-    private var actions: [(priority: String, title: String, description: String, color: Color)] {
+    private func navigate(for deepLink: ActionDeepLink) {
+        switch deepLink {
+        case .goals:
+            appVM.selectedTab = .goals
+        case .moneyMapReview:
+            appVM.moneyMapDeepLink = .openReviewTransactions
+            appVM.selectedTab = .moneyMap
+        case .moneyMapSubscriptions:
+            appVM.moneyMapDeepLink = .openSubscriptionCard
+            appVM.selectedTab = .moneyMap
+        }
+    }
+
+    enum ActionDeepLink {
+        case goals
+        case moneyMapReview
+        case moneyMapSubscriptions
+    }
+
+    private var actions: [(priority: String, title: String, description: String, color: Color, deepLink: ActionDeepLink)] {
         if summary.taxDeduction > 0, summary.liquidCashImpact < 0 {
             return [
                 (
                     "Priority: High",
                     "Plan for statutory cash impact",
                     "Tax reduced this month’s liquid cash by \(formatCurrency(summary.taxDeduction)). Keep this separate from regular commitments.",
-                    .purple
+                    .purple,
+                    .goals
                 ),
                 (
                     "Priority: Medium",
                     "Review safe-to-spend",
                     "Flexible spending should stay within \(formatCurrency(summary.safeToSpend)) until the next inflow cycle.",
-                    Color.moneSecondary
+                    Color.moneSecondary,
+                    .goals
                 )
             ]
         }
@@ -1039,13 +1604,15 @@ private struct NextBestActionsCard: View {
                     "Priority: High",
                     "Review unclear transactions",
                     "\(summary.reviewCount) item(s) are still affecting forecast confidence.",
-                    .orange
+                    .orange,
+                    .moneyMapReview
                 ),
                 (
                     "Priority: Medium",
                     "Use safe-to-spend as your guide",
                     "Keep flexible spending within \(formatCurrency(summary.safeToSpend)) for this cycle.",
-                    Color.moneSecondary
+                    Color.moneSecondary,
+                    .goals
                 )
             ]
         }
@@ -1056,7 +1623,8 @@ private struct NextBestActionsCard: View {
                     "Priority: Critical",
                     "Reduce flexible spends",
                     "This operating month is overfunded by \(formatCurrency(abs(summary.operatingRemaining))).",
-                    Color.moneRisk
+                    Color.moneRisk,
+                    .goals
                 )
             ]
         }
@@ -1067,13 +1635,15 @@ private struct NextBestActionsCard: View {
                     "Priority: Medium",
                     "Audit subscriptions",
                     "Recurring subscriptions are taking a noticeable share of monthly inflow.",
-                    .orange
+                    .orange,
+                    .moneyMapSubscriptions
                 ),
                 (
                     "Priority: Low",
                     "Move surplus deliberately",
                     "Consider assigning \(formatCurrency(summary.operatingRemaining)) to buffer, investments, or upcoming obligations.",
-                    Color.moneSecondary
+                    Color.moneSecondary,
+                    .goals
                 )
             ]
         }
@@ -1083,13 +1653,15 @@ private struct NextBestActionsCard: View {
                 "Priority: Low",
                 "Maintain current rhythm",
                 "Your MoneyMap is stable for this month.",
-                Color.moneHealthy
+                Color.moneHealthy,
+                .goals
             ),
             (
                 "Priority: Low",
                 "Move surplus deliberately",
                 "Consider assigning \(formatCurrency(summary.operatingRemaining)) to buffer, investments, or upcoming obligations.",
-                Color.moneSecondary
+                Color.moneSecondary,
+                .goals
             )
         ]
     }
@@ -1173,6 +1745,214 @@ private extension View {
     }
 }
 
+// MARK: - Safe-to-Spend Split Card
+
+private struct SafeToSpendSplitCard: View {
+    let summary: DashboardSummary
+
+    // Buckets from actual transaction data
+    private var income: Double       { summary.income }
+    private var obligations: Double  { summary.committed + summary.liability }
+    private var investments: Double  { summary.fund }
+    private var everyday: Double     { summary.everyday }
+    private var cashReview: Double   { summary.review }
+    private var outliers: Double     { summary.outliers }
+
+    // Tax is excluded from the numerator — income is treated as net of statutory deductions
+    // remaining = unallocated cash after all tracked outflows
+    private var remaining: Double { income - obligations - investments - everyday - cashReview - outliers }
+
+    // STS formula: (investments + max(remaining,0)) vs 40% wealth target
+    private var wealthTarget: Double  { income * 0.40 }
+    private var wealthActual: Double  { investments + max(remaining, 0) }
+    private var safeToSpend: Double   { wealthActual - wealthTarget }
+    private var isNegative: Bool      { safeToSpend < 0 }
+    // State 2: STS deficit but no cash overdraft — spending into the savings pool
+    private var isConsumingSavingsPool: Bool { isNegative && remaining >= 0 }
+    // State 3: actual cash overdraft — spent more than income
+    private var isCashOverdraft: Bool  { isNegative && remaining < 0 }
+
+    // Bar denominator expands if spending overflows income
+    private var barTotal: Double {
+        isNegative ? income + abs(min(remaining, 0)) : max(income, 1)
+    }
+
+    private func frac(_ v: Double) -> Double { max(v / barTotal, 0) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            heroSection
+            distributionBar
+            Divider().background(Color.moneStroke)
+            indexSection
+        }
+        .dashboardCard()
+    }
+
+    // MARK: Hero
+
+    private var heroSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(isNegative ? "EXCESS EXPENDITURE THIS MONTH" : "SAFE TO SPEND THIS MONTH")
+                .moneLabelCaps()
+
+            Text(formatCurrency(isCashOverdraft ? abs(remaining) : abs(safeToSpend)))
+                .font(.moneAmtLg)
+                .foregroundStyle(isNegative ? Color.moneRisk : Color.monePrimary)
+                .minimumScaleFactor(0.7)
+
+            if isCashOverdraft {
+                HStack(spacing: 6) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                    Text("You've spent more than you earned this month.")
+                        .font(.moneBodySm)
+                }
+                .foregroundStyle(Color.moneRisk)
+                .padding(.top, 2)
+            } else if isConsumingSavingsPool {
+                HStack(spacing: 6) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                    Text("You're spending money that should be going into your savings.")
+                        .font(.moneBodySm)
+                }
+                .foregroundStyle(Color.moneWatch)
+                .padding(.top, 2)
+            } else {
+                Text("Surplus above your 40% wealth-building target.")
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+                    .padding(.top, 2)
+            }
+        }
+    }
+
+    // MARK: Bar
+
+    private var distributionBar: some View {
+        GeometryReader { geo in
+            HStack(spacing: 2) {
+                barSeg(obligations, geo.size.width, Color.monePrimary)
+                barSeg(everyday,    geo.size.width, Color.moneSecondary)
+                if outliers > 0 {
+                    barSeg(outliers, geo.size.width, Color.moneWatch)
+                }
+                if cashReview > 0 {
+                    barSeg(cashReview, geo.size.width, .orange)
+                }
+                barSeg(investments, geo.size.width, Color.moneHealthy)
+                if isNegative {
+                    // Overflow — spending ate into savings
+                    barSeg(abs(min(remaining, 0)), geo.size.width, Color.moneRisk)
+                } else if remaining > 0 {
+                    barSeg(remaining, geo.size.width, Color.moneActionFill.opacity(0.35))
+                }
+            }
+            .clipShape(Capsule())
+        }
+        .frame(height: 10)
+    }
+
+    @ViewBuilder
+    private func barSeg(_ value: Double, _ width: CGFloat, _ color: Color) -> some View {
+        let f = frac(value)
+        if f > 0 {
+            Rectangle()
+                .fill(color)
+                .frame(width: max(width * CGFloat(f), 2))
+        }
+    }
+
+    // MARK: Index
+
+    private var indexSection: some View {
+        VStack(spacing: 0) {
+            row("Obligations",    obligations, Color.monePrimary)
+            rowDivider()
+            row("Everyday spend", everyday,    Color.moneSecondary)
+            if outliers > 0 {
+                rowDivider()
+                row("Large outliers", outliers, Color.moneWatch)
+            }
+            if cashReview > 0 {
+                rowDivider()
+                row("Cash & unclear", cashReview, .orange)
+            }
+            rowDivider()
+            row("Investments",    investments, Color.moneHealthy)
+            rowDivider()
+            if isNegative {
+                let excess = abs(min(remaining, 0))
+                HStack(spacing: 10) {
+                    Circle().fill(Color.moneRisk).frame(width: 8, height: 8)
+                    Text("Excess spend")
+                        .font(.moneBodySm)
+                        .foregroundStyle(Color.moneRisk)
+                    Spacer()
+                    Text(formatCurrency(excess))
+                        .font(.moneAmtSm)
+                        .foregroundStyle(Color.moneRisk)
+                    Text(pctLabel(excess))
+                        .font(.moneLabelCaps)
+                        .foregroundStyle(Color.moneRisk)
+                        .frame(width: 38, alignment: .trailing)
+                }
+                .padding(.vertical, 12)
+            } else {
+                row("Unallocated", max(remaining, 0), Color.moneActionFill)
+            }
+
+            // Denominator row — total income from all sources
+            Divider().background(Color.moneStroke)
+            HStack(spacing: 10) {
+                Rectangle()
+                    .fill(Color.monePrimary)
+                    .frame(width: 8, height: 2)
+                Text("Total income")
+                    .font(.moneBodySm.weight(.medium))
+                    .foregroundStyle(Color.monePrimary)
+                Spacer()
+                Text(formatCurrency(income))
+                    .font(.moneAmtSm)
+                    .foregroundStyle(Color.monePrimary)
+                Text("100%")
+                    .font(.moneLabelCaps)
+                    .foregroundStyle(Color.moneTertiary)
+                    .frame(width: 38, alignment: .trailing)
+            }
+            .padding(.vertical, 12)
+        }
+    }
+
+    private func row(_ label: String, _ value: Double, _ color: Color) -> some View {
+        HStack(spacing: 10) {
+            Circle().fill(color).frame(width: 8, height: 8)
+            Text(label)
+                .font(.moneBodySm)
+                .foregroundStyle(Color.moneSecondary)
+            Spacer()
+            Text(formatCurrency(value))
+                .font(.moneAmtSm)
+                .foregroundStyle(Color.monePrimary)
+            Text(pctLabel(value))
+                .font(.moneLabelCaps)
+                .foregroundStyle(Color.moneTertiary)
+                .frame(width: 38, alignment: .trailing)
+        }
+        .padding(.vertical, 12)
+    }
+
+    private func rowDivider() -> some View {
+        Rectangle().fill(Color.moneStroke.opacity(0.5)).frame(height: 0.5)
+    }
+
+    private func pctLabel(_ value: Double) -> String {
+        guard income > 0 else { return "—" }
+        return "\(Int((value / income * 100).rounded()))%"
+    }
+}
+
 private func formatCurrency(_ value: Double) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
@@ -1239,6 +2019,155 @@ private struct SMSConnectInfoSheet: View {
             .padding(MoneSpacing.page)
         }
         .presentationBackground(Color.moneBackground)
+    }
+}
+
+// MARK: - TopSpendingCategoriesCard
+
+private struct CategoryColumnWidthKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+private struct AmountColumnWidthKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+private struct TopSpendingCategoriesCard: View {
+    let summary: DashboardSummary
+    let categories: [CategorySpendItem]
+
+    private let labelMaxWidth: CGFloat = 120
+
+    @State private var labelColWidth: CGFloat = 0
+    @State private var amountColWidth: CGFloat = 0
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if categories.isEmpty {
+                Text("No everyday spend data available for this month.")
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+            } else {
+                ForEach(Array(categories.enumerated()), id: \.offset) { idx, cat in
+                    HStack(spacing: 10) {
+                        Text(cat.displayLabel)
+                            .font(.moneBodySm)
+                            .foregroundStyle(Color.moneSecondary)
+                            .lineLimit(1)
+                            .fixedSize()
+                            .background(
+                                GeometryReader { g in
+                                    Color.clear.preference(key: CategoryColumnWidthKey.self,
+                                                           value: min(g.size.width, labelMaxWidth))
+                                }
+                            )
+                            .frame(width: labelColWidth, alignment: .leading)
+                            .clipped()
+
+                        GeometryReader { geo in
+                            RoundedRectangle(cornerRadius: 3, style: .continuous)
+                                .fill(Color.monePrimary)
+                                .frame(width: geo.size.width * CGFloat(cat.pct), height: 8)
+                                .frame(maxHeight: .infinity, alignment: .center)
+                        }
+
+                        Text(formatCurrency(cat.amount))
+                            .font(.moneAmtSm)
+                            .foregroundStyle(Color.monePrimary)
+                            .lineLimit(1)
+                            .fixedSize()
+                            .background(
+                                GeometryReader { g in
+                                    Color.clear.preference(key: AmountColumnWidthKey.self,
+                                                           value: g.size.width)
+                                }
+                            )
+                            .frame(width: amountColWidth, alignment: .trailing)
+                    }
+                    .frame(height: 20)
+                }
+            }
+        }
+        .onPreferenceChange(CategoryColumnWidthKey.self) { labelColWidth = $0 }
+        .onPreferenceChange(AmountColumnWidthKey.self) { amountColWidth = $0 }
+        .dashboardCard()
+    }
+}
+
+// MARK: - SavingsTrendCard
+
+private struct SavingsTrendCard: View {
+    let summary: DashboardSummary
+    let trend: [SavingsTrendPoint]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            if trend.isEmpty {
+                Text("Not enough monthly data yet.")
+                    .font(.moneBodySm)
+                    .foregroundStyle(Color.moneSecondary)
+            } else {
+                Chart {
+                    ForEach(Array(trend.enumerated()), id: \.offset) { idx, point in
+                        let value = point.liquidDelta ?? point.remaining
+                        LineMark(
+                            x: .value("Month", idx),
+                            y: .value("Amount", value)
+                        )
+                        .foregroundStyle(Color.monePrimary)
+                        .interpolationMethod(.catmullRom)
+                    }
+
+                    RuleMark(y: .value("Baseline", 0))
+                        .lineStyle(StrokeStyle(lineWidth: 0.75))
+                        .foregroundStyle(Color.moneSecondary.opacity(0.3))
+                }
+                .chartXAxis {
+                    AxisMarks(values: Array(trend.indices)) { idx in
+                        AxisValueLabel {
+                            if let i = idx.as(Int.self), i < trend.count {
+                                Text(trend[i].monthLabel)
+                                    .font(.system(size: 9))
+                                    .foregroundStyle(Color.moneSecondary)
+                            }
+                        }
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.moneStroke.opacity(0.3))
+                        AxisValueLabel {
+                            if let v = value.as(Double.self) {
+                                Text(compactLabel(v))
+                                    .font(.system(size: 9))
+                                    .foregroundStyle(Color.moneSecondary)
+                            }
+                        }
+                    }
+                }
+                .frame(height: 160)
+            }
+
+        }
+        .dashboardCard()
+    }
+
+    private func compactLabel(_ value: Double) -> String {
+        let abs = Swift.abs(value)
+        let prefix = value < 0 ? "-" : ""
+        if abs >= 100_000 {
+            return "\(prefix)₹\(String(format: "%.0f", abs / 100_000))L"
+        } else if abs >= 1_000 {
+            return "\(prefix)₹\(String(format: "%.0f", abs / 1_000))K"
+        }
+        return "\(prefix)₹\(String(format: "%.0f", abs))"
     }
 }
 

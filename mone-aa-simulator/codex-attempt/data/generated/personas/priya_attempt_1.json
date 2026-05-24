@@ -1,0 +1,116 @@
+{
+  "persona": {
+    "persona_id": "priya",
+    "full_name": "Priya Sharma",
+    "age": 34,
+    "city": "Bengaluru",
+    "neighborhood": "Whitefield",
+    "job_title": "Senior Product Manager",
+    "employer_name": "TechNova Solutions",
+    "monthly_salary_inr": 265000,
+    "monthly_rent_inr": 68000,
+    "monthly_fixed_obligations_inr": 185000,
+    "monthly_discretionary_low_inr": 25000,
+    "monthly_discretionary_high_inr": 70000,
+    "credit_card_limit_inr": 500000,
+    "typical_credit_card_outstanding_low_inr": 15000,
+    "typical_credit_card_outstanding_high_inr": 80000,
+    "budget_profile": {
+      "monthly_salary_inr": 265000,
+      "monthly_rent_inr": 68000,
+      "monthly_fixed_obligations_inr": 185000,
+      "monthly_discretionary_low_inr": 25000,
+      "monthly_discretionary_high_inr": 70000,
+      "normal_month_total_spend_low_inr": 210000,
+      "normal_month_total_spend_high_inr": 255000,
+      "normal_month_surplus_after_discretionary_low_inr": 55000,
+      "normal_month_surplus_after_discretionary_high_inr": 10000,
+      "stress_month_extra_spend_inr": 50000,
+      "stress_month_survival_mechanisms": [
+        "Uses credit card float for about ₹30,000 of the deficit.",
+        "Borrows about ₹12,500 from a friend and repays it over the next 1-3 salaries.",
+        "Covers the remaining ₹7,500 by pulling down cash savings or delaying a discretionary purchase."
+      ]
+    },
+    "work_pattern": "Full-time, -hour workweeks with occasional weekend work",
+    "commute_pattern": "minute metro ride, % of salary allocated for transport",
+    "family_obligations": [
+      "Supports aging parents",
+      "Sponsors younger sibling's higher education"
+    ],
+    "friend_network": [
+      "Monthly dinner outings",
+      "Quarterly weekend getaways"
+    ],
+    "relationship_context": "Married with no children, spouse works in healthcare",
+    "health_tendencies": [
+      "Annual health checkups",
+      "Prescription medications"
+    ],
+    "vices": [
+      "Caffeine addiction",
+      "Occasional takeout meals"
+    ],
+    "food_habits": [
+      "Home-cooked meals % of the time",
+      "Weekly grocery budget:"
+    ],
+    "shopping_habits": [
+      "Bi-monthly clothing purchases",
+      "Annual tech upgrades"
+    ],
+    "travel_habits": [
+      "Domestic trips: times/year",
+      "International trips: time/year"
+    ],
+    "financial_temperament": "Prudent but flexible, prioritizes family needs",
+    "credit_behavior": "Pays bills on time, maintains % credit utilization",
+    "savings_discipline": "Automates % of salary into emergency fund",
+    "risk_tolerance": "Conservative investor, % equity/% debt portfolio",
+    "recurring_obligations": [
+      "Rent: ₹68,000",
+      "Education loan EMI: ₹32,500",
+      "Monthly family support transfer: ₹28,000",
+      "Utilities and internet: ₹11,500",
+      "Society maintenance and domestic help: ₹16,500",
+      "Insurance premiums: ₹11,500",
+      "SIP and recurring investments: ₹17,000"
+    ],
+    "stress_responses": [
+      "Reduces discretionary spending by % during stress months",
+      "Uses credit card for emergencies with intent to pay off within months"
+    ],
+    "monthly_survival_logic": "Salary covers fixed obligations with surplus for discretionary spending",
+    "stress_month_behavior": "Handles unexpected expenses through emergency fund and temporary credit use",
+    "boring_month_behavior": "Maintains routine spending patterns with consistent savings contributions",
+    "realism_notes": [
+      "Occasional late credit card payments during high-stress periods",
+      "Sometimes overspends on family gifts during festivals"
+    ]
+  },
+  "critique": {
+    "decision": "REGENERATE_THIS_STAGE",
+    "blocking_defects": [
+      {
+        "code": "BUDGET_MISMATCH",
+        "evidence": "Stress month deficit calculation error: salary (265000) - (normal_month_total_spend_high_inr 255000 + stress_month_extra_spend_inr 50000) = -40000 deficit, but survival mechanisms claim to cover 50000. This creates a 10000 surplus in the stress month scenario, which contradicts the premise of a 'stress month'.",
+        "why_blocking": "The survival mechanisms must precisely reconcile with the calculated deficit, not exceed it."
+      },
+      {
+        "code": "CREDIT_BEHAVIOR_IMPLAUSIBILITY",
+        "evidence": "Credit card limit (500000) is 188% of monthly salary (265000), which is 4.5x the typical 30-50% income-based credit limit benchmark for Indian professionals. This creates a false impression of financial flexibility that doesn't align with realistic credit behavior patterns in Bengaluru.",
+        "why_blocking": "Such an extreme credit limit would require extraordinary income verification, making it implausible for a Senior Product Manager in Bengaluru."
+      }
+    ],
+    "why_this_fails_realism_or_raw_aa_validity": [
+      "The stress month arithmetic creates an impossible scenario where survival mechanisms exceed the actual deficit by 10000 INR, violating the fundamental principle of stress month modeling.",
+      "The credit card limit is financially implausible for the income level and location, creating unrealistic credit behavior that would not generate authentic AA data patterns."
+    ],
+    "required_regeneration_scope": "Fix the stress_month_extra_spend_inr to match the actual deficit (40000 INR) and reduce the credit_card_limit_inr to a more realistic 130000-180000 INR range for a Bengaluru-based Senior Product Manager.",
+    "non_blocking_observations": [
+      "The recurring obligations list correctly sums to monthly_fixed_obligations_inr",
+      "The discretionary spending range is logically constrained below the maximum possible surplus",
+      "The survival mechanisms include plausible strategies for different types of financial gaps"
+    ]
+  }
+}

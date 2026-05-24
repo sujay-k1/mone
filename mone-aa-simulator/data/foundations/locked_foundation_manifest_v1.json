@@ -1,0 +1,80 @@
+{
+  "manifest_version": "v1",
+  "project": "mone-aa-simulator",
+  "purpose": "Defines the locked source-of-truth foundation artifacts for synthetic AA data generation. Future stages must use only these locked artifacts and ignore earlier drafts.",
+  "synthetic_year": {
+    "start_date": "2025-06-01",
+    "end_date": "2026-05-31"
+  },
+  "locked_artifacts": [
+    {
+      "artifact_name": "Aarav Persona Bible v1",
+      "path": "data/foundations/personas/aarav_persona_bible_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Priya Persona Bible v1",
+      "path": "data/foundations/personas/priya_persona_bible_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Aarav Account Universe v1",
+      "path": "data/foundations/accounts/aarav_account_universe_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Priya Account Universe v1",
+      "path": "data/foundations/accounts/priya_account_universe_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Aarav Financial Starting State v1",
+      "path": "data/foundations/starting_states/aarav_starting_state_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Priya Financial Starting State v1",
+      "path": "data/foundations/starting_states/priya_starting_state_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "World Catalogs v1",
+      "path": "data/foundations/catalogs/world_catalogs_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Year Arc v1",
+      "path": "data/foundations/year_arcs/year_arc_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Aarav Month Plan v1",
+      "path": "data/foundations/month_plans/aarav_month_plan_v1.json",
+      "status": "locked"
+    },
+    {
+      "artifact_name": "Priya Month Plan v1",
+      "path": "data/foundations/month_plans/priya_month_plan_v1.json",
+      "status": "locked"
+    }
+  ],
+  "global_rules_for_future_stages": [
+    "Do not use earlier drafts or superseded versions.",
+    "Do not reinterpret locked persona, account, starting-state, catalog, year-arc, or month-plan decisions.",
+    "Do not add new rare events unless a later explicit reviewer-approved patch modifies the locked plan.",
+    "Do not generate raw AA payload until the raw AA generation stage.",
+    "Day Plan may create daily scaffolding and day-level contexts, but not final AA transaction payloads.",
+    "Transactions must later respect account visibility, payment rails, card-posting-first behavior, pay-later behavior, self-transfer pairing, and reimbursement lag rules.",
+    "Self-transfers are not income or spending.",
+    "Friend and family reimbursements are not salary or ordinary income.",
+    "Card purchases post to card accounts first; bank impact occurs only when card bills are paid.",
+    "Priya cannot use BNPL or revolve credit card.",
+    "Aarav can use Simpl only near salary-end and can revolve card only in locked revolve months.",
+    "Spend envelopes are non-additive planning bands, not targets."
+  ],
+  "next_stage": {
+    "name": "Day Plan v1",
+    "recommended_first_slice": "Aarav Day Plan - June 2025 only",
+    "reason": "Generate one month first to test daily realism before scaling to all months and both personas."
+  }
+}

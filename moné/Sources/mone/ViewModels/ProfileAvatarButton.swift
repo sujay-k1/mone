@@ -5,18 +5,15 @@ struct ProfileAvatarButton: View {
 
     var body: some View {
         Button(action: action) {
-            ZStack {
-                Circle()
-                    .fill(Color.white)
-                    .frame(width: 40, height: 40)
-                    .shadow(color: .black.opacity(0.12), radius: 10, x: 0, y: 4)
-
-                Image(systemName: "person.crop.circle.fill")
-                    .font(.system(size: 27, weight: .semibold))
-                    .foregroundStyle(.primary)
-            }
+            Image(systemName: "person.crop.circle.fill")
+                .font(.system(size: 22, weight: .medium))
+                .foregroundStyle(.white.opacity(0.88))
+                .padding(.vertical, 11)
+                .padding(.horizontal, 6)
+                .contentShape(Circle())
         }
         .buttonStyle(.plain)
+        .glassEffect(.clear.tint(.white.opacity(0.1)), in: Circle())
         .accessibilityLabel("Open profile")
     }
 }

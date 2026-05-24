@@ -1,0 +1,622 @@
+{
+"persona_id": "aarav",
+"starting_state_version": "v1",
+"as_of_datetime": "2025-06-01T00:00:00+05:30",
+"synthetic_year": {
+"start_date": "2025-06-01",
+"end_date": "2026-05-31"
+},
+"state_summary": {
+"one_line": "Aarav begins June with fresh salary cash in HDFC, a modest ICICI buffer, meaningful Axis card pressure, small Simpl usage, and enough liquid fund value to survive two stress redemptions without looking wealthy.",
+"starting_liquidity_posture": "Visible deposits total ₹172450 across HDFC and ICICI. Early-June cash obligations total ₹166440, so June is payable from visible deposits but leaves only about ₹6010 deposit buffer before ordinary daily spending.",
+"starting_credit_posture": "Axis current outstanding is high at ₹137850, latest statement balance is ₹96500, and ₹96500 is due by 2025-06-09 with no severe default. The latest statement balance includes a ₹18500 revolved balance from an earlier partial-payment month, plus current-cycle statemented purchases and charges.",
+"starting_investment_posture": "UTI SIP folio has accumulated prior investments worth about ₹184200, while ICICI liquid fund remains untouched at the start with ₹73500, sufficient for two later redemptions of around ₹30000 each.",
+"why_this_starting_state_is_realistic": "May salary has recently arrived into HDFC, but June rent, SIP, card due, staff payments, maintenance, mother medicines, electricity, and recurring card autopays are still ahead. Aarav can pay early-June cash obligations without fake rescue inflows, but doing so leaves a very thin deposit buffer of about ₹6010 before daily spending. The liquid fund provides emergency fallback without making him look wealthy or comfortable."
+},
+"accounts": [
+{
+"account_id": "aarav_hdfc_salary_savings_001",
+"account_family": "deposit",
+"institution_name": "HDFC Bank",
+"starting_state": {
+"aa_account_type": "SAVINGS",
+"display_name": "HDFC Bank Salary Savings Account",
+"masked_account_number": "XXXXXX7421",
+"ownership": "single",
+"currency": "INR",
+"balance_as_of_datetime": "2025-06-01T00:00:00+05:30",
+"current_balance_inr": 151850,
+"available_balance_inr": 151850,
+"balance_basis": "Post May salary credit, before June rent, SIP, card payment, staff payments, Simpl repayment, electricity, and household obligations",
+"salary_recently_credited": true,
+"most_recent_salary_credit_month": "May 2025",
+"salary_amount_inr": 165000,
+"salary_employer_name": "NimbleCart Technologies Private Limited",
+"primary_upi_enabled": true,
+"net_banking_enabled": true,
+"default_roles": [
+"salary_credit",
+"rent_payment",
+"credit_card_bill_payment",
+"pay_later_repayment",
+"sip_debit",
+"household_upi_payments",
+"family_transfers",
+"self_transfer_source"
+]
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-02",
+"obligation": "UTI monthly SIP debit if not skipped",
+"expected_amount_inr": 7500,
+"destination_account_id_or_counterparty": "aarav_uti_sip_mf_001"
+},
+{
+"date": "2025-06-04",
+"obligation": "Simpl late-May usage repayment",
+"expected_amount_inr": 5840,
+"destination_account_id_or_counterparty": "aarav_simpl_paylater_001"
+},
+{
+"date": "2025-06-05",
+"obligation": "June rent to landlord Suresh Krishnamurthy",
+"expected_amount_inr": 42000,
+"destination_account_id_or_counterparty": "Suresh Krishnamurthy"
+},
+{
+"date": "2025-06-07",
+"obligation": "Cook payment to Lakshmi Devi",
+"expected_amount_inr": 4500,
+"destination_account_id_or_counterparty": "Lakshmi Devi"
+},
+{
+"date": "2025-06-08",
+"obligation": "Maid payment to Savitri",
+"expected_amount_inr": 2200,
+"destination_account_id_or_counterparty": "Savitri"
+},
+{
+"date": "2025-06-09",
+"obligation": "Axis credit card amount due",
+"expected_amount_inr": 96500,
+"destination_account_id_or_counterparty": "aarav_axis_credit_card_001"
+},
+{
+"date": "2025-06-10",
+"obligation": "Apartment maintenance",
+"expected_amount_inr": 2500,
+"destination_account_id_or_counterparty": "Manjunath Gowda"
+},
+{
+"date": "2025-06-12",
+"obligation": "Mother's medicines transfer",
+"expected_amount_inr": 2800,
+"destination_account_id_or_counterparty": "Anita Menon"
+},
+{
+"date": "2025-06-15",
+"obligation": "Electricity bill",
+"expected_amount_inr": 2600,
+"destination_account_id_or_counterparty": "Electricity biller"
+}
+],
+"constraints_for_generation": [
+"Use this account as the visible source for monthly salary credits from NimbleCart Technologies Private Limited.",
+"Use this account as the default source for rent, staff payments, apartment maintenance, mother medicine transfers, Simpl repayment, Axis card payments, and successful UTI SIP debits.",
+"Card purchases must not be duplicated as direct HDFC debits; HDFC should show only credit card bill payments when the card is paid.",
+"Self-transfers to ICICI must have matching visible credits in aarav_icici_secondary_savings_001 with plausible timestamp gaps.",
+"HDFC balance may become tight in early June after card payment and rent, but should not go negative."
+],
+"do_not_generate_yet": [
+"transactions",
+"monthly balance sequence",
+"year arc",
+"daily life",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_icici_secondary_savings_001",
+"account_family": "deposit",
+"institution_name": "ICICI Bank",
+"starting_state": {
+"aa_account_type": "SAVINGS",
+"display_name": "ICICI Bank Secondary Savings Account",
+"masked_account_number": "XXXXXX3188",
+"ownership": "single",
+"currency": "INR",
+"balance_as_of_datetime": "2025-06-01T00:00:00+05:30",
+"current_balance_inr": 20600,
+"available_balance_inr": 20600,
+"balance_basis": "Modest secondary buffer before any June self-transfer or liquid fund redemption",
+"secondary_upi_enabled": true,
+"default_roles": [
+"secondary_buffer",
+"backup_upi_spends",
+"backup_card_payment_source",
+"liquid_fund_redemption_credit_account",
+"self_transfer_destination",
+"self_transfer_source"
+]
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-09",
+"obligation": "Contingent ICICI to HDFC self-transfer or ICICI manual card payment if HDFC becomes too tight",
+"expected_amount_inr": 15000,
+"destination_account_id_or_counterparty": "aarav_hdfc_salary_savings_001 or aarav_axis_credit_card_001",
+"double_counting_note": "This is a funding movement for the same Axis card due and must not be counted as an extra obligation."
+}
+],
+"constraints_for_generation": [
+"Keep this account visible for self-transfers with HDFC in both directions.",
+"Use this account as the default destination for ICICI liquid fund redemption credits.",
+"The starting buffer should remain modest and should not make Aarav look highly liquid.",
+"Backup card payments may originate here only when HDFC cash flow is constrained.",
+"Do not create unexplained large opening deposits or hidden rescue inflows."
+],
+"do_not_generate_yet": [
+"transactions",
+"monthly balance sequence",
+"year arc",
+"daily life",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_axis_credit_card_001",
+"account_family": "credit_card",
+"institution_name": "Axis Bank",
+"starting_state": {
+"aa_account_type": "CREDIT_CARD",
+"display_name": "Axis Bank Atlas Credit Card",
+"masked_account_number": "XXXX-XXXX-XXXX-6094",
+"ownership": "single",
+"currency": "INR",
+"statement_day": 20,
+"due_day": 9,
+"credit_limit_inr": 350000,
+"available_credit_limit_inr": 212150,
+"current_outstanding_inr": 137850,
+"latest_statement_date": "2025-05-20",
+"latest_statement_balance_inr": 96500,
+"latest_statement_balance_composition_note": "The latest_statement_balance_inr of ₹96500 includes the ₹18500 revolved balance and current-cycle statemented purchases and charges.",
+"amount_due_by_next_due_date_inr": 96500,
+"minimum_due_inr": 4825,
+"next_due_date": "2025-06-09",
+"payment_status_as_of_datetime": "not_due",
+"autopay_enabled": false,
+"revolved_balance_inr": 18500,
+"revolved_balance_included_in_latest_statement_balance": true,
+"revolved_balance_origin": "Prior cycle partial payment, still within manageable non-default behavior",
+"expected_finance_charge_next_statement_inr": 900,
+"post_statement_unbilled_spend_inr": 41350,
+"days_past_due": 0,
+"default_status": "not_in_default",
+"primary_payment_source_account_id": "aarav_hdfc_salary_savings_001",
+"backup_payment_source_account_id": "aarav_icici_secondary_savings_001",
+"card_usage_posture": "High but within typical Aarav range; due is payable but uncomfortable after rent and other early-June obligations"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-09",
+"obligation": "Latest statement amount due",
+"expected_amount_inr": 96500,
+"source_account_id": "aarav_hdfc_salary_savings_001"
+},
+{
+"date": "2025-06-03",
+"obligation": "Gym membership card autopay expected in June cycle",
+"expected_amount_inr": 2499,
+"source_account_id": "aarav_axis_credit_card_001"
+},
+{
+"date": "2025-06-14",
+"obligation": "Streaming and app subscription card autopays expected in June cycle",
+"expected_amount_inr": 3650,
+"source_account_id": "aarav_axis_credit_card_001"
+},
+{
+"date": "2025-06-16",
+"obligation": "Broadband card autopay expected in June cycle",
+"expected_amount_inr": 999,
+"source_account_id": "aarav_axis_credit_card_001"
+},
+{
+"date": "2025-06-21",
+"obligation": "Mobile postpaid card autopay expected in June cycle",
+"expected_amount_inr": 799,
+"source_account_id": "aarav_axis_credit_card_001"
+}
+],
+"constraints_for_generation": [
+"Credit card state must keep current outstanding, statement balance, amount due, minimum due, and revolved balance distinct.",
+"The 2025-06-09 due amount is payable but should create pressure after rent and SIP.",
+"Card autopay bills should first appear in this credit card account and should affect deposit accounts only when the card bill is paid.",
+"Do not mark Aarav as severely delinquent or defaulted on 2025-06-01.",
+"Future full or partial payments must have matching debit from HDFC or ICICI and credit to this card account."
+],
+"do_not_generate_yet": [
+"merchant transactions",
+"card bill payment transaction",
+"monthly card cycle",
+"year arc",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_simpl_paylater_001",
+"account_family": "pay_later",
+"institution_name": "Simpl",
+"starting_state": {
+"aa_account_type": "BNPL",
+"display_name": "Simpl Pay Later Account",
+"masked_account_number": "SIMPL-XX-4826",
+"ownership": "single",
+"currency": "INR",
+"pay_later_limit_inr": 25000,
+"available_limit_inr": 19160,
+"current_outstanding_inr": 5840,
+"amount_due_inr": 5840,
+"minimum_due_inr": 5840,
+"next_due_date": "2025-06-04",
+"payment_status_as_of_datetime": "not_due",
+"days_past_due": 0,
+"late_fee_accrued_inr": 0,
+"usage_context": "Small late-May food delivery and quick-commerce usage during the final days before salary",
+"repayment_source_account_id": "aarav_hdfc_salary_savings_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-04",
+"obligation": "Simpl late-May usage repayment",
+"expected_amount_inr": 5840,
+"source_account_id": "aarav_hdfc_salary_savings_001"
+}
+],
+"constraints_for_generation": [
+"Keep outstanding small but present at the starting state.",
+"Simpl purchases should not also appear as direct bank or card debits.",
+"Repayment should usually debit HDFC salary savings and credit/settle this account.",
+"Do not create severe delinquency on 2025-06-01."
+],
+"do_not_generate_yet": [
+"pay-later purchase transactions",
+"repayment transaction",
+"month plan",
+"daily life",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_uti_sip_mf_001",
+"account_family": "mutual_fund",
+"institution_name": "UTI Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"display_name": "UTI Nifty 50 Index Fund Direct Growth Folio",
+"masked_account_number": "FOLIO-XX-7359",
+"ownership": "single",
+"currency": "INR",
+"fund_name": "UTI Nifty 50 Index Fund Direct Growth",
+"investment_mode": "SIP",
+"folio_status": "active",
+"current_value_inr": 184200,
+"cost_value_placeholder_inr": 157500,
+"unrealized_gain_placeholder_inr": 26700,
+"units_placeholder": 1742.289,
+"nav_placeholder_inr": 105.72,
+"nav_date_placeholder": "2025-05-30",
+"scheduled_sip_amount_inr": 7500,
+"usual_sip_day": 2,
+"default_debit_account_id": "aarav_hdfc_salary_savings_001",
+"sip_status_as_of_datetime": "active_not_yet_debited_for_june",
+"successful_months_expected_in_synthetic_year": 9,
+"skipped_months_expected_in_synthetic_year": 3
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-02",
+"obligation": "Scheduled SIP debit",
+"expected_amount_inr": 7500,
+"source_account_id": "aarav_hdfc_salary_savings_001"
+}
+],
+"constraints_for_generation": [
+"Generate SIP investment outflows only in successful months.",
+"Do not treat SIP as a fixed obligation.",
+"Skipped months should show no SIP debit rather than a failed transaction unless explicitly required later.",
+"Units and NAV are placeholders for deterministic ledger generation and may be evolved consistently later."
+],
+"do_not_generate_yet": [
+"SIP transaction",
+"unit ledger",
+"monthly NAV path",
+"year arc",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_icici_liquid_mf_001",
+"account_family": "mutual_fund",
+"institution_name": "ICICI Prudential Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"display_name": "ICICI Prudential Liquid Fund Direct Growth Folio",
+"masked_account_number": "FOLIO-XX-9142",
+"ownership": "single",
+"currency": "INR",
+"fund_name": "ICICI Prudential Liquid Fund Direct Growth",
+"investment_mode": "lump_sum_and_ad_hoc_surplus_parking",
+"folio_status": "active",
+"current_value_inr": 73500,
+"cost_value_placeholder_inr": 71000,
+"unrealized_gain_placeholder_inr": 2500,
+"units_placeholder": 24.146,
+"nav_placeholder_inr": 3043.98,
+"nav_date_placeholder": "2025-05-30",
+"default_redemption_credit_account_id": "aarav_icici_secondary_savings_001",
+"redemption_capacity_note": "Sufficient to support two later stress redemptions of around ₹30000 each while leaving a small residual balance",
+"redemption_settlement_expectation": "Redemption credit should arrive later than the redemption instruction and should not be used as a same-timestamp liquidity fix."
+},
+"upcoming_known_obligations": [],
+"constraints_for_generation": [
+"Preserve enough value to support two later redemptions of around ₹30000 each unless the year arc explicitly consumes it.",
+"Redemption credits must land in a visible deposit account, usually ICICI secondary savings.",
+"Do not make this liquid fund so large that Aarav appears wealthy or insulated from pressure.",
+"Units and NAV are placeholders for deterministic ledger generation and may be evolved consistently later."
+],
+"do_not_generate_yet": [
+"redemption transaction",
+"purchase transaction",
+"unit ledger",
+"monthly NAV path",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_acko_scooter_insurance_001",
+"account_family": "insurance",
+"institution_name": "Acko General Insurance",
+"starting_state": {
+"aa_account_type": "GENERAL_INSURANCE",
+"display_name": "Acko Two-Wheeler Insurance Policy - TVS Ntorq 125",
+"masked_account_number": "POLICY-XX-2861",
+"ownership": "single",
+"currency": "INR",
+"policy_type": "two_wheeler_insurance",
+"vehicle_model": "TVS Ntorq 125",
+"policy_status": "active",
+"premium_frequency": "annual",
+"annual_premium_inr": 7800,
+"next_premium_due_month": "September 2025",
+"typical_payment_mode": "credit_card",
+"usual_payment_account_id": "aarav_axis_credit_card_001",
+"idv_inr": 72000,
+"monthly_balance_applicable": false
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-09-15",
+"obligation": "Annual scooter insurance premium",
+"expected_amount_inr": 7800,
+"source_account_id": "aarav_axis_credit_card_001"
+}
+],
+"constraints_for_generation": [
+"Policy should show status and premium due timing, not a fake monthly balance.",
+"Annual premium should usually appear as a credit card transaction in September if transactions are generated later.",
+"Do not create a separate scooter or vehicle financial account."
+],
+"do_not_generate_yet": [
+"insurance premium transaction",
+"policy update ledger",
+"monthly balance",
+"year arc",
+"raw AA payload"
+]
+},
+{
+"account_id": "aarav_maxlife_term_insurance_001",
+"account_family": "insurance",
+"institution_name": "Max Life Insurance",
+"starting_state": {
+"aa_account_type": "TERM_INSURANCE",
+"display_name": "Max Life Term Insurance Policy",
+"masked_account_number": "POLICY-XX-6674",
+"ownership": "single",
+"currency": "INR",
+"policy_type": "term_life_insurance",
+"policy_status": "active",
+"coverage_amount_inr": 10000000,
+"premium_frequency": "annual",
+"annual_premium_inr": 15000,
+"next_premium_due_month": "December 2025",
+"usual_payment_source_account_ids": [
+"aarav_hdfc_salary_savings_001",
+"aarav_axis_credit_card_001"
+],
+"monthly_balance_applicable": false
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-12-12",
+"obligation": "Annual term insurance premium",
+"expected_amount_inr": 15000,
+"source_account_id": "aarav_hdfc_salary_savings_001"
+}
+],
+"constraints_for_generation": [
+"Policy should show active status and next annual premium due month, not a fake monthly balance.",
+"Use either HDFC net banking or Axis card for the December annual premium, not both.",
+"Do not spread this into monthly sinking transactions unless explicitly introduced later."
+],
+"do_not_generate_yet": [
+"insurance premium transaction",
+"policy update ledger",
+"monthly balance",
+"year arc",
+"raw AA payload"
+]
+}
+],
+"cross_account_state": {
+"total_visible_deposit_balance_inr": 172450,
+"total_visible_liquid_investment_value_inr": 73500,
+"immediate_liquid_resources_inr": 245950,
+"total_visible_credit_card_current_outstanding_inr": 137850,
+"credit_card_amount_due_within_30_days_inr": 96500,
+"total_visible_pay_later_outstanding_inr": 5840,
+"cash_obligations_due_within_30_days_inr": 166440,
+"card_postings_expected_within_30_days_inr": 7947,
+"expected_salary_inflow_within_30_days_inr": 165000,
+"deposit_balance_after_cash_obligations_if_paid_without_liquid_redemption_inr": 6010,
+"liquid_fund_value_after_no_redemption_inr": 73500,
+"net_liquid_position_after_current_credit_and_paylater_liabilities_inr": 102260
+},
+"upcoming_30_day_cash_obligations": [
+{
+"date": "2025-06-02",
+"obligation": "Scheduled UTI SIP debit",
+"expected_amount_inr": 7500,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "aarav_uti_sip_mf_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-04",
+"obligation": "Simpl late-May usage repayment",
+"expected_amount_inr": 5840,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "aarav_simpl_paylater_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-05",
+"obligation": "June rent to landlord Suresh Krishnamurthy",
+"expected_amount_inr": 42000,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "Suresh Krishnamurthy",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-07",
+"obligation": "Cook payment to Lakshmi Devi",
+"expected_amount_inr": 4500,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "Lakshmi Devi",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-08",
+"obligation": "Maid payment to Savitri",
+"expected_amount_inr": 2200,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "Savitri",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-09",
+"obligation": "Axis credit card amount due",
+"expected_amount_inr": 96500,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "aarav_axis_credit_card_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-10",
+"obligation": "Apartment maintenance",
+"expected_amount_inr": 2500,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "Manjunath Gowda",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-12",
+"obligation": "Mother's medicines transfer",
+"expected_amount_inr": 2800,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "Anita Menon",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-15",
+"obligation": "Electricity bill",
+"expected_amount_inr": 2600,
+"source_account_id": "aarav_hdfc_salary_savings_001",
+"destination_account_id_or_counterparty": "Electricity biller",
+"already_reflected_in_starting_balance": false
+}
+],
+"upcoming_30_day_card_postings": [
+{
+"date": "2025-06-03",
+"posting": "Gym membership card autopay",
+"expected_amount_inr": 2499,
+"source_account_id": "aarav_axis_credit_card_001",
+"destination_account_id_or_counterparty": "Gym membership merchant",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-14",
+"posting": "Streaming and app subscription card autopays",
+"expected_amount_inr": 3650,
+"source_account_id": "aarav_axis_credit_card_001",
+"destination_account_id_or_counterparty": "Subscription merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-16",
+"posting": "Broadband card autopay",
+"expected_amount_inr": 999,
+"source_account_id": "aarav_axis_credit_card_001",
+"destination_account_id_or_counterparty": "Broadband provider",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-21",
+"posting": "Mobile postpaid card autopay",
+"expected_amount_inr": 799,
+"source_account_id": "aarav_axis_credit_card_001",
+"destination_account_id_or_counterparty": "Mobile postpaid provider",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+}
+],
+"expected_30_day_inflows": [
+{
+"date": "2025-06-30",
+"inflow": "Expected end-June salary credit timing anchor",
+"expected_amount_inr": 165000,
+"source_account_id_or_counterparty": "NimbleCart Technologies Private Limited",
+"destination_account_id": "aarav_hdfc_salary_savings_001",
+"already_reflected_in_starting_balance": false
+}
+],
+"contingent_internal_support_movements": [
+{
+"date": "2025-06-09",
+"movement": "Possible ICICI to HDFC self-transfer or ICICI manual card payment if HDFC becomes too tight",
+"maximum_amount_inr": 15000,
+"source_account_id": "aarav_icici_secondary_savings_001",
+"destination_account_id_or_counterparty": "aarav_hdfc_salary_savings_001 or aarav_axis_credit_card_001",
+"purpose": "Funding movement for the same Axis card due.",
+"double_counting_rule": "Must not be counted as an extra obligation because it only changes the funding source for the existing ₹96500 Axis card due."
+}
+],
+"starting_state_validation": {
+"all_account_universe_accounts_present": true,
+"all_self_transfer_accounts_visible": true,
+"liquid_fund_can_support_two_30000_redemptions": true,
+"credit_card_due_is_payable_but_pressure_creating": true,
+"pay_later_outstanding_is_small_but_present": true,
+"insurance_policies_have_status_not_fake_balances": true,
+"no_transactions_generated": true,
+"no_year_arc_generated": true,
+"no_raw_aa_payload_generated": true
+}
+}

@@ -1,0 +1,1015 @@
+{
+"persona_id": "priya",
+"starting_state_version": "v1",
+"as_of_datetime": "2025-06-01T00:00:00+05:30",
+"synthetic_year": {
+"start_date": "2025-06-01",
+"end_date": "2026-05-31"
+},
+"state_summary": {
+"one_line": "Priya starts the synthetic year with working-capital-sensitive liquidity: ₹515000 in visible deposits, a ₹240800 liquid fund position, a controlled full-pay credit card balance, and an education loan principal near ₹845000.",
+"starting_liquidity_posture": "Visible deposits total ₹515000, with ₹345000 in HDFC for June obligations and ₹170000 in ICICI as a meaningful but not excessive emergency and RD buffer. HDFC remains barely above the ₹75000 comfort reference after June HDFC-linked obligations, while the liquid fund stays at ₹240800 for pressure-month support. Priya can survive June without rescue inflows, but she is not excessively insulated from future pressure months.",
+"starting_credit_posture": "The HDFC Regalia Gold card has a meaningful but controlled ₹78640 current outstanding. The latest statement balance and total amount due are ₹61850, autopay is enabled for the full amount, and revolved balance is zero.",
+"starting_debt_posture": "The education loan begins with ₹845000 outstanding principal, a protected ₹38750 EMI due on 2025-06-07, and no late-payment posture.",
+"starting_investment_posture": "Long-term visible investments are already established across four equity SIP folios, an active ICICI RD, and NPS Tier I. The emergency fund is intentionally split between ICICI savings and the ICICI Prudential Liquid Fund rather than held entirely as cash.",
+"why_this_starting_state_is_realistic": "The starting deposits reflect May salary already credited before 2025-06-01 and Priya's disciplined habit of protecting rent, EMI, family support, staff payments, card full payment, SIPs, RD, and NPS. She can survive June without rescue inflows, but her normal monthly surplus remains tight and future pressure months can still require liquid fund redemptions or buffer transfers."
+},
+"accounts": [
+{
+"account_id": "priya_dep_hdfc_salary_001",
+"account_family": "deposit",
+"institution_name": "HDFC Bank",
+"starting_state": {
+"aa_account_type": "SAVINGS",
+"currency": "INR",
+"current_balance_inr": 345000,
+"available_balance_inr": 345000,
+"balance_as_of": "2025-06-01T00:00:00+05:30",
+"account_role": "Primary salary and obligation account",
+"salary_credit_amount_inr": 265000,
+"last_salary_credit_context": {
+"salary_month": "May 2025",
+"credited_before_start": true,
+"not_a_generated_transaction": true
+},
+"starting_balance_provenance": "Balance reflects May salary already credited before the synthetic year start plus retained working cash from prior months. This is a starting-state fact, not a generated transaction.",
+"minimum_comfort_balance_reference_inr": 75000,
+"upi_linked": true,
+"primary_payment_rails_available": [
+"UPI",
+"IMPS",
+"NEFT",
+"net_banking",
+"e_mandate",
+"autopay"
+],
+"expected_hdfc_cash_obligations_within_30_days_inr": 268098,
+"expected_balance_after_hdfc_obligations_if_no_icici_support_inr": 76902,
+"supports_self_transfer_to_account_id": "priya_dep_icici_buffer_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-01",
+"obligation": "Father support to Suresh Nair",
+"expected_amount_inr": 18000,
+"payment_rail": "UPI or IMPS"
+},
+{
+"date": "2025-06-01",
+"obligation": "Mother support to Latha Nair",
+"expected_amount_inr": 22000,
+"payment_rail": "UPI or IMPS"
+},
+{
+"date": "2025-06-02",
+"obligation": "HDFC Regalia Gold total amount due autopay",
+"expected_amount_inr": 61850,
+"payment_rail": "credit_card_autopay"
+},
+{
+"date": "2025-06-03",
+"obligation": "Domestic help and cook payments",
+"expected_amount_inr": 12000,
+"payment_rail": "UPI"
+},
+{
+"date": "2025-06-05",
+"obligation": "Rent to Raghavendra Rao",
+"expected_amount_inr": 68000,
+"payment_rail": "NEFT"
+},
+{
+"date": "2025-06-07",
+"obligation": "Education loan EMI to HDFC Credila",
+"expected_amount_inr": 38750,
+"payment_rail": "auto_debit"
+},
+{
+"date": "2025-06-10",
+"obligation": "Parag Parikh Flexi Cap SIP",
+"expected_amount_inr": 10000,
+"payment_rail": "e_mandate"
+},
+{
+"date": "2025-06-11",
+"obligation": "Mirae Asset Large & Midcap SIP",
+"expected_amount_inr": 7000,
+"payment_rail": "e_mandate"
+},
+{
+"date": "2025-06-12",
+"obligation": "UTI Nifty 50 Index SIP",
+"expected_amount_inr": 5000,
+"payment_rail": "e_mandate"
+},
+{
+"date": "2025-06-12",
+"obligation": "Father medicine support",
+"expected_amount_inr": 6500,
+"payment_rail": "UPI"
+},
+{
+"date": "2025-06-15",
+"obligation": "Axis Small Cap SIP",
+"expected_amount_inr": 3000,
+"payment_rail": "e_mandate"
+},
+{
+"date": "2025-06-18",
+"obligation": "NPS Tier I monthly contribution",
+"expected_amount_inr": 5000,
+"payment_rail": "NPS payment rail or bank mandate"
+},
+{
+"date": "2025-06-06",
+"obligation": "Apartment maintenance",
+"expected_amount_inr": 3500,
+"payment_rail": "UPI or biller"
+},
+{
+"date": "2025-06-16",
+"obligation": "Electricity bill",
+"expected_amount_inr": 3200,
+"payment_rail": "biller"
+},
+{
+"date": "2025-06-19",
+"obligation": "Broadband bill",
+"expected_amount_inr": 1199,
+"payment_rail": "biller"
+},
+{
+"date": "2025-06-21",
+"obligation": "Mobile postpaid bill",
+"expected_amount_inr": 899,
+"payment_rail": "biller"
+},
+{
+"date": "2025-06-28",
+"obligation": "Milk subscription",
+"expected_amount_inr": 2200,
+"payment_rail": "UPI or biller"
+}
+],
+"constraints_for_generation": [
+"Use this as the default source account for salary-linked obligations, family support, rent, education loan EMI, HDFC credit card full-payment autopay, equity SIPs, NPS, utilities, and staff payments.",
+"Do not debit card purchases directly from this account; card purchases should post to the credit card first and affect this account only when the card bill is paid.",
+"Preserve ability to create visible HDFC-to-ICICI and ICICI-to-HDFC self-transfer pairs later.",
+"Do not allow routine obligations to push this account into a cash-poor or missed-payment posture on day 1."
+],
+"do_not_generate_yet": [
+"No bank transactions",
+"No daily spending ledger",
+"No month plan",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_dep_icici_buffer_001",
+"account_family": "deposit",
+"institution_name": "ICICI Bank",
+"starting_state": {
+"aa_account_type": "SAVINGS",
+"currency": "INR",
+"current_balance_inr": 170000,
+"available_balance_inr": 170000,
+"balance_as_of": "2025-06-01T00:00:00+05:30",
+"account_role": "Secondary buffer and emergency liquidity routing account",
+"buffer_balance_provenance": "Buffer was built before the synthetic year through prior self-transfers, bonus retention, and emergency-fund discipline. Do not generate these historical transfers inside the synthetic year unless explicitly backfilled.",
+"upi_linked": true,
+"primary_payment_rails_available": [
+"UPI",
+"IMPS",
+"NEFT",
+"net_banking",
+"standing_instruction"
+],
+"emergency_buffer_component_inr": 170000,
+"expected_balance_after_june_rd_installment_inr": 160000,
+"paired_liquid_fund_account_id": "priya_mf_icici_pru_liquid_001",
+"supports_liquid_fund_redemption_credit": true,
+"supports_icici_rd_funding": true,
+"supports_self_transfer_to_account_id": "priya_dep_hdfc_salary_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-09",
+"obligation": "ICICI recurring deposit installment",
+"expected_amount_inr": 10000,
+"payment_rail": "standing_instruction"
+}
+],
+"constraints_for_generation": [
+"Use this account for ICICI RD funding, emergency buffer movements, pressure-month support, and liquid fund redemption credits.",
+"Any support to HDFC for card payment, rent, insurance, or other primary-account obligations must be visible as a self-transfer pair if funds move between Priya-owned accounts.",
+"Do not treat this buffer as a hidden rescue account; it is fully visible."
+],
+"do_not_generate_yet": [
+"No bank transactions",
+"No liquid fund redemption transaction",
+"No reverse self-transfer unless later cashflow requires it",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_cc_hdfc_regalia_gold_001",
+"account_family": "credit_card",
+"institution_name": "HDFC Bank",
+"starting_state": {
+"aa_account_type": "CREDIT_CARD",
+"currency": "INR",
+"credit_limit_inr": 450000,
+"available_credit_limit_inr": 371360,
+"current_outstanding_inr": 78640,
+"latest_statement_generation_date": "2025-05-14",
+"latest_statement_balance_inr": 61850,
+"amount_due_by_next_due_date_inr": 61850,
+"minimum_due_inr": 3093,
+"next_payment_due_date": "2025-06-04",
+"usual_payment_date": "2025-06-02",
+"autopay_enabled": true,
+"autopay_mode": "Total amount due",
+"autopay_source_account_id": "priya_dep_hdfc_salary_001",
+"revolved_balance_inr": 0,
+"cash_advance_balance_inr": 0,
+"unbilled_outstanding_inr": 16790,
+"statement_cycle_day": 14,
+"payment_due_day": 4,
+"payment_behavior": "Pays full statement amount; card is used as payment rail and rewards tool, not borrowing."
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-02",
+"obligation": "Full payment for latest statement by autopay from HDFC salary account",
+"expected_amount_inr": 61850,
+"payment_rail": "autopay_total_amount_due"
+}
+],
+"constraints_for_generation": [
+"Do not create revolved balances, cash advances, or routine purchase EMIs.",
+"Card spends must post on this credit card first and must not be duplicated as deposit debits.",
+"The June 2025 card payment must clear the full amount due from a visible deposit account.",
+"Future pressure-month statements may be higher, but full payment behavior must remain intact."
+],
+"do_not_generate_yet": [
+"No card transactions",
+"No raw card statement payload",
+"No card repayment transaction",
+"No interest or late fee"
+]
+},
+{
+"account_id": "priya_loan_hdfc_credila_edu_001",
+"account_family": "loan",
+"institution_name": "HDFC Credila",
+"starting_state": {
+"aa_account_type": "EDUCATION_LOAN",
+"currency": "INR",
+"original_principal_inr": 1850000,
+"outstanding_principal_inr": 845000,
+"regular_emi_inr": 38750,
+"next_emi_due_date": "2025-06-07",
+"emi_due_day": 7,
+"payment_mode": "Auto-debit",
+"emi_source_account_id": "priya_dep_hdfc_salary_001",
+"remaining_tenure_months_reference": 24,
+"prepayment_intent_reference_inr": 200000,
+"late_payment_status": "No late payment at start",
+"loan_status": "active"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-07",
+"obligation": "Education loan EMI auto-debit",
+"expected_amount_inr": 38750,
+"source_account_id": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"The EMI must be protected before discretionary spending.",
+"Any prepayment later must originate from a visible deposit account and reduce principal separately from the regular EMI schedule.",
+"Do not calculate the full outstanding principal as an immediate 30-day cash obligation."
+],
+"do_not_generate_yet": [
+"No loan transactions",
+"No amortization schedule",
+"No prepayment event",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_mf_ppfas_flexicap_001",
+"account_family": "mutual_fund",
+"institution_name": "Parag Parikh Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"currency": "INR",
+"scheme_name": "Parag Parikh Flexi Cap Fund Direct Growth",
+"plan": "Direct",
+"option": "Growth",
+"investment_type": "equity mutual fund",
+"current_value_inr": 425000,
+"cost_basis_reference_inr": 342000,
+"units_reference": 2480.922,
+"nav_reference_inr": 171.31,
+"nav_as_of": "2025-05-30",
+"sip_active": true,
+"sip_amount_inr": 10000,
+"next_sip_due_date": "2025-06-10",
+"sip_source_account_id": "priya_dep_hdfc_salary_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-10",
+"obligation": "Monthly SIP debit",
+"expected_amount_inr": 10000,
+"source_account_id": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Treat this as a protected long-term SIP account.",
+"SIP debit must originate from the HDFC salary account and corresponding fund-side activity can be generated later.",
+"Do not use this folio for short-term pressure-month liquidity unless later explicitly forced."
+],
+"do_not_generate_yet": [
+"No mutual fund transactions",
+"No NAV path",
+"No redemption",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_mf_mirae_large_midcap_001",
+"account_family": "mutual_fund",
+"institution_name": "Mirae Asset Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"currency": "INR",
+"scheme_name": "Mirae Asset Large & Midcap Fund Direct Growth",
+"plan": "Direct",
+"option": "Growth",
+"investment_type": "equity mutual fund",
+"current_value_inr": 285000,
+"cost_basis_reference_inr": 236000,
+"units_reference": 1695.228,
+"nav_reference_inr": 168.12,
+"nav_as_of": "2025-05-30",
+"sip_active": true,
+"sip_amount_inr": 7000,
+"next_sip_due_date": "2025-06-11",
+"sip_source_account_id": "priya_dep_hdfc_salary_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-11",
+"obligation": "Monthly SIP debit",
+"expected_amount_inr": 7000,
+"source_account_id": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Treat this as a protected long-term SIP account.",
+"SIP debit must originate from the HDFC salary account and corresponding fund-side activity can be generated later.",
+"Do not use this folio for routine liquidity."
+],
+"do_not_generate_yet": [
+"No mutual fund transactions",
+"No NAV path",
+"No redemption",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_mf_uti_nifty50_001",
+"account_family": "mutual_fund",
+"institution_name": "UTI Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"currency": "INR",
+"scheme_name": "UTI Nifty 50 Index Fund Direct Growth",
+"plan": "Direct",
+"option": "Growth",
+"investment_type": "equity mutual fund",
+"current_value_inr": 185000,
+"cost_basis_reference_inr": 158000,
+"units_reference": 1494.55,
+"nav_reference_inr": 123.78,
+"nav_as_of": "2025-05-30",
+"sip_active": true,
+"sip_amount_inr": 5000,
+"next_sip_due_date": "2025-06-12",
+"sip_source_account_id": "priya_dep_hdfc_salary_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-12",
+"obligation": "Monthly SIP debit",
+"expected_amount_inr": 5000,
+"source_account_id": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Treat this as a protected passive equity SIP account.",
+"SIP debit must originate from the HDFC salary account and corresponding fund-side activity can be generated later.",
+"Do not create extra ELSS or demat behavior from this account."
+],
+"do_not_generate_yet": [
+"No mutual fund transactions",
+"No NAV path",
+"No redemption",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_mf_axis_smallcap_001",
+"account_family": "mutual_fund",
+"institution_name": "Axis Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"currency": "INR",
+"scheme_name": "Axis Small Cap Fund Direct Growth",
+"plan": "Direct",
+"option": "Growth",
+"investment_type": "equity mutual fund",
+"current_value_inr": 118000,
+"cost_basis_reference_inr": 101000,
+"units_reference": 968.539,
+"nav_reference_inr": 121.83,
+"nav_as_of": "2025-05-30",
+"sip_active": true,
+"sip_amount_inr": 3000,
+"next_sip_due_date": "2025-06-15",
+"sip_source_account_id": "priya_dep_hdfc_salary_001"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-15",
+"obligation": "Monthly SIP debit",
+"expected_amount_inr": 3000,
+"source_account_id": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Treat this as a protected long-term small-cap equity SIP account.",
+"SIP debit must originate from the HDFC salary account and corresponding fund-side activity can be generated later.",
+"Do not redeem for ordinary monthly liquidity."
+],
+"do_not_generate_yet": [
+"No mutual fund transactions",
+"No NAV path",
+"No redemption",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_mf_icici_pru_liquid_001",
+"account_family": "mutual_fund",
+"institution_name": "ICICI Prudential Mutual Fund",
+"starting_state": {
+"aa_account_type": "MUTUAL_FUND",
+"currency": "INR",
+"scheme_name": "ICICI Prudential Liquid Fund Direct Growth",
+"plan": "Direct",
+"option": "Growth",
+"investment_type": "liquid mutual fund",
+"current_value_inr": 240800,
+"cost_basis_reference_inr": 234000,
+"units_reference": 68.515,
+"nav_reference_inr": 3514.55,
+"nav_as_of": "2025-05-30",
+"fixed_monthly_sip": false,
+"flexible_transfer_min_inr": 0,
+"flexible_transfer_max_inr": 10000,
+"usual_review_day": 20,
+"preferred_redemption_credit_account_id": "priya_dep_icici_buffer_001",
+"secondary_redemption_credit_account_id": "priya_dep_hdfc_salary_001",
+"small_redemption_threshold_reference_inr": 50000
+},
+"upcoming_known_obligations": [],
+"constraints_for_generation": [
+"Keep starting value around ₹240000 so pressure-month redemptions can be supported without inventing liquidity.",
+"Do not schedule a mandatory monthly liquid fund SIP; purchases occur only if surplus exists after other commitments.",
+"Redemptions must credit a visible deposit account, normally the ICICI buffer account."
+],
+"do_not_generate_yet": [
+"No liquid fund purchase",
+"No liquid fund redemption",
+"No NAV path",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_rd_icici_001",
+"account_family": "recurring_deposit",
+"institution_name": "ICICI Bank",
+"starting_state": {
+"aa_account_type": "RECURRING_DEPOSIT",
+"currency": "INR",
+"rd_status": "active",
+"monthly_installment_inr": 10000,
+"installment_debit_day": 9,
+"tenure_months": 24,
+"months_completed_reference": 13,
+"months_remaining_reference": 11,
+"principal_contributed_reference_inr": 130000,
+"accrued_interest_reference_inr": 5850,
+"current_value_inr": 135850,
+"next_installment_due_date": "2025-06-09",
+"installment_source_account_id": "priya_dep_icici_buffer_001",
+"goal_reference": "Education loan prepayment and future home down payment reserve"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-09",
+"obligation": "Monthly RD installment",
+"expected_amount_inr": 10000,
+"source_account_id": "priya_dep_icici_buffer_001"
+}
+],
+"constraints_for_generation": [
+"RD installment must be funded from the ICICI secondary savings account.",
+"If HDFC salary money is used to support the RD later, generate a visible HDFC-to-ICICI self-transfer before the RD debit.",
+"Do not treat the RD as a liquid emergency account unless later explicitly broken."
+],
+"do_not_generate_yet": [
+"No RD installment transaction",
+"No RD maturity",
+"No premature closure",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_nps_tier1_protean_001",
+"account_family": "nps",
+"institution_name": "Protean CRA",
+"starting_state": {
+"aa_account_type": "NPS",
+"currency": "INR",
+"nps_status": "active",
+"tier": "Tier I",
+"current_value_inr": 286500,
+"cost_basis_reference_inr": 245000,
+"units_reference": 10367.149,
+"nav_reference_inr": 27.635,
+"nav_as_of": "2025-05-30",
+"monthly_contribution_inr": 5000,
+"contribution_frequency": "Monthly",
+"next_contribution_due_date": "2025-06-18",
+"contribution_source_account_id": "priya_dep_hdfc_salary_001",
+"goal_reference": "Long-term retirement and tax discipline"
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-06-18",
+"obligation": "Monthly NPS Tier I contribution",
+"expected_amount_inr": 5000,
+"source_account_id": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"NPS monthly contribution must originate from a visible deposit account.",
+"March tax-saving top-up, if generated later, should be an additional NPS Tier I contribution unless a later plan changes it.",
+"Do not create withdrawal behavior."
+],
+"do_not_generate_yet": [
+"No NPS contribution transaction",
+"No tax-saving top-up",
+"No withdrawal",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_ins_hdfc_ergo_self_health_001",
+"account_family": "insurance",
+"institution_name": "HDFC ERGO General Insurance",
+"starting_state": {
+"aa_account_type": "INSURANCE_POLICY",
+"policy_type": "health_insurance_self",
+"policy_status": "active",
+"coverage_inr": 1000000,
+"annual_premium_inr": 24500,
+"premium_month": "May",
+"last_premium_paid_month": "May 2025",
+"last_premium_paid_before_start": true,
+"next_premium_due_month": "May 2026",
+"next_premium_due_date_reference": "2026-05-15",
+"payment_mode_reference": "Credit card or net banking",
+"policy_value_inr": null,
+"no_monthly_balance": true
+},
+"upcoming_known_obligations": [
+{
+"date": "2026-05-15",
+"obligation": "Annual self health insurance premium",
+"expected_amount_inr": 24500,
+"source_account_id_or_rail": "priya_cc_hdfc_regalia_gold_001 or priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Policy is active at start because May 2025 premium was paid before the synthetic-year start.",
+"Do not create fake monthly policy balances.",
+"Generate only one payment path for the next premium when the later raw data is built."
+],
+"do_not_generate_yet": [
+"No insurance premium transaction",
+"No claim event",
+"No monthly balance",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_ins_star_parents_health_001",
+"account_family": "insurance",
+"institution_name": "Star Health and Allied Insurance",
+"starting_state": {
+"aa_account_type": "INSURANCE_POLICY",
+"policy_type": "health_insurance_parents",
+"policy_status": "active",
+"coverage_inr": 700000,
+"annual_premium_inr": 68500,
+"premium_month": "September",
+"last_premium_paid_month_reference": "September 2024",
+"next_premium_due_month": "September 2025",
+"next_premium_due_date_reference": "2025-09-15",
+"payment_mode_reference": "Credit card or net banking",
+"possible_claim_reimbursement_reference_inr": 55000,
+"possible_reimbursement_lag_days_reference": 24,
+"policy_value_inr": null,
+"no_monthly_balance": true
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-09-15",
+"obligation": "Annual parents health insurance premium",
+"expected_amount_inr": 68500,
+"source_account_id_or_rail": "priya_cc_hdfc_regalia_gold_001 or priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Policy is active at start and next annual premium is due in September 2025.",
+"Possible claim reimbursement later must appear as an external insurer or TPA credit into a visible deposit account, not as same-day liquidity.",
+"Do not create fake monthly policy balances."
+],
+"do_not_generate_yet": [
+"No insurance premium transaction",
+"No claim reimbursement",
+"No monthly balance",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_ins_maxlife_term_001",
+"account_family": "insurance",
+"institution_name": "Max Life Insurance",
+"starting_state": {
+"aa_account_type": "INSURANCE_POLICY",
+"policy_type": "term_life_insurance",
+"policy_status": "active",
+"coverage_inr": 20000000,
+"annual_premium_inr": 16800,
+"premium_month": "December",
+"last_premium_paid_month_reference": "December 2024",
+"next_premium_due_month": "December 2025",
+"next_premium_due_date_reference": "2025-12-10",
+"payment_mode_reference": "Net banking",
+"policy_value_inr": null,
+"no_monthly_balance": true
+},
+"upcoming_known_obligations": [
+{
+"date": "2025-12-10",
+"obligation": "Annual term insurance premium",
+"expected_amount_inr": 16800,
+"source_account_id_or_rail": "priya_dep_hdfc_salary_001"
+}
+],
+"constraints_for_generation": [
+"Policy is active at start and next premium is due in December 2025.",
+"Premium debit should originate from a visible bank account.",
+"Do not create monthly policy balances."
+],
+"do_not_generate_yet": [
+"No insurance premium transaction",
+"No claim event",
+"No monthly balance",
+"No raw AA payload"
+]
+},
+{
+"account_id": "priya_ins_acko_activa_001",
+"account_family": "insurance",
+"institution_name": "Acko General Insurance",
+"starting_state": {
+"aa_account_type": "INSURANCE_POLICY",
+"policy_type": "vehicle_insurance",
+"policy_status": "active",
+"vehicle": "2019 Honda Activa",
+"annual_premium_inr": 7200,
+"premium_month": "March",
+"last_premium_paid_month": "March 2025",
+"last_premium_paid_before_start": true,
+"next_premium_due_month": "March 2026",
+"next_premium_due_date_reference": "2026-03-12",
+"payment_mode_reference": "Credit card, UPI, or net banking",
+"policy_value_inr": null,
+"no_monthly_balance": true
+},
+"upcoming_known_obligations": [
+{
+"date": "2026-03-12",
+"obligation": "Annual two-wheeler insurance premium",
+"expected_amount_inr": 7200,
+"source_account_id_or_rail": "priya_cc_hdfc_regalia_gold_001 or visible deposit account"
+}
+],
+"constraints_for_generation": [
+"Policy is active at start because March 2025 premium was paid before the synthetic-year start.",
+"Activa service expense is separate from the insurance policy.",
+"Do not create fake monthly policy balances."
+],
+"do_not_generate_yet": [
+"No insurance premium transaction",
+"No claim event",
+"No monthly balance",
+"No raw AA payload"
+]
+}
+],
+"cross_account_state": {
+"total_visible_deposit_balance_inr": 515000,
+"total_visible_liquid_fund_value_inr": 240800,
+"total_visible_long_term_investment_value_inr": 1435350,
+"education_loan_outstanding_principal_inr": 845000,
+"credit_card_current_outstanding_inr": 78640,
+"credit_card_amount_due_within_30_days_inr": 61850,
+"revolved_credit_card_balance_inr": 0,
+"immediate_liquid_resources_inr": 755800,
+"cash_obligations_due_within_30_days_inr": 278098,
+"card_postings_expected_within_30_days_inr": 42200,
+"expected_salary_inflow_within_30_days_inr": 265000,
+"deposit_balance_after_cash_obligations_if_paid_without_liquid_redemption_inr": 236902,
+"hdfc_balance_after_hdfc_cash_obligations_inr": 76902,
+"icici_balance_after_june_rd_installment_inr": 160000,
+"net_liquid_position_after_current_credit_card_liability_inr": 677160,
+"net_liquid_position_after_credit_card_due_and_loan_reference_inr": "After the ₹61850 card due is paid, Priya still has visible deposits and liquid fund support for June, but she is not excessively insulated from later pressure months. Do not subtract the full ₹845000 education loan principal as an immediate liability; only the ₹38750 June EMI is an immediate 30-day cash obligation, while the principal remains an amortizing debt reference."
+},
+"upcoming_30_day_cash_obligations": [
+{
+"date": "2025-06-01",
+"obligation": "Father support to Suresh Nair",
+"expected_amount_inr": 18000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "external_counterparty_suresh_nair",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-01",
+"obligation": "Mother support to Latha Nair",
+"expected_amount_inr": 22000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "external_counterparty_latha_nair",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-02",
+"obligation": "HDFC Regalia Gold full statement payment",
+"expected_amount_inr": 61850,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_cc_hdfc_regalia_gold_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-03",
+"obligation": "Domestic help payment to Kamala Devi",
+"expected_amount_inr": 5500,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "external_counterparty_kamala_devi",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-03",
+"obligation": "Cook payment to Shobha Ramesh",
+"expected_amount_inr": 6500,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "external_counterparty_shobha_ramesh",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-05",
+"obligation": "Rent to Raghavendra Rao",
+"expected_amount_inr": 68000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "external_counterparty_raghavendra_rao",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-06",
+"obligation": "Apartment maintenance",
+"expected_amount_inr": 3500,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "apartment_association_or_biller",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-07",
+"obligation": "Education loan EMI",
+"expected_amount_inr": 38750,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_loan_hdfc_credila_edu_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-09",
+"obligation": "ICICI RD installment",
+"expected_amount_inr": 10000,
+"source_account_id": "priya_dep_icici_buffer_001",
+"destination_account_id_or_counterparty": "priya_rd_icici_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-10",
+"obligation": "Parag Parikh Flexi Cap SIP",
+"expected_amount_inr": 10000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_mf_ppfas_flexicap_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-11",
+"obligation": "Mirae Asset Large & Midcap SIP",
+"expected_amount_inr": 7000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_mf_mirae_large_midcap_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-12",
+"obligation": "UTI Nifty 50 Index SIP",
+"expected_amount_inr": 5000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_mf_uti_nifty50_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-12",
+"obligation": "Father medicine support",
+"expected_amount_inr": 6500,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "external_counterparty_suresh_nair_or_pharmacy",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-15",
+"obligation": "Axis Small Cap SIP",
+"expected_amount_inr": 3000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_mf_axis_smallcap_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-16",
+"obligation": "Electricity bill",
+"expected_amount_inr": 3200,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "electricity_biller",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-18",
+"obligation": "NPS Tier I contribution",
+"expected_amount_inr": 5000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_nps_tier1_protean_001",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-19",
+"obligation": "Broadband bill",
+"expected_amount_inr": 1199,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "broadband_biller",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-21",
+"obligation": "Mobile postpaid bill",
+"expected_amount_inr": 899,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "mobile_biller",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-28",
+"obligation": "Milk subscription",
+"expected_amount_inr": 2200,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "milk_subscription_biller",
+"already_reflected_in_starting_balance": false
+}
+],
+"upcoming_30_day_card_postings": [
+{
+"date": "2025-06-04",
+"posting": "Online grocery and household basket postings",
+"expected_amount_inr": 11500,
+"source_account_id": "priya_cc_hdfc_regalia_gold_001",
+"destination_account_id_or_counterparty": "online_grocery_merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-08",
+"posting": "Office commute cab postings",
+"expected_amount_inr": 9000,
+"source_account_id": "priya_cc_hdfc_regalia_gold_001",
+"destination_account_id_or_counterparty": "cab_merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-14",
+"posting": "Late-work food delivery and workday meal postings",
+"expected_amount_inr": 6500,
+"source_account_id": "priya_cc_hdfc_regalia_gold_001",
+"destination_account_id_or_counterparty": "food_delivery_and_cafeteria_merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-18",
+"posting": "Pharmacy and Tata 1mg refill postings",
+"expected_amount_inr": 4200,
+"source_account_id": "priya_cc_hdfc_regalia_gold_001",
+"destination_account_id_or_counterparty": "pharmacy_merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-22",
+"posting": "Personal care and small online shopping postings",
+"expected_amount_inr": 3200,
+"source_account_id": "priya_cc_hdfc_regalia_gold_001",
+"destination_account_id_or_counterparty": "personal_care_and_online_retail_merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+},
+{
+"date": "2025-06-27",
+"posting": "Restaurant, subscription, and miscellaneous card postings",
+"expected_amount_inr": 7800,
+"source_account_id": "priya_cc_hdfc_regalia_gold_001",
+"destination_account_id_or_counterparty": "dining_subscription_and_misc_merchants",
+"cash_impact_timing": "Posts to credit card first; does not immediately reduce deposit balances.",
+"already_reflected_in_starting_balance": false
+}
+],
+"card_postings_reference_note": "These are expected June card-spend envelopes for starting-state cashflow planning, not fixed scheduled transactions. The later month/day generator may vary exact dates, merchants, and amounts while preserving the broad monthly envelope.",
+"expected_30_day_inflows": [
+{
+"date": "2025-06-30",
+"inflow": "Expected end-June salary credit timing anchor",
+"expected_amount_inr": 265000,
+"source_account_id_or_counterparty": "ZeptoScale Technologies Private Limited",
+"destination_account_id": "priya_dep_hdfc_salary_001",
+"already_reflected_in_starting_balance": false
+}
+],
+"contingent_internal_support_movements": [
+{
+"condition": "If the HDFC salary account is at risk of falling below the ₹75000 comfort reference after card autopay, rent, EMI, family support, and protected investments.",
+"movement": "Transfer support from ICICI secondary savings to HDFC salary account before the relevant debit.",
+"maximum_amount_inr": 75000,
+"source_account_id": "priya_dep_icici_buffer_001",
+"destination_account_id_or_counterparty": "priya_dep_hdfc_salary_001",
+"double_counting_rule": "Generate one visible ICICI debit and one matching HDFC credit only if the movement is needed; do not also count the same amount as liquid fund redemption unless a separate redemption credits ICICI first."
+},
+{
+"condition": "If ICICI RD funding or buffer rebuilding needs salary-account support after primary obligations are safe.",
+"movement": "Transfer surplus from HDFC salary account to ICICI secondary savings account.",
+"maximum_amount_inr": 25000,
+"source_account_id": "priya_dep_hdfc_salary_001",
+"destination_account_id_or_counterparty": "priya_dep_icici_buffer_001",
+"double_counting_rule": "Generate the HDFC debit and ICICI credit as a self-transfer pair; do not treat it as income or spending."
+},
+{
+"condition": "If a pressure month requires liquidity beyond deposits while protecting card full payment, rent, EMI, insurance, and family medical support.",
+"movement": "Redeem ICICI Prudential Liquid Fund units to a visible deposit account, normally ICICI secondary savings.",
+"maximum_amount_inr": 75000,
+"source_account_id": "priya_mf_icici_pru_liquid_001",
+"destination_account_id_or_counterparty": "priya_dep_icici_buffer_001",
+"double_counting_rule": "Count the liquidity only when the redemption credit lands in a visible deposit account; do not model it as both available fund value and available cash after redemption."
+}
+],
+"starting_state_validation": {
+"all_account_universe_accounts_present": true,
+"all_self_transfer_accounts_visible": true,
+"liquid_fund_can_support_pressure_month_redemptions": true,
+"education_loan_outstanding_is_set": true,
+"credit_card_due_is_payable_in_full": true,
+"credit_card_revolved_balance_is_zero": true,
+"insurance_policies_have_status_not_fake_balances": true,
+"no_transactions_generated": true,
+"no_year_arc_generated": true,
+"no_raw_aa_payload_generated": true
+}
+}

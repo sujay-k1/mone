@@ -1,0 +1,806 @@
+{
+"persona_id": "aarav",
+"full_name": "Aarav Menon",
+"age": 29,
+"city": "Bengaluru",
+"neighborhood": "Indiranagar 2nd Stage",
+"job_title": "Senior Product Engineer",
+"employer_name": "NimbleCart Technologies Private Limited",
+"monthly_salary_inr": 165000,
+"monthly_rent_inr": 42000,
+"monthly_fixed_obligations_inr": 64547,
+"monthly_discretionary_low_inr": 52000,
+"monthly_discretionary_high_inr": 96000,
+"monthly_discretionary_high_context": "₹96000 is not a boring-month target. It represents an active or stress month where baseline discretionary expands due to pubs, dating, shopping, travel booking, gadget spend, or group fronting. Normal boring-month discretionary should stay near ₹52000.",
+"credit_card_limit_inr": 350000,
+"typical_credit_card_outstanding_low_inr": 78000,
+"typical_credit_card_outstanding_high_inr": 185000,
+"persona_summary": "Aarav Menon is a 29 year old senior tech worker in Bengaluru with strong income, weak financial discipline, and a lifestyle shaped by convenience, social spending, cigarettes, delivery food, gadgets, dating, and inconsistent repayment behavior. He is not reckless every day, but he delays decisions, relies on credit card float, and often treats future salary as already available.",
+"home_context": {
+"housing_type": "rented 2 bedroom apartment shared with one flatmate",
+"flatmate_name": "Rohan Bhat",
+"total_apartment_rent_inr": 84000,
+"aarav_rent_share_inr": 42000,
+"flatmate_rent_share_inr": 42000,
+"rent_payment_arrangement": "Aarav pays only his own ₹42000 share directly to landlord Suresh Krishnamurthy. Rohan Bhat pays his own ₹42000 rent share separately to the landlord. Aarav does not collect Rohan's rent.",
+"security_deposit_paid_by_aarav_inr": 126000,
+"lease_renewal_month": "August",
+"landlord_name": "Suresh Krishnamurthy",
+"rent_due_day": 5,
+"rent_payment_style": "Pays rent by bank transfer between the 3rd and 5th of each month after salary arrives. He occasionally waits until the 5th when card dues or weekend spending hit together."
+},
+"work_pattern": {
+"office_days_per_week": 3,
+"wfh_days_per_week": 2,
+"typical_office_hours": "10:30 to 19:30",
+"late_work_days_per_month": 6,
+"usual_office_days": [
+"Tuesday",
+"Wednesday",
+"Thursday"
+],
+"usual_wfh_days": [
+"Monday",
+"Friday"
+],
+"salary_credit_rule": "Salary of ₹165000 arrives on the last working day of each month between 18:15 and 20:30.",
+"work_meal_pattern": "Office lunch is free 3 days per week, but Aarav still buys coffee or snacks on most office days.",
+"after_work_pattern": "On 4 office evenings per month he stays back past 21:00 and orders dinner or takes a cab home."
+},
+"commute_pattern": {
+"primary_mode": "own petrol scooter",
+"backup_modes": [
+"Namma Metro",
+"Ola cab",
+"Uber auto",
+"Rapido bike taxi"
+],
+"office_location": "Bellandur, Bengaluru",
+"average_one_way_commute_minutes": 48,
+"monthly_commute_spend_inr": 8800,
+"commute_spend_explanation": "Although Aarav goes to office only 3 days per week, petrol is not only for office commute. Scooter use includes office rides to Bellandur, Indiranagar social trips, errands, pharmacy runs, grocery pickups, weekend local rides, late night food pickups, and visits to friends in Koramangala or HSR Layout.",
+"scooter_details": {
+"vehicle_type": "petrol scooter",
+"model": "TVS Ntorq 125",
+"fuel_refills_per_month": 4,
+"typical_fuel_refill_inr": 900,
+"monthly_petrol_spend_inr": 3600,
+"monthly_parking_spend_inr": 900,
+"monthly_service_and_puncture_average_inr": 1300,
+"monthly_ride_hailing_spend_inr": 3000
+},
+"rain_behavior": "During heavy rain he avoids the scooter and uses cab or auto, increasing commute spend by ₹2200 to ₹4200 in that month."
+},
+"budget_taxonomy": {
+"fixed_obligations": {
+"monthly_total_inr": 64547,
+"definition": "Monthly obligations that are expected to create visible recurring payments or autopays in almost every month. This includes rent share, household staff, apartment maintenance, utilities, broadband, mobile bill, gym, subscriptions, and mother's monthly medicines.",
+"included_items": [
+"rent",
+"apartment maintenance",
+"cook",
+"maid",
+"electricity",
+"broadband",
+"mobile postpaid",
+"gym membership",
+"streaming and app subscriptions",
+"mother's medicines"
+],
+"excluded_items": [
+"mutual fund SIP",
+"annual scooter insurance",
+"annual term insurance",
+"food delivery",
+"pubs",
+"cigarettes",
+"quick commerce",
+"dating",
+"gadgets",
+"travel",
+"friend settlements"
+]
+},
+"baseline_variable_necessities": {
+"monthly_total_inr": 30500,
+"definition": "Monthly average for necessary but variable spends such as petrol, parking, scooter repairs, ride hailing, basic groceries, medicines, household supplies, personal care, laundry, and workday snacks."
+},
+"baseline_discretionary": {
+"monthly_total_inr": 52000,
+"definition": "Normal-month lifestyle spend covering cigarettes, pubs, food delivery, quick commerce treats, coffee, dating, dining out, shopping, gadgets, gifts, and small social spends. The detailed habit sections describe how this ₹52000 is composed, not additional spend on top of it."
+},
+"stress_month_extra_spend": {
+"monthly_extra_low_inr": 18000,
+"monthly_extra_high_inr": 65000,
+"definition": "Extra spend or liquidity pressure above a normal month caused by one-time repairs, travel booking, family support, large gadget purchase, higher pub activity, delayed friend settlements, or a larger card bill."
+},
+"avoid_double_counting_rule": "Food habits, vices, shopping habits, dating context, travel habits, and friend network behavior are behavioral components and timing drivers. They must not be added again on top of baseline_discretionary unless the month is explicitly modeled as a stress month or unusual event month."
+},
+"credit_card_mechanics": {
+"card_provider_profile": "premium cash-back or travel rewards credit card used as primary spend rail",
+"credit_card_limit_inr": 350000,
+"statement_day": 20,
+"due_day": 9,
+"card_autopay_posting_rule": "Bills marked as card autopay should appear first as credit card transactions. They should affect deposit accounts only when the credit card bill is paid. Do not duplicate card autopays as direct bank debits.",
+"typical_statement_balance_low_inr": 68000,
+"typical_statement_balance_high_inr": 155000,
+"typical_current_outstanding_low_inr": 78000,
+"typical_current_outstanding_high_inr": 185000,
+"revolved_balance_months_per_year": 2,
+"typical_revolved_balance_low_inr": 25000,
+"typical_revolved_balance_high_inr": 65000,
+"full_payment_months_per_year": 7,
+"constrained_full_payment_months_per_year": 3,
+"mechanics_clarification": "High current outstanding is not the same as default. Aarav often has high current outstanding because transactions after statement generation accumulate before the next cycle. Default behavior is rare; the realistic issue is short-term float, partial payment, or revolving a portion in 2 months of the year.",
+"usual_payment_behavior": "In 7 months Aarav pays the full statement comfortably. In 3 constrained months he still clears the full statement by due date, but only after using salary timing, friend repayments, delayed discretionary spends, pay-later, or small asset drawdowns. In 2 stress months he pays only 60 to 85 percent of the statement by due date and revolves ₹25000 to ₹65000.",
+"payment_pattern_clarification": "In 7 months Aarav pays the full statement comfortably. In 3 constrained months he still clears the full statement by due date, but only after using salary timing, friend repayments, delayed discretionary spends, pay-later, or small asset drawdowns. In 2 stress months he pays only 60 to 85 percent of the statement by due date and revolves ₹25000 to ₹65000.",
+"pay_later_use": "Uses pay later for quick commerce and food delivery during the final 8 days before salary.",
+"pay_later_monthly_low_inr": 2500,
+"pay_later_monthly_high_inr": 18000,
+"friend_credit_use": "Asks for short transfers only when bank balance is below ₹8000 and card due date, rent, or travel booking overlaps.",
+"overdraft_behavior": "Does not use formal overdraft.",
+"late_fee_risk": "High in stress months and low in normal months."
+},
+"named_people": {
+"friends": [
+{
+"name": "Kabir Sethi",
+"relationship": "college friend and pub companion",
+"money_dynamic": "Kabir often pays instantly when Aarav asks, but reminds him after 10 days.",
+"typical_amount_exchanged_inr": 4000,
+"typical_frequency_per_month": 1
+},
+{
+"name": "Nikhil Rao",
+"relationship": "former colleague and gaming friend",
+"money_dynamic": "Nikhil and Aarav split food, match screenings, and occasional gadget purchases. Aarav sometimes fronts ₹6000 to ₹14000 and receives repayment in 2 to 5 parts.",
+"typical_amount_exchanged_inr": 8500,
+"typical_frequency_per_month": 2
+},
+{
+"name": "Zoya Khan",
+"relationship": "close friend from work",
+"money_dynamic": "Zoya books concert tickets and weekend plans. Aarav pays late but does not default.",
+"typical_amount_exchanged_inr": 3500,
+"typical_frequency_per_month": 1
+},
+{
+"name": "Rohan Bhat",
+"relationship": "flatmate",
+"money_dynamic": "Rohan pays his own rent directly to the landlord. Aarav sometimes pays the cook, maid, or quick commerce order first and settles household expenses with Rohan later.",
+"typical_amount_exchanged_inr": 5200,
+"typical_frequency_per_month": 3
+}
+],
+"family": [
+{
+"name": "Vikram Menon",
+"relationship": "father",
+"city": "Kochi",
+"money_dynamic": "Does not ask Aarav for regular support, but Aarav contributes to medical or appliance costs when requested.",
+"typical_support_amount_inr": 7000,
+"typical_support_frequency_per_year": 4
+},
+{
+"name": "Anita Menon",
+"relationship": "mother",
+"city": "Kochi",
+"money_dynamic": "Receives monthly medicine money, small gifts, and festival transfers from Aarav.",
+"typical_support_amount_inr": 5000,
+"typical_support_frequency_per_year": 6
+},
+{
+"name": "Meera Menon",
+"relationship": "younger sister",
+"city": "Pune",
+"money_dynamic": "Aarav occasionally pays for books, flight add ons, or birthday gifts.",
+"typical_support_amount_inr": 4500,
+"typical_support_frequency_per_year": 5
+}
+],
+"household_and_service": [
+{
+"name": "Lakshmi Devi",
+"role": "cook",
+"monthly_amount_inr": 4500,
+"payment_due_day": 7
+},
+{
+"name": "Manjunath Gowda",
+"role": "apartment maintenance coordinator",
+"monthly_amount_inr": 2500,
+"payment_due_day": 10
+},
+{
+"name": "Savitri",
+"role": "maid",
+"monthly_amount_inr": 2200,
+"payment_due_day": 8
+},
+{
+"name": "Ramesh Kumar",
+"role": "scooter mechanic",
+"typical_visit_amount_inr": 1800,
+"typical_visits_per_year": 5
+}
+],
+"work": [
+{
+"name": "Isha Nair",
+"role": "engineering manager",
+"money_relevance": "No direct money exchange, but her deadlines trigger late office meals and cab rides."
+},
+{
+"name": "Arjun Mehta",
+"role": "product manager",
+"money_relevance": "Coordinates team dinners where Aarav sometimes fronts the bill."
+},
+{
+"name": "Tanvi Shah",
+"role": "teammate",
+"money_relevance": "Splits coffee, lunch extras, and birthday collections."
+}
+]
+},
+"family_obligations": [
+{
+"obligation": "Mother's medicines",
+"recipient": "Anita Menon",
+"amount_inr": 2800,
+"frequency": "monthly",
+"typical_payment_day": 12,
+"included_in_fixed_obligations": true
+},
+{
+"obligation": "Parents emergency buffer contribution",
+"recipient": "Vikram Menon",
+"amount_inr": 7000,
+"frequency": "4 times per year",
+"typical_payment_day": 18,
+"included_in_fixed_obligations": false
+},
+{
+"obligation": "Sister education and gifts support",
+"recipient": "Meera Menon",
+"amount_inr": 4500,
+"frequency": "5 times per year",
+"typical_payment_day": 20,
+"included_in_fixed_obligations": false
+}
+],
+"investment_commitments": {
+"monthly_scheduled_sip_amount_inr": 7500,
+"successful_months_per_year": 9,
+"skipped_months_per_year": 3,
+"usual_sip_day": 2,
+"skip_trigger": "Skipped when salary has already been absorbed by rent, large credit card payment, travel booking, family support, or a bank balance below ₹20000 on the 2nd.",
+"treatment_in_budget": "The SIP is a scheduled investment commitment, not a fixed obligation. It should create visible investment outflow only in successful months and no SIP outflow in skipped months.",
+"actual_annual_sip_outflow_inr": 67500
+},
+"annual_and_irregular_obligations": [
+{
+"name": "Scooter insurance",
+"amount_inr": 7800,
+"frequency": "annual",
+"typical_payment_month": "September",
+"typical_payment_mode": "credit card",
+"included_in_monthly_fixed_obligations": false
+},
+{
+"name": "Term insurance premium",
+"amount_inr": 15000,
+"frequency": "annual",
+"typical_payment_month": "December",
+"typical_payment_mode": "net banking or card",
+"included_in_monthly_fixed_obligations": false
+},
+{
+"name": "Scooter service or repair",
+"amount_inr": 1800,
+"frequency": "5 times per year",
+"typical_payment_mode": "UPI",
+"included_in_baseline_variable_necessities": true
+},
+{
+"name": "Family appliance or medical support",
+"amount_inr": 7000,
+"frequency": "4 times per year",
+"typical_payment_mode": "UPI or bank transfer",
+"included_in_monthly_fixed_obligations": false
+}
+],
+"work_reimbursement_behavior": {
+"frequency_per_year": 4,
+"typical_reimbursement_low_inr": 1200,
+"typical_reimbursement_high_inr": 8000,
+"reimbursed_items": [
+"late office cab",
+"team dinner fronted by Aarav",
+"office equipment accessory",
+"internet or work-from-home support"
+],
+"lag_days_low": 7,
+"lag_days_high": 45,
+"raw_transaction_behavior": "Expense appears first as card or UPI debit. Reimbursement appears later as employer FT credit and should not be used as artificial liquidity rescue."
+},
+"relationship_context": {
+"status": "single",
+"dating_pattern": "Uses dating apps actively for 8 months of the year. Goes on 2 paid dates per month in normal months and 4 paid dates per month during socially active months.",
+"monthly_dating_spend_low_inr": 2500,
+"monthly_dating_spend_high_inr": 12000,
+"budget_treatment": "Dating spend is part of baseline discretionary or stress-month discretionary spend and must not be added separately on top of those totals.",
+"gift_behavior": "Buys impulsive birthday, date, and apology gifts, usually between ₹1200 and ₹6500."
+},
+"friend_network_behavior": "Aarav is socially generous when cash is fresh. He fronts group food, pub tables, cricket screening bookings, and cab rides 2 times per month on average. In tight months he asks Kabir Sethi or Nikhil Rao for short transfers of ₹3000 to ₹15000 and repays after salary in one payment or two partial payments. His delays are visible as ordinary peer transfers, reminders, and uneven repayment amounts rather than explicit loan labels.",
+"group_fronting_rule": {
+"description": "When Aarav fronts a group expense, raw transactions should show the full merchant debit first, followed by partial UPI credits from friends over 1 to 5 days. His net personal cost is lower than the gross merchant debit.",
+"typical_gross_fronted_low_inr": 3000,
+"typical_gross_fronted_high_inr": 18000,
+"typical_net_personal_cost_percent_low": 35,
+"typical_net_personal_cost_percent_high": 70
+},
+"health_tendencies": [
+{
+"tendency": "Cigarette use",
+"frequency": "6 days per week",
+"typical_daily_spend_inr": 220
+},
+{
+"tendency": "Acidity and digestive issues after late meals",
+"frequency": "5 episodes per month",
+"typical_medicine_spend_inr": 350
+},
+{
+"tendency": "Stress headaches",
+"frequency": "3 episodes per month",
+"typical_medicine_spend_inr": 180
+},
+{
+"tendency": "Irregular gym attendance",
+"frequency": "7 visits per month",
+"monthly_membership_inr": 2499
+},
+{
+"tendency": "Occasional dental or skin clinic visit",
+"frequency": "4 visits per year",
+"typical_visit_spend_inr": 1800
+}
+],
+"vices": [
+{
+"name": "cigarettes",
+"monthly_spend_low_inr": 5200,
+"monthly_spend_high_inr": 7800,
+"purchase_pattern": "Buys single packs from local stores, office area shops, and quick commerce when working late.",
+"budget_treatment": "Component of baseline discretionary."
+},
+{
+"name": "pubs and alcohol",
+"monthly_spend_low_inr": 9000,
+"monthly_spend_high_inr": 26000,
+"purchase_pattern": "2 pub nights in quiet months, 5 pub nights in active months, with higher spends when he fronts for friends.",
+"budget_treatment": "Component of baseline discretionary or stress-month extra spend depending on month."
+},
+{
+"name": "late night food delivery",
+"monthly_spend_low_inr": 6500,
+"monthly_spend_high_inr": 18000,
+"purchase_pattern": "Orders after 22:00 on late work days, weekend gaming nights, and hungover Sundays.",
+"budget_treatment": "Component of baseline discretionary."
+}
+],
+"food_habits": [
+{
+"category": "office coffee",
+"frequency_per_month": 18,
+"average_ticket_inr": 260,
+"budget_treatment": "Component of baseline discretionary."
+},
+{
+"category": "food delivery",
+"frequency_per_month": 20,
+"average_ticket_inr": 520,
+"budget_treatment": "Component of baseline discretionary."
+},
+{
+"category": "quick commerce groceries and snacks",
+"frequency_per_month": 18,
+"average_ticket_inr": 720,
+"budget_treatment": "Split between baseline variable necessities for basic groceries and baseline discretionary for snacks, cigarettes, desserts, drinks, and impulse items."
+},
+{
+"category": "dining out",
+"frequency_per_month": 6,
+"average_ticket_inr": 1500,
+"budget_treatment": "Component of baseline discretionary."
+},
+{
+"category": "office cafeteria extras",
+"frequency_per_month": 12,
+"average_ticket_inr": 180,
+"budget_treatment": "Component of baseline variable necessities."
+}
+],
+"shopping_habits": [
+{
+"category": "gadgets and accessories",
+"frequency_per_year": 8,
+"typical_ticket_low_inr": 2500,
+"typical_ticket_high_inr": 28000,
+"behavior": "Buys chargers, earbuds, keyboards, phone cases, SSDs, and gaming accessories without planning.",
+"budget_treatment": "Small accessories sit inside baseline discretionary. Purchases above ₹15000 are unusual events or stress-month extra spend."
+},
+{
+"category": "clothing and sneakers",
+"frequency_per_year": 10,
+"typical_ticket_low_inr": 2500,
+"typical_ticket_high_inr": 14000,
+"behavior": "Buys before trips, dates, weddings, and payday weekends.",
+"budget_treatment": "Component of baseline discretionary unless clustered before a trip or wedding."
+},
+{
+"category": "home items",
+"frequency_per_year": 7,
+"typical_ticket_low_inr": 1200,
+"typical_ticket_high_inr": 9000,
+"behavior": "Buys lamps, bedsheets, cookware, and storage items when annoyed by apartment clutter.",
+"budget_treatment": "Component of baseline discretionary."
+},
+{
+"category": "subscriptions and apps",
+"frequency_per_month": 9,
+"monthly_total_inr": 3650,
+"behavior": "Keeps overlapping entertainment, storage, fitness, music, and productivity subscriptions.",
+"budget_treatment": "Included in fixed obligations because these are monthly autopays."
+}
+],
+"travel_habits": [
+{
+"type": "weekend trips from Bengaluru",
+"frequency_per_year": 5,
+"gross_booking_inr": 42000,
+"expected_friend_reimbursements_inr": 24000,
+"net_personal_cost_inr": 18000,
+"raw_transaction_behavior": "When Aarav books the stay, car rental, or activities, raw transactions should show the full card or UPI merchant debit first. Friend reimbursements from Kabir Sethi, Nikhil Rao, or Zoya Khan should appear later as partial UPI credits over 1 to 7 days, reducing his net personal cost.",
+"companions": [
+"Kabir Sethi",
+"Nikhil Rao",
+"Zoya Khan"
+],
+"payment_behavior": "Often books stay or car rental on card and collects friend shares later.",
+"budget_treatment": "Not part of baseline discretionary unless it replaces normal weekend social spending. Larger bookings create stress-month extra spend."
+},
+{
+"type": "family visits to Kochi",
+"frequency_per_year": 3,
+"gross_booking_inr": 14500,
+"expected_friend_reimbursements_inr": 0,
+"net_personal_cost_inr": 14500,
+"raw_transaction_behavior": "Raw transactions should mostly show Aarav's own flight, cab, food, and small family purchases. There are no friend reimbursements for Kochi family visits.",
+"companions": [
+"alone"
+],
+"payment_behavior": "Books flights late, which raises costs.",
+"budget_treatment": "Irregular travel spend outside fixed obligations."
+},
+{
+"type": "annual larger leisure trip",
+"frequency_per_year": 1,
+"gross_booking_inr": 145000,
+"expected_friend_reimbursements_inr": 80000,
+"net_personal_cost_inr": 65000,
+"raw_transaction_behavior": "If Aarav books flights or hotels for friends, raw transactions should show high gross card debits first. Friend reimbursements should appear as UPI credits over 3 to 21 days and offset part of the gross booking, but timing gaps can still create card pressure.",
+"companions": [
+"friends"
+],
+"payment_behavior": "Uses credit card for flights and hotels, then rolls part of the card balance for 1 cycle if other obligations hit.",
+"budget_treatment": "Stress-month extra spend and possible revolved card balance."
+}
+],
+"financial_temperament": "Aarav is optimistic, convenience driven, and avoidant. He tracks money in his head until the 18th of the month, then checks balances frequently. He pays for speed and comfort when stressed, ignores small leaks, and reacts only when card utilization or bank balance becomes uncomfortable.",
+"credit_behavior": "Aarav uses the credit card as a timing tool rather than as emergency-only debt. He is comfortable with high current outstanding when salary is close, but gets anxious when the statement balance is high and rent, family support, or travel bookings overlap. He usually intends to pay in full, occasionally pays partially, and revolves only in 2 months of the year.",
+"savings_discipline": {
+"description": "Weak and inconsistent. He intends to save ₹25000 per month but usually saves only after all bills and social plans are done.",
+"target_monthly_savings_inr": 25000,
+"actual_monthly_savings_low_inr": 0,
+"actual_monthly_savings_high_inr": 22000,
+"months_with_no_net_savings_per_year": 5,
+"asset_drawdown_behavior": "Redeems small mutual fund or liquid fund amounts when card dues, travel, family support, and rent collide.",
+"typical_asset_drawdown_inr": 30000,
+"asset_drawdown_frequency_per_year": 2
+},
+"risk_tolerance": "Medium for spending decisions and low for true financial risk. He is comfortable carrying ₹120000 of card outstanding for one cycle but becomes anxious when cash balance falls below ₹5000 or when two friends remind him in the same week.",
+"recurring_obligations": [
+{
+"name": "Rent to landlord Suresh Krishnamurthy",
+"amount_inr": 42000,
+"frequency": "monthly",
+"due_day": 5,
+"payment_mode_preference": "bank transfer",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Apartment maintenance",
+"amount_inr": 2500,
+"frequency": "monthly",
+"due_day": 10,
+"payment_mode_preference": "UPI",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Cook payment to Lakshmi Devi",
+"amount_inr": 4500,
+"frequency": "monthly",
+"due_day": 7,
+"payment_mode_preference": "UPI",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Maid payment to Savitri",
+"amount_inr": 2200,
+"frequency": "monthly",
+"due_day": 8,
+"payment_mode_preference": "UPI",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Electricity bill",
+"amount_inr": 2600,
+"frequency": "monthly",
+"due_day": 15,
+"payment_mode_preference": "UPI or credit card",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Broadband bill",
+"amount_inr": 999,
+"frequency": "monthly",
+"due_day": 16,
+"payment_mode_preference": "card autopay",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Mobile postpaid bill",
+"amount_inr": 799,
+"frequency": "monthly",
+"due_day": 21,
+"payment_mode_preference": "card autopay",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Gym membership",
+"amount_inr": 2499,
+"frequency": "monthly",
+"due_day": 3,
+"payment_mode_preference": "card autopay",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Streaming and app subscriptions",
+"amount_inr": 3650,
+"frequency": "monthly",
+"due_day": 14,
+"payment_mode_preference": "card autopay",
+"included_in_monthly_fixed_obligations": true
+},
+{
+"name": "Mother's medicines",
+"amount_inr": 2800,
+"frequency": "monthly",
+"due_day": 12,
+"payment_mode_preference": "UPI",
+"included_in_monthly_fixed_obligations": true
+}
+],
+"recurring_obligations_reconciliation": {
+"rent_inr": 42000,
+"apartment_maintenance_inr": 2500,
+"cook_inr": 4500,
+"maid_inr": 2200,
+"electricity_inr": 2600,
+"broadband_inr": 999,
+"mobile_postpaid_inr": 799,
+"gym_inr": 2499,
+"subscriptions_inr": 3650,
+"mother_medicines_inr": 2800,
+"calculated_monthly_fixed_obligations_inr": 64547,
+"matches_monthly_fixed_obligations_inr": true
+},
+"monthly_budget_shape": {
+"salary_inr": 165000,
+"fixed_obligations_inr": 64547,
+"baseline_variable_necessities_inr": 30500,
+"baseline_discretionary_inr": 52000,
+"scheduled_sip_if_successful_inr": 7500,
+"baseline_month_residual_before_sip_inr": 17953,
+"baseline_month_residual_after_successful_sip_inr": 10453,
+"normal_month_end_buffer_low_inr": 6000,
+"normal_month_end_buffer_high_inr": 18000,
+"pressure_month_shortfall_low_inr": 18000,
+"pressure_month_shortfall_high_inr": 65000
+},
+"baseline_variable_necessities": [
+{
+"name": "petrol, parking, and repairs average",
+"monthly_amount_inr": 5800
+},
+{
+"name": "ride hailing",
+"monthly_amount_inr": 3000
+},
+{
+"name": "basic groceries",
+"monthly_amount_inr": 8500
+},
+{
+"name": "medicines and small healthcare",
+"monthly_amount_inr": 2200
+},
+{
+"name": "household supplies",
+"monthly_amount_inr": 2500
+},
+{
+"name": "personal care",
+"monthly_amount_inr": 3500
+},
+{
+"name": "laundry and dry cleaning",
+"monthly_amount_inr": 1800
+},
+{
+"name": "workday snacks not covered by office",
+"monthly_amount_inr": 3200
+}
+],
+"baseline_variable_necessities_reconciliation": {
+"petrol_parking_repairs_average_inr": 5800,
+"ride_hailing_inr": 3000,
+"basic_groceries_inr": 8500,
+"medicines_and_small_healthcare_inr": 2200,
+"household_supplies_inr": 2500,
+"personal_care_inr": 3500,
+"laundry_and_dry_cleaning_inr": 1800,
+"workday_snacks_inr": 3200,
+"calculated_baseline_variable_necessities_inr": 30500,
+"matches_budget_taxonomy_baseline_variable_necessities": true
+},
+"boring_month_behavior": {
+"description": "In a boring month Aarav survives without fake liquidity because salary covers rent, card payment, household obligations, cigarettes, delivery food, and moderate social life. He still spends too much, but he avoids major new gadgets, takes the scooter more often, limits pubs to 2 nights, and pays friends within 7 days.",
+"pub_nights": 2,
+"food_delivery_orders": 18,
+"quick_commerce_orders": 16,
+"coffee_purchases": 18,
+"cigarette_purchase_days": 24,
+"friend_fronting_events": 1,
+"friend_borrowing_events": 0,
+"credit_card_payment_percent": 100,
+"expected_month_end_bank_balance_low_inr": 6000,
+"expected_month_end_bank_balance_high_inr": 18000
+},
+"stress_month_behavior": {
+"description": "In a stress month a large card bill, family support request, scooter repair, travel booking, or gadget purchase overlaps with rent. Aarav continues normal daily spending for too long, then uses pay later, carries part of the credit card bill, asks Kabir Sethi or Nikhil Rao for transfers, or redeems a small investment.",
+"stress_months_per_year": 2,
+"pub_nights": 4,
+"food_delivery_orders": 26,
+"quick_commerce_orders": 24,
+"coffee_purchases": 22,
+"cigarette_purchase_days": 27,
+"friend_fronting_events": 2,
+"friend_borrowing_events": 2,
+"typical_friend_transfer_in_low_inr": 5000,
+"typical_friend_transfer_in_high_inr": 15000,
+"credit_card_payment_percent_low": 60,
+"credit_card_payment_percent_high": 85,
+"typical_revolved_card_balance_low_inr": 25000,
+"typical_revolved_card_balance_high_inr": 65000,
+"typical_asset_drawdown_inr": 30000,
+"expected_month_end_bank_balance_low_inr": 800,
+"expected_month_end_bank_balance_high_inr": 7000
+},
+"monthly_survival_logic": "Aarav's monthly math works when fixed obligations of ₹64547 combine with variable necessities near ₹30500 and baseline discretionary spending near ₹52000, leaving ₹17953 before SIP. In the 9 months where the ₹7500 SIP succeeds, a baseline month leaves ₹10453 before any unusual events. Normal months are tight but survivable because rent is paid after salary, the card cycle floats delivery and social spends, office lunch reduces weekday food cost, and friend settlements return cash in small chunks. Stress months require liquidity support when discretionary spending rises above ₹85000 or a one-time obligation exceeds ₹25000.",
+"payment_timing_rules": {
+"salary_day_behavior": "On salary evening he pays the largest overdue card or rent linked obligation first, then orders better dinner and often sends pending friend repayments.",
+"first_week_behavior": "Pays rent, gym, cook, maid, and a part or full card bill. Spends socially if the first weekend follows salary.",
+"middle_month_behavior": "Uses card freely for food, coffee, cabs, dates, and subscriptions while bank balance remains above ₹35000.",
+"last_week_behavior": "Checks bank balance daily, switches more payments to credit card or pay later, delays friend repayment, avoids large bank transfers, and still buys cigarettes and delivery food."
+},
+"cash_behavior": {
+"atm_withdrawals_per_month_low": 0,
+"atm_withdrawals_per_month_high": 2,
+"typical_withdrawal_low_inr": 1000,
+"typical_withdrawal_high_inr": 5000,
+"cash_used_for": [
+"tips",
+"small parking",
+"street food",
+"emergency petrol pump cash",
+"building staff festival tips"
+],
+"raw_transaction_behavior": "Only ATM withdrawals appear in raw AA. The small cash spends themselves are not individually visible."
+},
+"merchant_and_category_preferences": {
+"coffee": [
+"Third Wave Coffee",
+"Blue Tokai Coffee Roasters",
+"Starbucks",
+"office tech park cafe"
+],
+"food_delivery": [
+"Swiggy",
+"Zomato",
+"EatSure",
+"Box8"
+],
+"quick_commerce": [
+"Blinkit",
+"Zepto",
+"Swiggy Instamart"
+],
+"pubs": [
+"Toit",
+"Bob's Bar",
+"Pecos",
+"Watson's",
+"Arbor Brewing Company"
+],
+"commute": [
+"IndianOil",
+"Shell",
+"Ola",
+"Uber",
+"Rapido",
+"Namma Metro"
+],
+"shopping": [
+"Amazon",
+"Flipkart",
+"Myntra",
+"Croma",
+"Apple Store online"
+],
+"health": [
+"Apollo Pharmacy",
+"Tata 1mg",
+"Practo",
+"Aster Clinic"
+]
+},
+"daily_context_rules": {
+"weekday_morning": "On office days he spends on fuel, coffee, or auto only after 08:30. On WFH days he usually spends first on cigarettes, breakfast delivery, or quick commerce after 10:00.",
+"weekday_afternoon": "Office lunch is free on Tuesday, Wednesday, and Thursday, but he buys coffee or snacks between 15:30 and 17:30.",
+"weekday_evening": "Late work increases probability of dinner delivery, cab, cigarettes, and medicine purchases.",
+"friday_behavior": "Friday has the highest chance of pub, food delivery, or dating spend, especially after salary.",
+"saturday_behavior": "Saturday drives shopping, pubs, dates, repairs, grooming, and group spends.",
+"sunday_behavior": "Sunday has groceries, laundry, hangover food, medicine, and family calls. He is more likely to send money to family on Sunday evening after a call.",
+"balance_sensitive_behavior": "If bank balance is below ₹8000 before salary, he avoids UPI for large spends and uses credit card or pay later wherever available.",
+"credit_pressure_behavior": "If credit card current outstanding is above ₹160000, he delays gadgets and travel booking but still maintains cigarettes, coffee, delivery, and commute."
+},
+"year_arc_guardrails": [
+"Do not place annual leisure trip, scooter insurance, term insurance, large family support, and major gadget purchase in the same month.",
+"At most one major irregular obligation above ₹25000 should occur in a normal month.",
+"Stress months may have two overlapping pressures, but must show consequence through card carry-forward, friend transfer, SIP skip, reduced discretionary spending, pay-later use, or asset drawdown.",
+"Travel months should reduce some normal weekend pub, dating, or shopping spend unless the month is intentionally stressful.",
+"Do not create a month where bonus, FD maturity, MF redemption, tax refund, friend repayment, and reimbursement all arrive only to rescue overspending."
+],
+"raw_data_generation_constraints": {
+"full_visibility_assumption": "All accounts Aarav owns should be visible when the account universe is created later.",
+"self_transfer_rule": "Self-transfers must be traceable across both visible accounts with matching amounts and plausible timestamp gaps.",
+"friend_borrowing_rule": "Borrowing and repayment must appear only as ordinary peer transfers with Kabir Sethi, Nikhil Rao, Zoya Khan, or Rohan Bhat. Do not label them as loans in raw AA output.",
+"no_hidden_labels_rule": "Final raw AA-style financial output must not contain product-side labels, analysis metadata, persona labels, stress tags, intent fields, or explanations.",
+"daily_life_rule": "Daily transactions must respect 24-hour time, weekday versus weekend, work mode, commute, location, mood, bank balance, credit pressure, and upcoming obligations."
+},
+"realism_notes": [
+"Aarav's income is high enough that his lifestyle does not require constant borrowing.",
+"His instability comes from timing, card float, social fronting, delayed repayments, and impulsive purchases rather than permanent insolvency.",
+"Normal months should show ordinary salary, rent, card payments, delivery, cigarettes, subscriptions, commute, and modest savings or small residual cash.",
+"Friend borrowing should appear only as ordinary peer transfers from named friends and later uneven peer transfers back to them.",
+"Self transfers must be visible across both accounts when accounts are created later, with matching amounts and plausible timestamps.",
+"No final raw financial output should contain labels such as stress month, borrowing, intent, persona note, or financial temperament.",
+"Daily spends must respect Bengaluru rhythms: office commute peaks, late work dinners, payday weekends, rainy day cab spikes, and weekday versus weekend differences.",
+"Aarav should not spend like a crisis case every month. At least 8 months should feel boring, repetitive, and financially survivable.",
+"One-time repairs, gifts, travel, and family support should create pressure only when they overlap with rent, credit card due date, or existing outstanding balance.",
+"The app should be able to infer weak discipline, social spending, credit reliance, cigarettes, and repayment inconsistency from raw transactions alone.",
+"Annual scooter insurance and annual term insurance must appear as annual or irregular payments, not monthly sinking transfers, unless a visible monthly self-transfer account is explicitly created later."
+]
+}

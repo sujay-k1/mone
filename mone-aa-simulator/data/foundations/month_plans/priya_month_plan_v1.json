@@ -1,0 +1,3796 @@
+{
+  "month_plan_version": "v1",
+  "persona_id": "priya",
+  "synthetic_year": {
+    "start_date": "2025-06-01",
+    "end_date": "2026-05-31"
+  },
+  "source_artifacts": [
+    "Priya Persona Bible v1",
+    "Priya Account Universe v1",
+    "Priya Financial Starting State v1",
+    "World Catalogs v1",
+    "Year Arc v1"
+  ],
+  "source_of_truth_hierarchy": [
+    "Month Plan task hard rules",
+    "Year Arc v1 month_type, selected contexts, selected rare/pressure events, blocked contexts, credit/liquidity posture, and month planner instructions",
+    "Priya Persona Bible v1 for salary, behavior, fixed obligations, annual bonus, work pattern, household context, and annual vehicle/insurance obligations",
+    "Priya Account Universe v1 for visible accounts, rails, product mechanics, account ownership, credit card behavior, loan, SIP, RD, NPS, liquid fund, and insurance products",
+    "Priya Financial Starting State v1 for June starting posture and carryover obligations only",
+    "World Catalogs v1 for catalog_item_id references only"
+  ],
+  "global_month_plan_guardrails": [
+    "Do not create transactions.",
+    "Do not create raw AA payload.",
+    "Do not create daily sequence.",
+    "Do not create exact dated merchant lines.",
+    "Do not create account balances or monthly closing balances.",
+    "Do not reinterpret the locked Year Arc.",
+    "Use catalog_item_ids as references only; do not force catalog coverage.",
+    "Most months must remain boring or controlled; do not turn boring months into active months.",
+    "Do not add rare events or stress months beyond the Year Arc.",
+    "Priya cannot use BNPL or pay-later.",
+    "Priya cannot revolve credit card; HDFC Regalia must be paid in full every month.",
+    "Protected obligations continue every month: rent, education loan EMI, family support, father medicines support, staff payments, SIPs, RD, NPS, utilities, card full payment, and selected insurance obligations.",
+    "Priya may feel constrained, but protected obligations must not be missed.",
+    "Liquid fund redemption is allowed only in September 2025 stress context and never for routine lifestyle.",
+    "Liquid fund purchase or replenishment is allowed only in April 2026 planned bonus allocation context.",
+    "April bonus is planned allocation, not rescue or lifestyle inflation.",
+    "Medical claim reimbursement must lag after September medical payment and must not be same-day rescue.",
+    "Self-transfers are visible routing movements, not income or spending.",
+    "Family transfers are external UPI/IMPS/NEFT flows, not owned accounts.",
+    "Card purchases post to HDFC Regalia card first; deposit impact happens only when card bill is paid."
+  ],
+  "spend_envelope_interpretation_rule": "Spend envelopes are non-additive planning bands for later day generation. They guide plausible gross outflows by category before reimbursements and must not be summed into a required monthly spend target.",
+  "aggregate_discretionary_cap_rule": "Aggregate discretionary soft caps exclude salary, rent, staff payments, family support, father medicines support, utilities, annual insurance premiums, SIPs, RD, NPS, education loan EMI, credit card bill payment, self-transfers, reimbursements, liquid fund credits, and bonus inflow. Month/day generation should stay below the high end unless a selected Year Arc event explicitly explains the pressure.",
+  "credit_card_bill_payment_generation_rule": "Monthly HDFC Regalia purchases post to the credit card first. Deposit impact occurs only when the full card bill is paid. The monthly protected recurring obligation aggregate excludes card bill payment. The Day/Ledger generator must derive the card bill payment from prior statement/cycle logic or starting-state carryover, not from spend_envelopes or selected_contexts.",
+  "selected_context_band_interpretation_rule": "selected_contexts_for_day_generation amount bands overlap with spend_envelopes and selected_rare_or_pressure_events. They are planning constraints, not additional spend targets. If the same underlying need appears in recurring obligations, selected contexts, and selected rare/pressure events, generate it once using the source-of-truth rule.",
+  "annual_premium_generation_rule": "Known annual insurance premiums may appear in known_recurring_obligations_plan, selected_contexts_for_day_generation, and selected_rare_or_pressure_events for planning visibility. The Day/Ledger generator must generate each annual premium once only, using known_recurring_obligations_plan as the source of truth. selected_rare_or_pressure_events should not create a second premium transaction.",
+  "medical_claim_timing_rule": "The September medical event may create a later claim-reimbursement basis, but no reimbursement credit may be generated in September. October is the only selected reimbursement month, and the reimbursement must be credit-only, traceable to the September medical event, and not classified as salary or ordinary income.",
+  "protected_recurring_selected_context_rule": "If a selected context includes protected recurring catalog IDs, those IDs are context markers only unless the context explicitly has generation_source: known_recurring_obligations_plan and do_not_generate_separately: true. Optional contexts should generally remove protected recurring IDs to avoid duplicate rent, staff, family-support, SIP, RD, NPS, utility, or milk transactions.",
+  "known_monthly_recurring_obligations_template": [
+    {
+      "obligation_name": "Rent",
+      "catalog_item_id": "housing_priya_rent",
+      "expected_amount_band_inr": {
+        "low": 68000,
+        "high": 68000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "NEFT",
+      "timing_window": "early_month",
+      "generation_rule": "Protected monthly rent; not discretionary."
+    },
+    {
+      "obligation_name": "Family support and father medicines",
+      "catalog_item_id": "composite_priya_family_support_and_father_medicines",
+      "component_catalog_item_ids": [
+        "family_priya_father_support",
+        "family_priya_mother_support",
+        "family_priya_father_medicines_support"
+      ],
+      "expected_amount_band_inr": {
+        "low": 46500,
+        "high": 46500
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "UPI or IMPS",
+      "timing_window": "early_month | mid_month",
+      "generation_rule": "Protected external family transfers; do not create owned family accounts."
+    },
+    {
+      "obligation_name": "Household staff",
+      "catalog_item_id": "composite_priya_household_staff",
+      "component_catalog_item_ids": [
+        "housing_priya_domestic_help_payment",
+        "housing_priya_cook_payment"
+      ],
+      "expected_amount_band_inr": {
+        "low": 12000,
+        "high": 12000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "UPI",
+      "timing_window": "early_month",
+      "generation_rule": "Protected staff payments."
+    },
+    {
+      "obligation_name": "Education loan EMI",
+      "catalog_item_id": "finance_priya_education_loan_emi",
+      "expected_amount_band_inr": {
+        "low": 38750,
+        "high": 38750
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "auto-debit",
+      "timing_window": "early_month",
+      "generation_rule": "Protected EMI; no late payment."
+    },
+    {
+      "obligation_name": "Equity SIPs total",
+      "catalog_item_id": "composite_priya_equity_sips_total",
+      "component_catalog_item_ids": [
+        "finance_priya_parag_parikh_sip",
+        "finance_priya_mirae_asset_sip",
+        "finance_priya_uti_nifty_sip",
+        "finance_priya_axis_small_cap_sip"
+      ],
+      "expected_amount_band_inr": {
+        "low": 25000,
+        "high": 25000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "e-mandate",
+      "timing_window": "mid_month",
+      "generation_rule": "All four protected equity SIPs succeed every month."
+    },
+    {
+      "obligation_name": "ICICI recurring deposit installment",
+      "catalog_item_id": "finance_priya_icici_rd_installment",
+      "expected_amount_band_inr": {
+        "low": 10000,
+        "high": 10000
+      },
+      "payment_source_account_preference": "priya_dep_icici_buffer_001",
+      "payment_rail_preference": "standing instruction",
+      "timing_window": "mid_month",
+      "generation_rule": "Protected RD; visible HDFC-to-ICICI self-transfer allowed if needed."
+    },
+    {
+      "obligation_name": "NPS monthly contribution",
+      "catalog_item_id": "finance_priya_nps_monthly_contribution",
+      "expected_amount_band_inr": {
+        "low": 5000,
+        "high": 5000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "NPS rail or bank mandate",
+      "timing_window": "mid_month",
+      "generation_rule": "Protected monthly NPS; separate from March tax-saving top-up."
+    },
+    {
+      "obligation_name": "Housing utilities and milk",
+      "catalog_item_id": "composite_priya_housing_utilities_and_milk",
+      "component_catalog_item_ids": [
+        "housing_priya_apartment_maintenance",
+        "utility_bescom_electricity",
+        "utility_priya_broadband",
+        "utility_priya_mobile_postpaid",
+        "utility_priya_milk_subscription"
+      ],
+      "expected_amount_band_inr": {
+        "low": 9000,
+        "high": 12500
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "biller, autopay, or UPI",
+      "timing_window": "variable_monthly",
+      "generation_rule": "Protected utilities; electricity can vary within normal household range."
+    },
+    {
+      "obligation_name": "HDFC Regalia Gold total amount due",
+      "catalog_item_id": "composite_priya_hdfc_regalia_total_amount_due",
+      "expected_amount_band_inr": {
+        "low": 38000,
+        "high": 92000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "credit_card_autopay",
+      "timing_window": "early_month",
+      "generation_rule": "Full card payment only; bill settlement is not new spending."
+    }
+  ],
+  "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment": [
+    {
+      "obligation_name": "Rent",
+      "catalog_item_id": "housing_priya_rent",
+      "expected_amount_band_inr": {
+        "low": 68000,
+        "high": 68000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "NEFT",
+      "timing_window": "early_month",
+      "generation_rule": "Protected monthly rent; not discretionary."
+    },
+    {
+      "obligation_name": "Family support and father medicines",
+      "catalog_item_id": "composite_priya_family_support_and_father_medicines",
+      "component_catalog_item_ids": [
+        "family_priya_father_support",
+        "family_priya_mother_support",
+        "family_priya_father_medicines_support"
+      ],
+      "expected_amount_band_inr": {
+        "low": 46500,
+        "high": 46500
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "UPI or IMPS",
+      "timing_window": "early_month | mid_month",
+      "generation_rule": "Protected external family transfers; do not create owned family accounts."
+    },
+    {
+      "obligation_name": "Household staff",
+      "catalog_item_id": "composite_priya_household_staff",
+      "component_catalog_item_ids": [
+        "housing_priya_domestic_help_payment",
+        "housing_priya_cook_payment"
+      ],
+      "expected_amount_band_inr": {
+        "low": 12000,
+        "high": 12000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "UPI",
+      "timing_window": "early_month",
+      "generation_rule": "Protected staff payments."
+    },
+    {
+      "obligation_name": "Education loan EMI",
+      "catalog_item_id": "finance_priya_education_loan_emi",
+      "expected_amount_band_inr": {
+        "low": 38750,
+        "high": 38750
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "auto-debit",
+      "timing_window": "early_month",
+      "generation_rule": "Protected EMI; no late payment."
+    },
+    {
+      "obligation_name": "Equity SIPs total",
+      "catalog_item_id": "composite_priya_equity_sips_total",
+      "component_catalog_item_ids": [
+        "finance_priya_parag_parikh_sip",
+        "finance_priya_mirae_asset_sip",
+        "finance_priya_uti_nifty_sip",
+        "finance_priya_axis_small_cap_sip"
+      ],
+      "expected_amount_band_inr": {
+        "low": 25000,
+        "high": 25000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "e-mandate",
+      "timing_window": "mid_month",
+      "generation_rule": "All four protected equity SIPs succeed every month."
+    },
+    {
+      "obligation_name": "ICICI recurring deposit installment",
+      "catalog_item_id": "finance_priya_icici_rd_installment",
+      "expected_amount_band_inr": {
+        "low": 10000,
+        "high": 10000
+      },
+      "payment_source_account_preference": "priya_dep_icici_buffer_001",
+      "payment_rail_preference": "standing instruction",
+      "timing_window": "mid_month",
+      "generation_rule": "Protected RD; visible HDFC-to-ICICI self-transfer allowed if needed."
+    },
+    {
+      "obligation_name": "NPS monthly contribution",
+      "catalog_item_id": "finance_priya_nps_monthly_contribution",
+      "expected_amount_band_inr": {
+        "low": 5000,
+        "high": 5000
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "NPS rail or bank mandate",
+      "timing_window": "mid_month",
+      "generation_rule": "Protected monthly NPS; separate from March tax-saving top-up."
+    },
+    {
+      "obligation_name": "Housing utilities and milk",
+      "catalog_item_id": "composite_priya_housing_utilities_and_milk",
+      "component_catalog_item_ids": [
+        "housing_priya_apartment_maintenance",
+        "utility_bescom_electricity",
+        "utility_priya_broadband",
+        "utility_priya_mobile_postpaid",
+        "utility_priya_milk_subscription"
+      ],
+      "expected_amount_band_inr": {
+        "low": 9000,
+        "high": 12500
+      },
+      "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+      "payment_rail_preference": "biller, autopay, or UPI",
+      "timing_window": "variable_monthly",
+      "generation_rule": "Protected utilities; electricity can vary within normal household range."
+    }
+  ],
+  "annual_plan_summary": {
+    "salary_inr": 265000,
+    "protected_obligations_continue_all_months": true,
+    "credit_card_revolve_months": [],
+    "bnpl_months": [],
+    "liquid_fund_redemption_months": [
+      "2025-09"
+    ],
+    "liquid_fund_replenishment_months": [
+      "2026-04"
+    ],
+    "annual_insurance_months": [
+      {
+        "month_id": "2025-09",
+        "obligation": "Star Health parents health insurance annual premium",
+        "expected_amount_inr": 68500
+      },
+      {
+        "month_id": "2025-12",
+        "obligation": "Max Life term insurance annual premium",
+        "expected_amount_inr": 16800
+      },
+      {
+        "month_id": "2026-03",
+        "obligation": "Acko Activa two-wheeler insurance annual premium",
+        "expected_amount_inr": 7200
+      },
+      {
+        "month_id": "2026-05",
+        "obligation": "HDFC ERGO self-health insurance annual premium",
+        "expected_amount_inr": 24500
+      }
+    ],
+    "selected_family_medical_pressure_months": [
+      "2025-09"
+    ],
+    "selected_bonus_allocation_months": [
+      "2026-04"
+    ],
+    "stress_months": [
+      "2025-09"
+    ],
+    "pressure_months": [
+      "2026-03"
+    ],
+    "mildly_active_months": [
+      "2025-07",
+      "2025-11",
+      "2026-04"
+    ],
+    "boring_months": [
+      "2025-06",
+      "2025-08",
+      "2025-10",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-05"
+    ],
+    "baseline_monthly_protected_outflow_reference_inr": {
+      "non_investment_fixed_obligations_inr": 176248,
+      "protected_investments_inr": 40000,
+      "committed_outflows_before_variable_and_card_settlement_inr": 216248
+    }
+  },
+  "monthly_plans": [
+    {
+      "month_id": "2025-06",
+      "month_name": "June 2025",
+      "month_type": "boring",
+      "source_year_arc_summary": "Disciplined working-capital start. Early-month protected obligations stack up, but June remains survivable without rescue inflows.",
+      "month_role": "First month baseline with narrow working-capital discipline.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [
+        {
+          "carryover_name": "HDFC Regalia Gold prior statement total amount due",
+          "expected_amount_band_inr": {
+            "low": 61850,
+            "high": 61850
+          },
+          "source_account_or_product": "priya_cc_hdfc_regalia_gold_001",
+          "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+          "timing_window": "early_month",
+          "generation_rule": "Carry over from starting state as early-month full card payment; do not treat as new June discretionary spend."
+        }
+      ],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 218500
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "medium",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 16500,
+          "high": 26000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 9500,
+          "high": 16000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 2500
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 5500
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 2500,
+          "high": 8500
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1500
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Protected obligation month start",
+          "catalog_item_ids_allowed": [
+            "housing_priya_rent",
+            "housing_priya_domestic_help_payment",
+            "housing_priya_cook_payment",
+            "housing_priya_apartment_maintenance",
+            "utility_bescom_electricity",
+            "utility_priya_broadband",
+            "utility_priya_mobile_postpaid",
+            "utility_priya_milk_subscription",
+            "family_priya_father_support",
+            "family_priya_mother_support",
+            "family_priya_father_medicines_support",
+            "finance_priya_education_loan_emi",
+            "finance_priya_parag_parikh_sip",
+            "finance_priya_mirae_asset_sip",
+            "finance_priya_uti_nifty_sip",
+            "finance_priya_axis_small_cap_sip",
+            "finance_priya_icici_rd_installment",
+            "finance_priya_nps_monthly_contribution"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 0,
+            "high": 0
+          },
+          "max_occurrence_hint": "Recurring scheduler owns this; day generator should not randomize it.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        },
+        {
+          "context_name": "Normal groceries, commute, and pharmacy",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "mobility_uber_cab",
+            "mobility_namma_metro",
+            "medical_local_pharmacy_purchase"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 26000,
+            "high": 46000
+          },
+          "max_occurrence_hint": "Low-to-normal routine only; not daily merchant coverage.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Small controlled fatigue spends",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "lifestyle_beauty_skincare_service",
+            "lifestyle_books_learning_purchase"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 2500,
+            "high": 8500
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No family medical pressure until September."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+          "reason": "No routine liquid fund redemption."
+        },
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "No June family travel."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No electronics purchase."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 25000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2025-07",
+      "month_name": "July 2025",
+      "month_type": "mildly_active",
+      "source_year_arc_summary": "Rainy commute and late-work weeks increase cabs and delivery, with a few controlled personal-care or learning spends.",
+      "month_role": "Monsoon and late-work activity without liquidity crisis.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 30000,
+        "high": 50000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "medium",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 22000,
+          "high": 36000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 12500,
+          "high": 22000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 3000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 5000
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 6000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 5000,
+          "high": 14000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1800
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Rainy office commute and late work",
+          "catalog_item_ids_allowed": [
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_metro",
+            "work_late_work_ride_home",
+            "work_late_work_dinner_order"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 17000,
+            "high": 32000
+          },
+          "max_occurrence_hint": "2-5 selected occurrences across plausible office days; not daily.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Controlled books and personal care",
+          "catalog_item_ids_allowed": [
+            "lifestyle_books_learning_purchase",
+            "lifestyle_beauty_skincare_service",
+            "shopping_personal_grooming_cosmetics"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 5000,
+            "high": 14000
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Planned groceries and household top-up",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 15000,
+            "high": 24000
+          },
+          "max_occurrence_hint": "Routine but not coverage-driven.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Milk subscription is protected recurring, so this context is limited to optional grocery/top-up planning."
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Rain commute and late-work uplift",
+          "catalog_item_ids": [
+            "mobility_uber_cab",
+            "work_late_work_ride_home",
+            "work_late_work_dinner_order"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 8000,
+            "high": 18000
+          },
+          "funding_or_payment_posture": "Card and UPI within monthly cash flow; full card autopay remains protected.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "minor_context_texture",
+          "downstream_guardrail": "Keep this limited to plausible rainy office days."
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "family_travel_home_booking",
+          "reason": "No Kochi travel this month."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No family medical event."
+        },
+        {
+          "catalog_item_id_or_context": "finance_insurance_premium_payment",
+          "reason": "Parents insurance pressure is reserved for September."
+        },
+        {
+          "catalog_item_id_or_context": "finance_priya_nps_tax_saving_top_up",
+          "reason": "Tax top-up reserved for March."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 25000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2025-08",
+      "month_name": "August 2025",
+      "month_type": "boring",
+      "source_year_arc_summary": "Lease-renewal awareness and standard home upkeep, but no deposit change, relocation, or major repair shock.",
+      "month_role": "Lease-renewal awareness without deposit, relocation, or repair shock.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "low",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 16000,
+          "high": 26000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 8500,
+          "high": 15000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 3000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 7000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 2500,
+          "high": 9000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1500
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Lease renewal as context, not shock",
+          "catalog_item_ids_allowed": [
+            "housing_household_repair_plumber_electrician"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 0,
+            "high": 2500
+          },
+          "max_occurrence_hint": "Administrative texture only; no relocation or deposit event.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Lease renewal creates narrative/admin context only; protected rent and apartment maintenance are generated separately.",
+          "lease_context_rule": "Lease renewal is narrative/admin context only. Rent and apartment maintenance are generated from known_recurring_obligations_plan, not this selected context."
+        },
+        {
+          "context_name": "Routine groceries only",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 16000,
+            "high": 26000
+          },
+          "max_occurrence_hint": "Routine groceries only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Staff and milk are protected recurring obligations and must not be duplicated from selected contexts."
+        },
+        {
+          "context_name": "Low-cost friend/social outlet",
+          "catalog_item_ids_allowed": [
+            "social_priya_friend_dinner_shared_cab_settlement",
+            "food_restaurant_dinner",
+            "food_cafe_coffee_snacks"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 2500,
+            "high": 9000
+          },
+          "max_occurrence_hint": "0-1 controlled plan.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+          "reason": "No appliance shock selected in lease month."
+        },
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "Kochi travel is reserved for September stress context."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No medical pressure yet."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+          "reason": "No redemption."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 25000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2025-09",
+      "month_name": "September 2025",
+      "month_type": "stress",
+      "source_year_arc_summary": "Single true stress month: father medical pressure in Kochi, parents health insurance premium, and Onam family obligations cluster coherently.",
+      "month_role": "Only true stress month: father medical support, parents insurance, Onam, and family travel context.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 35000,
+        "high": 60000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 220000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        },
+        {
+          "obligation_name": "Star Health parents health insurance annual premium",
+          "catalog_item_id": "finance_insurance_premium_payment",
+          "expected_amount_band_inr": {
+            "low": 68500,
+            "high": 68500
+          },
+          "payment_source_account_preference": "priya_dep_hdfc_salary_001 or priya_dep_icici_buffer_001",
+          "payment_rail_preference": "credit card or net banking",
+          "timing_window": "annual_month",
+          "generation_rule": "Known September annual premium; may coexist with medical stress but must not create card revolve."
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "redemption",
+        "liquid_fund_amount_band_inr": {
+          "low": 70000,
+          "high": 120000
+        },
+        "investment_guardrail": "Liquid fund redemption allowed only for the selected September stress context, never routine lifestyle."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "pressure",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 14000,
+          "high": 24000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 12000,
+          "high": 26000
+        },
+        "family_support_extra_inr": {
+          "low": 15000,
+          "high": 35000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 80000,
+          "high": 105000
+        },
+        "shopping_gifts_household_inr": {
+          "low": 5000,
+          "high": 15000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 0,
+          "high": 5000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1000
+        },
+        "travel_home_or_local_inr": {
+          "low": 18000,
+          "high": 42000
+        },
+        "cash_atm_inr": {
+          "low": 3000,
+          "high": 10000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Father medical and diagnostics support",
+          "catalog_item_ids_allowed": [
+            "medical_hospital_payment",
+            "medical_diagnostic_lab_test",
+            "medical_clinic_consultation",
+            "medical_tata_1mg_medicine_diagnostics"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 80000,
+            "high": 105000
+          },
+          "max_occurrence_hint": "One coherent medical episode only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "claim_reimbursement_timing_rule": "No reimbursement credit in September. Claim reimbursement, if generated, belongs to October only and must reference this September medical episode."
+        },
+        {
+          "context_name": "Onam family support and travel context excluding parents insurance premium",
+          "catalog_item_ids_allowed": [
+            "family_festival_gift_transfer",
+            "family_travel_home_booking",
+            "travel_flight_blr_kochi",
+            "mobility_airport_cab_bus"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 22000,
+            "high": 56000
+          },
+          "max_occurrence_hint": "One coherent Onam/family travel context only; parents insurance premium is generated separately from known_recurring_obligations_plan.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "September is the selected family stress month, but parents insurance premium must not be duplicated inside this context."
+        },
+        {
+          "context_name": "Suppressed normal discretionary",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "medical_local_pharmacy_purchase",
+            "mobility_namma_metro"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 14000,
+            "high": 24000
+          },
+          "max_occurrence_hint": "Routine essentials only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Father medical initial payment and diagnostics",
+          "catalog_item_ids": [
+            "medical_hospital_payment",
+            "medical_diagnostic_lab_test",
+            "medical_clinic_consultation"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 80000,
+            "high": 105000
+          },
+          "funding_or_payment_posture": "Initial payment may use card/bank; claim reimbursement should arrive later, not as same-day rescue.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": false,
+          "selected_event_kind": "stress_event",
+          "downstream_guardrail": "Keep it one medical episode; no second unrelated medical crisis.",
+          "medical_episode_source_of_truth": true,
+          "claim_reimbursement_timing_rule": "This event creates the medical payment basis only. Reimbursement is not generated in September."
+        },
+        {
+          "event_name": "Star Health parents health insurance annual premium",
+          "catalog_item_ids": [
+            "finance_insurance_premium_payment"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 68500,
+            "high": 68500
+          },
+          "funding_or_payment_posture": "Known annual premium generated once from known_recurring_obligations_plan; visible bank/card rail only.",
+          "known_annual_obligation": true,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "known_annual_obligation",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true,
+          "downstream_guardrail": "Do not create a second premium transaction from this selected event."
+        },
+        {
+          "event_name": "Onam family support and Kochi travel context",
+          "catalog_item_ids": [
+            "family_festival_gift_transfer",
+            "family_travel_home_booking",
+            "travel_flight_blr_kochi",
+            "mobility_airport_cab_bus"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 22000,
+            "high": 56000
+          },
+          "funding_or_payment_posture": "Funded from salary/buffer while preserving protected obligations; may coexist with September liquid-fund redemption if needed.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": false,
+          "selected_event_kind": "stress_event",
+          "downstream_guardrail": "Do not expand into leisure hotel stay, extra electronics, or repeated family travel."
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No electronics in stress month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_myntra_ajio_clothes",
+          "reason": "Deprioritize discretionary clothing."
+        },
+        {
+          "catalog_item_id_or_context": "social_priya_friend_dinner_shared_cab_settlement",
+          "reason": "Social dinners should be mostly absent."
+        },
+        {
+          "catalog_item_id_or_context": "finance_priya_education_loan_prepayment",
+          "reason": "No loan prepayment during stress."
+        },
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+          "reason": "No leisure stay; any travel is family/medical context only."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": true,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "expected_debit_band_inr": {
+          "low": 80000,
+          "high": 105000
+        },
+        "lag_behavior": "Medical payment and diagnostics may occur in September, but claim reimbursement must lag into a later month and cannot be same-day rescue.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 25000,
+          "high": 125000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2025-10",
+      "month_name": "October 2025",
+      "month_type": "boring",
+      "source_year_arc_summary": "Post-September recovery with quiet routine and possible lagged claim reimbursement tied to September medical payment.",
+      "month_role": "Post-stress recovery with lagged claim reimbursement and quiet routine.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": [
+          "lagged_insurance_claim_reimbursement_from_september_medical_event"
+        ]
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "medium",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "October may have a high card bill payment because of September stress, but current-month card usage should remain boring/medium. Full payment remains protected.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 14500,
+          "high": 24000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 8500,
+          "high": 14500
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 2500,
+          "high": 7000
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 4000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 2500,
+          "high": 8500
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1200
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Lagged medical claim reimbursement paperwork",
+          "catalog_item_ids_allowed": [
+            "medical_insurance_claim_reimbursement_tpa_credit"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 45000,
+            "high": 60000
+          },
+          "max_occurrence_hint": "One lagged reimbursement credit only if September medical payment exists.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "October may receive a lagged claim reimbursement from the September medical episode. This should not create new medical spending.",
+          "cashflow_direction": "credit_only",
+          "source_event_reference": "2025-09 father medical initial payment and diagnostics"
+        },
+        {
+          "context_name": "Small residual pharmacy after September episode",
+          "catalog_item_ids_allowed": [
+            "medical_local_pharmacy_purchase",
+            "medical_tata_1mg_medicine_diagnostics"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 0,
+            "high": 7000
+          },
+          "max_occurrence_hint": "0-2 small follow-up purchases only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "Do not duplicate September diagnostics or hospital payments.",
+          "why_selected": "Small follow-up medicine/paperwork only; not a second medical pressure month."
+        },
+        {
+          "context_name": "Quiet grocery and household top-up routine",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 14500,
+            "high": 24000
+          },
+          "max_occurrence_hint": "Routine groceries/top-up only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Staff and milk are protected recurring obligations and must not be duplicated from selected contexts."
+        },
+        {
+          "context_name": "Limited personal recovery spend",
+          "catalog_item_ids_allowed": [
+            "lifestyle_beauty_skincare_service",
+            "lifestyle_books_learning_purchase",
+            "food_cafe_coffee_snacks"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 2500,
+            "high": 8500
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Lagged medical claim reimbursement",
+          "catalog_item_ids": [
+            "medical_insurance_claim_reimbursement_tpa_credit"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 45000,
+            "high": 60000
+          },
+          "funding_or_payment_posture": "Credit should appear only after September payment and claim lag; use to rebuild buffer, not fund lifestyle.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "reimbursement_lag",
+          "downstream_guardrail": "Do not classify as income; do not use as magical rescue for unrelated spending.",
+          "cashflow_direction": "credit_only",
+          "source_event_reference": "2025-09 father medical initial payment and diagnostics"
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "finance_insurance_premium_payment",
+          "reason": "No second insurance premium this month."
+        },
+        {
+          "catalog_item_id_or_context": "family_travel_home_booking",
+          "reason": "No repeat Kochi travel immediately after September."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No electronics rebound."
+        },
+        {
+          "catalog_item_id_or_context": "social_wedding_housewarming_pooled_gift",
+          "reason": "Avoid extra social pressure while recovering."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": true,
+        "expected_credit_band_inr": {
+          "low": 45000,
+          "high": 60000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 7000
+        },
+        "lag_behavior": "Claim reimbursement may arrive only as a lagged credit traceable to the September medical episode; use for buffer rebuild, not lifestyle.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 60000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2025-11",
+      "month_name": "November 2025",
+      "month_type": "mildly_active",
+      "source_year_arc_summary": "Controlled Diwali/social month with gifts, personal care, and maybe one friend dinner. Priya participates without breaking discipline.",
+      "month_role": "Controlled Diwali and friend-social month without travel or electronics.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 30000,
+        "high": 50000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "medium",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 17000,
+          "high": 28000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 9500,
+          "high": 17000
+        },
+        "family_support_extra_inr": {
+          "low": 5000,
+          "high": 18000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 12000,
+          "high": 28000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 5000,
+          "high": 14000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1800
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 5000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Controlled festival gifting",
+          "catalog_item_ids_allowed": [
+            "family_festival_gift_transfer",
+            "shopping_gift_card_online_gift_purchase",
+            "shopping_myntra_ajio_clothes",
+            "shopping_amazon"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 14000,
+            "high": 32000
+          },
+          "max_occurrence_hint": "One controlled Diwali cluster.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Friend dinner and shared cab",
+          "catalog_item_ids_allowed": [
+            "social_priya_friend_dinner_shared_cab_settlement",
+            "food_restaurant_dinner",
+            "mobility_uber_cab"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 4500,
+            "high": 12000
+          },
+          "max_occurrence_hint": "0-1 friend plan.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Personal care refresh",
+          "catalog_item_ids_allowed": [
+            "lifestyle_beauty_skincare_service",
+            "shopping_personal_grooming_cosmetics"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 3500,
+            "high": 9000
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Controlled Diwali gifts and personal care",
+          "catalog_item_ids": [
+            "family_festival_gift_transfer",
+            "shopping_gift_card_online_gift_purchase",
+            "shopping_myntra_ajio_clothes",
+            "lifestyle_beauty_skincare_service"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 14000,
+            "high": 32000
+          },
+          "funding_or_payment_posture": "Card/UPI within salary cash flow; full card autopay protected.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "minor_context_texture",
+          "downstream_guardrail": "Keep total controlled; do not turn Diwali into electronics or travel pressure."
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "No family travel after September's Kochi stress."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No big electronics purchase."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+          "reason": "No liquid fund redemption for festival spending."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No second medical crisis."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 25000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2025-12",
+      "month_name": "December 2025",
+      "month_type": "boring",
+      "source_year_arc_summary": "Year-end work fatigue and known Max Life term insurance premium, with otherwise quiet routines.",
+      "month_role": "Quiet year-end with known term insurance premium.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        },
+        {
+          "obligation_name": "Max Life term insurance annual premium",
+          "catalog_item_id": "finance_insurance_premium_payment",
+          "expected_amount_band_inr": {
+            "low": 16800,
+            "high": 16800
+          },
+          "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+          "payment_rail_preference": "net banking",
+          "timing_window": "annual_month",
+          "generation_rule": "Known December annual premium; planned and not a stress event."
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "low",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 15000,
+          "high": 26000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 9000,
+          "high": 16000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 3000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 5000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 3000,
+          "high": 10000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 2500
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Quiet year-end routine",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_cafe_coffee_snacks",
+            "work_late_work_dinner_order",
+            "work_late_work_ride_home"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 12000,
+            "high": 24000
+          },
+          "max_occurrence_hint": "Low routine only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Books/learning instead of party spending",
+          "catalog_item_ids_allowed": [
+            "lifestyle_books_learning_purchase",
+            "subscription_news_learning"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 2500,
+            "high": 8000
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Known annual term insurance premium",
+          "catalog_item_ids_allowed": [
+            "finance_insurance_premium_payment"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 16800,
+            "high": 16800
+          },
+          "max_occurrence_hint": "One annual premium only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Priya Max Life term insurance annual premium",
+          "catalog_item_ids": [
+            "finance_insurance_premium_payment"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 16800,
+            "high": 16800
+          },
+          "funding_or_payment_posture": "Paid from visible HDFC salary account or card as planned annual obligation; full card autopay still protected.",
+          "known_annual_obligation": true,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "known_annual_obligation",
+          "downstream_guardrail": "Known annual premium; do not create extra pressure or second insurance event.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "social_pub_brewery_night",
+          "reason": "Pub-heavy New Year behavior is not Priya-compatible this year."
+        },
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+          "reason": "No holiday travel selected."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+          "reason": "No home repair shock."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+          "reason": "No redemption."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 25000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2026-01",
+      "month_name": "January 2026",
+      "month_type": "boring",
+      "source_year_arc_summary": "New-year reset into work planning and ordinary life. Spending remains controlled and there is no travel or pressure event.",
+      "month_role": "New-year reset, controlled routine, no travel or pressure.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "low",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 14500,
+          "high": 24000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 8500,
+          "high": 15000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 2500
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 5000
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 5000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 3000,
+          "high": 10000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Work planning and controlled office rhythm",
+          "catalog_item_ids_allowed": [
+            "work_late_work_dinner_order",
+            "work_late_work_ride_home",
+            "food_office_cafeteria_pantry_extras",
+            "mobility_namma_metro"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 10000,
+            "high": 22000
+          },
+          "max_occurrence_hint": "Low-to-moderate work texture only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Health and routine self-care",
+          "catalog_item_ids_allowed": [
+            "medical_local_pharmacy_purchase",
+            "lifestyle_beauty_skincare_service",
+            "lifestyle_gym_sports_class_drop_in"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 3500,
+            "high": 10000
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Normal groceries",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 14500,
+            "high": 24000
+          },
+          "max_occurrence_hint": "Routine groceries only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "Do not duplicate grocery need with another grocery merchant unless explicitly justified.",
+          "why_selected": "Boring January routine."
+        },
+        {
+          "context_name": "Protected family support reminder",
+          "catalog_item_ids_allowed": [
+            "family_priya_father_support",
+            "family_priya_mother_support",
+            "family_priya_father_medicines_support"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 0,
+            "high": 0
+          },
+          "max_occurrence_hint": "Recurring scheduler owns this.",
+          "time_budget_guardrail": "No day-plan randomization.",
+          "same_need_deduplication_guardrail": "Do not generate these separately from known_recurring_obligations_plan.",
+          "why_selected": "Family support is protected recurring, not optional January spend.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        }
+      ],
+      "selected_rare_or_pressure_events": [],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "family_priya_sister_ananya_support",
+          "reason": "No sister emergency selected this month."
+        },
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "No January family travel."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No electronics purchase."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No medical pressure."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 25000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2026-02",
+      "month_name": "February 2026",
+      "month_type": "boring",
+      "source_year_arc_summary": "Quiet month before March tax and vehicle pressure. Priya deliberately keeps discretionary light.",
+      "month_role": "Quiet pre-March restraint and planning month.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "low",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 14500,
+          "high": 23500
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 7500,
+          "high": 13500
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 4000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 2000,
+          "high": 7500
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1500
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Pre-March restraint",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "lifestyle_laundry_dry_cleaning",
+            "food_cafe_coffee_snacks"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 12000,
+            "high": 22000
+          },
+          "max_occurrence_hint": "Routine only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Basic Activa/local errands",
+          "catalog_item_ids_allowed": [
+            "mobility_priya_activa_petrol_refill",
+            "mobility_parking_charges",
+            "medical_local_pharmacy_purchase"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 1800,
+            "high": 5000
+          },
+          "max_occurrence_hint": "Do not generate annual service or insurance before March.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Low-cost friend catch-up",
+          "catalog_item_ids_allowed": [
+            "social_priya_friend_dinner_shared_cab_settlement",
+            "food_restaurant_dinner"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 2500,
+            "high": 8500
+          },
+          "max_occurrence_hint": "0-1 selected occurrence.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "finance_priya_nps_tax_saving_top_up",
+          "reason": "Defer tax top-up to March."
+        },
+        {
+          "catalog_item_id_or_context": "finance_vehicle_insurance_renewal",
+          "reason": "Defer Activa insurance renewal to March."
+        },
+        {
+          "catalog_item_id_or_context": "family_travel_home_booking",
+          "reason": "No travel."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+          "reason": "No household repair shock."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 20000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2026-03",
+      "month_name": "March 2026",
+      "month_type": "pressure",
+      "source_year_arc_summary": "Tax-saving/NPS top-up and Activa insurance/service create pressure, but less severe than September.",
+      "month_role": "Selected pressure month for NPS tax-saving top-up and Activa annual costs.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 28000,
+        "high": 45000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 220000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        },
+        {
+          "obligation_name": "Acko Activa two-wheeler insurance annual premium",
+          "catalog_item_id": "finance_vehicle_insurance_renewal",
+          "expected_amount_band_inr": {
+            "low": 7200,
+            "high": 7200
+          },
+          "payment_source_account_preference": "priya_dep_hdfc_salary_001 or priya_dep_icici_buffer_001",
+          "payment_rail_preference": "credit card, UPI, or net banking",
+          "timing_window": "annual_month",
+          "generation_rule": "Known March vehicle insurance renewal; pair with Activa service context only."
+        },
+        {
+          "obligation_name": "Activa annual service",
+          "catalog_item_id": "mobility_scooter_activa_service",
+          "expected_amount_band_inr": {
+            "low": 2500,
+            "high": 5800
+          },
+          "payment_source_account_preference": "priya_dep_hdfc_salary_001 or priya_dep_icici_buffer_001",
+          "payment_rail_preference": "UPI or card",
+          "timing_window": "annual_month",
+          "generation_rule": "Annual service/maintenance within selected March pressure; do not turn into accident or repair drama."
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "selected",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 40000,
+          "high": 55000
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "pressure",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 14000,
+          "high": 23000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 10000,
+          "high": 20000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 2500
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 4000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 1500,
+          "high": 6000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1000
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Tax-saving and NPS top-up",
+          "catalog_item_ids_allowed": [
+            "finance_priya_nps_tax_saving_top_up"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 40000,
+            "high": 55000
+          },
+          "max_occurrence_hint": "One selected top-up action only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Activa insurance and annual service",
+          "catalog_item_ids_allowed": [
+            "finance_vehicle_insurance_renewal",
+            "mobility_scooter_activa_service"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 8500,
+            "high": 13000
+          },
+          "max_occurrence_hint": "One annual vehicle-pressure cluster.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true,
+          "vehicle_specific_rendering_note": "For Priya, render mobility_scooter_activa_service as Honda Activa service/maintenance, not Aarav's TVS Ntorq."
+        },
+        {
+          "context_name": "Reduced discretionary baseline",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "medical_local_pharmacy_purchase",
+            "mobility_namma_metro"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 14000,
+            "high": 23000
+          },
+          "max_occurrence_hint": "Routine essentials only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "NPS/tax-saving top-up",
+          "catalog_item_ids": [
+            "finance_priya_nps_tax_saving_top_up"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 40000,
+            "high": 55000
+          },
+          "funding_or_payment_posture": "Funded from salary and planned buffer; not from debt.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": false,
+          "selected_event_kind": "pressure_event",
+          "downstream_guardrail": "Do not add tax refund as same-month rescue."
+        },
+        {
+          "event_name": "Activa insurance and service",
+          "catalog_item_ids": [
+            "finance_vehicle_insurance_renewal",
+            "mobility_scooter_activa_service"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 8500,
+            "high": 13000
+          },
+          "funding_or_payment_posture": "Paid from salary/buffer; full card autopay still protected.",
+          "known_annual_obligation": true,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "pressure_event",
+          "downstream_guardrail": "Generate the insurance premium and service once from known_recurring_obligations_plan. This event is a planning marker only; do not create accident, major repair, or duplicate vehicle transactions.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true,
+          "vehicle_specific_rendering_note": "For Priya, render mobility_scooter_activa_service as Honda Activa service/maintenance, not Aarav's TVS Ntorq."
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "September was the medical stress month; no second medical crisis."
+        },
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "No travel in March pressure month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No electronics purchase."
+        },
+        {
+          "catalog_item_id_or_context": "finance_priya_education_loan_prepayment",
+          "reason": "Loan prepayment waits for April bonus context if selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_income_tax_payment_refund",
+          "reason": "No tax refund or separate income-tax payment is selected."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 10000,
+          "high": 70000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2026-04",
+      "month_name": "April 2026",
+      "month_type": "mildly_active",
+      "source_year_arc_summary": "Planned annual bonus month. Priya uses it for buffer replenishment, possible education-loan prepayment, and insurance planning rather than lifestyle inflation.",
+      "month_role": "Planned employer bonus allocation month with disciplined financial lifecycle actions.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 25000,
+        "high": 42000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": true,
+        "bonus_context_note": "Planned ZeptoScale annual performance bonus context; exact credit timing deferred and must not be used as rescue or lifestyle inflation.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": [
+          {
+            "credit_type": "planned_employer_bonus",
+            "expected_amount_band_inr": {
+              "low": 320000,
+              "high": 340000
+            },
+            "classification_guardrail": "Employer bonus is planned compensation, not a rescue inflow."
+          }
+        ]
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "purchase_or_replenishment",
+        "liquid_fund_amount_band_inr": {
+          "low": 80000,
+          "high": 160000
+        },
+        "investment_guardrail": "April replenishment/purchase is allowed only from planned bonus allocation after protected obligations."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "medium",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 15000,
+          "high": 26000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 9000,
+          "high": 16000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 3000
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 7000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 5000,
+          "high": 14000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 8000
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Planned ZeptoScale annual bonus allocation",
+          "catalog_item_ids_allowed": [
+            "finance_priya_education_loan_prepayment",
+            "finance_liquid_fund_purchase_redemption"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 120000,
+            "high": 220000
+          },
+          "max_occurrence_hint": "One financial allocation sequence after bonus context.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "liquid_fund_action_constraint": "purchase_or_replenishment_only; redemption is not allowed in April",
+          "cashflow_direction": "debit_to_loan_prepayment_or_debit_to_liquid_fund_purchase_only"
+        },
+        {
+          "context_name": "Normal obligations continue under stronger liquidity",
+          "catalog_item_ids_allowed": [
+            "housing_priya_rent",
+            "housing_priya_domestic_help_payment",
+            "housing_priya_cook_payment",
+            "housing_priya_apartment_maintenance",
+            "utility_bescom_electricity",
+            "utility_priya_broadband",
+            "utility_priya_mobile_postpaid",
+            "utility_priya_milk_subscription",
+            "family_priya_father_support",
+            "family_priya_mother_support",
+            "family_priya_father_medicines_support",
+            "finance_priya_education_loan_emi",
+            "finance_priya_parag_parikh_sip",
+            "finance_priya_mirae_asset_sip",
+            "finance_priya_uti_nifty_sip",
+            "finance_priya_axis_small_cap_sip",
+            "finance_priya_icici_rd_installment",
+            "finance_priya_nps_monthly_contribution"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 0,
+            "high": 0
+          },
+          "max_occurrence_hint": "Recurring scheduler owns these.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        },
+        {
+          "context_name": "Small controlled reward spend",
+          "catalog_item_ids_allowed": [
+            "lifestyle_beauty_skincare_service",
+            "lifestyle_books_learning_purchase",
+            "food_restaurant_dinner"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 5000,
+            "high": 14000
+          },
+          "max_occurrence_hint": "0-2 selected occurrences.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Planned ZeptoScale bonus-led education loan prepayment or buffer rebuild",
+          "catalog_item_ids": [
+            "finance_priya_education_loan_prepayment",
+            "finance_liquid_fund_purchase_redemption"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 120000,
+            "high": 220000
+          },
+          "funding_or_payment_posture": "Use planned ZeptoScale bonus for education loan prepayment and/or liquid fund purchase/replenishment only. Do not generate liquid fund redemption in April.",
+          "known_annual_obligation": false,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "bonus_allocation",
+          "downstream_guardrail": "This is a planned bonus context, not a rescue inflow. Do not justify unrelated overspending.",
+          "liquid_fund_action_constraint": "purchase_or_replenishment_only; redemption is not allowed in April",
+          "cashflow_direction": "debit_to_loan_prepayment_or_debit_to_liquid_fund_purchase_only"
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking",
+          "reason": "No bonus-funded vacation selected."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store",
+          "reason": "No electronics splurge."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment",
+          "reason": "No medical event."
+        },
+        {
+          "catalog_item_id_or_context": "family_travel_home_booking",
+          "reason": "Do not combine bonus allocation with family travel unless later stage explicitly chooses a small visit."
+        },
+        {
+          "catalog_item_id_or_context": "liquid_fund_redemption",
+          "reason": "April liquid fund action is purchase/replenishment only from bonus allocation; redemption is not allowed."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption:redemption_subaction",
+          "reason": "The broad catalog item is allowed only for liquid fund purchase/replenishment in April. Redemption subaction is blocked."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 50000,
+          "high": 200000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    },
+    {
+      "month_id": "2026-05",
+      "month_name": "May 2026",
+      "month_type": "boring",
+      "source_year_arc_summary": "Stable year-close with HDFC ERGO self-health insurance annual premium and otherwise routine payments.",
+      "month_role": "Stable year-close with known self-health insurance premium.",
+      "aggregate_discretionary_soft_cap_inr": {
+        "low": 18000,
+        "high": 32000,
+        "excludes": [
+          "salary",
+          "rent",
+          "staff payments",
+          "family support",
+          "father medicines support",
+          "utilities",
+          "insurance annual premiums",
+          "SIPs",
+          "RD",
+          "NPS",
+          "education loan EMI",
+          "credit card bill payment",
+          "self-transfers",
+          "family reimbursements",
+          "insurance claim reimbursement",
+          "liquid fund redemption credit",
+          "bonus inflow"
+        ],
+        "interpretation": "Soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not an account balance."
+      },
+      "income_plan": {
+        "salary_expected": true,
+        "salary_amount_inr": 265000,
+        "salary_timing_rule": "Last working day near evening; exact date deferred.",
+        "bonus_allowed": false,
+        "bonus_context_note": "No bonus context selected for this month.",
+        "other_income_allowed": false,
+        "allowed_non_salary_credits": []
+      },
+      "starting_state_carryover_obligations": [],
+      "known_recurring_obligations_plan": [
+        {
+          "obligation_name": "Protected monthly recurring obligations excluding credit card bill payment",
+          "catalog_item_id": "template_priya_protected_recurring_obligations_excluding_card_bill",
+          "expected_amount_band_inr": {
+            "low": 214000,
+            "high": 219000
+          },
+          "payment_source_account_preference": "Use source preferences from template",
+          "payment_rail_preference": "Use rail preferences from template",
+          "timing_window": "early_month | mid_month | variable_monthly",
+          "generation_rule": "Protected monthly recurring obligations continue. This aggregate excludes credit card bill payment, which is handled separately by credit_card_plan and any starting_state_carryover_obligations. Do not duplicate card bill payment here.",
+          "template_reference": "known_monthly_recurring_obligations_template_excluding_credit_card_bill_payment",
+          "excludes": [
+            "HDFC Regalia Gold total amount due"
+          ]
+        },
+        {
+          "obligation_name": "HDFC ERGO self-health insurance annual premium",
+          "catalog_item_id": "finance_insurance_premium_payment",
+          "expected_amount_band_inr": {
+            "low": 24500,
+            "high": 24500
+          },
+          "payment_source_account_preference": "priya_dep_hdfc_salary_001",
+          "payment_rail_preference": "credit card or net banking",
+          "timing_window": "annual_month",
+          "generation_rule": "Known May annual premium; planned, no health-crisis escalation."
+        }
+      ],
+      "investment_and_savings_plan": {
+        "equity_sips_status": "success",
+        "equity_sips_total_amount_inr": 25000,
+        "rd_status": "success",
+        "rd_amount_inr": 10000,
+        "nps_monthly_status": "success",
+        "nps_monthly_amount_inr": 5000,
+        "nps_tax_saving_topup_action": "none",
+        "nps_tax_saving_topup_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "liquid_fund_action": "none",
+        "liquid_fund_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "investment_guardrail": "All protected investments succeed. No liquid fund action selected."
+      },
+      "credit_card_plan": {
+        "expected_card_usage_level": "low",
+        "payment_behavior": "full_payment",
+        "revolve_allowed": false,
+        "revolve_amount_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "statement_pressure_note": "Card use may vary with monthly context, but HDFC Regalia total amount due must be paid in full.",
+        "card_posting_guardrail": "Card purchases post to HDFC Regalia card first; do not duplicate as bank debits."
+      },
+      "pay_later_plan": {
+        "bnpl_allowed": false,
+        "guardrail": "Priya cannot use BNPL or pay-later."
+      },
+      "spend_envelopes": {
+        "food_delivery_grocery_inr": {
+          "low": 14500,
+          "high": 24000
+        },
+        "commute_vehicle_fuel_inr": {
+          "low": 8500,
+          "high": 15000
+        },
+        "family_support_extra_inr": {
+          "low": 0,
+          "high": 2500
+        },
+        "health_pharmacy_diagnostics_inr": {
+          "low": 1800,
+          "high": 4500
+        },
+        "shopping_gifts_household_inr": {
+          "low": 0,
+          "high": 5000
+        },
+        "personal_care_learning_lifestyle_inr": {
+          "low": 3000,
+          "high": 10000
+        },
+        "subscriptions_apps_inr": {
+          "low": 0,
+          "high": 1800
+        },
+        "travel_home_or_local_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "cash_atm_inr": {
+          "low": 0,
+          "high": 3000
+        }
+      },
+      "selected_contexts_for_day_generation": [
+        {
+          "context_name": "Stable year-close routine",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "mobility_uber_cab",
+            "mobility_namma_metro",
+            "medical_local_pharmacy_purchase"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 12000,
+            "high": 22000
+          },
+          "max_occurrence_hint": "Routine only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month."
+        },
+        {
+          "context_name": "Protected family and investment rhythm",
+          "catalog_item_ids_allowed": [
+            "housing_priya_rent",
+            "housing_priya_domestic_help_payment",
+            "housing_priya_cook_payment",
+            "housing_priya_apartment_maintenance",
+            "utility_bescom_electricity",
+            "utility_priya_broadband",
+            "utility_priya_mobile_postpaid",
+            "utility_priya_milk_subscription",
+            "family_priya_father_support",
+            "family_priya_mother_support",
+            "family_priya_father_medicines_support",
+            "finance_priya_education_loan_emi",
+            "finance_priya_parag_parikh_sip",
+            "finance_priya_mirae_asset_sip",
+            "finance_priya_uti_nifty_sip",
+            "finance_priya_axis_small_cap_sip",
+            "finance_priya_icici_rd_installment",
+            "finance_priya_nps_monthly_contribution"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 0,
+            "high": 0
+          },
+          "max_occurrence_hint": "Recurring scheduler owns these.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        },
+        {
+          "context_name": "Known annual self-health insurance premium",
+          "catalog_item_ids_allowed": [
+            "finance_insurance_premium_payment"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 24500,
+            "high": 24500
+          },
+          "max_occurrence_hint": "One annual premium only.",
+          "time_budget_guardrail": "Must fit Priya's weekday/weekend, work mode, location, and upcoming obligations.",
+          "same_need_deduplication_guardrail": "For one underlying need, choose one merchant and one rail unless split fulfillment, reimbursement, refund, retry, or fallback is explicitly justified.",
+          "why_selected": "Selected by Year Arc/persona context for this month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        }
+      ],
+      "selected_rare_or_pressure_events": [
+        {
+          "event_name": "Priya HDFC ERGO self-health insurance annual premium",
+          "catalog_item_ids": [
+            "finance_insurance_premium_payment"
+          ],
+          "month_level_amount_band_inr": {
+            "low": 24500,
+            "high": 24500
+          },
+          "funding_or_payment_posture": "Paid as planned annual premium from visible account or card; protected obligations still clear.",
+          "known_annual_obligation": true,
+          "should_not_escalate_month_type": true,
+          "selected_event_kind": "known_annual_obligation",
+          "downstream_guardrail": "Known annual premium; do not turn May into a health crisis or insurance stress month.",
+          "generation_source": "known_recurring_obligations_plan",
+          "do_not_generate_separately": true
+        }
+      ],
+      "blocked_contexts": [
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption",
+          "reason": "No redemption; only routine buffer maintenance if later planner needs."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_appliance_repair_replacement",
+          "reason": "No appliance shock before year close."
+        },
+        {
+          "catalog_item_id_or_context": "family_priya_sister_ananya_support",
+          "reason": "No late-year sister emergency."
+        },
+        {
+          "catalog_item_id_or_context": "travel_flight_blr_kochi",
+          "reason": "No travel selected."
+        }
+      ],
+      "family_reimbursement_and_claim_plan": {
+        "family_reimbursements_allowed": true,
+        "insurance_claim_reimbursement_allowed": false,
+        "expected_credit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "expected_debit_band_inr": {
+          "low": 0,
+          "high": 2000
+        },
+        "lag_behavior": "Small friend/cab settlements only if selected; no material reimbursement story.",
+        "classification_guardrail": "Do not treat as salary or ordinary income."
+      },
+      "self_transfer_plan": {
+        "allowed": true,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 30000
+        },
+        "source_destination_options": [
+          "priya_dep_hdfc_salary_001 -> priya_dep_icici_buffer_001",
+          "priya_dep_icici_buffer_001 -> priya_dep_hdfc_salary_001"
+        ],
+        "guardrail": "Self-transfers are paired visible movements, not income or spending."
+      },
+      "month_level_realism_checks": {
+        "does_not_add_new_rare_event": true,
+        "does_not_violate_year_arc": true,
+        "does_not_force_catalog_coverage": true,
+        "spend_level_matches_month_type": true,
+        "credit_behavior_matches_year_arc": true,
+        "liquidity_behavior_matches_year_arc": true,
+        "protected_obligations_preserved": true
+      },
+      "day_plan_instructions": [
+        "Do not create exact transaction dates or merchant lines.",
+        "Protect rent, EMI, family support, staff payments, SIPs, RD, NPS, utilities, insurance obligations, and full card payment.",
+        "Use the card-posting-first rule.",
+        "Do not force catalog coverage.",
+        "Keep boring months boring and pressure/stress months limited to selected contexts."
+      ],
+      "ledger_generation_warnings": [
+        "No transactions, raw AA, daily sequence, exact dated merchant lines, balances, or monthly closing balances.",
+        "Card purchases post to HDFC Regalia first; bank impact only on full bill payment.",
+        "Self-transfers are paired owned-account routing, not income/spend.",
+        "Family transfers are external flows; do not create owned counterparty accounts.",
+        "Reimbursements and liquid fund credits are not salary or ordinary income."
+      ]
+    }
+  ],
+  "month_plan_validation": {
+    "no_transactions_generated": true,
+    "no_raw_aa_payload_generated": true,
+    "no_daily_sequence_generated": true,
+    "no_exact_dated_merchant_lines_generated": true,
+    "no_account_balances_generated": true,
+    "all_12_months_present": true,
+    "month_ids_match_year_arc": true,
+    "month_types_match_year_arc": true,
+    "protected_obligations_continue_all_months": true,
+    "credit_card_revolve_months_empty": true,
+    "bnpl_never_allowed": true,
+    "annual_insurance_months_match_year_arc": true,
+    "liquid_fund_actions_match_year_arc": true,
+    "bonus_context_is_planned_not_rescue": true,
+    "claim_reimbursement_not_same_day_rescue": true,
+    "no_tax_refund_rescue": true,
+    "no_new_rare_events_added": true,
+    "blocked_contexts_respected": true,
+    "friend_family_reimbursements_not_income": true,
+    "self_transfers_not_income_or_spend": true,
+    "spend_envelopes_marked_non_additive": true,
+    "aggregate_discretionary_soft_caps_present": true,
+    "ready_for_day_plan_stage": true,
+    "credit_card_bill_payment_excluded_from_recurring_aggregate_and_handled_separately": true,
+    "no_null_catalog_item_ids": true,
+    "selected_context_bands_marked_non_additive": true,
+    "annual_premiums_deduped_against_known_recurring_obligations": true,
+    "september_parents_insurance_not_double_counted": true,
+    "october_claim_reimbursement_is_credit_only": true,
+    "october_no_second_medical_pressure_month": true,
+    "march_activa_annual_costs_deduped": true,
+    "april_liquid_fund_action_purchase_or_replenishment_only": true,
+    "protected_recurring_contexts_do_not_generate_separately": true,
+    "september_claim_reimbursement_removed_from_payment_month": true,
+    "medical_claim_timing_rule_present": true,
+    "protected_recurring_items_removed_from_mixed_optional_contexts": true,
+    "protected_recurring_selected_context_rule_present": true,
+    "october_card_usage_medium_not_high": true,
+    "march_activa_context_excludes_petrol_refill": true,
+    "priya_vehicle_specific_rendering_note_present": true,
+    "april_bonus_allocation_cashflow_direction_set": true,
+    "april_liquid_fund_redemption_subaction_blocked": true
+  },
+  "do_not_generate_yet": [
+    "transactions",
+    "raw AA payload",
+    "daily sequence",
+    "exact dated merchant lines",
+    "account balances",
+    "monthly closing balances"
+  ]
+}

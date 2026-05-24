@@ -1,6 +1,7 @@
 import Foundation
 
-struct UPIQRPayload: Equatable {
+struct UPIQRPayload: Equatable, Identifiable {
+    var id: String { rawValue }
     let rawValue: String
     let payeeVPA: String
     let payeeName: String?
