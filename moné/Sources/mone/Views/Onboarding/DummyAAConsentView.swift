@@ -18,11 +18,11 @@ struct DummyAAConsentView: View {
             .padding(.top, 8)
 
             VStack(alignment: .leading, spacing: 10) {
-                Text("Account Aggregation")
+                Text("Here's what \nhappens next...")
                     .font(.moneDisplayMd)
                     .foregroundStyle(Color.monePrimary)
 
-                Text("Powered by RBI-licensed third party service from OneMoney.")
+                Text("OneMoney shares your encrypted financial statements linked to your PAN directly to you.")
                     .font(.moneBodyLg)
                     .foregroundStyle(Color.moneSecondary)
             }
@@ -69,7 +69,7 @@ struct DummyAAConsentView: View {
                             .foregroundStyle(Color.moneTertiary)
                     }
 
-                    .padding(.vertical, MoneSpacing.section)
+                    .padding(.vertical, MoneSpacing.cardSm)
                 }
                 .padding(.horizontal, MoneSpacing.page)
                 .padding(.vertical, MoneSpacing.section)
@@ -79,7 +79,7 @@ struct DummyAAConsentView: View {
                 MoneIconButton(icon: "chevron.left") {
                     appVM.goBack()
                 }
-                MonePrimaryButton(title: "Verify with phone number") {
+                MonePrimaryButton(title: "Fetch your details") {
                     showPhoneOTP = true
                 }
             }
@@ -88,16 +88,28 @@ struct DummyAAConsentView: View {
             .padding(.bottom, 0)
         }
         .background(Color.moneBackground.ignoresSafeArea())
+        .onAppear {
+            openFetchDetailsSheetIfRequested()
+        }
+        .onChange(of: appVM.shouldOpenAAFetchDetailsSheet) { _, _ in
+            openFetchDetailsSheetIfRequested()
+        }
         .sheet(isPresented: $showPhoneOTP) {
             PhoneOTPSheet(
-                title: "Verify your\nphone number",
-                subtitle: "We\u{2019}ll verify your number before the demo Account Aggregator fetch starts.",
+                title: "Gather your \nFinancial Institutions",
+                subtitle: "OneMoney will enlist all the banks, insurance providers and other financial institutions you have ever dealt with.",
                 showConsent: true
             ) { phone in
                 appVM.verifiedPhone = phone
                 appVM.onboardingStep = .aaFetching
             }
         }
+    }
+
+    private func openFetchDetailsSheetIfRequested() {
+        guard appVM.shouldOpenAAFetchDetailsSheet else { return }
+        appVM.shouldOpenAAFetchDetailsSheet = false
+        showPhoneOTP = true
     }
 }
 

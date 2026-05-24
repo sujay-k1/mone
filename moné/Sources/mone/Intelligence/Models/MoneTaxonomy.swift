@@ -34,6 +34,7 @@ enum MoneCategoryFamily {
     static let insurance = "insurance"
     static let investments = "investments"
     static let debt = "debt"
+    static let creditCard = "credit_card"
     static let tax = "tax"
     static let familySupport = "family_support"
     static let householdHelp = "household_help"

@@ -56,7 +56,7 @@ struct SignUpSheet: View {
                         )
                     }
                 case .otp(let phone):
-                    OTPScreen(vm: authVM, destination: phone)
+                    OTPScreen(vm: authVM, destination: phone, title: "Enter verification\ncode")
                 case .nameEntry:
                     nameEntryContent
                 case .restoring:
@@ -127,7 +127,7 @@ struct SignUpSheet: View {
                 Button {
                     step = .phoneEntry
                 } label: {
-                    Text("Sign up with a different number or email id")
+                    Text("Use a different number or email id")
                         .font(.moneBodyMd)
                         .foregroundStyle(Color.moneSecondary)
                         .underline()

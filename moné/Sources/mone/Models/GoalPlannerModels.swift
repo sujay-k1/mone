@@ -16,6 +16,7 @@ struct PlannerGoal: Identifiable, Codable, Equatable {
     var milestones: [PlannerMilestone]
     var savings: PlannerSavingsDetails?
     var spending: PlannerSpendingDetails?
+    var fundingComponents: [PlannerFundingComponent]? = nil
 
     var progressFraction: Double {
         switch kind {
@@ -270,6 +271,7 @@ struct PlannerSavingsDetails: Codable, Equatable {
     var projectedCompletionDate: Date
     var monthlyContribution: Double
     var safeMonthlyCapacity: Double
+    var durationMonths: Int? = nil
 }
 
 struct PlannerSpendingDetails: Codable, Equatable {
@@ -300,11 +302,65 @@ struct PlannerPlanPreview: Identifiable, Equatable {
     var isRecommended: Bool
 }
 
+enum PlannerFundingSource: Codable, Equatable {
+    case safeCapacity
+    case leakage(PlannerSpendingFocus)
+    case incomeIncrease
+
+    var title: String {
+        switch self {
+        case .safeCapacity: return "Safe monthly capacity"
+        case .leakage(let focus): return focus.title
+        case .incomeIncrease: return "Increase income"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .safeCapacity: return "banknote"
+        case .leakage(let focus): return focus.icon
+        case .incomeIncrease: return "arrow.up.right"
+        }
+    }
+}
+
+struct PlannerFundingComponent: Identifiable, Codable, Equatable {
+    var id: String { sourceKey }
+    var source: PlannerFundingSource
+    var monthlyAmount: Double
+    var maxMonthlyAmount: Double? = nil
+    var baseline: Double?
+    var note: String
+
+    private var sourceKey: String {
+        switch source {
+        case .safeCapacity: return "safeCapacity"
+        case .leakage(let focus): return "leakage.\(focus.rawValue)"
+        case .incomeIncrease: return "incomeIncrease"
+        }
+    }
+}
+
+struct PlannerTimelineOption: Identifiable, Equatable {
+    var id: Int { months }
+    var months: Int
+    var monthlyRequired: Double
+    var safeContribution: Double
+    var leakageNeeded: Double
+    var statusLabel: String
+    var label: String
+    var detail: String
+    var isComfortable: Bool
+    var isPossible: Bool = true
+}
+
 struct PlannerDraft: Equatable {
     var selectedKind: PlannerGoalKind?
     var savingsPurpose: PlannerSavingsPurpose?
     var savingsAmountText: String = ""
     var savingsDeadline: Date = Calendar.current.date(byAdding: .month, value: 12, to: Date()) ?? Date()
+    var selectedDurationMonths: Int?
+    var selectedFundingComponents: [PlannerFundingComponent] = []
 
     var spendingFocus: PlannerSpendingFocus?
     var spendingTargetText: String = ""
@@ -327,6 +383,11 @@ struct PlannerDraft: Equatable {
 
 enum PlannerSheetRoute: Equatable {
     case pickType
+    case corpusPurpose
+    case corpusAmount
+    case corpusTimeline
+    case corpusFunding
+    case corpusPreview
     case savingsDetails
     case savingsPlan
     case spendingFocus

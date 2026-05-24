@@ -20,6 +20,7 @@ struct PlannerGoal: Identifiable, Codable, Equatable {
     var milestones: [PlannerMilestone]
     var savings: PlannerSavingsDetails?
     var spending: PlannerSpendingDetails?
+    var fundingComponents: [PlannerFundingComponent]? = nil
 
     var progressFraction: Double {
         switch kind {
@@ -181,6 +182,27 @@ enum PlannerSavingsPurpose: String, Codable, CaseIterable, Identifiable {
         }
     }
 
+    var shortDetail: String {
+        switch self {
+        case .emergencyFund:
+            return "Safety buffer for uncertainty."
+        case .home:
+            return "Deposit, down payment, or repairs."
+        case .travel:
+            return "Trip fund without disrupting cashflow."
+        case .vehicle:
+            return "Down payment, upgrade, or purchase."
+        case .education:
+            return "Courses, coaching, or certifications."
+        case .medicalReserve:
+            return "Health reserve for unexpected costs."
+        case .largePurchase:
+            return "Plan a high-value purchase."
+        case .custom:
+            return "Create your own target."
+        }
+    }
+
     var icon: String {
         switch self {
         case .emergencyFund: return "shield.checkered"
@@ -274,6 +296,7 @@ struct PlannerSavingsDetails: Codable, Equatable {
     var projectedCompletionDate: Date
     var monthlyContribution: Double
     var safeMonthlyCapacity: Double
+    var durationMonths: Int? = nil
 }
 
 struct PlannerSpendingDetails: Codable, Equatable {
@@ -304,6 +327,67 @@ struct PlannerPlanPreview: Identifiable, Equatable {
     var isRecommended: Bool
 }
 
+enum PlannerFundingSource: Codable, Equatable {
+    case safeCapacity
+    case leakage(PlannerSpendingFocus)
+    case incomeIncrease
+
+    var title: String {
+        switch self {
+        case .safeCapacity:
+            return "Safe monthly capacity"
+        case .leakage(let focus):
+            return focus.title
+        case .incomeIncrease:
+            return "Increase income"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .safeCapacity:
+            return "banknote"
+        case .leakage(let focus):
+            return focus.icon
+        case .incomeIncrease:
+            return "arrow.up.right"
+        }
+    }
+}
+
+struct PlannerFundingComponent: Identifiable, Codable, Equatable {
+    var id: String { sourceKey }
+    var source: PlannerFundingSource
+    var monthlyAmount: Double
+    var maxMonthlyAmount: Double? = nil
+    var baseline: Double?
+    var note: String
+
+    private var sourceKey: String {
+        switch source {
+        case .safeCapacity:
+            return "safeCapacity"
+        case .leakage(let focus):
+            return "leakage.\(focus.rawValue)"
+        case .incomeIncrease:
+            return "incomeIncrease"
+        }
+    }
+}
+
+struct PlannerTimelineOption: Identifiable, Equatable {
+    var id: Int { months }
+    var months: Int
+    var monthlyRequired: Double
+    var safeContribution: Double
+    var leakageNeeded: Double
+    var statusLabel: String
+    var label: String
+    var detail: String
+    var isComfortable: Bool
+    var isPossible: Bool = true
+}
+
 
 
 // MARK: - Planner Financial Context
@@ -326,9 +410,33 @@ struct PlannerFinancialSnapshot: Equatable {
     var operatingRemaining: Double
     var liquidCash: Double
     var confidence: Int?
+    var averageMonths: Int? = nil
+    var averageGoalPlanningFlexibleSpend: Double? = nil
+    var averageGoalPlanningFlexibleAmount: Double? = nil
 
     var knownOutflowBeforeTax: Double {
         max(committed, 0) + max(everyday, 0) + max(fund, 0) + max(liability, 0) + max(review, 0)
+    }
+
+    /// Processed flexible spend for corpus planning.
+    /// This intentionally uses Money Map buckets instead of re-summing raw debit rows,
+    /// because raw rows can include fixed obligations, investments, transfers, and review items.
+    var goalPlanningFlexibleSpend: Double {
+        if let averageGoalPlanningFlexibleSpend {
+            return max(averageGoalPlanningFlexibleSpend, 0)
+        }
+        return max(everyday, 0) + max(review, 0) + max(outliers, 0)
+    }
+
+    var goalPlanningFlexibleAmount: Double {
+        if let averageGoalPlanningFlexibleAmount {
+            return max(averageGoalPlanningFlexibleAmount, 0)
+        }
+        return max(income - max(committed, 0) - max(fund, 0) - max(liability, 0), 0)
+    }
+
+    var comfortableMonthlyGoalSurplus: Double {
+        return max(goalPlanningFlexibleAmount - goalPlanningFlexibleSpend, 0)
     }
 
     /// Conservative monthly headroom for a new goal.
@@ -425,6 +533,71 @@ struct PlannerFinancialSnapshot: Equatable {
         )
     }
 
+    static func fromProcessed(
+        dashboardSummary: DashboardSummary?,
+        moneyMapModel: MoneyMapScreenModel?,
+        monthlyContexts: [PlannerMonthlyFinancialContext] = []
+    ) -> PlannerFinancialSnapshot? {
+        let contexts = monthlyContexts.suffix(12)
+
+        if let dashboardSummary {
+            return PlannerFinancialSnapshot(
+                sourceLabel: "Processed money map",
+                monthLabel: dashboardSummary.month,
+                income: dashboardSummary.income,
+                committed: dashboardSummary.committed,
+                everyday: dashboardSummary.everyday,
+                fund: dashboardSummary.fund,
+                liability: dashboardSummary.liability,
+                subscriptions: dashboardSummary.subscriptionAmount,
+                taxDeduction: dashboardSummary.taxDeduction,
+                outliers: dashboardSummary.outliers,
+                review: dashboardSummary.review,
+                operatingRemaining: dashboardSummary.operatingRemaining,
+                liquidCash: dashboardSummary.liquidBalance,
+                confidence: dashboardSummary.confidence
+            )
+            .applyingMonthlyAverages(Array(contexts))
+        }
+
+        if let moneyMapModel {
+            return PlannerFinancialSnapshot(
+                sourceLabel: "Processed money map",
+                monthLabel: moneyMapModel.month,
+                income: moneyMapModel.income,
+                committed: moneyMapModel.regularCommitted,
+                everyday: moneyMapModel.everyday,
+                fund: moneyMapModel.fund,
+                liability: moneyMapModel.liability,
+                subscriptions: 0,
+                taxDeduction: moneyMapModel.taxDeduction,
+                outliers: moneyMapModel.outliers,
+                review: moneyMapModel.review,
+                operatingRemaining: moneyMapModel.operatingRemaining,
+                liquidCash: max(moneyMapModel.liquidCashImpact, 0),
+                confidence: moneyMapModel.confidence
+            )
+            .applyingMonthlyAverages(Array(contexts))
+        }
+
+        return nil
+    }
+
+    private func applyingMonthlyAverages(_ contexts: [PlannerMonthlyFinancialContext]) -> PlannerFinancialSnapshot {
+        guard !contexts.isEmpty else { return self }
+
+        let months = Double(contexts.count)
+        var copy = self
+        copy.averageMonths = contexts.count
+        copy.averageGoalPlanningFlexibleAmount = contexts
+            .map(\.goalPlanningFlexibleAmount)
+            .reduce(0, +) / months
+        copy.averageGoalPlanningFlexibleSpend = contexts
+            .map(\.goalPlanningFlexibleSpend)
+            .reduce(0, +) / months
+        return copy
+    }
+
     private static func recentMonthlyEverydaySpend(from transactions: [Transaction]) -> Double {
         let calendar = Calendar.current
         let fromDate = calendar.date(byAdding: .day, value: -30, to: Date()) ?? Date()
@@ -442,11 +615,32 @@ struct PlannerFinancialSnapshot: Equatable {
     }
 }
 
+struct PlannerMonthlyFinancialContext: Equatable {
+    var month: String
+    var income: Double
+    var committed: Double
+    var everyday: Double
+    var fund: Double
+    var liability: Double
+    var review: Double
+    var outliers: Double
+
+    var goalPlanningFlexibleAmount: Double {
+        max(income - max(committed, 0) - max(fund, 0) - max(liability, 0), 0)
+    }
+
+    var goalPlanningFlexibleSpend: Double {
+        max(everyday, 0) + max(review, 0) + max(outliers, 0)
+    }
+}
+
 struct PlannerDraft: Equatable {
     var selectedKind: PlannerGoalKind?
     var savingsPurpose: PlannerSavingsPurpose?
     var savingsAmountText: String = ""
     var savingsDeadline: Date = Calendar.current.date(byAdding: .month, value: 12, to: Date()) ?? Date()
+    var selectedDurationMonths: Int?
+    var selectedFundingComponents: [PlannerFundingComponent] = []
 
     var spendingFocus: PlannerSpendingFocus?
     var spendingTargetText: String = ""
@@ -469,6 +663,11 @@ struct PlannerDraft: Equatable {
 
 enum PlannerSheetRoute: Equatable {
     case pickType
+    case corpusPurpose
+    case corpusAmount
+    case corpusTimeline
+    case corpusFunding
+    case corpusPreview
     case savingsDetails
     case savingsPlan
     case spendingFocus

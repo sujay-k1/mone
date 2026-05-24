@@ -101,6 +101,7 @@ struct AAConsentView: View {
                                     .font(.system(size: 22, weight: .regular, design: .monospaced))
                                     .foregroundStyle(Color.monePrimary)
                                     .tint(Color.monePrimary)
+                                    .disabled(isCreatingConsent)
                                     .onChange(of: mobileNumber) { _, newValue in
                                         let digits = newValue.filter(\.isNumber)
                                         if digits != newValue || digits.count > 10 {
@@ -111,6 +112,12 @@ struct AAConsentView: View {
                                         }
                                         errorMessage = nil
                                     }
+
+                                if isCreatingConsent {
+                                    ProgressView()
+                                        .controlSize(.small)
+                                        .tint(Color.monePrimary)
+                                }
                             }
                             .padding(.bottom, 14)
 

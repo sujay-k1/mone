@@ -377,9 +377,9 @@ struct AuthView: View {
                 case .emailEntry:
                     EmailEntryScreen(vm: vm, onBack: { vm.goBack() })
                 case .emailOTP(let email):
-                    OTPScreen(vm: vm, destination: email)
+                    OTPScreen(vm: vm, destination: email, title: vm.authIntent == .login ? "Verify your\nidentity" : "Enter verification\ncode")
                 case .phoneOTP(let phone):
-                    OTPScreen(vm: vm, destination: phone)
+                    OTPScreen(vm: vm, destination: phone, title: vm.authIntent == .login ? "Verify your\nidentity" : "Enter verification\ncode")
                 case .signedIn(let identifier):
                     ProgressView()
                             .tint(Color.monePrimary)
@@ -450,12 +450,25 @@ struct PhoneEntryScreen: View {
                                     .keyboardType(.phonePad)
                                     .font(.system(size: 24, weight: .regular, design: .monospaced))
                                     .foregroundStyle(Color.monePrimary)
-                                    .onChange(of: vm.phone) { oldValue, _ in
+                                    .disabled(vm.isLoading)
+                                    .onChange(of: vm.phone) { oldValue, newValue in
+                                        let sanitized = String(newValue.filter(\.isNumber).prefix(10))
+                                        if sanitized != newValue {
+                                            vm.phone = sanitized
+                                            return
+                                        }
+
                                         let oldDigits = oldValue.filter(\.isNumber)
                                         if oldDigits.count < 6 && vm.isPhoneValid && !vm.isLoading {
                                             Task { await vm.sendPhoneOTP() }
                                         }
                                     }
+
+                                if vm.isLoading {
+                                    ProgressView()
+                                        .controlSize(.small)
+                                        .tint(Color.monePrimary)
+                                }
                             }
                             .padding(.bottom, 14)
 
@@ -511,26 +524,35 @@ struct EmailEntryScreen: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: MoneSpacing.section) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Access your \nsecure vault")
+                        Text("Sign up\nsecurely")
                             .font(.moneDisplayMd)
                             .foregroundStyle(Color.monePrimary)
-                        Text("We are sending an OTP code to your email address.")
+                        Text("Your data stays encrypted. Only you can read it - on device and in the cloud.")
                             .font(.moneBodyLg)
                             .foregroundStyle(Color.moneSecondary)
                     }
                     .padding(.top, 28)
 
                     MoneField(label: "EMAIL ADDRESS") {
-                        TextField("", text: $vm.email, prompt: .monePlaceholder("name@example.com"))
-                            .focused($isEmailFocused)
-                            .textContentType(.emailAddress)
-                            .keyboardType(.emailAddress)
-                            .moneFieldStyle()
-                            .onChange(of: vm.email) { oldValue, _ in
-                                if oldValue.count < 6 && vm.isEmailValid && vm.hasKnownEmailDomain && !vm.isLoading {
-                                    Task { await vm.sendEmailOTP() }
+                        HStack(spacing: 10) {
+                            TextField("", text: $vm.email, prompt: .monePlaceholder("name@example.com"))
+                                .focused($isEmailFocused)
+                                .textContentType(.emailAddress)
+                                .keyboardType(.emailAddress)
+                                .moneFieldStyle()
+                                .disabled(vm.isLoading)
+                                .onChange(of: vm.email) { oldValue, _ in
+                                    if oldValue.count < 6 && vm.isEmailValid && vm.hasKnownEmailDomain && !vm.isLoading {
+                                        Task { await vm.sendEmailOTP() }
+                                    }
                                 }
+
+                            if vm.isLoading {
+                                ProgressView()
+                                    .controlSize(.small)
+                                    .tint(Color.monePrimary)
                             }
+                        }
                     }
 
                     if let error = vm.errorMessage {
@@ -572,6 +594,7 @@ struct EmailEntryScreen: View {
 struct OTPScreen: View {
     @Bindable var vm: AuthViewModel
     let destination: String
+    var title: String = "Enter verification\ncode"
     @State private var resendCountdown: Int = 30
     @State private var timerGeneration: Int = 0
 
@@ -580,11 +603,11 @@ struct OTPScreen: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: MoneSpacing.section) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Enter\nverification code")
+                        Text(title)
                             .font(.moneDisplayMd)
                             .foregroundStyle(Color.monePrimary)
 
-                        (Text("We sent a 6-digit code to ")
+                        (Text("You'll get another 6-digit verification code.")
                             .foregroundStyle(Color.moneSecondary) +
                         Text(destination)
                             .foregroundStyle(Color.monePrimary))

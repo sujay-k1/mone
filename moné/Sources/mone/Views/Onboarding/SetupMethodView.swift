@@ -52,10 +52,10 @@ struct SetupMethodView: View {
                 .padding(.top, 8)
 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Build your\nMoneyMap.")
+                    Text("moné is a tool. \n...like a calculator!")
                         .font(.moneDisplayMd)
                         .foregroundStyle(Color.monePrimary)
-                    Text("Choose how moné learns about your finances.")
+                    Text("Just like a calculator has no business what you add or subtract, we have no business knowing your finances. \n\nAll your data stay on-device.")
                         .font(.moneBodyLg)
                         .foregroundStyle(Color.moneSecondary)
 
@@ -92,7 +92,7 @@ struct SetupMethodView: View {
                             Image(systemName: "lock.fill")
                                 .font(.system(size: 12))
                                 .foregroundStyle(Color.moneSecondary)
-                            Text("moné stores only the final MoneyMap on your device. Raw data is never stored.")
+                            Text("OneMoney is an RBI-Licensed account aggregator. moné does not intercept your data, it directly offloads it on device.")
                                 .font(.moneBodySm)
                                 .foregroundStyle(Color.moneSecondary)
                         }

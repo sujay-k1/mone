@@ -30,6 +30,13 @@ struct MoneyMapItem: Identifiable {
     let status: String
     let symbolName: String
     let kind: MoneyMapBucketKind
+    var dateText: String? = nil
+}
+
+struct CategoryDailyAmount: Identifiable {
+    let id: Int  // day of month (1–31)
+    let day: Int
+    let amount: Double
 }
 
 struct MoneyMapCategoryGroup: Identifiable {
@@ -39,6 +46,12 @@ struct MoneyMapCategoryGroup: Identifiable {
     let transactionCount: Int
     let status: String
     let kind: MoneyMapBucketKind
+    /// Per-day totals for the current month (only days with transactions)
+    let dailyAmounts: [CategoryDailyAmount]
+    /// Per-day totals for the previous month (only days with transactions)
+    let previousMonthDailyAmounts: [CategoryDailyAmount]
+    /// Same category's total spend in the previous month (0 if no data)
+    let previousMonthAmount: Double
 }
 
 struct MoneyMapTransaction: Identifiable, Hashable {
@@ -299,6 +312,13 @@ struct MoneyMapRetagOption: Identifiable, Hashable {
     ]
 }
 
+struct WaterfallRow: Identifiable {
+    let id = UUID()
+    let label: String
+    let amount: Double
+    let kind: MoneyMapBucketKind
+}
+
 struct MoneyMapScreenModel {
     let personaId: PersonaId
     let displayName: String
@@ -322,12 +342,61 @@ struct MoneyMapScreenModel {
     let outstandingLiabilities: Double
 
     let committedItems: [MoneyMapItem]
+    let subscriptionItems: [MoneyMapItem]   // separated for logo-stack UI
     let everydayGroups: [MoneyMapCategoryGroup]
     let outlierItems: [MoneyMapItem]
     let fundItems: [MoneyMapItem]
     let liabilityItems: [MoneyMapItem]
     let reviewItems: [MoneyMapItem]
     let transactions: [MoneyMapTransaction]
+
+    var subscriptions: Double {
+        subscriptionItems.map(\.amount).reduce(0, +)
+    }
+
+    /// Waterfall rows for the inflow recon chart, in display order.
+    var waterfallRows: [WaterfallRow] {
+        var rows: [WaterfallRow] = []
+
+        if regularCommitted > 0 {
+            rows.append(WaterfallRow(label: "Committed", amount: regularCommitted, kind: .committed))
+        }
+        if subscriptions > 0 {
+            rows.append(WaterfallRow(label: "Subscriptions", amount: subscriptions, kind: .committed))
+        }
+        if everyday > 0 {
+            rows.append(WaterfallRow(label: "Everyday", amount: everyday, kind: .everyday))
+        }
+        if fund > 0 {
+            rows.append(WaterfallRow(label: "Investments", amount: fund, kind: .fund))
+        }
+        if liability > 0 {
+            rows.append(WaterfallRow(label: "Liabilities", amount: liability, kind: .liability))
+        }
+        if taxDeduction > 0 {
+            rows.append(WaterfallRow(label: "Tax", amount: taxDeduction, kind: .tax))
+        }
+        // Outliers: up to 3 individual items labelled by category, then a "+ N more" roll-up
+        let topOutliers = outlierItems.prefix(3)
+        for item in topOutliers {
+            rows.append(WaterfallRow(label: item.title, amount: item.amount, kind: .outliers))
+        }
+        if outlierItems.count > 3 {
+            let rest = outlierItems.dropFirst(3).map(\.amount).reduce(0, +)
+            rows.append(WaterfallRow(label: "+ \(outlierItems.count - 3) more", amount: rest, kind: .outliers))
+        }
+        if review > 0 {
+            rows.append(WaterfallRow(label: "Needs review", amount: review, kind: .review))
+        }
+
+        rows.append(WaterfallRow(
+            label: operatingRemaining >= 0 ? "Remaining" : "Shortfall",
+            amount: operatingRemaining,
+            kind: operatingRemaining >= 0 ? .operatingRemaining : .outliers
+        ))
+
+        return rows
+    }
 
     var buckets: [MoneyMapBucket] {
         [

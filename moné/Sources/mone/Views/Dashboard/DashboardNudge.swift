@@ -47,6 +47,10 @@ final class DashboardNudgeStore {
             return nil
         }
 
+        if let signUpNudge = eligible.first(where: { $0.id == .signUp }) {
+            return signUpNudge
+        }
+
         let currentIndex = UserDefaults.standard.integer(forKey: DashboardNudgeKeys.dashboardNudgeRotationIndex)
         let selected = eligible[currentIndex % eligible.count]
 

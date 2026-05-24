@@ -36,6 +36,15 @@ extension View {
             .foregroundStyle(Color.monePrimary)
             .tint(Color.monePrimary)
     }
+
+    func moneNumericFieldStyle() -> some View {
+        self
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+            .font(.moneAmtMd)
+            .foregroundStyle(Color.monePrimary)
+            .tint(Color.monePrimary)
+    }
 }
 
 extension Text {

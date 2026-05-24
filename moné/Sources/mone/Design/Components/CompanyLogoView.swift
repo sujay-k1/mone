@@ -27,12 +27,18 @@ enum CompanyLogoResolver {
         "paytmmp": ["Paytm"],
         "hdfc": ["HDFC Bank"],
         "hdfcbank": ["HDFC Bank"],
+        "hdfcmutualfund": ["HDFC", "HDFC Bank"],
+        "hdfccredila": ["HDFC", "HDFC Bank"],
         "icici": ["ICICI Bank"],
         "icicibank": ["ICICI Bank"],
+        "iciciprudentialmf": ["ICICI Prudential Mutual Fund", "ICICI Bank"],
+        "axismaxlife": ["Axis Max Life Insurance"],
+        "carehealth": ["Care Health Insurance"],
+        "npsprotean": ["NPS"],
         "bom": ["Bank of Maharashtra"]
     ]
 
-    private static let supportedExtensions: Set<String> = ["svg", "png", "jpg", "jpeg"]
+    fileprivate static let supportedExtensions: Set<String> = ["svg", "png", "jpg", "jpeg"]
 
     static func logo(for query: String, aliases: [String] = []) -> CompanyLogo? {
         shared.logo(for: query, aliases: aliases)
@@ -86,8 +92,8 @@ private final class CompanyLogoResolverStore {
     func logo(for query: String, aliases: [String]) -> CompanyLogo? {
         let queries = CompanyLogoResolver.expandedQueries(for: query, aliases: aliases)
         let matches = logos.compactMap { indexedLogo -> (logo: CompanyLogo, score: Int)? in
-            let score = queries.map { score(indexedLogo, query: $0) }.max() ?? 0
-            return score > 0 ? (indexedLogo.logo, score) : nil
+            let matchScore = queries.map { score(indexedLogo, query: $0) }.max() ?? 0
+            return matchScore > 0 ? (indexedLogo.logo, matchScore) : nil
         }
 
         return matches
@@ -125,18 +131,12 @@ private final class CompanyLogoResolverStore {
     }
 
     private static func loadLogos(bundle: Bundle) -> [IndexedLogo] {
-        guard let folderURL = bundle.url(forResource: "company-logos", withExtension: nil) else {
-            return []
-        }
-
-        let urls = (try? FileManager.default.contentsOfDirectory(
-            at: folderURL,
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
-        )) ?? []
+        let urls = logoFileURLs(bundle: bundle)
+        var seenPaths: Set<String> = []
 
         return urls
             .filter { CompanyLogoResolver.supportedExtensions.contains($0.pathExtension.lowercased()) }
+            .filter { seenPaths.insert($0.path).inserted }
             .map { url in
                 let fileName = url.deletingPathExtension().lastPathComponent
                 return IndexedLogo(
@@ -146,6 +146,32 @@ private final class CompanyLogoResolverStore {
                 )
             }
     }
+
+    private static func logoFileURLs(bundle: Bundle) -> [URL] {
+        var urls: [URL] = []
+        let fileManager = FileManager.default
+
+        for subdirectory in ["company-logos", "Resources/company-logos"] {
+            if let folderURL = bundle.url(forResource: subdirectory, withExtension: nil),
+               let folderURLs = try? fileManager.contentsOfDirectory(
+                at: folderURL,
+                includingPropertiesForKeys: nil,
+                options: [.skipsHiddenFiles]
+               ) {
+                urls.append(contentsOf: folderURLs)
+            }
+
+            for ext in CompanyLogoResolver.supportedExtensions {
+                urls.append(contentsOf: bundle.urls(forResourcesWithExtension: ext, subdirectory: subdirectory) ?? [])
+            }
+        }
+
+        for ext in CompanyLogoResolver.supportedExtensions {
+            urls.append(contentsOf: bundle.urls(forResourcesWithExtension: ext, subdirectory: nil) ?? [])
+        }
+
+        return urls
+    }
 }
 
 struct CompanyLogoView: View {
@@ -153,20 +179,21 @@ struct CompanyLogoView: View {
     var aliases: [String] = []
     var fallbackSystemName: String
     var contentMode: ContentMode = .fit
-    var padding: CGFloat = 6
+    var padding: CGFloat = 0
 
     var body: some View {
-        if let logo = CompanyLogoResolver.logo(for: query, aliases: aliases) {
-            logoImage(logo)
-                .padding(padding)
-                .accessibilityLabel(Text(query))
-        } else {
-            Image(systemName: fallbackSystemName)
-                .resizable()
-                .scaledToFit()
-                .padding(padding)
-                .accessibilityLabel(Text(query))
+        Group {
+            if let logo = CompanyLogoResolver.logo(for: query, aliases: aliases) {
+                logoImage(logo)
+            } else {
+                Image(systemName: fallbackSystemName)
+                    .resizable()
+                    .scaledToFit()
+            }
         }
+        .padding(padding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityLabel(Text(query))
     }
 
     @ViewBuilder
@@ -207,7 +234,28 @@ private struct SVGLogoView: UIViewRepresentable {
     func updateUIView(_ webView: WKWebView, context: Context) {
         guard context.coordinator.loadedURL != url else { return }
         context.coordinator.loadedURL = url
-        webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+
+        guard let svg = try? String(contentsOf: url, encoding: .utf8) else {
+            webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+            return
+        }
+
+        let encodedSVG = Data(svg.utf8).base64EncodedString()
+        let html = """
+        <!doctype html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; }
+                body { display: flex; align-items: center; justify-content: center; }
+                img { display: block; width: 100%; height: 100%; object-fit: contain; }
+            </style>
+        </head>
+        <body><img src="data:image/svg+xml;base64,\(encodedSVG)" /></body>
+        </html>
+        """
+        webView.loadHTMLString(html, baseURL: url.deletingLastPathComponent())
     }
 
     final class Coordinator {

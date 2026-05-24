@@ -1,0 +1,3979 @@
+{
+  "day_plan_version": "v1",
+  "persona_id": "aarav",
+  "month_id": "2025-06",
+  "month_name": "June 2025",
+  "source_artifacts": [
+    "Locked Foundation Manifest v1",
+    "Aarav Persona Bible v1",
+    "Aarav Account Universe v1",
+    "Aarav Financial Starting State v1",
+    "World Catalogs v1",
+    "Year Arc v1",
+    "Aarav Month Plan v1"
+  ],
+  "month_plan_source_summary": {
+    "month_type": "boring",
+    "month_role": "Opening boring month with stacked early obligations and thin liquidity discipline.",
+    "salary_expected": true,
+    "salary_amount_inr": 165000,
+    "salary_date": "2025-06-30",
+    "salary_timing_rule": "Last working day near evening.",
+    "uti_sip_status": "success",
+    "card_revolve_allowed": false,
+    "liquid_fund_action": "none",
+    "rare_or_pressure_events_selected": [],
+    "trip_selected": false,
+    "aggregate_discretionary_soft_cap_inr": {
+      "low": 45000,
+      "high": 65000,
+      "excludes": [
+        "salary",
+        "rent",
+        "staff payments",
+        "mother medicines transfer",
+        "utilities",
+        "SIP",
+        "credit card bill payment",
+        "Simpl repayment",
+        "self-transfers",
+        "friend reimbursements",
+        "liquid fund redemption credit"
+      ],
+      "interpretation": "Non-additive soft cap for gross discretionary lifestyle/merchant outflows before reimbursements; not a target and not an account balance."
+    },
+    "starting_state_carryover_obligations": [
+      "Axis credit card latest statement due: ₹96500",
+      "Simpl pay-later repayment from late-May usage: ₹5840"
+    ],
+    "june_behavioral_texture": [
+      "controlled food delivery and quick commerce",
+      "scooter commute with occasional monsoon fallback",
+      "petrol, cigarettes, coffee, and small social leakage",
+      "salary-end tightness without chaos"
+    ]
+  },
+  "calendar_summary": {
+    "date_range": {
+      "start": "2025-06-01",
+      "end": "2025-06-30"
+    },
+    "month_starts_on": "Sunday",
+    "month_ends_on": "Monday",
+    "day_count": 30,
+    "weekday_counts": {
+      "Monday": 5,
+      "Tuesday": 4,
+      "Wednesday": 4,
+      "Thursday": 4,
+      "Friday": 4,
+      "Saturday": 4,
+      "Sunday": 5
+    },
+    "salary_day": "2025-06-30",
+    "last_working_day": "2025-06-30",
+    "work_rhythm_hint": "Aarav usually works from office Tuesday to Thursday and WFH Monday/Friday, with 2025-06-02 and 2025-06-13 allowed as office exceptions per June prompt rhythm.",
+    "monsoon_context": "June can create occasional rain-related commute fallback but not flood-level disruption."
+  },
+  "month_level_guardrails": [
+    "Do not create raw AA payload.",
+    "Do not create final transactions, bank statement rows, card statement rows, UTR/reference numbers, account balances, or closing balances.",
+    "Do not reinterpret the locked June month plan.",
+    "Keep June boring, thin, and believable; do not make it active or dramatic.",
+    "UTI SIP succeeds and must not be skipped.",
+    "Axis card due from starting state must not become a June revolve event.",
+    "No liquid fund redemption is allowed.",
+    "No travel, gadget purchase, medical shock, high-cost event, or new rare event is allowed.",
+    "Card purchases later post to Axis card first; bank deposit impact occurs only when the card bill is paid.",
+    "Simpl may be used only from 2025-06-23 to 2025-06-29, only for small food or quick-commerce if selected.",
+    "Self-transfers must be paired visible movements and must not be treated as income or spend.",
+    "Friend reimbursements are ordinary external flows and must not be treated as salary or income.",
+    "Spend envelopes are non-additive planning bands and not targets.",
+    "Catalog ids are allowed references, not coverage requirements."
+  ],
+  "day_context_interpretation_rule": "allowed_day_contexts are possibility windows, not generated transactions. The transaction generator must select only a realistic subset within monthly_occurrence_budgets. If two allowed contexts represent the same underlying need, generate at most one transaction or posting path for that need.",
+  "candidate_window_selection_rule": "When multiple days are marked as candidates for the same monthly-capped behavior, the transaction generator must respect the monthly cap. Candidate days are alternatives, not instructions to generate on every listed day.",
+  "simpl_date_rule": "New June Simpl usage may only be generated on 2025-06-23, 2025-06-24, 2025-06-25, 2025-06-26, 2025-06-27, 2025-06-28, or 2025-06-29. 2025-06-30 salary day must not create new Simpl usage.",
+  "salary_end_rail_selection_rule": "On salary-end candidate days, Simpl is only one possible rail for selected food/quick-commerce needs. The transaction generator must choose one rail per underlying need: Simpl, Axis card, or UPI. It must not create parallel Simpl and card/UPI postings for the same meal, grocery, or late-work food need.",
+  "monthly_occurrence_budgets": {
+    "food_delivery_quick_commerce": {
+      "max_total_days": 12,
+      "preferred_range_days": "8-12",
+      "guardrail": "Select one merchant/rail for a single food or grocery need; do not stack Swiggy, Zepto, Blinkit and dineout for the same need."
+    },
+    "cigarettes_smoke_shop": {
+      "max_occurrences": 14,
+      "preferred_range": "8-14 small occurrences",
+      "guardrail": "Small leakage only; do not convert into large cash withdrawals unless ATM is intentionally selected."
+    },
+    "coffee_snacks": {
+      "max_occurrences": 14,
+      "preferred_range": "8-14 small occurrences",
+      "guardrail": "Mostly office or nearby Indiranagar texture."
+    },
+    "petrol_refill": {
+      "max_occurrences": 3,
+      "preferred_range": "2-3",
+      "guardrail": "Petrol is occasional; daily scooter use does not mean daily fuel spend."
+    },
+    "cab_auto_metro_fallback": {
+      "max_occurrences": 3,
+      "preferred_range": "0-3",
+      "guardrail": "Mostly rain or late-work fallback; do not pair with scooter for the same commute leg."
+    },
+    "late_work_food_or_ride": {
+      "max_days": 2,
+      "preferred_range_days": "0-2",
+      "guardrail": "Use at most two office evenings; no late-work cascade."
+    },
+    "social_alcohol": {
+      "max_light_occasions": 2,
+      "preferred_range": "1-2",
+      "guardrail": "Light occasions only; no group trip, big party, or large fronting."
+    },
+    "atm_withdrawal": {
+      "max_occurrences": 1,
+      "preferred_range": "0-1",
+      "guardrail": "Only ATM debit is visible; cash spends after withdrawal are not individually AA-visible."
+    },
+    "simpl_salary_end_usage": {
+      "allowed_dates": [
+        "2025-06-23",
+        "2025-06-24",
+        "2025-06-25",
+        "2025-06-26",
+        "2025-06-27",
+        "2025-06-28",
+        "2025-06-29"
+      ],
+      "max_occurrences": 3,
+      "expected_amount_band_inr": {
+        "low": 0,
+        "high": 5000
+      },
+      "guardrail": "Only small food, late-work meal, or quick-commerce; no Simpl outside salary-end window."
+    },
+    "self_transfer": {
+      "max_occurrences": 1,
+      "expected_amount_band_inr": {
+        "low": 0,
+        "high": 15000
+      },
+      "guardrail": "Only if needed for visible routing; pair both sides across Aarav-owned accounts."
+    },
+    "friend_reimbursement_or_settlement": {
+      "max_tiny_flows": 2,
+      "expected_credit_or_debit_band_inr": {
+        "low": 0,
+        "high": 6000
+      },
+      "guardrail": "Small flatmate/friend settlements only; not salary, not income, not rescue."
+    },
+    "rare_high_cost_events": {
+      "max_occurrences": 0,
+      "guardrail": "None selected for June."
+    }
+  },
+  "transaction_generation_selection_caps": {
+    "food_delivery_quick_commerce_days_max": 12,
+    "coffee_snack_smoke_occurrences_max": 14,
+    "petrol_refill_occurrences_max": 3,
+    "cab_auto_fallback_occurrences_max": 3,
+    "late_work_food_or_ride_days_max": 2,
+    "light_social_alcohol_occasions_max": 2,
+    "atm_withdrawal_occurrences_max": 1,
+    "simpl_new_usage_occurrences_max": 3,
+    "self_transfer_occurrences_max": 1,
+    "friend_flatmate_settlement_flows_max": 2,
+    "rare_high_cost_events_max": 0,
+    "interpretation": "These are hard caps for the later transaction generator. Allowed contexts across many days are candidate windows, not events to generate on every day."
+  },
+  "known_obligation_windows": [
+    {
+      "date_or_window": "2025-06-02",
+      "obligation_name": "UTI monthly SIP debit",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 7500,
+        "high": 7500
+      },
+      "generation_timing_hint": "auto_debit_window",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "bank mandate / auto-debit",
+      "generation_rule": "Successful SIP window only; this is not a transaction line and must not be skipped."
+    },
+    {
+      "date_or_window": "2025-06-03",
+      "obligation_name": "Gym membership card autopay",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 2499,
+        "high": 2499
+      },
+      "generation_timing_hint": "auto_debit_window",
+      "source_account_preference": "aarav_axis_credit_card_001",
+      "rail_preference": "card autopost",
+      "generation_rule": "Autopay continues even if attendance is inconsistent. Card autopost only; bank impact occurs through later card bill payment."
+    },
+    {
+      "date_or_window": "2025-06-04",
+      "obligation_name": "Simpl pay-later repayment from late-May starting-state usage",
+      "source": "starting_state_carryover",
+      "expected_amount_band_inr": {
+        "low": 5840,
+        "high": 5840
+      },
+      "generation_timing_hint": "morning",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "UPI or autopay repayment",
+      "generation_rule": "Carryover repayment only; do not treat as new June Simpl usage."
+    },
+    {
+      "date_or_window": "2025-06-05",
+      "obligation_name": "Aarav rent share to landlord Suresh Krishnamurthy",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 42000,
+        "high": 42000
+      },
+      "generation_timing_hint": "evening",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "NEFT or IMPS",
+      "generation_rule": "Aarav pays only his own rent share; do not net or collect Rohan Bhat's share."
+    },
+    {
+      "date_or_window": "2025-06-07",
+      "obligation_name": "Cook payment to Lakshmi Devi",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 4500,
+        "high": 4500
+      },
+      "generation_timing_hint": "morning",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "UPI",
+      "generation_rule": "Monthly staff payment window; keep separate from maid payment unless later narration supports otherwise."
+    },
+    {
+      "date_or_window": "2025-06-08",
+      "obligation_name": "Maid payment to Savitri",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 2200,
+        "high": 2200
+      },
+      "generation_timing_hint": "morning",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "UPI",
+      "generation_rule": "Monthly staff payment window; keep separate from cook payment."
+    },
+    {
+      "date_or_window": "2025-06-09",
+      "obligation_name": "Axis credit card latest statement due from starting state",
+      "source": "starting_state_carryover",
+      "expected_amount_band_inr": {
+        "low": 96500,
+        "high": 96500
+      },
+      "generation_timing_hint": "evening",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "credit card bill payment from HDFC",
+      "generation_rule": "Starting-state carryover due; no card revolve is allowed in June."
+    },
+    {
+      "date_or_window": "2025-06-10",
+      "obligation_name": "Apartment maintenance",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 2500,
+        "high": 2500
+      },
+      "generation_timing_hint": "evening",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "UPI or net banking",
+      "generation_rule": "Separate maintenance obligation; do not model as rent."
+    },
+    {
+      "date_or_window": "2025-06-12",
+      "obligation_name": "Mother medicines transfer to Anita Menon",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 2800,
+        "high": 2800
+      },
+      "generation_timing_hint": "evening",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "UPI or IMPS",
+      "generation_rule": "Family support transfer, not pharmacy merchant spend and not income."
+    },
+    {
+      "date_or_window": "2025-06-14",
+      "obligation_name": "Streaming and app subscription card autopays",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 3650,
+        "high": 3650
+      },
+      "generation_timing_hint": "auto_debit_window",
+      "source_account_preference": "aarav_axis_credit_card_001",
+      "rail_preference": "card autopost",
+      "generation_rule": "Known June card autoposts for active subscriptions/apps; do not treat as new discretionary shopping and do not duplicate as bank debit."
+    },
+    {
+      "date_or_window": "2025-06-15",
+      "obligation_name": "BESCOM electricity bill",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 2200,
+        "high": 3200
+      },
+      "generation_timing_hint": "evening",
+      "source_account_preference": "aarav_hdfc_salary_savings_001 or aarav_axis_credit_card_001",
+      "rail_preference": "BBPS via one chosen rail",
+      "generation_rule": "Choose one rail only; do not duplicate as both bank and card payment."
+    },
+    {
+      "date_or_window": "2025-06-16",
+      "obligation_name": "Broadband bill",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 999,
+        "high": 999
+      },
+      "generation_timing_hint": "auto_debit_window",
+      "source_account_preference": "aarav_axis_credit_card_001",
+      "rail_preference": "card autopost preferred",
+      "generation_rule": "If card-posted, deposit account impact occurs only through later card bill payment."
+    },
+    {
+      "date_or_window": "2025-06-21",
+      "obligation_name": "Mobile postpaid bill",
+      "source": "known_recurring",
+      "expected_amount_band_inr": {
+        "low": 799,
+        "high": 799
+      },
+      "generation_timing_hint": "auto_debit_window",
+      "source_account_preference": "aarav_axis_credit_card_001",
+      "rail_preference": "card autopost preferred",
+      "generation_rule": "Do not duplicate as UPI if card autopay is selected. Card autopost only; bank impact occurs through later card bill payment."
+    },
+    {
+      "date_or_window": "2025-06-30 evening",
+      "obligation_name": "NimbleCart Technologies salary credit",
+      "source": "salary",
+      "expected_amount_band_inr": {
+        "low": 165000,
+        "high": 165000
+      },
+      "generation_timing_hint": "evening",
+      "source_account_preference": "aarav_hdfc_salary_savings_001",
+      "rail_preference": "salary credit",
+      "generation_rule": "Salary window only; do not create other income or rescue inflows."
+    }
+  ],
+  "daily_plans": [
+    {
+      "date": "2025-06-01",
+      "weekday": "Sunday",
+      "day_type": "low_activity_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar stores"
+      ],
+      "day_life_summary": "Month opens quietly at home after May salary has already landed; Aarav keeps Sunday domestic and avoids starting June with a big outing.",
+      "financial_posture_for_day": "Fresh-month cash exists but the known early obligation stack is visible, so the day should feel cautious.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Basic groceries or household restock",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "housing_shared_quick_commerce_flatmate"
+          ],
+          "day_amount_band_inr": {
+            "low": 300,
+            "high": 1800
+          },
+          "max_occurrences_for_day": "0-1 household need; do not split across multiple apps for same need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "card/UPI visible according to rail; flatmate settlement may appear later if selected",
+          "why_plausible_today": "Sunday reset makes one grocery or household restock plausible.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "Lazy Sunday meal is plausible, but keep it controlled.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce",
+          "food_blinkit_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "food_local_grocery_kirana"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Avoid creating a month-start spending burst.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-02",
+      "weekday": "Monday",
+      "day_type": "obligation_day",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "One-off Monday office start to the synthetic year; scooter commute and a successful SIP window anchor the day.",
+      "financial_posture_for_day": "The SIP should clear, while discretionary choices remain small because rent, Simpl and card dues are still ahead.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "UTI monthly SIP debit",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 7500,
+            "high": 7500
+          },
+          "generation_timing_hint": "auto_debit_window",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "bank mandate / auto-debit",
+          "generation_rule": "Successful SIP window only; this is not a transaction line and must not be skipped."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Prompt suggests 2025-06-02 as an office day.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Office day supports coffee/snack leakage.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "finance_aarav_uti_sip_debit",
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "UTI SIP succeeds; do not model a skip or failure.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-03",
+      "weekday": "Tuesday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Normal Tuesday office rhythm with scooter commute, free office lunch, and a gym membership card autopost window that does not imply attendance.",
+      "financial_posture_for_day": "Early-month obligations are still stacked, so keep optional spends routine and low while the gym autopay posts to Axis card only.",
+      "known_obligation_windows_for_day": [
+        {
+          "date_or_window": "2025-06-03",
+          "obligation_name": "Gym membership card autopay",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 2499,
+            "high": 2499
+          },
+          "generation_timing_hint": "auto_debit_window",
+          "source_account_preference": "aarav_axis_credit_card_001",
+          "rail_preference": "card autopost",
+          "generation_rule": "Autopay continues even if attendance is inconsistent. Card autopost only; bank impact occurs through later card bill payment."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Tuesday is a usual office day.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Office pantry extras or cigarettes fit Aarav without being dramatic.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "subscription_aarav_gym_membership_autopay",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Gym membership autopay is card autopost only and should not imply gym attendance.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-04",
+      "weekday": "Wednesday",
+      "day_type": "obligation_day",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Wednesday office day with the late-May Simpl repayment window; no new Simpl use should appear.",
+      "financial_posture_for_day": "Repayment reduces liquidity before rent and card due, so normal commute and tiny food spends only.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Simpl pay-later repayment from late-May starting-state usage",
+          "source": "starting_state_carryover",
+          "expected_amount_band_inr": {
+            "low": 5840,
+            "high": 5840
+          },
+          "generation_timing_hint": "morning",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "UPI or autopay repayment",
+          "generation_rule": "Carryover repayment only; do not treat as new June Simpl usage."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Office commute remains plausible despite obligation pressure.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Scooter petrol refill or parking",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges"
+          ],
+          "day_amount_band_inr": {
+            "low": 100,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 refill/parking need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "visible digitally; card posts first if selected",
+          "why_plausible_today": "Midweek scooter use can justify one refill if the monthly refill count needs it.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "mobility_aarav_scooter_petrol_refill",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "Simpl late-May usage repayment"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "This is a Simpl repayment window only, not new June Simpl usage.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-05",
+      "weekday": "Thursday",
+      "day_type": "obligation_day",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Thursday office day with rent due; the day should be disciplined and ordinary.",
+      "financial_posture_for_day": "Rent is a major protected outflow, so discretionary activity should be near-minimum.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Aarav rent share to landlord Suresh Krishnamurthy",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 42000,
+            "high": 42000
+          },
+          "generation_timing_hint": "evening",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "NEFT or IMPS",
+          "generation_rule": "Aarav pays only his own rent share; do not net or collect Rohan Bhat's share."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Thursday is a usual office day.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "A small coffee or smoke-shop purchase is enough texture.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "housing_aarav_rent",
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not collect or net Rohan Bhat's rent share.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-06",
+      "weekday": "Friday",
+      "day_type": "workday",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar"
+      ],
+      "day_life_summary": "Friday is kept WFH after a heavy obligation week; possible nearby errands but no pub night.",
+      "financial_posture_for_day": "With card due still ahead, keep the day quiet and avoid social escalation.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "WFH can create one meal or quick-commerce need.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Laundry, pharmacy, or small personal errand",
+          "catalog_item_ids_allowed": [
+            "lifestyle_laundry_dry_cleaning",
+            "medical_local_pharmacy_purchase",
+            "food_local_grocery_kirana"
+          ],
+          "day_amount_band_inr": {
+            "low": 150,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 errand need",
+          "payment_rail_hint": "UPI or card; cash only if ATM withdrawal later supports it",
+          "aa_visibility_hint": "digital payments visible; cash item not individually visible",
+          "why_plausible_today": "Nearby low-cost errand fits a WFH Friday.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "lifestyle_laundry_dry_cleaning"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not turn this Friday into an active social night.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-07",
+      "weekday": "Saturday",
+      "day_type": "obligation_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar stores"
+      ],
+      "day_life_summary": "Saturday stays domestic with cook payment and light errands; any social impulse remains small.",
+      "financial_posture_for_day": "Staff payment keeps pressure visible; grocery or smoke-shop context can occur but not both heavily.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Cook payment to Lakshmi Devi",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 4500,
+            "high": 4500
+          },
+          "generation_timing_hint": "morning",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "UPI",
+          "generation_rule": "Monthly staff payment window; keep separate from maid payment unless later narration supports otherwise."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Basic groceries or household restock",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "housing_shared_quick_commerce_flatmate"
+          ],
+          "day_amount_band_inr": {
+            "low": 300,
+            "high": 1800
+          },
+          "max_occurrences_for_day": "0-1 household need; do not split across multiple apps for same need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "card/UPI visible according to rail; flatmate settlement may appear later if selected",
+          "why_plausible_today": "Weekend household restock is plausible.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "A small cigarette or coffee purchase can add ordinary texture.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_zepto_quick_commerce",
+          "food_blinkit_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "housing_aarav_cook_payment",
+          "food_local_grocery_kirana"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Keep cook payment separate from maid payment unless later narration explicitly combines them.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-08",
+      "weekday": "Sunday",
+      "day_type": "obligation_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home"
+      ],
+      "day_life_summary": "Sunday reset with maid payment; Aarav mostly stays in and reviews the coming card due.",
+      "financial_posture_for_day": "Card due is next, so this should be a low-spend reset day.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Maid payment to Savitri",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 2200,
+            "high": 2200
+          },
+          "generation_timing_hint": "morning",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "UPI",
+          "generation_rule": "Monthly staff payment window; keep separate from cook payment."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "Low-effort meal is plausible on a reset Sunday, but optional.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Laundry, pharmacy, or small personal errand",
+          "catalog_item_ids_allowed": [
+            "lifestyle_laundry_dry_cleaning",
+            "medical_local_pharmacy_purchase",
+            "food_local_grocery_kirana"
+          ],
+          "day_amount_band_inr": {
+            "low": 150,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 errand need",
+          "payment_rail_hint": "UPI or card; cash only if ATM withdrawal later supports it",
+          "aa_visibility_hint": "digital payments visible; cash item not individually visible",
+          "why_plausible_today": "Small personal errand can occur if no other household restock is selected.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery"
+        ],
+        "bank_debit_items": [
+          "housing_aarav_maid_payment",
+          "lifestyle_laundry_dry_cleaning"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": true,
+        "expected_band_inr": {
+          "low": 5000,
+          "high": 12000
+        },
+        "guardrail": "Preparation-day self-transfer candidate only. Generate only if the later card due needs visible ICICI-to-HDFC support, and do not also generate on 2025-06-09.",
+        "candidate_window_id": "june_card_due_support_self_transfer_candidate",
+        "choose_one_day_only": true,
+        "do_not_generate_if_already_used_on_other_candidate_day": true
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Any self-transfer must be paired across visible Aarav-owned accounts.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-09",
+      "weekday": "Monday",
+      "day_type": "obligation_day",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home"
+      ],
+      "day_life_summary": "Monday WFH with the Axis card due window; the day should feel financially tight and administratively focused.",
+      "financial_posture_for_day": "Full payment behavior is preserved; avoid discretionary noise around the card due.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Axis credit card latest statement due from starting state",
+          "source": "starting_state_carryover",
+          "expected_amount_band_inr": {
+            "low": 96500,
+            "high": 96500
+          },
+          "generation_timing_hint": "evening",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "credit card bill payment from HDFC",
+          "generation_rule": "Starting-state carryover due; no card revolve is allowed in June."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "A tiny nearby coffee or smoke purchase may occur, but should be easy to omit.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Optional small ATM withdrawal",
+          "catalog_item_ids_allowed": [
+            "cash_atm_withdrawal"
+          ],
+          "day_amount_band_inr": {
+            "low": 3000,
+            "high": 6000
+          },
+          "max_occurrences_for_day": "0-1 for entire month; avoid unless cash texture is needed",
+          "payment_rail_hint": "ATM cash withdrawal",
+          "aa_visibility_hint": "ATM debit visible, downstream cash spends not visible",
+          "why_plausible_today": "Optional ATM only if one cash-texture event is needed for the month.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [],
+        "bank_debit_items": [
+          "Axis credit card latest statement due from starting state"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": true,
+        "expected_band_inr": {
+          "low": 5000,
+          "high": 12000
+        },
+        "guardrail": "Due-day self-transfer candidate only. Generate only if not already generated on 2025-06-08. Must be paired across Aarav-owned accounts and never classified as income.",
+        "candidate_window_id": "june_card_due_support_self_transfer_candidate",
+        "choose_one_day_only": true,
+        "do_not_generate_if_already_used_on_other_candidate_day": true
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "No June card revolve is allowed; do not generate partial-payment behavior.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-10",
+      "weekday": "Tuesday",
+      "day_type": "obligation_day",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Back to office after card due; apartment maintenance is a smaller mid-month obligation.",
+      "financial_posture_for_day": "Liquidity remains thin, but normal scooter and coffee texture can resume cautiously.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Apartment maintenance",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 2500,
+            "high": 2500
+          },
+          "generation_timing_hint": "evening",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "UPI or net banking",
+          "generation_rule": "Separate maintenance obligation; do not model as rent."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Tuesday office rhythm resumes.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Small office extras fit the day.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "housing_aarav_apartment_maintenance",
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Apartment maintenance is separate from rent.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-11",
+      "weekday": "Wednesday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Wednesday can be the first possible late-work day of the month without turning dramatic.",
+      "financial_posture_for_day": "A single late-work dinner or cab fallback is plausible, but keep it within boring-month rhythm.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Office day commute is normal.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Late-work dinner or rain-return fallback",
+          "catalog_item_ids_allowed": [
+            "work_late_work_dinner_order",
+            "food_cloud_kitchen_late_night_meal",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto"
+          ],
+          "day_amount_band_inr": {
+            "low": 350,
+            "high": 1400
+          },
+          "max_occurrences_for_day": "0-1 late-work need",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "One late-work evening in the office-heavy week fits the persona.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "work_late_work_dinner_order",
+          "food_cloud_kitchen_late_night_meal",
+          "mobility_uber_cab",
+          "mobility_ola_cab_auto"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not combine late dinner plus cab plus extra delivery unless later generator intentionally selects only one primary need.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-12",
+      "weekday": "Thursday",
+      "day_type": "obligation_day",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Thursday office day with mother medicines transfer in the evening.",
+      "financial_posture_for_day": "Family transfer is protected, not discretionary; keep lifestyle choices small.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Mother medicines transfer to Anita Menon",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 2800,
+            "high": 2800
+          },
+          "generation_timing_hint": "evening",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "UPI or IMPS",
+          "generation_rule": "Family support transfer, not pharmacy merchant spend and not income."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Thursday is a usual office day.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Small coffee or cigarettes remain plausible.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "family_aarav_mother_medicines_transfer",
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Mother medicine transfer is not pharmacy spend and not income.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-13",
+      "weekday": "Friday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Friday office spillover from the heavier work week; mild end-of-week fatigue but no big night out.",
+      "financial_posture_for_day": "Early obligations have passed, but the month still needs restrained discretionary pacing.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Office-heavy week supports a Friday office exception.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "A modest dinner order after a long week is plausible.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zomato_delivery_dineout"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Keep this as fatigue food, not a party event.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-14",
+      "weekday": "Saturday",
+      "day_type": "weekend",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Indiranagar 100 Feet Road"
+      ],
+      "day_life_summary": "Controlled Saturday: light social context may happen, while streaming/app subscription autopays are separate card autoposts.",
+      "financial_posture_for_day": "Subscription card autoposts may also land today, so any social context must stay light and optional.",
+      "known_obligation_windows_for_day": [
+        {
+          "date_or_window": "2025-06-14",
+          "obligation_name": "Streaming and app subscription card autopays",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 3650,
+            "high": 3650
+          },
+          "generation_timing_hint": "auto_debit_window",
+          "source_account_preference": "aarav_axis_credit_card_001",
+          "rail_preference": "card autopost",
+          "generation_rule": "Known June card autoposts for active subscriptions/apps; do not treat as new discretionary shopping and do not duplicate as bank debit."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Light social food or alcohol leakage",
+          "catalog_item_ids_allowed": [
+            "social_pub_brewery_night",
+            "food_zomato_delivery_dineout",
+            "food_cafe_coffee_snacks"
+          ],
+          "day_amount_band_inr": {
+            "low": 600,
+            "high": 2500
+          },
+          "max_occurrences_for_day": "0-1 light occasion; not a party night",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; reimbursement later only if supported",
+          "why_plausible_today": "Mid-month Saturday can carry small social leakage.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Cigarettes or coffee may accompany the social plan.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "streaming_app_subscription_card_autopays",
+          "social_pub_brewery_night",
+          "food_zomato_delivery_dineout",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": true,
+        "expected_band_inr": {
+          "low": 500,
+          "high": 1800
+        },
+        "lag_or_partial_rule": "Candidate only. Across all June candidate days, generate at most two tiny friend/flatmate settlement flows, and do not treat them as income or rescue.",
+        "candidate_window_id": "june_tiny_friend_flatmate_settlement_candidates",
+        "monthly_max_selected_flows": 2,
+        "do_not_generate_on_all_candidate_days": true
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Subscription autopays and social spend are independent; do not inflate the social event because subscription autopays also occur.",
+        "Do not create group fronting above small controlled amounts.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-15",
+      "weekday": "Sunday",
+      "day_type": "obligation_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar"
+      ],
+      "day_life_summary": "Sunday reset with electricity bill window and household planning for the next work week.",
+      "financial_posture_for_day": "Utility payment is enough structure; avoid stacking multiple household apps.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "BESCOM electricity bill",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 2200,
+            "high": 3200
+          },
+          "generation_timing_hint": "evening",
+          "source_account_preference": "aarav_hdfc_salary_savings_001 or aarav_axis_credit_card_001",
+          "rail_preference": "BBPS via one chosen rail",
+          "generation_rule": "Choose one rail only; do not duplicate as both bank and card payment."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Basic groceries or household restock",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "housing_shared_quick_commerce_flatmate"
+          ],
+          "day_amount_band_inr": {
+            "low": 300,
+            "high": 1800
+          },
+          "max_occurrences_for_day": "0-1 household need; do not split across multiple apps for same need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "card/UPI visible according to rail; flatmate settlement may appear later if selected",
+          "why_plausible_today": "Weekend restock for the coming week is plausible.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "Simple Sunday meal is allowed if grocery is not selected heavily.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "utility_bescom_electricity",
+          "food_local_grocery_kirana"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Select one rail for BESCOM only; do not duplicate bank and card versions.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-16",
+      "weekday": "Monday",
+      "day_type": "obligation_day",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home"
+      ],
+      "day_life_summary": "Monday WFH with broadband autopost window; otherwise low activity after a weekend reset.",
+      "financial_posture_for_day": "Autoposted utility-like card spend is okay, but bank impact waits for future card bill payment.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "Broadband bill",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 999,
+            "high": 999
+          },
+          "generation_timing_hint": "auto_debit_window",
+          "source_account_preference": "aarav_axis_credit_card_001",
+          "rail_preference": "card autopost preferred",
+          "generation_rule": "If card-posted, deposit account impact occurs only through later card bill payment."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "WFH lunch or quick-commerce is plausible but optional.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Laundry, pharmacy, or small personal errand",
+          "catalog_item_ids_allowed": [
+            "lifestyle_laundry_dry_cleaning",
+            "medical_local_pharmacy_purchase",
+            "food_local_grocery_kirana"
+          ],
+          "day_amount_band_inr": {
+            "low": 150,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 errand need",
+          "payment_rail_hint": "UPI or card; cash only if ATM withdrawal later supports it",
+          "aa_visibility_hint": "digital payments visible; cash item not individually visible",
+          "why_plausible_today": "Small nearby errand can substitute for delivery if selected.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "utility_aarav_broadband",
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "lifestyle_laundry_dry_cleaning"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": true,
+        "expected_band_inr": {
+          "low": 400,
+          "high": 1500
+        },
+        "lag_or_partial_rule": "Candidate only. Across all June candidate days, generate at most two tiny friend/flatmate settlement flows, and do not treat them as income or rescue.",
+        "candidate_window_id": "june_tiny_friend_flatmate_settlement_candidates",
+        "monthly_max_selected_flows": 2,
+        "do_not_generate_on_all_candidate_days": true
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Broadband card posting must not also appear as a bank debit.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-17",
+      "weekday": "Tuesday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Normal Tuesday office day; scooter use, coffee, and maybe petrol refill keep the month realistic.",
+      "financial_posture_for_day": "Mid-month rhythm is normal but still disciplined.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Tuesday office commute fits persona rhythm.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Scooter petrol refill or parking",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges"
+          ],
+          "day_amount_band_inr": {
+            "low": 100,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 refill/parking need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "visible digitally; card posts first if selected",
+          "why_plausible_today": "Second-half scooter refill is plausible if earlier refill was not enough.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "mobility_aarav_scooter_petrol_refill",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Petrol refills should remain within the 2-3 monthly occurrence budget.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-18",
+      "weekday": "Wednesday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Wednesday office day with normal scooter commute, coffee, or small add-ons only.",
+      "financial_posture_for_day": "No known autopost window is placed here; keep the day routine and controlled.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Office day commute is normal.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Small office extras fit without increasing drama.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "No mobile postpaid autopost belongs on this date; the mobile bill window is 2025-06-21.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-19",
+      "weekday": "Thursday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office",
+        "Old Airport Road / HAL / Marathahalli corridor"
+      ],
+      "day_life_summary": "Thursday office day with possible rain friction on the commute corridor.",
+      "financial_posture_for_day": "One cab, auto, or metro fallback may be selected if rain texture is needed; do not stack modes.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Monsoon commute fallback is plausible on a June office day.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Small snack or smoke purchase is routine.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "mobility_uber_cab",
+          "mobility_ola_cab_auto",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "mobility_namma_metro",
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not generate scooter plus cab for the same commute leg.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-20",
+      "weekday": "Friday",
+      "day_type": "workday",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar"
+      ],
+      "day_life_summary": "Quiet WFH Friday with constrained food, coffee, or smoke-shop texture only if needed.",
+      "financial_posture_for_day": "No known obligation window is placed here after moving the gym autopay; keep the day quiet and ordinary.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "WFH can create one meal-delivery need.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Nearby coffee or cigarettes possible as a small leak.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "No gym autopay belongs on this date; the gym card autopost window is 2025-06-03.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-21",
+      "weekday": "Saturday",
+      "day_type": "low_activity_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar"
+      ],
+      "day_life_summary": "Low Saturday with laundry, grocery, or coffee; the mobile postpaid bill may autopost to Axis card without turning the day active.",
+      "financial_posture_for_day": "Mobile postpaid autopost is a known card window; any optional errand or grocery context remains small.",
+      "known_obligation_windows_for_day": [
+        {
+          "date_or_window": "2025-06-21",
+          "obligation_name": "Mobile postpaid bill",
+          "source": "known_recurring",
+          "expected_amount_band_inr": {
+            "low": 799,
+            "high": 799
+          },
+          "generation_timing_hint": "auto_debit_window",
+          "source_account_preference": "aarav_axis_credit_card_001",
+          "rail_preference": "card autopost preferred",
+          "generation_rule": "Do not duplicate as UPI if card autopay is selected. Card autopost only; bank impact occurs through later card bill payment."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Laundry, pharmacy, or small personal errand",
+          "catalog_item_ids_allowed": [
+            "lifestyle_laundry_dry_cleaning",
+            "medical_local_pharmacy_purchase",
+            "food_local_grocery_kirana"
+          ],
+          "day_amount_band_inr": {
+            "low": 150,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 errand need",
+          "payment_rail_hint": "UPI or card; cash only if ATM withdrawal later supports it",
+          "aa_visibility_hint": "digital payments visible; cash item not individually visible",
+          "why_plausible_today": "Laundry or pharmacy-style errand fits the low weekend.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Basic groceries or household restock",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "housing_shared_quick_commerce_flatmate"
+          ],
+          "day_amount_band_inr": {
+            "low": 300,
+            "high": 1800
+          },
+          "max_occurrences_for_day": "0-1 household need; do not split across multiple apps for same need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "card/UPI visible according to rail; flatmate settlement may appear later if selected",
+          "why_plausible_today": "Small household restock is plausible if not already selected on nearby days.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "utility_aarav_mobile_postpaid",
+          "food_zepto_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "lifestyle_laundry_dry_cleaning",
+          "medical_local_pharmacy_purchase",
+          "food_local_grocery_kirana"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Mobile postpaid autopost should not be duplicated as UPI or bank debit.",
+        "Avoid forcing social spend just because it is Saturday.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-22",
+      "weekday": "Sunday",
+      "day_type": "low_activity_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home"
+      ],
+      "day_life_summary": "Sunday is quiet before the salary-end stretch; Aarav stays mostly home.",
+      "financial_posture_for_day": "No obligation, but tightness should begin to show through restraint.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "One comfort meal can occur, but this is optional.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Small cigarettes or coffee texture remains plausible.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not start Simpl before the salary-end window unless using 2025-06-23 or later.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-23",
+      "weekday": "Monday",
+      "day_type": "workday",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home"
+      ],
+      "day_life_summary": "Monday WFH starts the salary-end window; spending should feel deliberately constrained.",
+      "financial_posture_for_day": "Small Simpl use becomes allowed but should remain optional and minor.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Salary-end small Simpl food or quick-commerce usage",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart",
+            "food_cloud_kitchen_late_night_meal",
+            "work_late_work_dinner_order"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 1100
+          },
+          "max_occurrences_for_day": "0-1 small Simpl-eligible need; monthly Simpl max 0-3 occurrences",
+          "payment_rail_hint": "Simpl only if selected; otherwise Axis card or UPI",
+          "aa_visibility_hint": "posts to Simpl first; bank impact only on future repayment",
+          "why_plausible_today": "Final 8-day salary-end window begins; small food or quick-commerce can move to Simpl if selected.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        },
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI only for this context; use the separate Simpl context if choosing Simpl.",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible. Simpl must be generated only through the separate Simpl salary-end context.",
+          "why_plausible_today": "Same need should not be duplicated across Simpl and card/UPI.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce",
+          "food_blinkit_quick_commerce",
+          "food_swiggy_instamart"
+        ],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Simpl use is allowed only as small salary-end usage; do not exceed monthly 0-3 occurrences.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-24",
+      "weekday": "Tuesday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Tuesday office day during salary-end tightness; scooter and coffee continue, but choices are selective.",
+      "financial_posture_for_day": "Commute must happen, but optional spending should be modest.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Office commute remains necessary.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Salary-end small Simpl food or quick-commerce usage",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart",
+            "food_cloud_kitchen_late_night_meal",
+            "work_late_work_dinner_order"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 1100
+          },
+          "max_occurrences_for_day": "0-1 small Simpl-eligible need; monthly Simpl max 0-3 occurrences",
+          "payment_rail_hint": "Simpl only if selected; otherwise Axis card or UPI",
+          "aa_visibility_hint": "posts to Simpl first; bank impact only on future repayment",
+          "why_plausible_today": "A small food or quick-commerce need can use Simpl if the generator selects it.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks",
+          "mobility_aarav_scooter_petrol_refill"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce"
+        ],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not use Simpl for commute, shopping, or non-food categories.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-25",
+      "weekday": "Wednesday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Wednesday can carry the second possible late-work day, now under salary-end tightness.",
+      "financial_posture_for_day": "Late dinner via Simpl is allowed if selected, but no cascade of extra spends.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Late-work dinner or rain-return fallback",
+          "catalog_item_ids_allowed": [
+            "work_late_work_dinner_order",
+            "food_cloud_kitchen_late_night_meal",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto"
+          ],
+          "day_amount_band_inr": {
+            "low": 350,
+            "high": 1400
+          },
+          "max_occurrences_for_day": "0-1 late-work need",
+          "payment_rail_hint": "Axis card, UPI, or Simpl only in salary-end window",
+          "aa_visibility_hint": "card posts to Axis; Simpl posts to Simpl; UPI visible in bank",
+          "why_plausible_today": "Late-work dinner is plausible and is Simpl-eligible in this salary-end window.",
+          "do_not_force": true,
+          "rail_selection_rule": "For the selected late-work need, choose one posting path only: Simpl for food/dinner if salary-end BNPL is selected, Axis card/UPI for food/dinner, or card/UPI for cab/auto fallback. Do not generate both dinner and ride unless explicitly justified by the later day-to-transaction generator and still within monthly late-work cap."
+        },
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Normal office commute still applies.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "mobility_uber_cab",
+          "mobility_ola_cab_auto"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [
+          "work_late_work_dinner_order",
+          "food_cloud_kitchen_late_night_meal",
+          "food_swiggy_delivery"
+        ],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not create more than 0-2 late-work food/ride days in June.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-26",
+      "weekday": "Thursday",
+      "day_type": "workday",
+      "work_mode": "office",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Bellandur office"
+      ],
+      "day_life_summary": "Thursday office day; a final petrol refill or parking charge can appear if commute budget needs it.",
+      "financial_posture_for_day": "Tightness remains, so avoid social add-ons before salary.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Office scooter commute with monsoon fallback",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges",
+            "mobility_uber_cab",
+            "mobility_ola_cab_auto",
+            "mobility_namma_yatri_auto",
+            "mobility_namma_metro"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 850
+          },
+          "max_occurrences_for_day": "0-2 commute-linked selections; no duplicate scooter plus cab for same leg",
+          "payment_rail_hint": "scooter/parking by UPI or card; cab/auto by app/card/UPI",
+          "aa_visibility_hint": "visible if paid digitally; cash parking only visible through ATM withdrawal if selected",
+          "why_plausible_today": "Thursday is a usual office day.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Scooter petrol refill or parking",
+          "catalog_item_ids_allowed": [
+            "mobility_aarav_scooter_petrol_refill",
+            "mobility_parking_charges"
+          ],
+          "day_amount_band_inr": {
+            "low": 100,
+            "high": 1200
+          },
+          "max_occurrences_for_day": "0-1 refill/parking need",
+          "payment_rail_hint": "UPI or Axis card",
+          "aa_visibility_hint": "visible digitally; card posts first if selected",
+          "why_plausible_today": "Late-month petrol top-up is plausible if within refill budget.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "mobility_aarav_scooter_petrol_refill",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [
+          "mobility_parking_charges"
+        ],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Keep petrol within 2-3 monthly refill occurrences.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-27",
+      "weekday": "Friday",
+      "day_type": "workday",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar"
+      ],
+      "day_life_summary": "Friday WFH before salary weekend; Aarav keeps spending contained and may receive or send a tiny settlement.",
+      "financial_posture_for_day": "This day can show tightness without panic; no rescue inflows.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Salary-end small Simpl food or quick-commerce usage",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart",
+            "food_cloud_kitchen_late_night_meal",
+            "work_late_work_dinner_order"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 1100
+          },
+          "max_occurrences_for_day": "0-1 small Simpl-eligible need; monthly Simpl max 0-3 occurrences",
+          "payment_rail_hint": "Simpl only if selected; otherwise Axis card or UPI",
+          "aa_visibility_hint": "posts to Simpl first; bank impact only on future repayment",
+          "why_plausible_today": "Small delivery or quick-commerce via Simpl is allowed if needed.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Nearby cigarette or coffee leakage is plausible but can be skipped.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce",
+          "food_blinkit_quick_commerce"
+        ],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": true,
+        "expected_band_inr": {
+          "low": 500,
+          "high": 2000
+        },
+        "lag_or_partial_rule": "Candidate only. Across all June candidate days, generate at most two tiny friend/flatmate settlement flows, and do not treat them as income or rescue.",
+        "candidate_window_id": "june_tiny_friend_flatmate_settlement_candidates",
+        "monthly_max_selected_flows": 2,
+        "do_not_generate_on_all_candidate_days": true
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Friend reimbursement must remain small and ordinary, not a liquidity rescue.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-28",
+      "weekday": "Saturday",
+      "day_type": "weekend",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage",
+        "Indiranagar 100 Feet Road"
+      ],
+      "day_life_summary": "Weekend before salary: one restrained coffee, smoke-shop, or short dinner plan can happen but not a full night out.",
+      "financial_posture_for_day": "Salary is close, but the month should not end with a binge.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Light social food or alcohol leakage",
+          "catalog_item_ids_allowed": [
+            "social_pub_brewery_night",
+            "food_zomato_delivery_dineout",
+            "food_cafe_coffee_snacks"
+          ],
+          "day_amount_band_inr": {
+            "low": 600,
+            "high": 2500
+          },
+          "max_occurrences_for_day": "0-1 light occasion; not a party night",
+          "payment_rail_hint": "Axis card or UPI",
+          "aa_visibility_hint": "card posts to Axis first; reimbursement later only if supported",
+          "why_plausible_today": "A second and final light social occasion is plausible if not already overused.",
+          "do_not_force": true,
+          "same_day_combination_guardrail": "Do not combine this light social context with a separate Simpl food/quick-commerce posting unless the later transaction generator clearly treats them as distinct needs and keeps total June social/Simpl usage within monthly caps."
+        },
+        {
+          "context_name": "Salary-end small Simpl food or quick-commerce usage",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart",
+            "food_cloud_kitchen_late_night_meal",
+            "work_late_work_dinner_order"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 1100
+          },
+          "max_occurrences_for_day": "0-1 small Simpl-eligible need; monthly Simpl max 0-3 occurrences",
+          "payment_rail_hint": "Simpl only if selected; otherwise Axis card or UPI",
+          "aa_visibility_hint": "posts to Simpl first; bank impact only on future repayment",
+          "why_plausible_today": "Small food/quick-commerce via Simpl remains allowed, but avoid combining with social spend heavily.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "social_pub_brewery_night",
+          "food_zomato_delivery_dineout",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce"
+        ],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": true,
+        "expected_band_inr": {
+          "low": 400,
+          "high": 1500
+        },
+        "lag_or_partial_rule": "Candidate only. Across all June candidate days, generate at most two tiny friend/flatmate settlement flows, and do not treat them as income or rescue.",
+        "candidate_window_id": "june_tiny_friend_flatmate_settlement_candidates",
+        "monthly_max_selected_flows": 2,
+        "do_not_generate_on_all_candidate_days": true
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "This must not become a party month; social/alcohol remains capped at 1-2 light occasions.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-29",
+      "weekday": "Sunday",
+      "day_type": "low_activity_day",
+      "work_mode": "weekend",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home"
+      ],
+      "day_life_summary": "Quiet Sunday immediately before salary; Aarav stays in and delays non-essential spends.",
+      "financial_posture_for_day": "Salary-end tightness peaks but remains believable and not chaotic.",
+      "known_obligation_windows_for_day": [],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Salary-end small Simpl food or quick-commerce usage",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart",
+            "food_cloud_kitchen_late_night_meal",
+            "work_late_work_dinner_order"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 1100
+          },
+          "max_occurrences_for_day": "0-1 small Simpl-eligible need; monthly Simpl max 0-3 occurrences",
+          "payment_rail_hint": "Simpl only if selected; otherwise Axis card or UPI",
+          "aa_visibility_hint": "posts to Simpl first; bank impact only on future repayment",
+          "why_plausible_today": "One final small meal or quick-commerce Simpl use is allowed if monthly Simpl occurrences remain under cap.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        },
+        {
+          "context_name": "Basic groceries or household restock",
+          "catalog_item_ids_allowed": [
+            "food_bigbasket_planned_groceries",
+            "food_local_grocery_kirana",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "housing_shared_quick_commerce_flatmate"
+          ],
+          "day_amount_band_inr": {
+            "low": 300,
+            "high": 1800
+          },
+          "max_occurrences_for_day": "0-1 household need; do not split across multiple apps for same need",
+          "payment_rail_hint": "Axis card or UPI only for this context; use the separate Simpl context if choosing Simpl.",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible. Simpl must be generated only through the separate Simpl salary-end context.",
+          "why_plausible_today": "Small essentials-only grocery need can occur; avoid pantry overstocking.",
+          "do_not_force": true,
+          "mutually_exclusive_same_need_contexts": [
+            "Salary-end small Simpl food or quick-commerce usage",
+            "Controlled food delivery or quick-commerce need"
+          ],
+          "same_need_generation_rule": "For one meal or quick-commerce need, choose either Simpl, card, or UPI. Do not generate both a Simpl posting and a card/UPI posting for the same underlying need."
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_zepto_quick_commerce",
+          "food_blinkit_quick_commerce"
+        ],
+        "bank_debit_items": [
+          "food_local_grocery_kirana"
+        ],
+        "simpl_items": [
+          "food_swiggy_delivery",
+          "food_zepto_quick_commerce",
+          "food_blinkit_quick_commerce",
+          "food_swiggy_instamart"
+        ],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Do not create a pre-salary spending spree or extra borrowing.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    },
+    {
+      "date": "2025-06-30",
+      "weekday": "Monday",
+      "day_type": "salary_day",
+      "work_mode": "wfh",
+      "primary_locations": [
+        "Indiranagar 2nd Stage home",
+        "nearby Indiranagar"
+      ],
+      "day_life_summary": "Salary day relief arrives near evening; Aarav may have a small comfort meal but should not splurge.",
+      "financial_posture_for_day": "Salary credit restores breathing room, but this day should not retroactively erase the tight final week.",
+      "known_obligation_windows_for_day": [
+        {
+          "obligation_name": "NimbleCart Technologies salary credit",
+          "source": "salary",
+          "expected_amount_band_inr": {
+            "low": 165000,
+            "high": 165000
+          },
+          "generation_timing_hint": "evening",
+          "source_account_preference": "aarav_hdfc_salary_savings_001",
+          "rail_preference": "salary credit",
+          "generation_rule": "Salary window only; do not create other income or rescue inflows."
+        }
+      ],
+      "allowed_day_contexts": [
+        {
+          "context_name": "Controlled food delivery or quick-commerce need",
+          "catalog_item_ids_allowed": [
+            "food_swiggy_delivery",
+            "food_zomato_delivery_dineout",
+            "food_zepto_quick_commerce",
+            "food_blinkit_quick_commerce",
+            "food_swiggy_instamart"
+          ],
+          "day_amount_band_inr": {
+            "low": 250,
+            "high": 900
+          },
+          "max_occurrences_for_day": "0-1 selected need; choose one merchant/rail only",
+          "payment_rail_hint": "Axis card or UPI only; no new Simpl usage on salary day.",
+          "aa_visibility_hint": "card posts to Axis first; UPI is bank visible",
+          "why_plausible_today": "Small post-salary comfort meal is plausible, not a spree.",
+          "do_not_force": true
+        },
+        {
+          "context_name": "Coffee, snacks, or small smoke-shop leakage",
+          "catalog_item_ids_allowed": [
+            "food_cafe_coffee_snacks",
+            "food_office_cafeteria_pantry_extras",
+            "food_cigarette_smoke_shop_purchase"
+          ],
+          "day_amount_band_inr": {
+            "low": 80,
+            "high": 650
+          },
+          "max_occurrences_for_day": "0-2 tiny occurrences",
+          "payment_rail_hint": "UPI, card, or small cash",
+          "aa_visibility_hint": "digital payments visible; individual cash items not visible",
+          "why_plausible_today": "Tiny coffee or smoke-shop leakage can appear if needed.",
+          "do_not_force": true
+        }
+      ],
+      "blocked_day_contexts": [
+        {
+          "catalog_item_id_or_context": "travel_hotel_homestay_booking | travel_flight_blr_kochi | weekend_trip_context",
+          "reason": "June 2025 is locked as a no-trip boring month."
+        },
+        {
+          "catalog_item_id_or_context": "shopping_croma_electronics_store | major gadget purchase",
+          "reason": "Major gadget purchase is explicitly blocked for June."
+        },
+        {
+          "catalog_item_id_or_context": "medical_hospital_payment | medical shock",
+          "reason": "No medical shock or hospital-level event is selected."
+        },
+        {
+          "catalog_item_id_or_context": "finance_liquid_fund_purchase_redemption | card_revolve | SIP_skip",
+          "reason": "June preserves SIP success, no liquid fund redemption, and no card revolve."
+        }
+      ],
+      "card_vs_bank_guidance": {
+        "card_first_items": [
+          "food_swiggy_delivery",
+          "food_zomato_delivery_dineout",
+          "food_cafe_coffee_snacks"
+        ],
+        "bank_debit_items": [],
+        "simpl_items": [],
+        "cash_visibility_note": "Cash spending is not individually visible; only ATM withdrawal is visible if selected."
+      },
+      "social_friend_reimbursement_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "lag_or_partial_rule": "No friend settlement expected; do not introduce rescue inflows."
+      },
+      "self_transfer_guidance": {
+        "allowed_today": false,
+        "expected_band_inr": {
+          "low": 0,
+          "high": 0
+        },
+        "guardrail": "Self-transfer must be paired and visible if generated later."
+      },
+      "realism_checks": {
+        "fits_weekday_weekend": true,
+        "fits_month_type": true,
+        "does_not_add_rare_event": true,
+        "does_not_duplicate_known_obligations": true,
+        "does_not_force_catalog_coverage": true
+      },
+      "ledger_generation_warnings": [
+        "Salary should credit near evening; do not generate other income.",
+        "Salary day is not a new Simpl usage day. Do not create post-salary BNPL usage.",
+        "This day plan provides scaffolding only; do not emit final transaction rows from it.",
+        "If a card rail is selected, post the purchase to Axis card first and do not duplicate it as a bank debit.",
+        "Do not infer account balance or closing balance from this plan."
+      ]
+    }
+  ],
+  "day_plan_validation": {
+    "no_raw_aa_payload_generated": true,
+    "no_final_transactions_generated": true,
+    "no_bank_statement_rows_generated": true,
+    "no_card_statement_rows_generated": true,
+    "no_account_balances_generated": true,
+    "all_days_present": true,
+    "day_count": 30,
+    "month_matches_locked_month_plan": true,
+    "month_type_preserved_as_boring": true,
+    "june_starting_state_carryover_obligations_windowed": true,
+    "salary_day_is_2025_06_30": true,
+    "uti_sip_success_preserved": true,
+    "no_card_revolve": true,
+    "no_sip_skip": true,
+    "no_liquid_fund_redemption": true,
+    "simpl_limited_to_salary_end": true,
+    "no_new_rare_events_added": true,
+    "spend_contexts_are_non_additive": true,
+    "known_card_autopay_windows_aligned_to_starting_state": true,
+    "streaming_app_subscription_autopay_window_present": true,
+    "gym_autopay_window_on_2025_06_03": true,
+    "mobile_postpaid_window_on_2025_06_21": true,
+    "simpl_removed_from_non_allowed_dates": true,
+    "simpl_not_allowed_on_salary_day": true,
+    "salary_end_food_contexts_marked_mutually_exclusive": true,
+    "self_transfer_candidate_window_choose_one_only": true,
+    "friend_flatmate_settlement_candidates_capped": true,
+    "transaction_generation_selection_caps_present": true,
+    "allowed_contexts_marked_as_candidates_not_transactions": true,
+    "ready_for_day_plan_review": true,
+    "post_autopay_move_day_types_cleaned": true,
+    "salary_end_rail_selection_rule_present": true,
+    "non_food_contexts_not_overblocked_by_food_mutual_exclusion": true,
+    "salary_end_non_simpl_contexts_explicitly_exclude_simpl": true
+  },
+  "do_not_generate_yet": [
+    "raw AA payload",
+    "final transactions",
+    "bank statement rows",
+    "card statement rows",
+    "exact UTR/reference numbers",
+    "account balances",
+    "monthly closing balances"
+  ]
+}

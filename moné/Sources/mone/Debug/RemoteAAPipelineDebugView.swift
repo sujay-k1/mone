@@ -8,9 +8,11 @@ struct RemoteAAPipelineDebugView: View {
     @State private var mobile = "7304893952"
     @State private var pan = "ABCDE0000P"
     @State private var isLoading = false
+    @State private var isReclassifying = false
     @State private var errorMessage: String?
     @State private var result: AAIntelligenceResult?
     @State private var didSaveToDatabase = false
+    @State private var didReclassify = false
 
     private let pipeline = AAIntelligencePipeline()
 
@@ -35,26 +37,44 @@ struct RemoteAAPipelineDebugView: View {
                         }
                     } label: {
                         HStack {
-                            if isLoading {
-                                ProgressView()
-                            }
-
+                            if isLoading { ProgressView() }
                             Text(isLoading ? "Running..." : "Fetch AA Payload + Run Intelligence")
                                 .bold()
                         }
                         .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(isLoading)
+                    .disabled(isLoading || isReclassifying)
+
+                    Button {
+                        Task {
+                            await reclassifyInPlace()
+                        }
+                    } label: {
+                        HStack {
+                            if isReclassifying { ProgressView() }
+                            Text(isReclassifying ? "Re-classifying..." : "Re-classify Stored Transactions")
+                                .bold()
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(isLoading || isReclassifying)
 
                     if let errorMessage {
                         Text(errorMessage)
                             .font(.caption)
                             .foregroundStyle(.red)
                     }
-                    
+
                     if didSaveToDatabase {
-                        Text("Saved to local database")
+                        Text("✓ Pipeline saved to local database")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                    }
+
+                    if didReclassify {
+                        Text("✓ Transactions re-classified in place")
                             .font(.caption)
                             .foregroundStyle(.green)
                     }
@@ -136,6 +156,28 @@ struct RemoteAAPipelineDebugView: View {
 
             result = pipelineResult
             didSaveToDatabase = true
+        } catch {
+            errorMessage = String(describing: error)
+        }
+    }
+
+    @MainActor
+    private func reclassifyInPlace() async {
+        isReclassifying = true
+        didReclassify = false
+        errorMessage = nil
+
+        defer { isReclassifying = false }
+
+        do {
+            let store = IntelligencePersistenceStore(modelContext: modelContext)
+
+            // Re-classify for all known personas
+            for personaId in [PersonaId.aarav, PersonaId.priya] {
+                try store.reclassifyStoredTransactions(personaId: personaId)
+            }
+
+            didReclassify = true
         } catch {
             errorMessage = String(describing: error)
         }

@@ -352,7 +352,7 @@ struct SetupOptionCard: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(Color.moneSecondary)
+                        .background(Color.moneHealthy)
                         .clipShape(UnevenRoundedRectangle(
                             topLeadingRadius: 0,
                             bottomLeadingRadius: MoneRadius.md,

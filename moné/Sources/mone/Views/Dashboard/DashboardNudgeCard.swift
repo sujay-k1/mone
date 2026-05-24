@@ -10,7 +10,7 @@ struct DashboardNudgeCard: View {
             HStack(alignment: .top, spacing: 12) {
                 ZStack {
                     Circle()
-                        .fill(Color.moneStroke.opacity(0.25))
+                        .fill(Color.moneStroke.opacity(0))
                         .frame(width: 64, height: 64)
 
                     Image(systemName: nudge.iconName)
@@ -21,45 +21,53 @@ struct DashboardNudgeCard: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(nudge.title)
-                        .font(.moneBodyLg)
-                        .foregroundStyle(Color.monePrimary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+                    
+                    HStack(alignment: .center, spacing: 12) {
+                        Text(nudge.title)
+                            .font(.moneBodyLg)
+                            .foregroundStyle(Color.monePrimary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                        
+                        Spacer()
+                        
+                        Button {
+                            onDismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(Color.moneTertiary)
+                                .padding(8)
+                        }
+                        .buttonStyle(.plain)
+                    
+                }
 
                     Text(nudge.message)
                         .font(.moneBodySm)
                         .foregroundStyle(Color.moneSecondary)
                         .fixedSize(horizontal: false, vertical: true)
+                    
+                    Spacer()
+                    
+                    Button {
+                        onPrimaryAction()
+                    } label: {
+                        Text(nudge.primaryActionTitle.uppercased())
+                            .font(.moneLabelCaps)
+                            .foregroundStyle(Color.monePrimary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Color.moneStroke.opacity(0.28))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    .buttonStyle(.plain)
                 }
-
-                Spacer()
-
-                Button {
-                    onDismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(Color.moneTertiary)
-                        .padding(8)
-                }
-                .buttonStyle(.plain)
             }
-
-            Button {
-                onPrimaryAction()
-            } label: {
-                Text(nudge.primaryActionTitle.uppercased())
-                    .font(.moneLabelCaps)
-                    .foregroundStyle(Color.monePrimary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .background(Color.moneStroke.opacity(0.28))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-            .buttonStyle(.plain)
         }
-        .padding(16)
+        .padding(.leading, 16)
+        .padding(.trailing, 12)
+        .padding(.vertical, 16)
         .background(Color.moneSurface)
         .overlay(
             RoundedRectangle(cornerRadius: 16)

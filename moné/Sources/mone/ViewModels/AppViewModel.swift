@@ -76,6 +76,7 @@ class AppViewModel {
 
     var aaResponse: SyntheticAAResponse? = nil
     var aaFetchError: String? = nil
+    var shouldOpenAAFetchDetailsSheet = false
 
     // MARK: Money Map & Data
     var moneyMap: MoneyMap          = MockDataService.defaultMoneyMap()
@@ -88,6 +89,19 @@ class AppViewModel {
     var payCategory: TransactionCategory = .other
     var activeNudge: Nudge?    = nil
     var showNudge:   Bool      = false
+
+    // MARK: - Navigation / Deeplinks
+    enum TabSelection: Hashable {
+        case dashboard, moneyMap, pay, goals
+    }
+
+    enum MoneyMapDeepLink {
+        case openReviewTransactions
+        case openSubscriptionCard
+    }
+
+    var selectedTab: TabSelection = .dashboard
+    var moneyMapDeepLink: MoneyMapDeepLink? = nil
 
     // MARK: - Onboarding Steps (Agenda-First Flow)
 

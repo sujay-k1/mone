@@ -50,6 +50,11 @@
 		66BC26A32FBE9F08000D4FF7 /* GoalPlannerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26A22FBE9F08000D4FF7 /* GoalPlannerEngine.swift */; };
 		66BC26A52FBE9F11000D4FF7 /* GoalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26A42FBE9F11000D4FF7 /* GoalStore.swift */; };
 		66BC26AB2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26AA2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift */; };
+		66BC26B02FBEB9A1000D4FF7 /* DashboardNudgeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26AF2FBEB785000D4FF7 /* DashboardNudgeCard.swift */; };
+		66BC26B12FBEB9A6000D4FF7 /* DashboardNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26AC2FBEB757000D4FF7 /* DashboardNudge.swift */; };
+		66BC26B72FBEDD57000D4FF7 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 66BC26B62FBEDD57000D4FF7 /* AppIcon.icon */; };
+		66BC26B92FBFEF4E000D4FF7 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26B82FBFEF4E000D4FF7 /* SplashScreenView.swift */; };
+		66BC26BB2FC006B0000D4FF7 /* CompanyLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BC26BA2FC006B0000D4FF7 /* CompanyLogoView.swift */; };
 		67A7E21DC1115C6FD43EA155 /* MoneTaxonomy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8116131A5B5E619673058A3B /* MoneTaxonomy.swift */; };
 		787AD81D78F9FFA4DB1F08E7 /* SignUpSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F8BD84AFCFC35206849E91D /* SignUpSheet.swift */; };
 		78A595B2D422922DC0198789 /* BuildingMoneyMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAFCE495917736DBE9F3D7D /* BuildingMoneyMapView.swift */; };
@@ -156,6 +161,11 @@
 		66BC26A22FBE9F08000D4FF7 /* GoalPlannerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPlannerEngine.swift; sourceTree = "<group>"; };
 		66BC26A42FBE9F11000D4FF7 /* GoalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalStore.swift; sourceTree = "<group>"; };
 		66BC26AA2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPlannerPersistence.swift; sourceTree = "<group>"; };
+		66BC26AC2FBEB757000D4FF7 /* DashboardNudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardNudge.swift; sourceTree = "<group>"; };
+		66BC26AF2FBEB785000D4FF7 /* DashboardNudgeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardNudgeCard.swift; sourceTree = "<group>"; };
+		66BC26B62FBEDD57000D4FF7 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		66BC26B82FBFEF4E000D4FF7 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		66BC26BA2FC006B0000D4FF7 /* CompanyLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogoView.swift; sourceTree = "<group>"; };
 		67B2F63CC66F34DAF96D56B0 /* KnownEntityRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnownEntityRegistry.swift; sourceTree = "<group>"; };
 		68AEC708AA320B08933BD1F4 /* GoalProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProjectionCalculator.swift; sourceTree = "<group>"; };
 		696A2C6010A91A3F6A9C4BCD /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -211,6 +221,17 @@
 			path = Setup;
 			sourceTree = "<group>";
 		};
+		66BC27212FC00948000D4FF7 /* company-logos */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = "company-logos";
+			path = "Assets/company-logos";
+			sourceTree = SOURCE_ROOT;
+		};
+		66BC29B52FC02A70000D4FF7 /* moné */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "moné";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +271,7 @@
 				75D367499C7C80CFC1B07611 /* Pay */,
 				A1A90FBE47EEC089473B8A60 /* MoneyMap */,
 				01D4108A576F26295264834F /* Transactions */,
+				66BC26B82FBFEF4E000D4FF7 /* SplashScreenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -334,12 +356,20 @@
 			path = Classification;
 			sourceTree = "<group>";
 		};
+		66BC29C12FC0353B000D4FF7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		70EB2460B607A05AF9E32C1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				173335EABE4B357E00E9BE91 /* Buttons.swift */,
 				902245878AE6E8B55DBFA346 /* Cards.swift */,
 				1A3E2855AA8BEA27B19B9B35 /* Fields.swift */,
+				66BC26BA2FC006B0000D4FF7 /* CompanyLogoView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -395,6 +425,7 @@
 			children = (
 				F73F3BC298AF0EAA489D1F00 /* raw_payload_aarav.json */,
 				892195338DAB6EE859BDBB92 /* raw_payload_priya.json */,
+				66BC27212FC00948000D4FF7 /* company-logos */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -404,6 +435,8 @@
 			children = (
 				BF2BC56AEC1EA6AC3F56AFD5 /* Sources */,
 				6D0D1539FC07A07ABC9823F2 /* SupabaseClient.swift */,
+				66BC29B52FC02A70000D4FF7 /* moné */,
+				66BC29C12FC0353B000D4FF7 /* Frameworks */,
 				2A852C88FA4B652C0602677E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -411,6 +444,8 @@
 		9C0CF4DC9B88C209717816B0 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				66BC26AC2FBEB757000D4FF7 /* DashboardNudge.swift */,
+				66BC26AF2FBEB785000D4FF7 /* DashboardNudgeCard.swift */,
 				CA9F32E7244F2AEC66F92DF7 /* DashboardDataLoader.swift */,
 				7CABBD683BC92C544F4022CD /* DashboardSummary.swift */,
 				2C8C1E078C23417753324C04 /* DashboardView.swift */,
@@ -445,6 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				4D2943CDCD5B1F30088461C7 /* mone */,
+				66BC26B62FBEDD57000D4FF7 /* AppIcon.icon */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -546,6 +582,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				66BC26862FBE2BE9000D4FF7 /* Setup */,
+				66BC27212FC00948000D4FF7 /* company-logos */,
 			);
 			name = mone;
 			packageProductDependencies = (
@@ -562,6 +599,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 8E206D0F6C7A91AF41032741 /* Build configuration list for PBXProject "mone" */;
@@ -593,6 +631,7 @@
 			files = (
 				3B4C9CFA5D0B5390BD955B6F /* raw_payload_aarav.json in Resources */,
 				34EAF8B035437F72C519B8F3 /* raw_payload_priya.json in Resources */,
+				66BC26B72FBEDD57000D4FF7 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +667,7 @@
 				D641D9230B080888839DF8E4 /* DashboardDataLoader.swift in Sources */,
 				3DE9EA12F8D5FF220B80C361 /* DashboardSummary.swift in Sources */,
 				C9DB4CF6FA2581CED73884AB /* DashboardView.swift in Sources */,
+				66BC26BB2FC006B0000D4FF7 /* CompanyLogoView.swift in Sources */,
 				F26BF79A9EAB81761B3D0575 /* DataPrivacyView.swift in Sources */,
 				66BC267A2FBE1061000D4FF7 /* MoneyMapDataLoader.swift in Sources */,
 				F4C1A877A6B8587C63A9E169 /* DataProcessingStep.swift in Sources */,
@@ -677,8 +717,10 @@
 				66BC26AB2FBEA5E1000D4FF7 /* GoalPlannerPersistence.swift in Sources */,
 				BF523D345052460B5B3EACA9 /* RemoteAAPipelineDebugView.swift in Sources */,
 				99AA08551F325847C892D476 /* ReviewQueueDebugView.swift in Sources */,
+				66BC26B12FBEB9A6000D4FF7 /* DashboardNudge.swift in Sources */,
 				66BC268E2FBE3B17000D4FF7 /* FinancialDataCloudService.swift in Sources */,
 				9EA6FBA087FAF33359EA85AF /* SafeToSpendCalculator.swift in Sources */,
+				66BC26B02FBEB9A1000D4FF7 /* DashboardNudgeCard.swift in Sources */,
 				3FFE814C28E575C4E9D64443 /* SecondaryAgendaView.swift in Sources */,
 				F745747D509A937CEDC7BBB4 /* SessionViewModel.swift in Sources */,
 				5552F18D30B52F2FAE8624B2 /* SetupMethodView.swift in Sources */,
@@ -691,6 +733,7 @@
 				01452073EB27A1D1F0F4F260 /* Theme.swift in Sources */,
 				66BC26842FBE2BB5000D4FF7 /* ProfileSpaceView.swift in Sources */,
 				66BC26A12FBE9F04000D4FF7 /* GoalModels.swift in Sources */,
+				66BC26B92FBFEF4E000D4FF7 /* SplashScreenView.swift in Sources */,
 				79C5AC202175070E59372893 /* Transaction.swift in Sources */,
 				EE40591738E0EC432FA81EBA /* TransactionClassifier.swift in Sources */,
 				CCD37B49BEF75A9996CB485C /* TransactionFeatureExtractor.swift in Sources */,
@@ -748,7 +791,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -764,20 +807,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGNING_STYLE = Automatic;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FW9GW8MW64;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "moné";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mone.app;
+				PRODUCT_BUNDLE_IDENTIFIER = net.sujaykumar.mone;
 				PRODUCT_NAME = mone;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -839,7 +885,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -856,20 +902,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGNING_STYLE = Automatic;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FW9GW8MW64;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "moné";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mone.app;
+				PRODUCT_BUNDLE_IDENTIFIER = net.sujaykumar.mone;
 				PRODUCT_NAME = mone;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -591,15 +591,17 @@ final class TransactionClassifier {
         let accountType = transaction.accountType.lowercased()
 
         if accountType == "mutual_funds" {
+            // Debits from MF accounts are redemptions — money flowing back, not new investment
+            let isRedemption = transaction.type.uppercased() == "DEBIT"
             return ClassificationResult(
                 transactionId: transaction.id,
                 canonicalEntityName: parsed.normalizedCounterparty,
                 entityType: "investment_account",
-                role: "fund_building",
+                role: isRedemption ? "asset_transfer" : "fund_building",
                 categoryFamily: "investments",
                 category: "mutual_fund",
                 confidence: 92,
-                evidence: ["Source account type is mutual_funds"],
+                evidence: [isRedemption ? "MF redemption/debit treated as asset transfer" : "Source account type is mutual_funds"],
                 needsReview: false,
                 reviewReason: nil,
                 reviewOptions: []
@@ -607,15 +609,17 @@ final class TransactionClassifier {
         }
 
         if accountType == "recurring_deposit" {
+            // Debits from RD accounts are premature/maturity closures — asset transfer, not fresh contribution
+            let isClosure = transaction.type.uppercased() == "DEBIT"
             return ClassificationResult(
                 transactionId: transaction.id,
                 canonicalEntityName: parsed.normalizedCounterparty,
                 entityType: "deposit_account",
-                role: "fund_building",
+                role: isClosure ? "asset_transfer" : "fund_building",
                 categoryFamily: "investments",
                 category: "recurring_deposit",
                 confidence: 92,
-                evidence: ["Source account type is recurring_deposit"],
+                evidence: [isClosure ? "RD closure/debit treated as asset transfer" : "Source account type is recurring_deposit"],
                 needsReview: false,
                 reviewReason: nil,
                 reviewOptions: []
@@ -623,15 +627,17 @@ final class TransactionClassifier {
         }
 
         if accountType == "term_deposit" {
+            // Debits from TD accounts are maturity/premature closures — asset transfer, not fresh contribution
+            let isClosure = transaction.type.uppercased() == "DEBIT"
             return ClassificationResult(
                 transactionId: transaction.id,
                 canonicalEntityName: parsed.normalizedCounterparty,
                 entityType: "deposit_account",
-                role: "fund_building",
+                role: isClosure ? "asset_transfer" : "fund_building",
                 categoryFamily: "investments",
                 category: "term_deposit",
                 confidence: 92,
-                evidence: ["Source account type is term_deposit"],
+                evidence: [isClosure ? "TD closure/debit treated as asset transfer" : "Source account type is term_deposit"],
                 needsReview: false,
                 reviewReason: nil,
                 reviewOptions: []
@@ -709,6 +715,25 @@ final class TransactionClassifier {
             )
         }
 
+        // Househelp salary — check BEFORE generic SALARY so it doesn't misfire as income
+        let househelpSignals = ["HOUSEHELP SALARY", "MAID SALARY", "COOK SALARY",
+                                "BHAIYA SALARY", "DIDI SALARY", "DOMESTIC SALARY"]
+        if househelpSignals.contains(where: { text.contains($0) }) {
+            return ClassificationResult(
+                transactionId: transaction.id,
+                canonicalEntityName: parsed.normalizedCounterparty,
+                entityType: "household_service",
+                role: "committed_outflow",
+                categoryFamily: "household_help",
+                category: "household_help",
+                confidence: 93,
+                evidence: ["Counterparty contains househelp salary signal"],
+                needsReview: false,
+                reviewReason: nil,
+                reviewOptions: []
+            )
+        }
+
         if text.contains("SALARY") {
             return ClassificationResult(
                 transactionId: transaction.id,
@@ -719,6 +744,73 @@ final class TransactionClassifier {
                 category: "salary",
                 confidence: 98,
                 evidence: ["Counterparty contains SALARY"],
+                needsReview: false,
+                reviewReason: nil,
+                reviewOptions: []
+            )
+        }
+
+        // ── Digital subscriptions ────────────────────────────────────────────
+        let subscriptionSignals: [(keyword: String, name: String)] = [
+            ("NETFLIX", "Netflix"),
+            ("SPOTIFY", "Spotify"),
+            ("APPLE", "Apple"),
+            ("ICLOUD", "iCloud"),
+            ("YOUTUBE", "YouTube Premium"),
+            ("GOOGLE ONE", "Google One"),
+            ("HOTSTAR", "Disney+ Hotstar"),
+            ("DISNEY", "Disney+ Hotstar"),
+            ("AMAZON PRIME", "Amazon Prime"),
+            ("PRIME VIDEO", "Amazon Prime"),
+            ("PRIMEVIDEO", "Amazon Prime"),
+            ("TRUECALLER", "Truecaller Premium"),
+            ("LINKEDIN", "LinkedIn Premium"),
+            ("ZEE5", "Zee5"),
+            ("SONYLIV", "SonyLIV"),
+            ("JIOCINEMA", "JioCinema"),
+            ("LENSKART", "Lenskart"),
+            ("CULT FIT", "Cult.fit"),
+            ("CULTFIT", "Cult.fit"),
+            ("CURE FIT", "Cult.fit"),
+            ("HEADSPACE", "Headspace"),
+            ("DUOLINGO", "Duolingo"),
+            ("CANVA", "Canva"),
+            ("ADOBE", "Adobe"),
+            ("NOTION", "Notion"),
+            ("DROPBOX", "Dropbox"),
+            ("GITHUB", "GitHub"),
+            ("MICROSOFT 365", "Microsoft 365"),
+            ("OFFICE 365", "Microsoft 365"),
+        ]
+        for signal in subscriptionSignals {
+            if text.contains(signal.keyword) {
+                return ClassificationResult(
+                    transactionId: transaction.id,
+                    canonicalEntityName: signal.name,
+                    entityType: "subscription_service",
+                    role: "committed_outflow",
+                    categoryFamily: "subscriptions",
+                    category: "digital_subscription",
+                    confidence: 92,
+                    evidence: ["Counterparty matches known subscription service: \(signal.name)"],
+                    needsReview: false,
+                    reviewReason: nil,
+                    reviewOptions: []
+                )
+            }
+        }
+
+        // Credit card bill payments — monthly committed obligation
+        if text.contains("CREDIT CARD") || text.contains("CC PAYMENT") || text.contains("CC BILL") || text.contains("CARD PAYMENT") {
+            return ClassificationResult(
+                transactionId: transaction.id,
+                canonicalEntityName: parsed.normalizedCounterparty,
+                entityType: "credit_card",
+                role: "committed_outflow",
+                categoryFamily: "credit_card",
+                category: "credit_card_payment",
+                confidence: 93,
+                evidence: ["Counterparty contains credit card payment signal"],
                 needsReview: false,
                 reviewReason: nil,
                 reviewOptions: []

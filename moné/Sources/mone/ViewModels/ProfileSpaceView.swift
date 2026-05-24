@@ -1,13 +1,18 @@
 import SwiftUI
+import SwiftData
 
 struct ProfileSpaceView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SessionViewModel.self) private var sessionVM
     @Environment(AppViewModel.self) private var appVM
+    @Environment(\.modelContext) private var modelContext
 
     var onSignUpRequested: (() -> Void)? = nil
 
     @State private var showDeleteConfirmation = false
+    @State private var showResetConfirmation = false
+    @State private var isReclassifying = false
+    @State private var reclassifyDone = false
 
     private static let signUpDismissedKey = "mone.signUpDismissed"
     
@@ -48,10 +53,21 @@ struct ProfileSpaceView: View {
                         dismiss()
                     }
                 }
-
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("This will delete your account and return you to onboarding.")
+            }
+            .confirmationDialog(
+                "Reset everything?",
+                isPresented: $showResetConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Reset and start over", role: .destructive) {
+                    resetGuestData()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("All your local data, money map, and goals will be cleared. This cannot be undone.")
             }
             
         }
@@ -82,6 +98,17 @@ struct ProfileSpaceView: View {
                         dismiss()
                     }
                 }
+
+                profileRow(
+                    title: isReclassifying ? "Re-classifying..." : reclassifyDone ? "Re-classify done ✓" : "Re-classify transactions",
+                    subtitle: "Re-run the classifier on stored data without re-fetching",
+                    systemImage: "arrow.triangle.2.circlepath",
+                    isDestructive: false
+                ) {
+                    Task { await reclassifyInPlace() }
+                }
+                .disabled(isReclassifying)
+                .opacity(isReclassifying ? 0.6 : 1)
 
                 profileRow(
                     title: sessionVM.isDeletingAccount ? "Deleting account..." : "Delete account",
@@ -143,6 +170,26 @@ struct ProfileSpaceView: View {
                         .padding(.vertical, 12)
                 }
                 .buttonStyle(.plain)
+
+                profileRow(
+                    title: isReclassifying ? "Re-classifying..." : reclassifyDone ? "Re-classify done ✓" : "Re-classify transactions",
+                    subtitle: "Re-run the classifier on stored data without re-fetching",
+                    systemImage: "arrow.triangle.2.circlepath",
+                    isDestructive: false
+                ) {
+                    Task { await reclassifyInPlace() }
+                }
+                .disabled(isReclassifying)
+                .opacity(isReclassifying ? 0.6 : 1)
+
+                profileRow(
+                    title: "Reset all data",
+                    subtitle: "Clear everything and return to onboarding",
+                    systemImage: "arrow.counterclockwise",
+                    isDestructive: true
+                ) {
+                    showResetConfirmation = true
+                }
             }
         }
     }
@@ -231,6 +278,43 @@ struct ProfileSpaceView: View {
             )
         }
         .buttonStyle(.plain)
+    }
+
+    private func resetGuestData() {
+        // Clear all SwiftData models
+        try? modelContext.delete(model: StoredPersona.self)
+        try? modelContext.delete(model: StoredAccount.self)
+        try? modelContext.delete(model: StoredTransaction.self)
+        try? modelContext.delete(model: StoredClassification.self)
+        try? modelContext.delete(model: StoredAISuggestion.self)
+        try? modelContext.delete(model: StoredMonthlySnapshot.self)
+
+        // Clear goals and nudge state from UserDefaults
+        UserDefaults.standard.removeObject(forKey: "mone.goalPlanner.createdGoals.v1")
+        UserDefaults.standard.removeObject(forKey: DashboardNudgeKeys.dismissedDashboardNudges)
+        UserDefaults.standard.removeObject(forKey: DashboardNudgeKeys.dashboardNudgeRotationIndex)
+        UserDefaults.standard.removeObject(forKey: ProfileSpaceView.signUpDismissedKey)
+
+        // Reset onboarding state and route back to start
+        appVM.clearLocalGuestProgress()
+        sessionVM.shouldForceWelcomeOnboarding = true
+        sessionVM.onboardingResetToken = UUID()
+        sessionVM.route = .onboarding
+        dismiss()
+    }
+
+    @MainActor
+    private func reclassifyInPlace() async {
+        isReclassifying = true
+        reclassifyDone = false
+        defer { isReclassifying = false }
+
+        let store = IntelligencePersistenceStore(modelContext: modelContext)
+        for personaId in [PersonaId.aarav, PersonaId.priya] {
+            try? store.reclassifyStoredTransactions(personaId: personaId)
+        }
+
+        reclassifyDone = true
     }
 
     private func openAccountAggregatorSetup() {

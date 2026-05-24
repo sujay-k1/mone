@@ -356,21 +356,354 @@ struct GoalPlannerEngine {
         )
     }
 
+    // MARK: - Corpus Goal Plans
+
+    func corpusTimelineOptions(
+        targetAmount: Double,
+        snapshot: PlannerFinancialSnapshot,
+        transactions: [Transaction]
+    ) -> [PlannerTimelineOption] {
+        guard targetAmount > 0 else { return [] }
+
+        let flexibleAmount = monthlyFlexibleAmount(snapshot: snapshot)
+        let comfortableSaving = comfortableMonthlySaving(snapshot: snapshot, transactions: transactions)
+        let stretchCapacity = stretchMonthlySavingCapacity(snapshot: snapshot)
+        let absoluteCapacity = absoluteMonthlySavingCap(snapshot: snapshot)
+        let baseMonths: [Int]
+
+        if comfortableSaving > 0 || stretchCapacity > 0 {
+            let comfortableMonths = comfortableSaving > 0 ? Int(ceil(targetAmount / comfortableSaving)) : 18
+            let stretchMonths = stretchCapacity > 0 ? Int(ceil(targetAmount / stretchCapacity)) : comfortableMonths
+            let absoluteMonths = absoluteCapacity > 0 ? Int(ceil(targetAmount / absoluteCapacity)) : stretchMonths
+            baseMonths = [
+                max(3, absoluteMonths),
+                max(3, comfortableMonths),
+                max(3, stretchMonths),
+                min(60, max(comfortableMonths + 3, Int(Double(comfortableMonths) * 1.35)))
+            ]
+        } else {
+            baseMonths = [6, 12, 18]
+        }
+
+        return Array(Set(baseMonths))
+            .sorted()
+            .map { months in
+                corpusTimelineOption(
+                    targetAmount: targetAmount,
+                    months: months,
+                    flexibleAmount: flexibleAmount,
+                    comfortableSaving: comfortableSaving,
+                    stretchCapacity: stretchCapacity,
+                    absoluteCapacity: absoluteCapacity
+                )
+            }
+    }
+
+    func corpusTimelineOption(
+        targetAmount: Double,
+        months: Int,
+        snapshot: PlannerFinancialSnapshot,
+        transactions: [Transaction]
+    ) -> PlannerTimelineOption {
+        corpusTimelineOption(
+            targetAmount: targetAmount,
+            months: months,
+            flexibleAmount: monthlyFlexibleAmount(snapshot: snapshot),
+            comfortableSaving: comfortableMonthlySaving(snapshot: snapshot, transactions: transactions),
+            stretchCapacity: stretchMonthlySavingCapacity(snapshot: snapshot),
+            absoluteCapacity: absoluteMonthlySavingCap(snapshot: snapshot)
+        )
+    }
+
+    func corpusTimelineMonthRange(
+        targetAmount: Double,
+        snapshot: PlannerFinancialSnapshot,
+        transactions: [Transaction]
+    ) -> ClosedRange<Int> {
+        let options = corpusTimelineOptions(
+            targetAmount: targetAmount,
+            snapshot: snapshot,
+            transactions: transactions
+        )
+        let lower = options.map(\.months).min() ?? 3
+        let upper = options.map(\.months).max() ?? 60
+
+        return lower...max(lower, upper)
+    }
+
+    func leakageFundingOptions(
+        transactions: [Transaction],
+        snapshot: PlannerFinancialSnapshot,
+        monthlyRequired: Double
+    ) -> [PlannerFundingComponent] {
+        let focuses: [PlannerSpendingFocus] = [
+            .foodDelivery,
+            .shopping,
+            .subscriptions,
+            .upiSmallSpends,
+            .entertainment,
+            .travel
+        ]
+        let comfortableSaving = comfortableMonthlySaving(snapshot: snapshot, transactions: transactions)
+        let neededFromLeakage = max(monthlyRequired - comfortableSaving, 0)
+
+        var candidates = focuses
+            .map { focus in
+                let actual = actualRecentSpend(for: focus, transactions: transactions)
+                let baseline = actual
+                let maxRecoverable = max(0, min(baseline * recoveryRate(for: focus), baseline - minimumSpendFloor(for: focus)))
+                return (focus: focus, actual: actual, baseline: baseline, maxRecoverable: maxRecoverable)
+            }
+            .filter { $0.baseline > 0 && $0.maxRecoverable > 0 }
+
+        if candidates.isEmpty {
+            candidates = focuses
+                .map { focus in
+                    let baseline = focus.fallbackBaseline
+                    let maxRecoverable = max(0, min(baseline * recoveryRate(for: focus), baseline - minimumSpendFloor(for: focus)))
+                    return (focus: focus, actual: 0, baseline: baseline, maxRecoverable: maxRecoverable)
+                }
+                .filter { $0.maxRecoverable > 0 }
+        }
+
+        let observedCategorySpend = candidates.reduce(0) { $0 + $1.baseline }
+
+        return candidates
+            .map { candidate in
+                let proportionalShare = observedCategorySpend > 0
+                    ? neededFromLeakage * (candidate.baseline / observedCategorySpend)
+                    : candidate.maxRecoverable
+                let suggestedRecovery = neededFromLeakage > 0
+                    ? min(candidate.maxRecoverable, max(1_000, proportionalShare))
+                    : candidate.maxRecoverable
+                let note = fundingNote(
+                    focus: candidate.focus,
+                    actual: candidate.actual,
+                    baseline: candidate.baseline,
+                    suggestedRecovery: suggestedRecovery,
+                    maxRecoverable: candidate.maxRecoverable
+                )
+
+                return PlannerFundingComponent(
+                    source: .leakage(candidate.focus),
+                    monthlyAmount: suggestedRecovery,
+                    maxMonthlyAmount: candidate.maxRecoverable,
+                    baseline: candidate.baseline,
+                    note: note
+                )
+            }
+            .filter { $0.monthlyAmount > 0 }
+            .sorted { $0.monthlyAmount > $1.monthlyAmount }
+    }
+
+    func createCorpusGoal(
+        purpose: PlannerSavingsPurpose,
+        targetAmount: Double,
+        durationMonths: Int,
+        selectedFunding: [PlannerFundingComponent],
+        snapshot: PlannerFinancialSnapshot,
+        transactions: [Transaction]
+    ) -> PlannerGoal {
+        let monthlyRequired = targetAmount / Double(max(durationMonths, 1))
+        let comfortableSaving = comfortableMonthlySaving(snapshot: snapshot, transactions: transactions)
+        let safeContribution = min(comfortableSaving, monthlyRequired)
+        let safeComponent = PlannerFundingComponent(
+            source: .safeCapacity,
+            monthlyAmount: safeContribution,
+            baseline: monthlyFlexibleAmount(snapshot: snapshot),
+            note: "Use current month-end surplus before adding cuts."
+        )
+        let components = ([safeComponent] + selectedFunding)
+            .filter { $0.monthlyAmount > 0 }
+        let projected = Calendar.current.date(byAdding: .month, value: durationMonths, to: Date()) ?? Date()
+
+        return PlannerGoal(
+            kind: .buildSavings,
+            title: purpose.title,
+            planMode: .optimalBalance,
+            nextAction: corpusNextAction(components: components, monthlyRequired: monthlyRequired),
+            milestones: corpusMilestones(
+                targetAmount: targetAmount,
+                purpose: purpose,
+                durationMonths: durationMonths,
+                monthlyRequired: monthlyRequired,
+                funding: components
+            ),
+            savings: PlannerSavingsDetails(
+                purpose: purpose,
+                targetAmount: targetAmount,
+                currentAmount: 0,
+                desiredDeadline: projected,
+                projectedCompletionDate: projected,
+                monthlyContribution: monthlyRequired,
+                safeMonthlyCapacity: comfortableSaving,
+                durationMonths: durationMonths
+            ),
+            spending: nil,
+            fundingComponents: components
+        )
+    }
+
     // MARK: - Private Helpers
 
-    private func recentMonthlyEverydaySpend(transactions: [Transaction]) -> Double {
-        let cal = Calendar.current
-        let fromDate = cal.date(byAdding: .day, value: -30, to: Date()) ?? Date()
-        return transactions
-            .filter { tx in
-                !tx.isUpcoming &&
-                tx.type == .debit &&
-                tx.date >= fromDate &&
-                tx.category != .housing &&
-                tx.category != .creditCard &&
-                tx.category != .bills
+    private func actualRecentSpend(for focus: PlannerSpendingFocus, transactions: [Transaction]) -> Double {
+        let debits = transactions.filter { tx in
+            !tx.isUpcoming && tx.type == .debit
+        }
+        let monthCount = max(Set(debits.map { monthKey(for: $0.date) }).count, 1)
+
+        let total: Double
+        if focus == .upiSmallSpends {
+            total = debits
+                .filter { $0.amount <= 1_000 && $0.category == .other }
+                .reduce(0) { $0 + $1.amount }
+        } else {
+            guard let mapped = focus.mappedCategory else { return 0 }
+            total = debits.filter { $0.category == mapped }.reduce(0) { $0 + $1.amount }
+        }
+
+        return total / Double(monthCount)
+    }
+
+    private func monthKey(for date: Date) -> String {
+        let components = Calendar.current.dateComponents([.year, .month], from: date)
+        return String(format: "%04d-%02d", components.year ?? 0, components.month ?? 0)
+    }
+
+    private func monthlyFlexibleAmount(snapshot: PlannerFinancialSnapshot) -> Double {
+        snapshot.goalPlanningFlexibleAmount
+    }
+
+    private func comfortableMonthlySaving(
+        snapshot: PlannerFinancialSnapshot,
+        transactions: [Transaction]
+    ) -> Double {
+        max(monthlyFlexibleAmount(snapshot: snapshot) - observedMonthlyFlexibleSpend(snapshot: snapshot, transactions: transactions), 0)
+    }
+
+    private func stretchMonthlySavingCapacity(snapshot: PlannerFinancialSnapshot) -> Double {
+        monthlyFlexibleAmount(snapshot: snapshot) * 0.50
+    }
+
+    private func absoluteMonthlySavingCap(snapshot: PlannerFinancialSnapshot) -> Double {
+        monthlyFlexibleAmount(snapshot: snapshot)
+    }
+
+    private func corpusTimelineDetail(
+        isComfortable: Bool,
+        isPossible: Bool,
+        monthlyRequired: Double,
+        comfortableSaving: Double,
+        stretchCapacity: Double,
+        flexibleAmount: Double,
+        leakageNeeded: Double
+    ) -> String {
+        if isComfortable {
+            return "Covered by current month-end surplus of \(comfortableSaving.plannerCurrency)/month."
+        }
+
+        if isPossible {
+            if monthlyRequired <= stretchCapacity {
+                return "Stretch. Needs \(leakageNeeded.plannerCurrency)/month from selected spending cuts."
             }
-            .reduce(0) { $0 + $1.amount }
+
+            return "Aggressive. Above the stretch level of \(stretchCapacity.plannerCurrency)/month."
+        }
+
+        return "Not practical. This needs \(monthlyRequired.plannerCurrency)/month, above the full flexible amount of \(flexibleAmount.plannerCurrency)."
+    }
+
+    private func corpusTimelineOption(
+        targetAmount: Double,
+        months: Int,
+        flexibleAmount: Double,
+        comfortableSaving: Double,
+        stretchCapacity: Double,
+        absoluteCapacity: Double
+    ) -> PlannerTimelineOption {
+        let safeMonths = max(months, 1)
+        let monthlyRequired = targetAmount / Double(safeMonths)
+        let safeContribution = min(comfortableSaving, monthlyRequired)
+        let leakageNeeded = max(monthlyRequired - safeContribution, 0)
+        let isComfortable = monthlyRequired <= comfortableSaving
+        let isPossible = monthlyRequired <= absoluteCapacity
+        let statusLabel: String
+
+        if isComfortable {
+            statusLabel = "Comfortable"
+        } else if !isPossible {
+            statusLabel = "Impractical"
+        } else if monthlyRequired <= stretchCapacity {
+            statusLabel = "Stretch"
+        } else {
+            statusLabel = "Aggressive"
+        }
+
+        return PlannerTimelineOption(
+            months: safeMonths,
+            monthlyRequired: monthlyRequired,
+            safeContribution: safeContribution,
+            leakageNeeded: leakageNeeded,
+            statusLabel: statusLabel,
+            label: safeMonths == 1 ? "1 month" : "\(safeMonths) months",
+            detail: corpusTimelineDetail(
+                isComfortable: isComfortable,
+                isPossible: isPossible,
+                monthlyRequired: monthlyRequired,
+                comfortableSaving: comfortableSaving,
+                stretchCapacity: stretchCapacity,
+                flexibleAmount: flexibleAmount,
+                leakageNeeded: leakageNeeded
+            ),
+            isComfortable: isComfortable,
+            isPossible: isPossible
+        )
+    }
+
+    private func observedMonthlyFlexibleSpend(
+        snapshot: PlannerFinancialSnapshot,
+        transactions: [Transaction]
+    ) -> Double {
+        snapshot.goalPlanningFlexibleSpend
+    }
+
+    private func recoveryRate(for focus: PlannerSpendingFocus) -> Double {
+        switch focus {
+        case .shopping:
+            return 0.60
+        case .subscriptions:
+            return 0.70
+        case .foodDelivery, .entertainment:
+            return 0.45
+        case .upiSmallSpends:
+            return 0.40
+        case .travel:
+            return 0.25
+        case .custom:
+            return 0.30
+        }
+    }
+
+    private func minimumSpendFloor(for focus: PlannerSpendingFocus) -> Double {
+        switch focus {
+        case .subscriptions:
+            return 500
+        case .upiSmallSpends:
+            return 1_000
+        case .foodDelivery, .shopping, .entertainment, .travel, .custom:
+            return 2_000
+        }
+    }
+
+    private func fundingNote(
+        focus: PlannerSpendingFocus,
+        actual: Double,
+        baseline: Double,
+        suggestedRecovery: Double,
+        maxRecoverable: Double
+    ) -> String {
+        let source = actual > 0 ? "Current spend" : "Estimated spend"
+        return "\(source): \(baseline.plannerCurrency)/month. Suggested contribution: \(suggestedRecovery.plannerCurrency), with up to \(maxRecoverable.plannerCurrency) possible."
     }
 
     private func projectedDate(targetAmount: Double, monthlyContribution: Double) -> Date {
@@ -417,5 +750,55 @@ struct GoalPlannerEngine {
         case .aggressive:
             return "Move \((monthlyContribution * 0.50).plannerCurrency) first, then keep discretionary spends tighter this week."
         }
+    }
+
+    private func corpusMilestones(
+        targetAmount: Double,
+        purpose: PlannerSavingsPurpose,
+        durationMonths: Int,
+        monthlyRequired: Double,
+        funding: [PlannerFundingComponent]
+    ) -> [PlannerMilestone] {
+        let firstLayer = min(targetAmount * 0.10, 25_000)
+        var milestones = savingsMilestones(targetAmount: targetAmount, purpose: purpose)
+        let fundingLine = funding
+            .prefix(3)
+            .map { "\($0.source.title): \($0.monthlyAmount.plannerCurrency)" }
+            .joined(separator: " + ")
+
+        milestones.insert(
+            PlannerMilestone(
+                title: "Month 1 plan active",
+                detail: "Save \(monthlyRequired.plannerCurrency) using \(fundingLine)."
+            ),
+            at: 0
+        )
+
+        if durationMonths > 1 {
+            milestones.insert(
+                PlannerMilestone(
+                    title: "\(firstLayer.plannerCurrency) first layer",
+                    detail: "Confirm the monthly rhythm before increasing pressure.",
+                    targetAmount: firstLayer
+                ),
+                at: 1
+            )
+        }
+
+        return milestones
+    }
+
+    private func corpusNextAction(
+        components: [PlannerFundingComponent],
+        monthlyRequired: Double
+    ) -> String {
+        if let primaryLeakage = components.first(where: {
+            if case .leakage = $0.source { return true }
+            return false
+        }) {
+            return "Save \(monthlyRequired.plannerCurrency) this month and start with \(primaryLeakage.source.title.lowercased()) to recover \(primaryLeakage.monthlyAmount.plannerCurrency)."
+        }
+
+        return "Move \(monthlyRequired.plannerCurrency) after salary credit and track it as this month's corpus milestone."
     }
 }

@@ -447,7 +447,7 @@ final class IntelligencePersistenceStore {
             StoredPersona(
                 id: backup.persona.id,
                 displayName: backup.persona.displayName,
-                lastSyncedAt: Self.date(from: backup.persona.lastSyncedAt),
+                lastSyncedAt: Date(),
                 source: backup.persona.source
             )
         )
@@ -646,6 +646,141 @@ final class IntelligencePersistenceStore {
         for item in try modelContext.fetch(descriptor) {
             modelContext.delete(item)
         }
+    }
+
+    // MARK: - Re-classify in place
+
+    /// Wipes existing classifications + snapshots and re-runs the classifier
+    /// over stored transactions, without re-fetching any AA data.
+    func reclassifyStoredTransactions(personaId: PersonaId) throws {
+        let pid = personaId.rawValue
+        let now = Date()
+
+        // 1. Load all stored transactions for this persona
+        let txDescriptor = FetchDescriptor<StoredTransaction>(
+            predicate: #Predicate { $0.personaId == pid }
+        )
+        let storedTxns = try modelContext.fetch(txDescriptor)
+
+        // 2. Delete old classifications and snapshots (keep transactions & accounts)
+        try deleteClassifications(for: pid)
+        try deleteMonthlySnapshots(for: pid)
+
+        // 3. Re-classify each transaction
+        for storedTx in storedTxns {
+            let raw = RawTransaction(
+                id: storedTx.id,
+                personaId: personaId,
+                accountId: storedTx.accountId,
+                accountType: storedTx.accountType,
+                type: storedTx.type,
+                mode: storedTx.mode,
+                amount: storedTx.amount,
+                narration: storedTx.narration,
+                valueDate: storedTx.valueDate,
+                timestamp: storedTx.timestamp,
+                currentBalance: storedTx.currentBalance
+            )
+
+            let parsed = parser.parse(raw)
+            let classification = classifier.classify(transaction: raw, parsed: parsed)
+
+            // Preserve any user overrides (source == "user_override")
+            let txId = storedTx.id
+            let existingDescriptor = FetchDescriptor<StoredClassification>(
+                predicate: #Predicate { $0.transactionId == txId }
+            )
+            if let existing = try? modelContext.fetch(existingDescriptor).first,
+               existing.source == "user_override" {
+                continue
+            }
+
+            let stored = StoredClassification(
+                id: "classification_\(storedTx.id)",
+                transactionId: storedTx.id,
+                personaId: pid,
+                month: storedTx.month,
+                canonicalEntityName: classification.canonicalEntityName,
+                entityType: classification.entityType,
+                role: classification.role,
+                categoryFamily: classification.categoryFamily,
+                category: classification.category,
+                confidence: classification.confidence,
+                needsReview: classification.needsReview,
+                reviewReason: classification.reviewReason,
+                evidenceText: classification.evidence.joined(separator: "\n"),
+                reviewOptionsText: classification.reviewOptions.joined(separator: "\n"),
+                source: "on_device",
+                createdAt: now
+            )
+            modelContext.insert(stored)
+        }
+
+        try modelContext.save()
+
+        // 4. Rebuild monthly snapshots from the new classifications
+        let allClassifications = try {
+            let d = FetchDescriptor<StoredClassification>(
+                predicate: #Predicate { $0.personaId == pid }
+            )
+            return try modelContext.fetch(d)
+        }()
+
+        let accountDescriptor = FetchDescriptor<StoredAccount>(
+            predicate: #Predicate { $0.personaId == pid }
+        )
+        let accounts = try modelContext.fetch(accountDescriptor)
+
+        let months = Set(storedTxns.map(\.month)).sorted()
+        for month in months {
+            let monthTxns = storedTxns.filter { $0.month == month }
+            let monthClassifications = allClassifications.filter { $0.month == month }
+
+            let income       = monthTxns.filter { $0.type.uppercased() == "CREDIT" }.map(\.amount).reduce(0, +)
+            let committed    = monthClassifications.filter { $0.role == MoneRole.committedOutflow }.compactMap { c in monthTxns.first(where: { $0.id == c.transactionId })?.amount }.reduce(0, +)
+            let everyday     = monthClassifications.filter { $0.role == MoneRole.everydaySpend }.compactMap { c in monthTxns.first(where: { $0.id == c.transactionId })?.amount }.reduce(0, +)
+            let fund         = monthClassifications.filter { $0.role == MoneRole.fundBuilding || $0.categoryFamily == MoneCategoryFamily.investments }.compactMap { c in monthTxns.first(where: { $0.id == c.transactionId })?.amount }.reduce(0, +)
+            let liability    = monthClassifications.filter { $0.role == MoneRole.liabilityPayment || $0.categoryFamily == MoneCategoryFamily.debt }.compactMap { c in monthTxns.first(where: { $0.id == c.transactionId })?.amount }.reduce(0, +)
+            let reviewItems  = monthClassifications.filter { $0.needsReview }
+            let review       = reviewItems.compactMap { c in monthTxns.first(where: { $0.id == c.transactionId })?.amount }.reduce(0, +)
+
+            let incomeThreshold = max(20_000, income * 0.12)
+            let outliers = monthTxns.filter { tx in
+                tx.type.uppercased() == "DEBIT" &&
+                tx.amount >= incomeThreshold &&
+                !monthClassifications.contains(where: { $0.transactionId == tx.id && ($0.categoryFamily == MoneCategoryFamily.tax || $0.role == MoneRole.fundBuilding || $0.role == MoneRole.liabilityPayment) })
+            }.map(\.amount).reduce(0, +)
+
+            let remaining = income - committed - everyday - fund - liability - outliers - review
+            let confidence = reviewItems.isEmpty ? 85 : max(55, 85 - reviewItems.count * 3)
+            let totalDebits = monthTxns.filter { $0.type.uppercased() == "DEBIT" }.map(\.amount).reduce(0, +)
+            let classifiedDebits = monthClassifications.filter { c in
+                monthTxns.first(where: { $0.id == c.transactionId })?.type.uppercased() == "DEBIT"
+            }.count
+
+            let snapshot = StoredMonthlySnapshot(
+                id: "snapshot_\(pid)_\(month)",
+                personaId: pid,
+                month: month,
+                income: income,
+                committed: committed,
+                everyday: everyday,
+                fund: fund,
+                liability: liability,
+                outliers: outliers,
+                review: review,
+                remaining: remaining,
+                totalDebits: totalDebits,
+                classifiedDebits: Double(classifiedDebits),
+                confidence: confidence,
+                transactionCount: monthTxns.count,
+                reviewCount: reviewItems.count,
+                createdAt: now
+            )
+            modelContext.insert(snapshot)
+        }
+
+        try modelContext.save()
     }
 
     // MARK: - Helpers

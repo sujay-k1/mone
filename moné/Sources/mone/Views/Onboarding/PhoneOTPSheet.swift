@@ -154,12 +154,25 @@ struct PhoneOTPSheet: View {
                                     .keyboardType(.phonePad)
                                     .font(.system(size: 24, weight: .regular, design: .monospaced))
                                     .foregroundStyle(Color.monePrimary)
-                                    .onChange(of: vm.phone) { oldValue, _ in
+                                    .disabled(vm.isLoading)
+                                    .onChange(of: vm.phone) { oldValue, newValue in
+                                        let sanitized = String(newValue.filter(\.isNumber).prefix(10))
+                                        if sanitized != newValue {
+                                            vm.phone = sanitized
+                                            return
+                                        }
+
                                         let oldDigits = oldValue.filter(\.isNumber)
                                         if oldDigits.count < 6 && canSendOTP {
                                             Task { await vm.sendOTP() }
                                         }
                                     }
+
+                                if vm.isLoading {
+                                    ProgressView()
+                                        .controlSize(.small)
+                                        .tint(Color.monePrimary)
+                                }
                             }
                             .padding(.bottom, 14)
 
@@ -229,7 +242,7 @@ struct PhoneOTPSheet: View {
                             .font(.moneDisplayMd)
                             .foregroundStyle(Color.monePrimary)
 
-                        (Text("We sent a 6-digit code to ")
+                        (Text("You'll get a 6-digit code on ")
                             .foregroundStyle(Color.moneSecondary) +
                         Text("+91 \(vm.phone)")
                             .foregroundStyle(Color.monePrimary))
@@ -324,15 +337,24 @@ struct PhoneOTPSheet: View {
                     .padding(.top, 24)
 
                     MoneField(label: "PAN NUMBER") {
-                        TextField("", text: $pan, prompt: .monePlaceholder("ABCDE1234F"))
-                            .focused($isPanFocused)
-                            .keyboardType(.asciiCapable)
-                            .textInputAutocapitalization(.characters)
-                            .moneFieldStyle()
-                            .onChange(of: pan) { _, newValue in
-                                pan = String(newValue.uppercased().prefix(10))
-                                panError = nil
+                        HStack(spacing: 12) {
+                            TextField("", text: $pan, prompt: .monePlaceholder("ABCDE1234F"))
+                                .focused($isPanFocused)
+                                .keyboardType(.asciiCapable)
+                                .textInputAutocapitalization(.characters)
+                                .moneFieldStyle()
+                                .disabled(panLoading)
+                                .onChange(of: pan) { _, newValue in
+                                    pan = String(newValue.uppercased().prefix(10))
+                                    panError = nil
+                                }
+
+                            if panLoading {
+                                ProgressView()
+                                    .controlSize(.small)
+                                    .tint(Color.monePrimary)
                             }
+                        }
                     }
 
                     if let error = panError {
@@ -399,7 +421,7 @@ struct PhoneOTPSheet: View {
                 VStack(alignment: .leading, spacing: MoneSpacing.section) {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Select accounts")
+                            Text("Your accounts")
                                 .font(.moneDisplayMd)
                                 .foregroundStyle(Color.monePrimary)
                             Text("\(selectedCount) of \(accounts.count) accounts selected")
@@ -422,10 +444,13 @@ struct PhoneOTPSheet: View {
                         ForEach(groupedAccounts, id: \.institution) { group in
                             VStack(alignment: .leading, spacing: 12) {
                                 HStack(spacing: 10) {
-                                    Image(systemName: group.icon)
-                                        .font(.system(size: 14))
-                                        .foregroundStyle(Color.moneSecondary)
-                                        .frame(width: 20, height: 20)
+                                    CompanyLogoView(
+                                        query: group.institution,
+                                        fallbackSystemName: group.icon,
+                                        padding: 2
+                                    )
+                                    .frame(width: 24, height: 24)
+                                    .clipShape(Circle())
                                     Text(group.institution.uppercased())
                                         .font(.moneLabelCaps)
                                         .tracking(1.5)
@@ -490,7 +515,7 @@ struct PhoneOTPSheet: View {
                 Image(systemName: account.isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 22))
                     .foregroundStyle(
-                        !isEditingAccounts ? Color.moneStrokeMid :
+                        !isEditingAccounts ? Color.moneSecondary :
                             account.isSelected ? Color.moneActionFill : Color.moneStrokeMid
                     )
             }

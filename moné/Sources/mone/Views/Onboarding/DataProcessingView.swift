@@ -9,8 +9,15 @@ struct DataFetchingView: View {
     @State private var completedSteps: [DataProcessingStep] = []
     @State private var isRunning = false
     @State private var error: String?
+    @State private var processingIconIndex = 0
+    @State private var isProcessingIconVisible = true
 
     private let pipeline = AAIntelligencePipeline()
+    private let processingIcons = [
+        "square.text.square",
+        "iphone",
+        "sparkles"
+    ]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -20,7 +27,7 @@ struct DataFetchingView: View {
                 processingLogo
 
                 VStack(spacing: 8) {
-                    Text("Preparing your money map")
+                    Text("Preparing your MoneyMap")
                         .font(.moneHL)
                         .foregroundStyle(Color.monePrimary)
 
@@ -32,7 +39,7 @@ struct DataFetchingView: View {
                 .padding(.horizontal, MoneSpacing.page)
 
                 VStack(spacing: 16) {
-                    ForEach(DataProcessingStep.allCases) { step in
+                    ForEach(VisibleProcessingStep.allCases) { step in
                         stepRow(step)
                     }
                 }
@@ -49,6 +56,9 @@ struct DataFetchingView: View {
         .task {
             await runPipelineOnce()
         }
+        .task {
+            await runProcessingIconAnimation()
+        }
     }
 
     private var processingLogo: some View {
@@ -59,16 +69,47 @@ struct DataFetchingView: View {
                 .rotationEffect(.degrees(Double(completedSteps.count) * 45))
                 .animation(.easeInOut(duration: 0.5), value: completedSteps.count)
 
-            Image(systemName: "arrow.triangle.2.circlepath")
-                .font(.system(size: 32, weight: .medium))
-                .foregroundStyle(Color.monePrimary)
-                .symbolEffect(.pulse, isActive: isRunning)
+            if isProcessingIconVisible {
+                Image(systemName: processingIcons[processingIconIndex])
+                    .font(.system(size: 34, weight: .medium))
+                    .foregroundStyle(Color.monePrimary)
+                    .transition(.symbolEffect(.drawOn))
+                    .id(processingIconIndex)
+            }
         }
     }
 
-    private func stepRow(_ step: DataProcessingStep) -> some View {
-        let isCompleted = completedSteps.contains(step)
-        let isCurrent = currentStep == step && isRunning
+    @MainActor
+    private func runProcessingIconAnimation() async {
+        while !Task.isCancelled {
+            withAnimation(.easeInOut(duration: 0.18)) {
+                isProcessingIconVisible = false
+            }
+
+            guard await sleep(milliseconds: 180) else { return }
+
+            processingIconIndex = (processingIconIndex + 1) % processingIcons.count
+
+            withAnimation(.easeInOut(duration: 0.75)) {
+                isProcessingIconVisible = true
+            }
+
+            guard await sleep(milliseconds: 1_150) else { return }
+        }
+    }
+
+    private func sleep(milliseconds: UInt64) async -> Bool {
+        do {
+            try await Task.sleep(for: .milliseconds(milliseconds))
+            return !Task.isCancelled
+        } catch {
+            return false
+        }
+    }
+
+    private func stepRow(_ step: VisibleProcessingStep) -> some View {
+        let isCompleted = isVisibleStepCompleted(step)
+        let isCurrent = isVisibleStepCurrent(step)
 
         return HStack(spacing: 14) {
             ZStack {
@@ -79,7 +120,7 @@ struct DataFetchingView: View {
                     ProgressView()
                         .tint(Color.monePrimary)
                 } else {
-                    Image(systemName: iconName(for: step))
+                    Image(systemName: step.iconName)
                         .foregroundStyle(Color.moneTertiary)
                 }
             }
@@ -87,7 +128,7 @@ struct DataFetchingView: View {
             .frame(width: 24, height: 24)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text(step.rawValue)
+                Text(step.title)
                     .font(.moneBodyLg)
                     .foregroundStyle(isCompleted || isCurrent ? Color.monePrimary : Color.moneTertiary)
 
@@ -99,6 +140,14 @@ struct DataFetchingView: View {
 
             Spacer()
         }
+    }
+
+    private func isVisibleStepCompleted(_ step: VisibleProcessingStep) -> Bool {
+        step.sourceSteps.allSatisfy { completedSteps.contains($0) }
+    }
+
+    private func isVisibleStepCurrent(_ step: VisibleProcessingStep) -> Bool {
+        isRunning && step.sourceSteps.contains(currentStep) && !isVisibleStepCompleted(step)
     }
 
     private func errorSection(_ message: String) -> some View {
@@ -116,7 +165,11 @@ struct DataFetchingView: View {
                 }
 
                 MoneSecondaryButton(title: "Try another number", fullWidth: false) {
-                    appVM.onboardingStep = .phoneOtp
+                    appVM.verifiedPhone = nil
+                    appVM.enteredPAN = nil
+                    appVM.aaConsentId = nil
+                    appVM.shouldOpenAAFetchDetailsSheet = true
+                    appVM.onboardingStep = .aaConsent
                 }
             }
         }
@@ -219,14 +272,51 @@ struct DataFetchingView: View {
         return "Could not process your financial data. Please try again."
     }
 
-    private func iconName(for step: DataProcessingStep) -> String {
-        switch step {
-        case .fetchingAccountData:
-            return "arrow.down.doc"
-        case .readingAccounts:
-            return "building.columns"
-        case .readingTransactions:
-            return "list.bullet.rectangle"
+}
+
+private enum VisibleProcessingStep: String, CaseIterable, Identifiable {
+    case importingFinancialData
+    case categorisingTransactions
+    case resolvingUnclearItems
+    case buildingInsights
+    case savingResults
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .importingFinancialData:
+            return "Importing financial data"
+        case .categorisingTransactions:
+            return DataProcessingStep.categorisingTransactions.rawValue
+        case .resolvingUnclearItems:
+            return DataProcessingStep.resolvingUnclearItems.rawValue
+        case .buildingInsights:
+            return DataProcessingStep.buildingInsights.rawValue
+        case .savingResults:
+            return DataProcessingStep.savingResults.rawValue
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .importingFinancialData:
+            return "Fetching account data, reading accounts, and organising transactions."
+        case .categorisingTransactions:
+            return DataProcessingStep.categorisingTransactions.subtitle
+        case .resolvingUnclearItems:
+            return DataProcessingStep.resolvingUnclearItems.subtitle
+        case .buildingInsights:
+            return DataProcessingStep.buildingInsights.subtitle
+        case .savingResults:
+            return DataProcessingStep.savingResults.subtitle
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .importingFinancialData:
+            return "square.text.square"
         case .categorisingTransactions:
             return "tag"
         case .resolvingUnclearItems:
@@ -235,6 +325,21 @@ struct DataFetchingView: View {
             return "chart.bar"
         case .savingResults:
             return "internaldrive"
+        }
+    }
+
+    var sourceSteps: [DataProcessingStep] {
+        switch self {
+        case .importingFinancialData:
+            return [.fetchingAccountData, .readingAccounts, .readingTransactions]
+        case .categorisingTransactions:
+            return [.categorisingTransactions]
+        case .resolvingUnclearItems:
+            return [.resolvingUnclearItems]
+        case .buildingInsights:
+            return [.buildingInsights]
+        case .savingResults:
+            return [.savingResults]
         }
     }
 }

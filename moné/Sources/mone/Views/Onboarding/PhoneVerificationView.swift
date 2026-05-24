@@ -58,15 +58,24 @@ struct PhoneVerificationView: View {
                                 .foregroundStyle(Color.moneTertiary)
 
                             VStack(spacing: 0) {
-                                TextField("", text: $vm.phone, prompt: Text("10-digit mobile").foregroundColor(.moneTertiary))
-                                    .keyboardType(.numberPad)
-                                    .font(.moneBodyLg)
-                                    .foregroundStyle(Color.monePrimary)
-                                    .tint(Color.monePrimary)
-                                    .padding(.bottom, 14)
-                                    .onChange(of: vm.phone) { _, newValue in
-                                        vm.phone = String(newValue.filter(\.isNumber).prefix(10))
+                                HStack(spacing: 10) {
+                                    TextField("", text: $vm.phone, prompt: Text("10-digit mobile").foregroundColor(.moneTertiary))
+                                        .keyboardType(.numberPad)
+                                        .font(.moneBodyLg)
+                                        .foregroundStyle(Color.monePrimary)
+                                        .tint(Color.monePrimary)
+                                        .disabled(vm.isLoading)
+                                        .onChange(of: vm.phone) { _, newValue in
+                                            vm.phone = String(newValue.filter(\.isNumber).prefix(10))
+                                        }
+
+                                    if vm.isLoading {
+                                        ProgressView()
+                                            .controlSize(.small)
+                                            .tint(Color.monePrimary)
                                     }
+                                }
+                                .padding(.bottom, 14)
 
                                 Rectangle()
                                     .fill(Color.moneStrokeMid)

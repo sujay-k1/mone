@@ -74,7 +74,9 @@ final class FinancialDataCloudService {
             .execute()
             .value
 
-        guard let row = rows.first else {
+        guard let row = rows.max(by: { lhs, rhs in
+            Self.backupDate(lhs.processedPayload.backedUpAt) < Self.backupDate(rhs.processedPayload.backedUpAt)
+        }) else {
             return false
         }
 
@@ -94,5 +96,9 @@ final class FinancialDataCloudService {
             .delete()
             .eq("user_id", value: userId.uuidString)
             .execute()
+    }
+
+    private static func backupDate(_ value: String) -> Date {
+        ISO8601DateFormatter().date(from: value) ?? .distantPast
     }
 }
