@@ -314,6 +314,7 @@ final class QRScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         lastRejectedCode = rawValue
         lastRejectedAt = now
 
+        MoneTactileFeedback.playInvalidScanRejection()
         showToast("This isn’t a UPI payment QR")
     }
 

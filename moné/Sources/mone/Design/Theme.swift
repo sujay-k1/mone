@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Color Palette
 // "Moné Design System" — Financial Noir
@@ -129,6 +130,92 @@ enum MoneRadius {
     static let xl:   CGFloat = 20
     static let xxl:  CGFloat = 24
     static let pill: CGFloat = 999
+}
+
+// MARK: - Tactile Feedback
+
+enum MoneTactileFeedback {
+    static func playSelection(isSelected: Bool) {
+        if isSelected {
+            playImpact(style: .heavy, intensity: 0.78)
+            playImpact(style: .medium, intensity: 0.58, after: 0.075)
+        } else {
+            playImpact(style: .medium, intensity: 0.62)
+            playImpact(style: .heavy, intensity: 0.72, after: 0.075)
+        }
+    }
+
+    static func playCardSwipe() {
+        playImpact(style: .medium, intensity: 0.75)
+    }
+
+    static func playCardHintOut() {
+        playImpact(style: .medium, intensity: 0.52)
+    }
+
+    static func playCardHintReturn() {
+        playImpact(style: .light, intensity: 0.46)
+        playImpact(style: .soft, intensity: 0.32, after: 0.08)
+    }
+
+    static func playGentleButtonTap() {
+        playImpact(style: .medium, intensity: 0.5)
+    }
+
+    static func playProcessingStepSucceeded() {
+        playImpact(style: .medium, intensity: 0.5)
+    }
+
+    static func playElasticCardExpand() {
+        playImpact(style: .medium, intensity: 0.56)
+        playImpact(style: .light, intensity: 0.38, after: 0.06)
+        playImpact(style: .soft, intensity: 0.24, after: 0.14)
+    }
+
+    static func playDampedCardCollapse() {
+        playImpact(style: .heavy, intensity: 0.58)
+        playImpact(style: .soft, intensity: 0.34, after: 0.08)
+    }
+
+    static func playInvalidScanRejection() {
+        playNotification(.error)
+        playImpact(style: .rigid, intensity: 0.58, after: 0.04)
+        playImpact(style: .rigid, intensity: 0.48, after: 0.10)
+        playImpact(style: .soft, intensity: 0.28, after: 0.17)
+    }
+
+    static func playSplashAccelerationPulse(intensity: CGFloat) {
+        playImpact(style: .rigid, intensity: intensity)
+    }
+
+    static func performGentleButtonTap(_ action: () -> Void) {
+        playGentleButtonTap()
+        action()
+    }
+
+    private static func playImpact(
+        style: UIImpactFeedbackGenerator.FeedbackStyle,
+        intensity: CGFloat,
+        after delay: TimeInterval = 0
+    ) {
+        let action = {
+            let generator = UIImpactFeedbackGenerator(style: style)
+            generator.prepare()
+            generator.impactOccurred(intensity: intensity)
+        }
+
+        if delay > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: action)
+        } else {
+            action()
+        }
+    }
+
+    private static func playNotification(_ type: UINotificationFeedbackGenerator.FeedbackType) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(type)
+    }
 }
 
 // MARK: - View Modifiers

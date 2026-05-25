@@ -66,8 +66,12 @@ struct SignUpSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     if case .prompt = step {
-                        Button("Skip") { onDismissed() }
-                            .foregroundStyle(Color.moneTertiary)
+                        Button("Skip") {
+                            MoneTactileFeedback.performGentleButtonTap {
+                                onDismissed()
+                            }
+                        }
+                        .foregroundStyle(Color.monePrimary)
                     }
                 }
             }
@@ -125,7 +129,9 @@ struct SignUpSheet: View {
 
             VStack(spacing: MoneSpacing.gutter) {
                 Button {
-                    step = .phoneEntry
+                    MoneTactileFeedback.performGentleButtonTap {
+                        step = .phoneEntry
+                    }
                 } label: {
                     Text("Use a different number or email id")
                         .font(.moneBodyMd)
@@ -136,7 +142,9 @@ struct SignUpSheet: View {
                 .padding(.vertical, 12)
 
                 MonePrimaryButton(title: "Sign up using \(maskedPhone)") {
-                    Task { await sendOTPToAAPhone() }
+                    MoneTactileFeedback.performGentleButtonTap {
+                        Task { await sendOTPToAAPhone() }
+                    }
                 }
             }
             .padding(.horizontal, MoneSpacing.page)
@@ -179,7 +187,9 @@ struct SignUpSheet: View {
             }
 
             MonePrimaryButton(title: isSavingName ? "Saving..." : "Continue") {
-                Task { await saveName() }
+                MoneTactileFeedback.performGentleButtonTap {
+                    Task { await saveName() }
+                }
             }
             .opacity(isSavingName || name.trimmingCharacters(in: .whitespaces).count < 2 ? 0.4 : 1)
             .disabled(isSavingName || name.trimmingCharacters(in: .whitespaces).count < 2)

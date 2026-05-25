@@ -11,6 +11,7 @@ struct DataFetchingView: View {
     @State private var error: String?
     @State private var processingIconIndex = 0
     @State private var isProcessingIconVisible = true
+    @State private var haptickedVisibleSteps: Set<VisibleProcessingStep> = []
 
     private let pipeline = AAIntelligencePipeline()
     private let processingIcons = [
@@ -185,6 +186,7 @@ struct DataFetchingView: View {
     @MainActor
     private func runPipelineAgain() async {
         completedSteps = []
+        haptickedVisibleSteps = []
         currentStep = .fetchingAccountData
         error = nil
         await runPipeline()
@@ -237,11 +239,24 @@ struct DataFetchingView: View {
 
     @MainActor
     private func mark(_ step: DataProcessingStep) {
+        let completedBefore = Set(completedSteps)
+
         withAnimation(.easeOut(duration: 0.25)) {
             currentStep = step
 
             if !completedSteps.contains(step) {
                 completedSteps.append(step)
+            }
+        }
+
+        let completedAfter = Set(completedSteps)
+        for visibleStep in VisibleProcessingStep.allCases where !haptickedVisibleSteps.contains(visibleStep) {
+            let wasCompleted = visibleStep.sourceSteps.allSatisfy { completedBefore.contains($0) }
+            let isCompleted = visibleStep.sourceSteps.allSatisfy { completedAfter.contains($0) }
+
+            if !wasCompleted && isCompleted {
+                haptickedVisibleSteps.insert(visibleStep)
+                MoneTactileFeedback.playProcessingStepSucceeded()
             }
         }
     }
@@ -274,7 +289,7 @@ struct DataFetchingView: View {
 
 }
 
-private enum VisibleProcessingStep: String, CaseIterable, Identifiable {
+private enum VisibleProcessingStep: String, CaseIterable, Hashable, Identifiable {
     case importingFinancialData
     case categorisingTransactions
     case resolvingUnclearItems

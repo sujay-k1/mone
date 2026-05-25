@@ -6,14 +6,10 @@ struct ProfileAvatarButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "person.crop.circle.fill")
-                .font(.system(size: 22, weight: .medium))
-                .foregroundStyle(.white.opacity(0.88))
-                .padding(.vertical, 11)
-                .padding(.horizontal, 6)
-                .contentShape(Circle())
+                .font(.system(size: 20, weight: .medium))
         }
-        .buttonStyle(.plain)
-        .glassEffect(.clear.tint(.white.opacity(0.1)), in: Circle())
+        .buttonStyle(.glass)
+        .buttonBorderShape(.circle)
         .accessibilityLabel("Open profile")
     }
 }

@@ -40,6 +40,7 @@ struct ProfileSpaceView: View {
                     Button("Done") {
                         dismiss()
                     }
+                    .foregroundStyle(Color.monePrimary)
                 }
             }
             .confirmationDialog(

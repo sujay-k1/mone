@@ -491,13 +491,17 @@ struct PhoneEntryScreen: View {
 
             VStack(spacing: MoneSpacing.gutter) {
                 SecondaryAuthButton(title: "Use email instead") {
-                    vm.switchToEmail()
+                    MoneTactileFeedback.performGentleButtonTap {
+                        vm.switchToEmail()
+                    }
                 }
 
                 HStack(spacing: MoneSpacing.gutter) {
                     
                     MonePrimaryButton(title: vm.isLoading ? "Sending..." : "Get OTP") {
-                        Task { await vm.sendPhoneOTP() }
+                        MoneTactileFeedback.performGentleButtonTap {
+                            Task { await vm.sendPhoneOTP() }
+                        }
                     }
                     .opacity(vm.isLoading || !vm.isPhoneValid ? 0.4 : 1)
                     .disabled(vm.isLoading || !vm.isPhoneValid)
@@ -568,13 +572,17 @@ struct EmailEntryScreen: View {
 
             VStack(spacing: MoneSpacing.gutter) {
                 SecondaryAuthButton(title: "Use mobile number instead") {
-                    vm.switchToPhone()
+                    MoneTactileFeedback.performGentleButtonTap {
+                        vm.switchToPhone()
+                    }
                 }
 
                 HStack(spacing: MoneSpacing.gutter) {
                     
                     MonePrimaryButton(title: vm.isLoading ? "Sending..." : "Get OTP") {
-                        Task { await vm.sendEmailOTP() }
+                        MoneTactileFeedback.performGentleButtonTap {
+                            Task { await vm.sendEmailOTP() }
+                        }
                     }
                     .opacity(vm.isLoading || !vm.isEmailValid ? 0.4 : 1)
                     .disabled(vm.isLoading || !vm.isEmailValid)
@@ -663,10 +671,14 @@ struct OTPScreen: View {
 
                 HStack(spacing: MoneSpacing.gutter) {
                     MoneIconButton(icon: "chevron.left") {
-                        vm.goBack()
+                        MoneTactileFeedback.performGentleButtonTap {
+                            vm.goBack()
+                        }
                     }
                     MonePrimaryButton(title: vm.isLoading ? "Verifying..." : "Verify") {
-                        Task { await vm.verifyCurrentOTP() }
+                        MoneTactileFeedback.performGentleButtonTap {
+                            Task { await vm.verifyCurrentOTP() }
+                        }
                     }
                     .opacity(vm.isLoading || !vm.isOTPValid ? 0.4 : 1)
                     .disabled(vm.isLoading || !vm.isOTPValid)
@@ -833,7 +845,9 @@ private struct SignedInScreen: View {
             MonePrimaryButton(title: "Continue to mon\u{00E9}") {
                 guard !didContinue else { return }
                 didContinue = true
-                onContinue()
+                MoneTactileFeedback.performGentleButtonTap {
+                    onContinue()
+                }
             }
             .padding(.horizontal, MoneSpacing.page)
             .padding(.bottom, MoneSpacing.gutter)

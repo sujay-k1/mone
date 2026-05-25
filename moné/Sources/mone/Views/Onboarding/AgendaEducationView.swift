@@ -52,7 +52,9 @@ struct AgendaEducationView: View {
         .overlay(alignment: .bottom) {
             VStack(spacing: MoneSpacing.gutter) {
                 Button {
-                    showLogin = true
+                    MoneTactileFeedback.performGentleButtonTap {
+                        showLogin = true
+                    }
                 } label: {
                     Text("Already have an account? Log in")
                         .font(.moneBodyMd)
@@ -63,7 +65,9 @@ struct AgendaEducationView: View {
 
                 if appVM.primaryAgenda != nil {
                     MonePrimaryButton(title: "Continue") {
-                        appVM.advance()
+                        MoneTactileFeedback.performGentleButtonTap {
+                            appVM.advance()
+                        }
                     }
                 }
             }
@@ -297,6 +301,7 @@ private struct SwipeableCardDeck: View {
             }
 
             isHintAnimating = true
+            MoneTactileFeedback.playCardHintOut()
             withAnimation(.easeOut(duration: 0.55)) {
                 dragOffset = CGSize(width: direction * 78, height: 18)
                 dragRotation = Double(direction * -4)
@@ -304,6 +309,7 @@ private struct SwipeableCardDeck: View {
 
             guard await sleep(seconds: 0.55) else { break }
 
+            MoneTactileFeedback.playCardHintReturn()
             withAnimation(.spring(response: 0.45, dampingFraction: 0.72)) {
                 dragOffset = .zero
                 dragRotation = 0
@@ -370,6 +376,7 @@ private struct SwipeableCardDeck: View {
     private func handleTap(_ i: Int, _ s: Int, _ w: CGFloat) {
         guard !animating else { return }
         recordUserActivity()
+        let wasSelected = primaryAgenda == cards[i].agenda || secondaryAgenda == cards[i].agenda
         if s == 0 {
             onSelect(cards[i].agenda)
         } else {
@@ -377,6 +384,7 @@ private struct SwipeableCardDeck: View {
             onSelect(ag)
             autoCycle(steps: s, cardWidth: w)
         }
+        MoneTactileFeedback.playSelection(isSelected: !wasSelected)
     }
 
     // MARK: Manual Swipe Off
@@ -384,6 +392,7 @@ private struct SwipeableCardDeck: View {
     private func swipeOff(_ ci: Int, _ dir: CGFloat, _ velY: CGFloat, _ w: CGFloat) {
         guard !animating else { return }
         animating = true
+        MoneTactileFeedback.playCardSwipe()
 
         let screen = UIScreen.main.bounds.width
         let exitX = dir * (screen + w)
@@ -833,8 +842,12 @@ private struct LoginRestoreSheet: View {
             )
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                        .foregroundStyle(Color.moneTertiary)
+                    Button("Cancel") {
+                        MoneTactileFeedback.performGentleButtonTap {
+                            dismiss()
+                        }
+                    }
+                    .foregroundStyle(Color.monePrimary)
                 }
             }
         }

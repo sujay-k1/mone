@@ -81,6 +81,7 @@ struct SetupMethodView: View {
                                     tag: appVM.setupMethod == method ? "Selected" : (isAvailable ? nil : "Coming soon")
                                 ) {
                                     if isAvailable {
+                                        MoneTactileFeedback.playSelection(isSelected: appVM.setupMethod != method)
                                         appVM.setupMethod = method
                                     }
                                 }
@@ -103,10 +104,14 @@ struct SetupMethodView: View {
 
                 HStack(spacing: MoneSpacing.gutter) {
                     MoneIconButton(icon: "chevron.left") {
-                        appVM.goBack()
+                        MoneTactileFeedback.performGentleButtonTap {
+                            appVM.goBack()
+                        }
                     }
                     MonePrimaryButton(title: "Continue") {
-                        appVM.advance()
+                        MoneTactileFeedback.performGentleButtonTap {
+                            appVM.advance()
+                        }
                     }
                     .opacity(appVM.setupMethod == .accountAggregator ? 1 : 0.4)
                     .disabled(appVM.setupMethod != .accountAggregator)

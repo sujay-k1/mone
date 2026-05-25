@@ -75,7 +75,9 @@ struct AAConsentSheet: View {
                 }
 
                 MonePrimaryButton(title: "Verify with phone number") {
-                    showPhoneOTP = true
+                    MoneTactileFeedback.performGentleButtonTap {
+                        showPhoneOTP = true
+                    }
                 }
                 .opacity(consentAccepted ? 1 : 0.4)
                 .disabled(!consentAccepted)
@@ -86,8 +88,12 @@ struct AAConsentSheet: View {
             .background(Color.moneBackground.ignoresSafeArea())
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                        .foregroundStyle(Color.moneTertiary)
+                    Button("Cancel") {
+                        MoneTactileFeedback.performGentleButtonTap {
+                            dismiss()
+                        }
+                    }
+                    .foregroundStyle(Color.monePrimary)
                 }
             }
             .sheet(isPresented: $showPhoneOTP) {

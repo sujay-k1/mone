@@ -948,11 +948,11 @@ private struct GoalPlannerSheet: View {
     private var bottomActionBar: some View {
         switch route {
         case .corpusPurpose:
-            pinnedAction(title: "Continue", icon: "arrow.right", isEnabled: draft.savingsPurpose != nil) {
+            pinnedAction(title: "Set target", isEnabled: draft.savingsPurpose != nil) {
                 route = .corpusAmount
             }
         case .corpusAmount:
-            pinnedAction(title: "Suggest timeline", icon: "arrow.right", isEnabled: draft.savingsAmount > 0) {
+            pinnedAction(title: "Suggest timeline", isEnabled: draft.savingsAmount > 0) {
                 Keyboard.dismiss()
                 route = .corpusTimeline
             }
@@ -964,7 +964,7 @@ private struct GoalPlannerSheet: View {
                     snapshot: plannerSnapshot,
                     transactions: transactions
                 )
-                pinnedAction(title: "Choose funding", icon: "arrow.right", isEnabled: option.isPossible) {
+                pinnedAction(title: "Choose funding", isEnabled: option.isPossible) {
                     route = .corpusFunding
                 }
             }
@@ -981,7 +981,7 @@ private struct GoalPlannerSheet: View {
                     fundingProgressBar(requiredGap: gap, selected: selected)
                         .padding(.horizontal, MoneSpacing.page)
 
-                    pinnedAction(title: "Review plan", icon: "arrow.right", isEnabled: gap == 0 || selected >= gap) {
+                    pinnedAction(title: "Review plan", isEnabled: gap == 0 || selected >= gap) {
                         route = .corpusPreview
                     }
                 }
@@ -993,11 +993,10 @@ private struct GoalPlannerSheet: View {
 
     private func pinnedAction(
         title: String,
-        icon: String,
         isEnabled: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        MonePrimaryButton(title: title, icon: icon) {
+        MonePrimaryButton(title: title) {
             action()
         }
         .disabled(!isEnabled)
@@ -1135,45 +1134,6 @@ private struct GoalPlannerSheet: View {
         plannerSnapshot != nil && !transactions.isEmpty
     }
 
-    private var sheetHeader: some View {
-        HStack {
-            Button(action: goBack) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(Color.moneSecondary)
-                    .frame(width: 42, height: 42)
-                    .background(Color.moneSurface)
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(Color.moneStroke, lineWidth: 1))
-            }
-            .buttonStyle(.plain)
-            .opacity(canGoBack ? 1 : 0)
-            .disabled(!canGoBack)
-
-            Spacer()
-
-            Text(headerTitle)
-                .font(.moneHLSm)
-                .foregroundStyle(Color.monePrimary)
-
-            Spacer()
-
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(Color.moneSecondary)
-                    .frame(width: 42, height: 42)
-                    .background(Color.moneSurface)
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(Color.moneStroke, lineWidth: 1))
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(.horizontal, MoneSpacing.page)
-        .padding(.top, 14)
-        .padding(.bottom, 12)
-    }
-
     private var headerTitle: String {
         switch route {
         case .pickType: return "Create goal"
@@ -1191,9 +1151,40 @@ private struct GoalPlannerSheet: View {
         }
     }
 
+    private var sheetHeader: some View {
+        HStack {
+            Button(action: goBack) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 13, weight: .semibold))
+            }
+            .buttonStyle(.glass)
+            .buttonBorderShape(.circle)
+            .opacity(canGoBack ? 1 : 0)
+            .disabled(!canGoBack)
+
+            Spacer()
+
+            Text(headerTitle)
+                .font(.moneHLSm)
+                .foregroundStyle(Color.monePrimary)
+
+            Spacer()
+
+            Button(action: onClose) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 13, weight: .semibold))
+            }
+            .buttonStyle(.glass)
+            .buttonBorderShape(.circle)
+        }
+        .padding(.horizontal, MoneSpacing.page)
+        .padding(.top, 14)
+        .padding(.bottom, 12)
+    }
+
     private var canGoBack: Bool {
         switch route {
-        case .pickType, .created, .detail:
+        case .pickType, .corpusPurpose, .created, .detail:
             return false
         default:
             return true
@@ -1343,13 +1334,13 @@ private struct PurposeGridCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack {
+            HStack (alignment: .top){
                 ZStack {
                     Circle()
                         .fill(isSelected ? Color.moneActionFill.opacity(0.15) : Color.moneSurfaceEl)
-                        .frame(width: 42, height: 42)
+                        .frame(width: 84, height: 84)
                     Image(systemName: purpose.icon)
-                        .font(.system(size: 17, weight: .medium))
+                        .font(.system(size: 34, weight: .medium))
                         .foregroundStyle(isSelected ? Color.moneActionFill : Color.moneSecondary)
                 }
 
@@ -2595,7 +2586,7 @@ private struct SpendingFocusStep: View {
             focusGroup(title: "SUGGESTED BY MONÉ", items: suggested)
             focusGroup(title: "CHOOSE YOUR OWN", items: own)
 
-            MonePrimaryButton(title: "Continue", icon: "arrow.right") {
+            MonePrimaryButton(title: "Continue") {
                 onContinue()
             }
             .disabled(!canContinue)

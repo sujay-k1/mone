@@ -101,12 +101,18 @@ struct PhoneVerificationView: View {
 
             VStack(spacing: MoneSpacing.gutter) {
                 MonePrimaryButton(title: vm.isLoading ? "Sending OTP..." : "Get OTP") {
-                    Task { await vm.sendOTP() }
+                    MoneTactileFeedback.performGentleButtonTap {
+                        Task { await vm.sendOTP() }
+                    }
                 }
                 .opacity(vm.isLoading || !vm.isPhoneValid ? 0.4 : 1)
                 .disabled(vm.isLoading || !vm.isPhoneValid)
 
-                Button { appVM.goBack() } label: {
+                Button {
+                    MoneTactileFeedback.performGentleButtonTap {
+                        appVM.goBack()
+                    }
+                } label: {
                     Text("Go back")
                         .font(.moneBodyMd)
                         .foregroundStyle(Color.moneTertiary)
@@ -188,15 +194,19 @@ struct PhoneVerificationView: View {
 
             VStack(spacing: MoneSpacing.gutter) {
                 MonePrimaryButton(title: vm.isLoading ? "Verifying..." : "Verify") {
-                    Task { await vm.verifyOTP() }
+                    MoneTactileFeedback.performGentleButtonTap {
+                        Task { await vm.verifyOTP() }
+                    }
                 }
                 .opacity(vm.isLoading || !vm.isOTPValid ? 0.4 : 1)
                 .disabled(vm.isLoading || !vm.isOTPValid)
 
                 Button {
-                    vm.step = .phoneEntry
-                    vm.otp = ""
-                    vm.error = nil
+                    MoneTactileFeedback.performGentleButtonTap {
+                        vm.step = .phoneEntry
+                        vm.otp = ""
+                        vm.error = nil
+                    }
                 } label: {
                     Text("Change number")
                         .font(.moneBodyMd)

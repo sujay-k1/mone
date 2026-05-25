@@ -77,10 +77,14 @@ struct DummyAAConsentView: View {
 
             HStack(spacing: MoneSpacing.gutter) {
                 MoneIconButton(icon: "chevron.left") {
-                    appVM.goBack()
+                    MoneTactileFeedback.performGentleButtonTap {
+                        appVM.goBack()
+                    }
                 }
                 MonePrimaryButton(title: "Fetch your details") {
-                    showPhoneOTP = true
+                    MoneTactileFeedback.performGentleButtonTap {
+                        showPhoneOTP = true
+                    }
                 }
             }
             .padding(.horizontal, MoneSpacing.page)

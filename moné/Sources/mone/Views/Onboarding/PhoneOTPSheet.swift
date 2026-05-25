@@ -61,13 +61,15 @@ struct PhoneOTPSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        if isDismissProtected {
-                            showLeaveAlert = true
-                        } else {
-                            dismiss()
+                        MoneTactileFeedback.performGentleButtonTap {
+                            if isDismissProtected {
+                                showLeaveAlert = true
+                            } else {
+                                dismiss()
+                            }
                         }
                     }
-                    .foregroundStyle(Color.moneTertiary)
+                    .foregroundStyle(Color.monePrimary)
                 }
             }
             .interactiveDismissDisabled(isDismissProtected)
@@ -191,6 +193,7 @@ struct PhoneOTPSheet: View {
                     if showConsent {
                         HStack(alignment: .top, spacing: 12) {
                             Button {
+                                MoneTactileFeedback.playSelection(isSelected: !consentAccepted)
                                 consentAccepted.toggle()
                             } label: {
                                 Image(systemName: consentAccepted ? "checkmark.square.fill" : "square")
@@ -220,7 +223,9 @@ struct PhoneOTPSheet: View {
             }
 
             MonePrimaryButton(title: vm.isLoading ? "Sending OTP..." : "Get OTP") {
-                Task { await vm.sendOTP() }
+                MoneTactileFeedback.performGentleButtonTap {
+                    Task { await vm.sendOTP() }
+                }
             }
             .opacity(canSendOTP ? 1 : 0.4)
             .disabled(!canSendOTP)
@@ -303,12 +308,16 @@ struct PhoneOTPSheet: View {
 
                 HStack(spacing: MoneSpacing.gutter) {
                     MoneIconButton(icon: "chevron.left") {
-                        vm.step = .phoneEntry
-                        vm.otp = ""
-                        vm.error = nil
+                        MoneTactileFeedback.performGentleButtonTap {
+                            vm.step = .phoneEntry
+                            vm.otp = ""
+                            vm.error = nil
+                        }
                     }
                     MonePrimaryButton(title: vm.isLoading ? "Verifying..." : "Verify") {
-                        Task { await vm.verifyOTP() }
+                        MoneTactileFeedback.performGentleButtonTap {
+                            Task { await vm.verifyOTP() }
+                        }
                     }
                     .opacity(vm.isLoading || !vm.isOTPValid ? 0.4 : 1)
                     .disabled(vm.isLoading || !vm.isOTPValid)
@@ -367,7 +376,9 @@ struct PhoneOTPSheet: View {
             }
 
             MonePrimaryButton(title: panLoading ? "Verifying..." : "Continue") {
-                Task { await verifyPAN() }
+                MoneTactileFeedback.performGentleButtonTap {
+                    Task { await verifyPAN() }
+                }
             }
             .opacity(canVerifyPAN ? 1 : 0.4)
             .disabled(!canVerifyPAN)
@@ -468,13 +479,15 @@ struct PhoneOTPSheet: View {
             }
 
             MonePrimaryButton(title: "Continue") {
-                vm.otp = ""
-                vm.error = nil
-                consentOTP = ""
-                consentOTPError = nil
-                Task { await vm.sendOTP() }
-                step = .consentOTP
-                consentOTPTimerGeneration = UUID()
+                MoneTactileFeedback.performGentleButtonTap {
+                    vm.otp = ""
+                    vm.error = nil
+                    consentOTP = ""
+                    consentOTPError = nil
+                    Task { await vm.sendOTP() }
+                    step = .consentOTP
+                    consentOTPTimerGeneration = UUID()
+                }
             }
             .opacity(selectedCount > 0 ? 1 : 0.4)
             .disabled(selectedCount == 0)
@@ -509,6 +522,7 @@ struct PhoneOTPSheet: View {
                 guard isEditingAccounts else { return }
                 if account.isSelected && selectedCount <= 1 { return }
                 if let idx = accounts.firstIndex(where: { $0.id == account.id }) {
+                    MoneTactileFeedback.playSelection(isSelected: !accounts[idx].isSelected)
                     accounts[idx].isSelected.toggle()
                 }
             } label: {
@@ -617,12 +631,16 @@ struct PhoneOTPSheet: View {
 
                 HStack(spacing: MoneSpacing.gutter) {
                     MoneIconButton(icon: "chevron.left") {
-                        consentOTP = ""
-                        consentOTPError = nil
-                        step = .accountSelection
+                        MoneTactileFeedback.performGentleButtonTap {
+                            consentOTP = ""
+                            consentOTPError = nil
+                            step = .accountSelection
+                        }
                     }
                     MonePrimaryButton(title: consentOTPLoading ? "Verifying..." : "Authorise") {
-                        Task { await verifyConsentOTP() }
+                        MoneTactileFeedback.performGentleButtonTap {
+                            Task { await verifyConsentOTP() }
+                        }
                     }
                     .opacity(consentOTPLoading || consentOTP.count < 6 ? 0.4 : 1)
                     .disabled(consentOTPLoading || consentOTP.count < 6)

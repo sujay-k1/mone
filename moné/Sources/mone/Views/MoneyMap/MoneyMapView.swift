@@ -161,6 +161,7 @@ struct MoneyMapView: View {
     private func expand(frameKey: String, action: () -> Void) {
         let src = cardFrames[frameKey] ?? CGRect(origin: containerCenter, size: .zero)
         expandedSourceFrame = src
+        MoneTactileFeedback.playElasticCardExpand()
 
         // Step 1 — place overlay at source frame, no animation
         overlayCenter = CGPoint(x: src.midX, y: src.midY)
@@ -183,6 +184,7 @@ struct MoneyMapView: View {
     private func dismissToSource() {
         let token = UUID()
         dismissToken = token
+        MoneTactileFeedback.playDampedCardCollapse()
         withAnimation(.spring(response: 0.40, dampingFraction: 0.82)) {
             overlayCenter = CGPoint(x: expandedSourceFrame.midX, y: expandedSourceFrame.midY)
             overlaySize   = CGSize(width: expandedSourceFrame.width,

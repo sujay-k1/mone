@@ -237,7 +237,9 @@ struct MainTabView: View {
             tabContent(selection: $appVM.selectedTab)
 
             ProfileAvatarButton {
-                showProfileSpace = true
+                MoneTactileFeedback.performGentleButtonTap {
+                    showProfileSpace = true
+                }
             }
             .padding(.top, 12)
             .padding(.trailing, 20)
@@ -321,6 +323,7 @@ struct MainTabView: View {
                 Label("Pay", systemImage: "qrcode")
             }
         }
+        .sensoryFeedback(.selection, trigger: selection.wrappedValue)
     }
 
     private var hasCompletedSignedInProfile: Bool {

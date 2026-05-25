@@ -88,6 +88,7 @@ struct PayView: View {
             installedUPIApps = UPIAppDiscoveryService.installedApps()
         }
         .sheet(item: $scannedPayload, onDismiss: {
+            MoneTactileFeedback.playDampedCardCollapse()
             restartScannerIfNeeded()
         }) { payload in
             paymentSheet(payload: payload)
@@ -443,6 +444,7 @@ struct PayView: View {
         installedUPIApps = UPIAppDiscoveryService.installedApps()
         selectedApp = installedUPIApps.first
 
+        MoneTactileFeedback.playElasticCardExpand()
         scannedPayload = payload
 
         return true
